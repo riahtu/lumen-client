@@ -4,17 +4,22 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { DbAdminComponent } from './db-admin/db-admin.component';
+import { NilmService } from './nilm.service';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DbAdminComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [
+    NilmService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
