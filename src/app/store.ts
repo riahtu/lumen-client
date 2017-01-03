@@ -1,21 +1,28 @@
 
 import { combineReducers } from 'redux';
+import { Nilm } from './nilm';
 
-export function counter(state = {
-  val: 4
-}, action) {
+export interface INilmState {
+  nilms: Nilm[];
+}
+let defaultState: INilmState = {
+  nilms: []
+};
+
+export function nilmReducer(state = defaultState, action) {
   switch (action.type) {
-    case 'INCREMENT':
+    case 'REQUEST_NILMS':
       return Object.assign({}, state,
-        { val: state.val + 1 });
-    case 'DECREMENT':
+        { nilms: [] });
+    case 'RECEIVE_NILMS':
       return Object.assign({}, state,
-        { val: state.val - 1 });
+        { nilms: action.nilms });
     default:
       return state;
   }
 }
 
+
 export const rootReducer = combineReducers({
-  counter
+  nilmReducer
 });

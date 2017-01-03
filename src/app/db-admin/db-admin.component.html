@@ -1,7 +1,4 @@
-<ul *ngFor="let nilm of nilms | async">
-  <li> {{ nilm.name }} </li>
+<h1>Nilms</h1>
+<ul>
+  <li *ngFor="let nilm of nilms$ | async"> {{nilm.name}} </li>
 </ul>
-<br/>
-<p>Counter val={{val$ | async}}</p>
-<button (click)="increment()">Increment</button>
-<button (click)="decrement()">Decrement</button>
