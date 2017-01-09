@@ -2,48 +2,43 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { NgReduxModule, NgRedux} from 'ng2-redux';
 
-import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
-import * as createLogger from 'redux-logger';
+import { TreeModule } from 'angular2-tree-component';
+
 import { AppComponent } from './app.component';
-import { DbAdminComponent } from './db-admin/db-admin.component';
-import { NilmService } from './nilm.service';
+import { ACTION_PROVIDERS } from './actions';
 
-import { rootReducer } from './store';
-import { Nilm } from './nilm';
+import {
+  AlertModule,
+  ProgressbarModule } from 'ng2-bootstrap';
+import {
+  EditFolderComponent,
+  EditStreamComponent } from './components';
 
-interface IAppState {
-  nilms: Nilm[];
-}
-
+import {
+  DbAdminPageComponent
+} from './pages';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DbAdminComponent,
+    DbAdminPageComponent,
+    EditFolderComponent,
+    EditStreamComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    NgReduxModule
+    NgReduxModule,
+    TreeModule,
+    AlertModule.forRoot(),
+    ProgressbarModule.forRoot()
   ],
   providers: [
-    NilmService
+    ACTION_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(
-    private ngRedux: NgRedux<any>,
-    private devTools: DevToolsExtension
-  ) {
-
-
-    ngRedux.configureStore(rootReducer,
-      {},
-      [createLogger()],
-      [devTools.enhancer()]);
-
-  }
-}
+export class AppModule { }

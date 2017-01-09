@@ -1,0 +1,71 @@
+.page-title {
+  text-align: center;
+}
+
+:host>>>.node-content-wrapper {
+  display: block;
+}
+
+:host>>>.node-content-wrapper, .tree-children {
+  position: relative;
+}
+
+:host>>>.node-content-wrapper::before, .tree-children::after {
+  content: "";
+  position: absolute;
+}
+
+:host>>>.node-content-wrapper::before {
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  height: 28px;
+  top: -17px;
+  width: 20px;
+  left: -28px;
+}
+
+:host>>>.tree-node-leaf>.node-wrapper>.node-content-wrapper::before {
+  width: 25px;
+}
+
+:host>>>.tree-children::after {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  top: -15px;
+  left: -15px;
+}
+
+:host>>>treenode:last-child>.tree-node>.tree-children::after {
+  border-left: none;
+}
+
+:host>>>.toggle-children {
+  z-index: 1;
+}
+
+.dbtree {
+  max-height: 320px;
+  height: 320px;
+  overflow-y: auto;
+  border: 1px;
+  border-style: solid;
+  border-color: #bbb;
+  border-radius: 2px;
+  margin-left: 15px;
+}
+
+.dbfolder {
+  background-image: url(/assets/images/folder.png);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-left: 20px;
+  margin-left: -4px;
+}
+
+.dbstream {
+  background-image: url(/assets/images/stream.png);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  padding-left: 20px;
+  margin-left: -4px;
+}

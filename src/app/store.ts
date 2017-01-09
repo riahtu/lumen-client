@@ -1,12 +1,14 @@
 
 import { combineReducers } from 'redux';
-import { Nilm } from './nilm';
+import { INilm } from './nilm';
 
 export interface INilmState {
-  nilms: Nilm[];
+  nilms: INilm[];
+  nilm: null;
 }
 let defaultState: INilmState = {
-  nilms: []
+  nilms: [],
+  nilm: null
 };
 
 export function nilmReducer(state = defaultState, action) {
@@ -16,13 +18,11 @@ export function nilmReducer(state = defaultState, action) {
         { nilms: [] });
     case 'RECEIVE_NILMS':
       return Object.assign({}, state,
-        { nilms: action.nilms });
+        {
+          nilms: action.nilms,
+          nilm: action.nilms[0]
+        });
     default:
       return state;
   }
 }
-
-
-export const rootReducer = combineReducers({
-  nilmReducer
-});

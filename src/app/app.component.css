@@ -1,0 +1,30 @@
+img.page-title{
+	//height: 100px;
+	margin-bottom: -15px;
+	margin-top: -15px;
+	vertical-align: baseline;
+}
+html{
+	overflow-y: scroll;
+}
+.page-header{
+    background: #ccc;
+    padding-left: 20px;
+    padding-top: 10px;
+    -moz-border-radius: 20px 20px 0px 0px;
+    -webkit-border-radius: 20px 20px 0px 0px;
+    -khtml-border-radius: 20px 20px 0px 0px;
+    border-radius: 20px 20px 0px 0px;
+    margin: 20px 0 0;
+    color: white;
+}
+
+.btn-header{
+	color: #FFF;
+	text-shadow: none;
+	margin-top: 33px;
+}
+.btn-header:hover{
+	color: #000;
+	text-decoration: none;
+}
