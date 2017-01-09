@@ -11,6 +11,7 @@ import {
   DbAdminActions } from '../../actions';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
+import { TreeNode } from 'angular2-tree-component';
 
 @Component({
   selector: 'app-db-admin',
@@ -20,9 +21,10 @@ import { select } from 'ng2-redux';
 export class DbAdminPageComponent implements OnInit {
   @select(['nilm', 'nilmsById']) nilms$: Observable<{}>;
   @select(['dbAdmin', 'nilmId']) nilm_id$: Observable<number>;
+  @select(['dbAdmin', 'selected_type']) selectedType$: Observable<string>;
 
   public nodes$: Observable<{}>;
-
+  //public selectedType$ = 'dbfolder';
   //private _nilm: BehaviorSubject<INilm>
 
   constructor(
@@ -41,6 +43,10 @@ export class DbAdminPageComponent implements OnInit {
 
   }
 
+  public selectNode(event) {
+    let node: TreeNode = event.node
+    this.dbAdminActions.selectItem(node)
+  }
   private _mapFolder(folder: INilmdbFolder) {
     return {
       id: folder.id,

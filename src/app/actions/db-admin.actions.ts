@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
+import { TreeNode } from 'angular2-tree-component';
 import { IAppState } from '../store';
 
 
@@ -12,12 +13,12 @@ export class DbAdminActions {
     private ngRedux: NgRedux<IAppState>
   ) { }
 
-  public selectItem(node: any) {
+  public selectItem(node: TreeNode) {
     this.ngRedux.dispatch({
       type: DbAdminActions.SELECT_ITEM,
       payload: {
-        id: node.id,
-        type: node.type
+        id: node.data.id,
+        type: node.data.type
       }
     });
   }
