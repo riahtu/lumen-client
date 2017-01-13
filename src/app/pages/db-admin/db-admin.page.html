@@ -11,7 +11,8 @@
         <dd>--</dd>
         <dt></dt>
         <dd>
-          <button type=button class="btn btn-default refresh">
+          <button type=button
+              class="btn btn-default refresh">
             <i class="fa fa-refresh"
                 aria-hidden="true"></i> Refresh
               </button>
@@ -22,31 +23,43 @@
     <div class="col-sm-5">
       <span class="lead">Disk Usage</span><br/> NilmDB: <span class="text-warning">0 GiB</span> | Other:
       <span class="text-info">0 GiB</span>
-      <progressbar value="55" type="success"></progressbar>
-      <span class="lead">Plot Resolution: 0 pts</span>
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">
-          <i class="fa fa-plus" aria-hidden="true"></i></button>
-        <button type="button" class="btn btn-default">
-        <i class="fa fa-minus" aria-hidden="true"></i></button>
-      </div>
+      <progressbar value="55"
+          type="success"></progressbar>
+        <span class="lead">Plot Resolution: 0 pts</span>
+        <div class="btn-group"
+            role="group">
+          <button type="button"
+              class="btn btn-default">
+            <i class="fa fa-plus"
+                aria-hidden="true"></i>
+              </button>
+              <button type="button"
+                  class="btn btn-default">
+                <i class="fa fa-minus"
+                    aria-hidden="true"></i>
+                  </button>
     </div>
   </div>
-  <hr/>
-  <!-- db tree -->
-  <div class="col-sm-3 dbtree">
-    <Tree [nodes]="nodes$ | async" (onActivate)="selectNode($event)">
-      <template #treeNodeTemplate let-node="node">
+</div>
+<hr/>
+<!-- db tree -->
+<div class="col-sm-3 dbtree">
+  <Tree [nodes]="nodes$ | async"
+      [options]="treeOptions"
+      (onActivate)="selectNode($event)">
+    <template #treeNodeTemplate
+        let-node="node">
       <span class="{{node.data.type}}">
             {{ node.data.name }}
           </span>
       </template>
-    </Tree>
-  </div>
-  <!-- folder/stream edits -->
-  <div [ngSwitch]='selectedType$ | async'>
-    <app-edit-stream *ngSwitchCase="'dbstream'"></app-edit-stream>
-    <app-edit-folder *ngSwitchCase="'dbfolder'"></app-edit-folder>
-  </div>
+      </Tree>
+</div>
+<!-- folder/stream edits -->
+<div [ngSwitch]='selectedType$ | async'>
+  <app-edit-stream *ngSwitchCase="'dbstream'"></app-edit-stream>
+  <app-edit-folder *ngSwitchCase="'dbfolder'"
+      [dbFolderId]="selectedId$"></app-edit-folder>
+</div>
 
 </div>

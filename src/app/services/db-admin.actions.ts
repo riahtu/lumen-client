@@ -3,6 +3,7 @@ import { NgRedux } from 'ng2-redux';
 import { TreeNode } from 'angular2-tree-component';
 import { IAppState } from '../store';
 
+// add observable tree node mapping here
 
 @Injectable()
 export class DbAdminActions {

@@ -1,31 +1,49 @@
+import { TypedRecord } from 'typed-immutable-record';
+
+/*
 export interface INilmState {
-  nilmsById: {};
-}
+  nilms: { [id: number]: INilmRecord };
+};
+  dbs: Array<IDbRecord>;
+  dbFolders: Array<IDbFolderRecord>;
+  dbStreams: Array<IDbStreamRecord>;
+  dbElements: Array<IDbElementRecord>;
+}*/
+
 
 export interface INilm {
   id: number;
   name: string;
   description: string;
-  db: INilmdb;
+  db: number;
+}
+export interface INilmRecord extends
+  TypedRecord<INilmRecord>, INilm { };
+export interface INilmRecords {
+  [index: string]: INilmRecord;
 }
 
-export interface INilmdb {
+export interface IDb {
   id: number;
   url: string;
-  contents: INilmdbFolder;
+  contents: number;
 }
+export interface IDbRecord extends
+  TypedRecord<IDbRecord>, IDb { };
 
-export interface INilmdbFolder {
+export interface IDbFolder {
   id: number;
   name: string;
   description: string;
   path: string;
   hidden: boolean;
-  subfolders: INilmdbFolder[];
-  streams: INilmdbStream[];
+  subfolders: Array<number>;
+  streams: Array<number>;
 }
+export interface IDbFolderRecord extends
+  TypedRecord<IDbFolderRecord>, IDb { };
 
-export interface INilmdbStream {
+export interface IDbStream {
   id: number;
   name: string;
   description: string;
@@ -38,10 +56,12 @@ export interface INilmdbStream {
   name_abbrev: string;
   delete_locked: boolean;
   hidden: boolean;
-  elements: INilmdbElement[];
+  elements: Array<number>;
 }
+export interface IDbStreamRecord extends
+  TypedRecord<IDbStreamRecord>, IDbStream { };
 
-export interface INilmdbElement {
+export interface IDbElement {
   id: number;
   name: string;
   units: number;
@@ -53,3 +73,5 @@ export interface INilmdbElement {
   plottable: boolean;
   discrete: boolean;
 }
+export interface IDbElementRecord extends
+  TypedRecord<IDbElementRecord>, IDbElement { };

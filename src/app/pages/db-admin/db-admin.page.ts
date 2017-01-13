@@ -1,11 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  INilm,
-  INilmdbFolder,
-  INilmdbStream,
-  INilmdbElement,
-  IDbAdminState
-} from '../../store';
+
 import {
   NilmActions,
   DbAdminActions } from '../../actions';
@@ -19,14 +13,14 @@ import { TreeNode } from 'angular2-tree-component';
   styleUrls: ['./db-admin.page.css']
 })
 export class DbAdminPageComponent implements OnInit {
-  @select(['nilm', 'nilmsById']) nilms$: Observable<{}>;
+  @select(['nilm']) nilms$: Observable<any>;
   @select(['dbAdmin', 'nilmId']) nilm_id$: Observable<number>;
   @select(['dbAdmin', 'selected_type']) selectedType$: Observable<string>;
-
+  @select(['dbAdmin', 'selected_id']) selectedId$: Observable<number>;
   public nodes$: Observable<{}>;
   //public selectedType$ = 'dbfolder';
   //private _nilm: BehaviorSubject<INilm>
-
+  public treeOptions = {};
   constructor(
     private nilmActions: NilmActions,
     private dbAdminActions: DbAdminActions
@@ -37,41 +31,59 @@ export class DbAdminPageComponent implements OnInit {
         this.nilms$,
         this.nilm_id$,
       )
-        .map(([nilms, nilm_id]) => nilms[nilm_id])
-        .filter(nilm => nilm != null)
-        .map(nilm => this._mapFolder(nilm.contents).children)
-
+        .filter(([nilms, nilm_id]) =>
+          'nilms' in nilms)
+        .filter(([nilms, nilm_id]) =>
+          nilm_id in nilms.nilms)
+        .map(([nilms, nilm_id]) => {
+          let db = nilms.dbs[nilms.nilms[nilm_id].db]
+          let root = this._mapFolder(nilms, db.contents)
+          return root.children;
+        });
+    this.treeOptions = {
+      getChildren: this.getChildren.bind(this)
+    }
   }
 
+
+  public getChildren(node: TreeNode) {
+    console.log(node);
+    this.nilmActions.loadFolder(node.data.id);
+
+  }
   public selectNode(event) {
     let node: TreeNode = event.node
     this.dbAdminActions.selectItem(node)
   }
-  private _mapFolder(folder: INilmdbFolder) {
+  private _mapFolder(nilms, db_folder_id) {
+    let dbFolder = nilms.dbFolders[db_folder_id];
+    let children = null;
+    //console.log(dbFolder);
+    if ("subfolders" in dbFolder) {
+      children = dbFolder.subfolders
+        .map(subfolder_id => this._mapFolder(nilms, subfolder_id))
+    }
     return {
-      id: folder.id,
-      name: folder.name,
+      id: dbFolder.id,
+      name: dbFolder.name,
       type: 'dbfolder',
-      children: [].concat(
-        folder.subfolders
-          .map(subfolder => this._mapFolder(subfolder)),
-        folder.streams
-          .map(stream => this._mapStream(stream))
-      )
+      children: children,
+      hasChildren: true,
     };
   }
 
-  private _mapStream(stream: INilmdbStream) {
+  private _mapStream(nilms, db_stream_id) {
+    let dbStream = nilms.db_streams[db_stream_id]
     return {
-      id: stream.id,
-      name: stream.name,
+      id: dbStream.id,
+      name: dbStream.name,
       type: 'dbstream',
       children: []
     };
   }
 
   ngOnInit() {
-    this.dbAdminActions.setNilmId(72);
+    this.dbAdminActions.setNilmId(71);
     this.nilmActions.loadNilms();
   }
 

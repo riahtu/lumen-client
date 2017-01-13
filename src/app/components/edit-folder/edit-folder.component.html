@@ -1,32 +1,43 @@
 <div class="col-sm-8">
   <div class="lead">Folder Properties</div>
+  <h2>folder id: {{ dbFolderId | async}} </h2>
   <dl class="dl-horizontal">
     <dt>Time Range</dt>
     <dd>2015 Jul 07 22:00 - 2016 Jul 13 01:38 </dd>
     <dt>Size on Disk</dt>
     <dd>5.94 GiB</dd>
   </dl>
-  <form>
+  <form [formGroup]="myForm | async">
     <div class="form-group">
       <label for="folder-name">Name</label>
-      <input class="form-control" id="folder-name" placeholder="Name" type="text">
+      <input class="form-control"
+          id="folder-name"
+          placeholder="Name"
+          type="text"
+          [formControl]="(myForm | async).controls['name']">
     </div>
     <div class="form-group">
       <label for="folder-description">Description</label>
-      <input class="form-control" id="folder-description" placeholder="Name" type="text">
+      <input class="form-control"
+          id="folder-description"
+          placeholder="Name"
+          type="text"
+          [formControl]="(myForm | async).controls['description']">
     </div>
-    <div class="checkbox">
+    <div class=" checkbox ">
       <label>
-        <input id="folder-hidden" type="checkbox"> Hidden
+        <input id="folder-hidden " type="checkbox"
+        [formControl]="(myForm | async).controls['hidden']"> Hidden
       </label>
     </div>
-    <div class="form-group">
-      <div class="pull-left">
-        <button type="submit" class="btn btn-default">Save</button>
+    <div class="form-group ">
+      <div class="pull-left ">
+        <button type="submit "
+            class="btn btn-default ">Save</button>
       </div>
-      <div class="pull-right">
-        <button class="btn btn-danger">Delete</button>
-        <button class="btn btn-default"><i class="fa fa-lock"></i></button>
+      <div class="pull-right ">
+        <button class="btn btn-danger ">Delete</button>
+        <button class="btn btn-default "><i class="fa fa-lock "></i></button>
       </div>
     </div>
   </form>

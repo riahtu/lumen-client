@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup
+} from '@angular/forms';
 
 @Component({
   selector: 'app-edit-stream',
@@ -7,7 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditStreamComponent implements OnInit {
 
-  constructor() { }
+  public myForm: FormGroup;
+
+  constructor(fb: FormBuilder) {
+    this.myForm = fb.group({ sku: ['1234'] })
+  }
 
   ngOnInit() {
   }

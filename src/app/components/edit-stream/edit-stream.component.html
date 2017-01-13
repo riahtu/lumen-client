@@ -12,14 +12,21 @@
     <dt>Database Path</dt>
     <dd>/some/path <button class="btn btn-xs btn-default">Move</button></dd>
   </dl>
-  <form class="clearfix">
+  <form class="clearfix"
+      [formGroup]="myForm">
     <div class="form-group col-md-3">
       <label for="folder-name">Name</label>
-      <input class="form-control" id="folder-name" placeholder="Name" type="text">
+      <input class="form-control"
+          id="folder-name"
+          placeholder="Name"
+          type="text">
     </div>
     <div class="form-group col-md-9">
       <label for="folder-description">Description</label>
-      <input class="form-control" id="folder-description" placeholder="Name" type="text">
+      <input class="form-control"
+          id="folder-description"
+          placeholder="Name"
+          type="text">
     </div>
 
     <div class="lead">Element Properties
@@ -43,37 +50,62 @@
           <td>0</td>
           <td><input type="checkbox"></td>
           <td><input type="checkbox"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
 
         </tr>
         <tr>
           <td>0</td>
           <td><input type="checkbox"></td>
           <td><input type="checkbox"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
-          <td><input type="text" class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
+          <td>
+            <input type="text"
+                class="form-control"></td>
 
         </tr>
       </tbody>
     </table>
     <div class="form-group">
       <div class="pull-left">
-        <button type="submit" class="btn btn-default">Save</button>
+        <button type="submit"
+            class="btn btn-default">Save</button>
       </div>
       <div class="pull-right">
         <button class="btn btn-danger">Delete</button>
         <button class="btn btn-default"><i class="fa fa-lock"></i></button>
       </div>
     </div>
-  </form>
+    </form>
 
 </div>

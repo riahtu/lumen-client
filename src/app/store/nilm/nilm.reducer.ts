@@ -1,27 +1,16 @@
 
 import { IPayloadAction } from '../../actions';
-import { NilmActions } from '../../actions';
-import { INilm } from './nilm.types';
-import {INITIAL_STATE} from './nilm.initial-state';
+import { NilmActions } from './nilm.actions';
+import { NilmFactory } from './nilm.initial-state';
+import { recordify } from '../helpers';
+import { INilmRecords } from './nilm.types';
 
 export function nilmReducer(
-  state = INITIAL_STATE,
-  action: IPayloadAction) {
+  state: INilmRecords = {},
+  action: IPayloadAction): INilmRecords {
   switch (action.type) {
-    case NilmActions.REQUEST_NILMS:
-      return Object.assign({}, state,
-        { nilmsById: {} });
-    case NilmActions.RECEIVE_NILMS:
-      let nilms = <INilm[]>action.payload;
-      let nilmsById = nilms
-        .reduce((acc, nilm) => {
-          acc[nilm.id] = nilm;
-          return acc;
-        }, {});
-      return Object.assign({}, state,
-        {
-          nilmsById: nilmsById
-        });
+    case NilmActions.RECEIVE:
+      return recordify(action.payload, NilmFactory);
     default:
       return state;
   }
