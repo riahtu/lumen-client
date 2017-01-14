@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import {
-  NilmActions,
-  DbAdminActions } from '../../actions';
+  NilmService,
+  DbAdminService } from '../../services';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
 import { TreeNode } from 'angular2-tree-component';
@@ -13,31 +13,31 @@ import { TreeNode } from 'angular2-tree-component';
   styleUrls: ['./db-admin.page.css']
 })
 export class DbAdminPageComponent implements OnInit {
-  @select(['nilm']) nilms$: Observable<any>;
-  @select(['dbAdmin', 'nilmId']) nilm_id$: Observable<number>;
-  @select(['dbAdmin', 'selected_type']) selectedType$: Observable<string>;
-  @select(['dbAdmin', 'selected_id']) selectedId$: Observable<number>;
+  @select(['data']) data$: Observable<any>;
+  @select(['dbAdmin', 'dbId']) db_id$: Observable<number>;
+  @select(['dbAdmin', 'selectedType']) selectedType$: Observable<string>;
+  @select(['dbAdmin', 'selectedId']) selectedId$: Observable<number>;
   public nodes$: Observable<{}>;
   //public selectedType$ = 'dbfolder';
   //private _nilm: BehaviorSubject<INilm>
   public treeOptions = {};
   constructor(
-    private nilmActions: NilmActions,
-    private dbAdminActions: DbAdminActions
+    private nilmService: NilmService,
+    private dbAdminService: DbAdminService
   ) {
 
     this.nodes$ =
       Observable.combineLatest(
-        this.nilms$,
-        this.nilm_id$,
+        this.data$,
+        this.db_id$,
       )
-        .filter(([nilms, nilm_id]) =>
-          'nilms' in nilms)
-        .filter(([nilms, nilm_id]) =>
-          nilm_id in nilms.nilms)
-        .map(([nilms, nilm_id]) => {
-          let db = nilms.dbs[nilms.nilms[nilm_id].db]
-          let root = this._mapFolder(nilms, db.contents)
+        .filter(([data, db_id]) =>
+          db_id in data.dbs)
+        .filter(([data, db_id]) =>
+          data.dbs[db_id].contents in data.dbFolders)
+        .map(([data, db_id]) => {
+          let db = data.dbs[db_id]
+          let root = this._mapFolder(data, db.contents)
           return root.children;
         });
     this.treeOptions = {
@@ -48,20 +48,26 @@ export class DbAdminPageComponent implements OnInit {
 
   public getChildren(node: TreeNode) {
     console.log(node);
-    this.nilmActions.loadFolder(node.data.id);
+    this.nilmService.loadFolder(node.data.id);
 
   }
   public selectNode(event) {
     let node: TreeNode = event.node
-    this.dbAdminActions.selectItem(node)
+    this.dbAdminService.selectItem(node)
   }
-  private _mapFolder(nilms, db_folder_id) {
-    let dbFolder = nilms.dbFolders[db_folder_id];
+  private _mapFolder(data, db_folder_id) {
+
+
+    let dbFolder = data.dbFolders[db_folder_id];
     let children = null;
     //console.log(dbFolder);
-    if ("subfolders" in dbFolder) {
-      children = dbFolder.subfolders
-        .map(subfolder_id => this._mapFolder(nilms, subfolder_id))
+    if (!dbFolder.shallow) {
+      children =
+        dbFolder.subfolders
+          .map(subfolder_id => this._mapFolder(data, subfolder_id))
+          .concat(dbFolder.streams
+            .filter(stream_id => stream_id in data.dbStreams)
+            .map(stream_id => this._mapStream(data, stream_id)));
     }
     return {
       id: dbFolder.id,
@@ -72,8 +78,8 @@ export class DbAdminPageComponent implements OnInit {
     };
   }
 
-  private _mapStream(nilms, db_stream_id) {
-    let dbStream = nilms.db_streams[db_stream_id]
+  private _mapStream(data, db_stream_id) {
+    let dbStream = data.dbStreams[db_stream_id]
     return {
       id: dbStream.id,
       name: dbStream.name,
@@ -83,8 +89,8 @@ export class DbAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dbAdminActions.setNilmId(71);
-    this.nilmActions.loadNilms();
+    this.dbAdminService.setDbId(72);
+    this.nilmService.loadNilms();
   }
 
 }

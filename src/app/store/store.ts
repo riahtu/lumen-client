@@ -1,19 +1,16 @@
 
 import { combineReducers } from 'redux';
-import * as nilm from './nilm';
+import * as data from './data';
 import * as dbAdmin from './db-admin';
 
-export interface IUIState {
-  busy: boolean;
-  dbAdmin: dbAdmin.IDbAdminState;
-}
+
 export interface IAppState {
-  nilms?: nilm.INilmState;
-  dbAdmin?: dbAdmin.IDbAdminState;
+  data?: data.IDataState;
+  dbAdmin?: dbAdmin.IDbAdminRecord;
 }
 
 
 export const rootReducer = combineReducers<IAppState>({
-  nilm: nilm.nilmReducer,
+  data: data.dataReducer,
   dbAdmin: dbAdmin.dbAdminReducer
 });

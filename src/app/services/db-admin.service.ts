@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
 import { TreeNode } from 'angular2-tree-component';
-import { IAppState } from '../store';
-
-// add observable tree node mapping here
+import { IAppState,
+  DbAdminActions } from '../store';
 
 @Injectable()
-export class DbAdminActions {
-  static SELECT_ITEM = 'DBADMIN_SELECT_ITEM';
-  static SET_NILM_ID = 'DBADMIN_SET_NILM_ID';
+export class DbAdminService {
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -24,9 +21,9 @@ export class DbAdminActions {
     });
   }
 
-  public setNilmId(id: number) {
+  public setDbId(id: number) {
     this.ngRedux.dispatch({
-      type: DbAdminActions.SET_NILM_ID,
+      type: DbAdminActions.SET_DB_ID,
       payload: {
         id: id
       }

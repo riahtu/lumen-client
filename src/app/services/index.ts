@@ -1,10 +1,5 @@
-import { Action } from 'redux';
-import {NilmActions} from './nilm.actions';
-import {DbAdminActions} from './db-admin.actions';
+import {NilmService} from './nilm.service';
+import {DbAdminService} from './db-admin.service';
 
-export interface IPayloadAction extends Action {
-  payload?: any;
-}
-
-export const ACTION_PROVIDERS = [NilmActions, DbAdminActions];
-export {NilmActions, DbAdminActions};
+export const SERVICE_PROVIDERS = [NilmService, DbAdminService];
+export {NilmService, DbAdminService};

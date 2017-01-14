@@ -8,7 +8,7 @@ import { NgReduxModule, NgRedux} from 'ng2-redux';
 import { TreeModule } from 'angular2-tree-component';
 
 import { AppComponent } from './app.component';
-import { ACTION_PROVIDERS } from './actions';
+import { SERVICE_PROVIDERS } from './services';
 
 import {
   AlertModule,
@@ -38,7 +38,7 @@ import {
     ProgressbarModule.forRoot()
   ],
   providers: [
-    ACTION_PROVIDERS
+    SERVICE_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

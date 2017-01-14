@@ -1,16 +1,7 @@
 import { TypedRecord } from 'typed-immutable-record';
 
-/*
-export interface INilmState {
-  nilms: { [id: number]: INilmRecord };
-};
-  dbs: Array<IDbRecord>;
-  dbFolders: Array<IDbFolderRecord>;
-  dbStreams: Array<IDbStreamRecord>;
-  dbElements: Array<IDbElementRecord>;
-}*/
 
-
+// ---- Nilm ----
 export interface INilm {
   id: number;
   name: string;
@@ -23,6 +14,7 @@ export interface INilmRecords {
   [index: string]: INilmRecord;
 }
 
+// ---- Db ----
 export interface IDb {
   id: number;
   url: string;
@@ -30,7 +22,11 @@ export interface IDb {
 }
 export interface IDbRecord extends
   TypedRecord<IDbRecord>, IDb { };
+export interface IDbRecords {
+  [index: string]: IDbRecord;
+}
 
+// ---- DbFolder ----
 export interface IDbFolder {
   id: number;
   name: string;
@@ -39,10 +35,15 @@ export interface IDbFolder {
   hidden: boolean;
   subfolders: Array<number>;
   streams: Array<number>;
+  shallow: boolean; // true if contents have not been retrieved from server
 }
 export interface IDbFolderRecord extends
-  TypedRecord<IDbFolderRecord>, IDb { };
+  TypedRecord<IDbFolderRecord>, IDbFolder { };
+export interface IDbFolderRecords {
+  [index: string]: IDbFolderRecord;
+}
 
+// ---- DbStream ----
 export interface IDbStream {
   id: number;
   name: string;
@@ -60,6 +61,10 @@ export interface IDbStream {
 }
 export interface IDbStreamRecord extends
   TypedRecord<IDbStreamRecord>, IDbStream { };
+export interface IDbStreamRecords {
+  [index: string]: IDbStreamRecord;
+}
+
 
 export interface IDbElement {
   id: number;

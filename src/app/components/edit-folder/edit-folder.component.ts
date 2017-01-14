@@ -13,8 +13,8 @@ import {
 })
 export class EditFolderComponent implements OnInit {
   @Input() dbFolderId: Observable<number>;
-  @select(['nilm']) nilms$: Observable<any>;
-  @select(['dbAdmin', 'selected_id']) selectedId$: Observable<number>;
+  @select(['data']) data$: Observable<any>;
+  @select(['dbAdmin', 'selectedId']) selectedId$: Observable<number>;
 
   public myForm: Observable<any>;
 
@@ -24,7 +24,7 @@ export class EditFolderComponent implements OnInit {
 
   ngOnInit() {
     this.myForm = Observable
-      .combineLatest(this.nilms$, this.dbFolderId)
+      .combineLatest(this.data$, this.dbFolderId)
       .filter(([entities, dbFolderId]) =>
         'dbFolders' in entities)
       .map(([entities, dbFolderId]) => {

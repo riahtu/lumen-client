@@ -1,6 +1,14 @@
-export const INITIAL_STATE =
-  {
-    selected_type: 'unknown',
-    selected_id: 0,
-    nilmId: 0
-  };
+
+import {IDbAdmin,
+  IDbAdminRecord } from './db-admin.types';
+import { makeTypedFactory } from 'typed-immutable-record';
+
+// ---- DbAdmin ----
+export const DbAdminFactory =
+  makeTypedFactory<IDbAdmin, IDbAdminRecord>({
+    selectedType: 'unknown',
+    selectedId: 0,
+    dbId: 0
+  });
+
+export const INITIAL_STATE = DbAdminFactory();
