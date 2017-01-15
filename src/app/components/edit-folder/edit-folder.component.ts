@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
-import {IDbFolder} from '../../store';
+import { IDbFolder } from '../../store';
+import { DbFolderService } from '../../services';
 
 import {
   FormBuilder,
-  FormGroup
+  FormGroup,
+  Validators
 } from '@angular/forms';
 
 @Component({
@@ -14,23 +16,37 @@ import {
   styleUrls: ['./edit-folder.component.css']
 })
 export class EditFolderComponent implements OnInit {
-  @Input() dbFolder: Observable<IDbFolder>;
+  @Input()
+  public set dbFolder(val: IDbFolder) {
+    this.buildForm(val);
+    this.folder = val;
+  }
 
-  public myForm: Observable<any>;
+  public form: FormGroup;
+  public folder: IDbFolder;
 
   constructor(
     private fb: FormBuilder,
+    private dbFolderService: DbFolderService
   ) { }
 
-  ngOnInit() {
-    this.myForm = this.dbFolder
-      .map(dbFolder => {
-        return this.fb.group({
-          name: [dbFolder.name],
-          description: [dbFolder.description],
-          hidden: [dbFolder.hidden]
-        });
+  onSubmit(formValues: IDbFolder) {
+    formValues.id = this.folder.id;
+    this.dbFolderService.updateFolder(formValues,
+      error => {
+        console.log(`error on ${this.folder.id}: `, error)
       });
+  }
+
+  buildForm(folder: IDbFolder) {
+    this.form = this.fb.group({
+      name: [folder.name, Validators.required],
+      description: [folder.description],
+      hidden: [folder.hidden]
+    });
+  }
+  ngOnInit() {
+
   }
 
 }

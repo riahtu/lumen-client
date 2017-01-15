@@ -1,8 +1,9 @@
 import {NilmService} from './nilm.service';
+import {DbFolderService} from './db-folder.service';
 import {
   DbAdminService,
   DbAdminSelectors, } from './db-admin';
 
 export const SERVICE_PROVIDERS =
-  [NilmService, DbAdminService, DbAdminSelectors];
-export {NilmService, DbAdminService, DbAdminSelectors};
+  [NilmService, DbFolderService, DbAdminService, DbAdminSelectors, ];
+export {NilmService, DbFolderService, DbAdminService, DbAdminSelectors};

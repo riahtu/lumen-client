@@ -1,7 +1,7 @@
-<div class="row">
+<div class="row" class="page-body">
   <h1 class="page-title">[Test Nilm] Administration</h1>
   <!-- db info -->
-  <div class="row ">
+  <!--<div class="row ">
     <div class="col-sm-6">
 
       <dl class="dl-horizontal">
@@ -42,28 +42,25 @@
   </div>
 </div>
 <hr/>
-<!-- db tree -->
+-->
+  <!-- db tree -->
 
-<div class="col-sm-3 panel">
-  <Tree [nodes]="dbAdminSelectors.dbNodes$ | async"
-      [options]="treeOptions"
-      (onActivate)="selectNode($event)">
-    <template #treeNodeTemplate
-        let-node="node">
-      <span class="{{node.data.type}}">
+  <div class="col-sm-3 panel">
+    <Tree [nodes]="dbAdminSelectors.dbNodes$ | async" [options]="treeOptions" (onActivate)="selectNode($event)">
+      <template #treeNodeTemplate let-node="node">
+        <span class="{{node.data.type}}">
             {{ node.data.name }}
           </span>
       </template>
-      </Tree>
-</div>
-<!-- folder/stream edits -->
-<div [ngSwitch]='dbAdminSelectors.selectedType$ | async'
-    class='panel'>
-  <app-edit-stream *ngSwitchCase="'dbStream'"
-      [dbStream]="dbAdminSelectors.selectedDbStream$"
+    </Tree>
+  </div>
+  <!-- folder/stream edits -->
+  <div [ngSwitch]='dbAdminSelectors.selectedType$ | async' class='panel'>
+    <app-edit-stream *ngSwitchCase="'dbStream'" 
+      [dbStream]="dbAdminSelectors.selectedDbStream$" 
       [dbElements]="dbAdminSelectors.selectedDbStreamElements$"></app-edit-stream>
-    <app-edit-folder *ngSwitchCase="'dbFolder'"
-        [dbFolder]="dbAdminSelectors.selectedDbFolder$ "></app-edit-folder>
-      </div>
+    <app-edit-folder *ngSwitchCase="'dbFolder'" 
+      [dbFolder]="dbAdminSelectors.selectedDbFolder$ | async "></app-edit-folder>
+  </div>
 
-      </div>
+</div>

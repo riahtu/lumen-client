@@ -1,9 +1,15 @@
+
+.page-body{
+	max-height: 100vh;
+}
+
 img.page-title{
-	//height: 100px;
+	height: 10vh;
 	margin-bottom: -15px;
 	margin-top: -15px;
 	vertical-align: baseline;
 }
+
 html{
 	overflow-y: scroll;
 }

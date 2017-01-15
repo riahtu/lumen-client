@@ -6,7 +6,8 @@ import {
 } from '../../store';
 import {
   FormBuilder,
-  FormGroup
+  FormGroup,
+  Validators
 } from '@angular/forms';
 
 @Component({
@@ -40,7 +41,7 @@ export class EditStreamComponent implements OnInit {
       this.fb.group({
         plottable: [element.plottable],
         discrete: [element.discrete],
-        name: [element.name],
+        name: [element.name, Validators.required],
         units: [element.units],
         offset: [element.offset],
         scaleFactor: [element.scale_factor],

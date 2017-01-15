@@ -16,7 +16,7 @@
   <form class="clearfix"
       [formGroup]="myForm | async">
     <div class="form-group col-md-3">
-      <label for="folder-name">Name</label>
+      <label class="control-label" for="folder-name">Name</label>
       <input class="form-control"
           id="folder-name"
           placeholder="Name"
@@ -58,6 +58,7 @@
           <td>
             <input type="text"
                 class="form-control"
+                
                 [formControl]="form.controls['name']"></td>
           <td>
             <input type="text"

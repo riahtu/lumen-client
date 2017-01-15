@@ -6,33 +6,24 @@
     <dt>Size on Disk</dt>
     <dd>5.94 GiB</dd>
   </dl>
-  <form [formGroup]="myForm | async">
-    <div class="form-group">
-      <label for="folder-name">Name</label>
-      <input class="form-control"
-          id="folder-name"
-          placeholder="Name"
-          type="text"
-          [formControl]="(myForm | async).controls['name']">
+  <form [formGroup]="form"  (ngSubmit)="onSubmit(form.value)">
+    <div class="form-group" [class.has-error]="!form.controls.name.valid">
+      <label class="control-label" for="folder-name">Name</label>
+      <input class="form-control" id="folder-name" placeholder="Name" type="text" [formControl]="form.controls.name">
     </div>
     <div class="form-group">
       <label for="folder-description">Description</label>
-      <input class="form-control"
-          id="folder-description"
-          placeholder="Name"
-          type="text"
-          [formControl]="(myForm | async).controls['description']">
+      <input class="form-control" id="folder-description" placeholder="Name" type="text" [formControl]="form.controls['description']">
     </div>
     <div class=" checkbox ">
       <label>
         <input id="folder-hidden " type="checkbox"
-        [formControl]="(myForm | async).controls['hidden']"> Hidden
+        [formControl]="form.controls['hidden']"> Hidden
       </label>
     </div>
     <div class="form-group ">
       <div class="pull-left ">
-        <button type="submit "
-            class="btn btn-default ">Save</button>
+        <button type="submit " class="btn btn-default ">Save</button>
       </div>
       <div class="pull-right ">
         <button class="btn btn-danger ">Delete</button>
