@@ -43,7 +43,7 @@
   z-index: 1;
 }
 
-.dbtree {
+.panel {
   max-height: 320px;
   height: 320px;
   overflow-y: auto;
@@ -54,7 +54,7 @@
   margin-left: 15px;
 }
 
-.dbfolder {
+.dbFolder {
   background-image: url(/assets/images/folder.png);
   background-repeat: no-repeat;
   background-color: transparent;
@@ -62,7 +62,7 @@
   margin-left: -4px;
 }
 
-.dbstream {
+.dbStream {
   background-image: url(/assets/images/stream.png);
   background-repeat: no-repeat;
   background-color: transparent;

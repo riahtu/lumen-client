@@ -48,3 +48,18 @@ export const DbStreamFactory =
     hidden: false,
     elements: null
   });
+
+// ---- DbElements ----
+export const DbElementFactory =
+  makeTypedFactory<data.IDbElement, data.IDbElementRecord>({
+    id: null,
+    name: '',
+    units: '',
+    column: null,
+    default_max: null,
+    default_min: null,
+    scale_factor: 1.0,
+    offset: 0.0,
+    plottable: true,
+    discrete: false
+  });

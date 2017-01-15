@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
+import {IDbFolder} from '../../store';
+
 import {
   FormBuilder,
   FormGroup
@@ -12,27 +14,21 @@ import {
   styleUrls: ['./edit-folder.component.css']
 })
 export class EditFolderComponent implements OnInit {
-  @Input() dbFolderId: Observable<number>;
-  @select(['data']) data$: Observable<any>;
-  @select(['dbAdmin', 'selectedId']) selectedId$: Observable<number>;
+  @Input() dbFolder: Observable<IDbFolder>;
 
   public myForm: Observable<any>;
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit() {
-    this.myForm = Observable
-      .combineLatest(this.data$, this.dbFolderId)
-      .filter(([entities, dbFolderId]) =>
-        'dbFolders' in entities)
-      .map(([entities, dbFolderId]) => {
-        let folder = entities.dbFolders[dbFolderId];
+    this.myForm = this.dbFolder
+      .map(dbFolder => {
         return this.fb.group({
-          name: [folder.name],
-          description: [folder.description],
-          hidden: [folder.hidden]
+          name: [dbFolder.name],
+          description: [dbFolder.description],
+          hidden: [dbFolder.hidden]
         });
       });
   }

@@ -54,3 +54,18 @@ export function dbStreamReducer(
       return state;
   }
 }
+
+
+export function dbElementReducer(
+  state: records.IDbElementRecords = {},
+  action: IPayloadAction): records.IDbElementRecords {
+  switch (action.type) {
+    case actions.DbElementActions.RECEIVE:
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.DbElementFactory));
+
+    default:
+      return state;
+  }
+}

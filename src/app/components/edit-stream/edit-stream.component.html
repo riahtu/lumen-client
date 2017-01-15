@@ -1,4 +1,4 @@
-<div class="col-sm-8">
+<div class="col-sm-12">
   <div class="lead">Stream Properties</div>
   <dl class="dl-horizontal">
     <dt>Time Range</dt>
@@ -10,23 +10,26 @@
     <dt>Size on Disk</dt>
     <dd>5.94 GiB</dd>
     <dt>Database Path</dt>
-    <dd>/some/path <button class="btn btn-xs btn-default">Move</button></dd>
+    <dd>/some/paths <button class="btn btn-xs btn-default">Move</button></dd>
   </dl>
+
   <form class="clearfix"
-      [formGroup]="myForm">
+      [formGroup]="myForm | async">
     <div class="form-group col-md-3">
       <label for="folder-name">Name</label>
       <input class="form-control"
           id="folder-name"
           placeholder="Name"
-          type="text">
+          type="text"
+          [formControl]="(myForm | async).controls['name']">
     </div>
     <div class="form-group col-md-9">
       <label for="folder-description">Description</label>
       <input class="form-control"
           id="folder-description"
           placeholder="Name"
-          type="text">
+          type="text"
+          [formControl]="(myForm | async).controls['description']">
     </div>
 
     <div class="lead">Element Properties
@@ -34,7 +37,6 @@
     <table class="table table-condensed">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Plottable</th>
           <th>Discrete</th>
           <th>Name</th>
@@ -46,54 +48,46 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>0</td>
-          <td><input type="checkbox"></td>
-          <td><input type="checkbox"></td>
+        <tr *ngFor="let form of (myForm | async).controls.elements.controls">
+          <td>
+            <input type="checkbox"
+                [formControl]="form.controls['plottable']"></td>
+          <td>
+            <input type="checkbox"
+                [formControl]="form.controls['discrete']"></td>
           <td>
             <input type="text"
-                class="form-control"></td>
+                class="form-control"
+                [formControl]="form.controls['name']"></td>
           <td>
             <input type="text"
-                class="form-control"></td>
+                class="form-control"
+                [formControl]="form.controls['units']">
+          </td>
           <td>
             <input type="text"
-                class="form-control"></td>
+                class="form-control"
+                [formControl]="form.controls['offset']">
+          </td>
           <td>
             <input type="text"
-                class="form-control"></td>
+                class="form-control"
+                [formControl]="form.controls['scaleFactor']">
+          </td>
           <td>
             <input type="text"
-                class="form-control"></td>
+                class="form-control"
+                placeholder="auto"
+                [formControl]="form.controls['defaultMin']">
+          </td>
           <td>
             <input type="text"
-                class="form-control"></td>
-
+                class="form-control"
+                placeholder="auto"
+                [formControl]="form.controls['defaultMax']">
+          </td>
         </tr>
-        <tr>
-          <td>0</td>
-          <td><input type="checkbox"></td>
-          <td><input type="checkbox"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
-          <td>
-            <input type="text"
-                class="form-control"></td>
 
-        </tr>
       </tbody>
     </table>
     <div class="form-group">
@@ -103,9 +97,10 @@
       </div>
       <div class="pull-right">
         <button class="btn btn-danger">Delete</button>
-        <button class="btn btn-default"><i class="fa fa-lock"></i></button>
+        <button class="btn btn-default">
+            <i class="fa fa-lock"></i>
+        </button>
       </div>
     </div>
     </form>
-
 </div>

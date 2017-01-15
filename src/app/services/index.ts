@@ -1,5 +1,8 @@
 import {NilmService} from './nilm.service';
-import {DbAdminService} from './db-admin.service';
+import {
+  DbAdminService,
+  DbAdminSelectors, } from './db-admin';
 
-export const SERVICE_PROVIDERS = [NilmService, DbAdminService];
-export {NilmService, DbAdminService};
+export const SERVICE_PROVIDERS =
+  [NilmService, DbAdminService, DbAdminSelectors];
+export {NilmService, DbAdminService, DbAdminSelectors};

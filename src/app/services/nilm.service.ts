@@ -9,7 +9,8 @@ import {
   NilmActions,
   DbActions,
   DbFolderActions,
-  DbStreamActions
+  DbStreamActions,
+  DbElementActions
 } from '../store/data';
 
 @Injectable()
@@ -44,6 +45,7 @@ export class NilmService {
         let entities = normalize(json, schema.dbFolder).entities;
         this._receive(DbFolderActions, entities['dbFolders']);
         this._receive(DbStreamActions, entities['dbStreams']);
+        this._receive(DbElementActions, entities['dbElements']);
       });
   }
 

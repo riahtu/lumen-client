@@ -43,8 +43,9 @@
 </div>
 <hr/>
 <!-- db tree -->
-<div class="col-sm-3 dbtree">
-  <Tree [nodes]="nodes$ | async"
+
+<div class="col-sm-3 panel">
+  <Tree [nodes]="dbAdminSelectors.dbNodes$ | async"
       [options]="treeOptions"
       (onActivate)="selectNode($event)">
     <template #treeNodeTemplate
@@ -56,10 +57,13 @@
       </Tree>
 </div>
 <!-- folder/stream edits -->
-<div [ngSwitch]='selectedType$ | async'>
-  <app-edit-stream *ngSwitchCase="'dbstream'"></app-edit-stream>
-  <app-edit-folder *ngSwitchCase="'dbfolder'"
-      [dbFolderId]="selectedId$"></app-edit-folder>
-</div>
+<div [ngSwitch]='dbAdminSelectors.selectedType$ | async'
+    class='panel'>
+  <app-edit-stream *ngSwitchCase="'dbStream'"
+      [dbStream]="dbAdminSelectors.selectedDbStream$"
+      [dbElements]="dbAdminSelectors.selectedDbStreamElements$"></app-edit-stream>
+    <app-edit-folder *ngSwitchCase="'dbFolder'"
+        [dbFolder]="dbAdminSelectors.selectedDbFolder$ "></app-edit-folder>
+      </div>
 
-</div>
+      </div>

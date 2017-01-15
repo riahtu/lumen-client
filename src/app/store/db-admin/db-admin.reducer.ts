@@ -8,14 +8,19 @@ export function dbAdminReducer(
   state: IDbAdminRecord = INITIAL_STATE,
   action: IPayloadAction): IDbAdminRecord {
   switch (action.type) {
-    case DbAdminActions.SELECT_ITEM:
+    case DbAdminActions.SELECT_DB_FOLDER:
       return state.merge({
-        selectedId: action.payload.id,
-        selectedType: action.payload.type
+        selectedDbFolder: action.payload.id,
+        selectedType: 'dbFolder'
+      });
+    case DbAdminActions.SELECT_DB_STREAM:
+      return state.merge({
+        selectedDbStream: action.payload.id,
+        selectedType: 'dbStream'
       });
     case DbAdminActions.SET_DB_ID:
       return state.merge({
-        dbId: action.payload.id
+        selectedDb: action.payload.id
       });
     default:
       return state;

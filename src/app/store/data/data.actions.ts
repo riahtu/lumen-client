@@ -11,3 +11,6 @@ export const DbFolderActions = {
 export const DbStreamActions = {
   'RECEIVE': 'DB_STREAM_RECEIVE'
 };
+export const DbElementActions = {
+  'RECEIVE': 'DB_ELEMENT_RECEIVE'
+};

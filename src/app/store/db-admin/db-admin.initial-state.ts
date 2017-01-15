@@ -7,8 +7,9 @@ import { makeTypedFactory } from 'typed-immutable-record';
 export const DbAdminFactory =
   makeTypedFactory<IDbAdmin, IDbAdminRecord>({
     selectedType: 'unknown',
-    selectedId: 0,
-    dbId: 0
+    selectedDbFolder: null,
+    selectedDbStream: null,
+    selectedDb: null
   });
 
 export const INITIAL_STATE = DbAdminFactory();

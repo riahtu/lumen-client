@@ -65,11 +65,11 @@ export interface IDbStreamRecords {
   [index: string]: IDbStreamRecord;
 }
 
-
+// ---- DbElements ----
 export interface IDbElement {
   id: number;
   name: string;
-  units: number;
+  units: string;
   column: number;
   default_max: number;
   default_min: number;
@@ -80,3 +80,6 @@ export interface IDbElement {
 }
 export interface IDbElementRecord extends
   TypedRecord<IDbElementRecord>, IDbElement { };
+export interface IDbElementRecords {
+  [index: string]: IDbElementRecord;
+}
