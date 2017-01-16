@@ -48,7 +48,7 @@ export class DbAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dbAdminService.setDbId(72);
+    this.dbAdminService.setDbId(73);
     this.nilmService.loadNilms();
   }
 

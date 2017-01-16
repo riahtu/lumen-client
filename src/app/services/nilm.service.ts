@@ -50,10 +50,12 @@ export class NilmService {
   }
 
   private _receive(target: any, data: any) {
-    this.ngRedux.dispatch({
-      type: target.RECEIVE,
-      payload: data
-    });
+    if(!(data===undefined)){
+      this.ngRedux.dispatch({
+        type: target.RECEIVE,
+        payload: data
+      });
+    }
   }
 
 }

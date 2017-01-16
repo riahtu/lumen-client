@@ -13,7 +13,8 @@ import {
   IDbStreamRecords,
   IDbStreamRecord,
   IDbElementRecords,
-  IDbElementRecord} from '../../store';
+  IDbElementRecord
+} from '../../store';
 
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
@@ -62,20 +63,25 @@ export class DbAdminSelectors {
     this.selectedDbFolder$ = this.dbFolders$
       .combineLatest(this.dbFolder_id$)
       .map(([dbFolders, id]) => dbFolders[id])
-      .filter(dbFolder => !(dbFolder === undefined));
+      .filter(dbFolder => !(dbFolder === undefined))
+      .distinctUntilChanged();
 
     // ---- selectedDbStream: IDbStreamRecord ------
     this.selectedDbStream$ = this.dbStreams$
       .combineLatest(this.dbStream_id$)
       .map(([dbStreams, id]) => dbStreams[id])
-      .filter(dbStream => !(dbStream === undefined));
+      .filter(dbStream => !(dbStream === undefined))
+      .distinctUntilChanged();
+
 
     // ---- selectedDbElements: IDbElements[] -----
     this.selectedDbStreamElements$ = this.selectedDbStream$
       .combineLatest(this.dbElements$)
       .map(([stream, elements]) => stream.elements.map(id => elements[id]))
       .filter(elements =>
-        elements.reduce((i, e) => i && !(e === undefined), true));
+        elements.reduce((i, e) => i && !(e === undefined), true))
+      .distinctUntilChanged();
+
 
     // ---- dbNodes: DbTreeNode[] -----
     this.dbNodes$ = this.selectedDb$
