@@ -1,11 +1,27 @@
-<div class="col-sm-8">
+<div class="col-sm-12">
   <div class="lead">Folder Properties</div>
   <dl class="dl-horizontal">
     <dt>Time Range</dt>
-    <dd>2015 Jul 07 22:00 - 2016 Jul 13 01:38 </dd>
+    <dd *ngIf="folder.size_on_disk>0">
+        {{folder.start_time/1e3 | date:"y MMM dd HH:mm:ss"}} &mdash;
+        {{folder.end_time/1e3   | date:"y MMM dd HH:mm:ss"}}
+    </dd>
+    <dd *ngIf="folder.size_on_disk==0"> &mdash;</dd>
     <dt>Size on Disk</dt>
-    <dd>5.94 GiB</dd>
+    <dd>{{folder.size_on_disk | byteSize }}</dd>
   </dl>
+  
+  
+  <alert type="success" *ngFor="let notice of notices" dismissible="true">
+    {{notice}}
+  </alert>
+  <alert type="danger" *ngFor="let error of errors">
+    <strong>Error:</strong> {{error}}
+  </alert>
+  <alert type="warning" *ngFor="let warning of warnings">
+    <strong>Warning:</strong>{{warning}}
+  </alert>
+
   <form [formGroup]="form"  (ngSubmit)="onSubmit(form.value)">
     <div class="form-group" [class.has-error]="!form.controls.name.valid">
       <label class="control-label" for="folder-name">Name</label>
@@ -23,7 +39,8 @@
     </div>
     <div class="form-group ">
       <div class="pull-left ">
-        <button type="submit " class="btn btn-default ">Save</button>
+        <button type="submit " class="btn btn-default " 
+          [disabled]="!form.valid">Save</button>
       </div>
       <div class="pull-right ">
         <button class="btn btn-danger ">Delete</button>

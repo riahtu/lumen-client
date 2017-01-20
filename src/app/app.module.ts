@@ -20,6 +20,8 @@ import {
 import {
   DbAdminPageComponent
 } from './pages';
+import { ByteSizePipe } from './byte-size.pipe';
+import { DurationPipe } from './duration.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import {
     DbAdminPageComponent,
     EditFolderComponent,
     EditStreamComponent,
+    ByteSizePipe,
+    DurationPipe,
   ],
   imports: [
     BrowserModule,

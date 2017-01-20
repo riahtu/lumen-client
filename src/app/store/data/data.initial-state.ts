@@ -27,7 +27,10 @@ export const DbFolderFactory =
     hidden: false,
     subfolders: [],
     streams: [],
-    shallow: true
+    shallow: true,
+    start_time: null,
+    end_time: null,
+    size_on_disk: 0
   });
 
 
@@ -38,15 +41,16 @@ export const DbStreamFactory =
     name: '',
     description: '',
     path: '',
-    start_time: 0,
-    end_time: 0,
+    start_time: null,
+    end_time: null,
     total_rows: 0,
     total_time: 0,
     data_type: '',
     name_abbrev: '',
     delete_locked: true,
     hidden: false,
-    elements: null
+    elements: null,
+    size_on_disk: 0
   });
 
 // ---- DbElements ----

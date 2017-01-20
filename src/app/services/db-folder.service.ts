@@ -11,7 +11,8 @@ import {
 import {
   DbFolderActions,
   DbStreamActions,
-  DbElementActions
+  DbElementActions,
+  IStatusMessage,
 } from '../store/data';
 
 @Injectable()
@@ -34,8 +35,8 @@ export class DbFolderService {
   }
 
   public updateFolder(dbFolder: IDbFolder,
-    onError = error => console.log(error)) {
-    console.log(JSON.stringify(dbFolder));
+    onError = error => console.log(error),
+    onSuccess) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     this.http
@@ -43,8 +44,8 @@ export class DbFolderService {
       JSON.stringify(dbFolder),options)
       .map(resp => resp.json())
       .toPromise()
-      .then(json => this._dispatch(json),
-      json => onError(json));
+      .then(json => {this._dispatch(json); onSuccess()},
+      error => onError(<IStatusMessage>error.json()));
 
   }
 

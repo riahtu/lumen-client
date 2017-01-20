@@ -1,5 +1,7 @@
-import { Component, Input, OnInit,
-  trigger, state, animate, transition, style } from '@angular/core';
+import {
+  Component, Input, OnInit,
+  trigger, state, animate, transition, style
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   IDbStream,
@@ -24,29 +26,42 @@ import {
   styleUrls: ['./edit-stream.component.css']
 })
 export class EditStreamComponent implements OnInit {
-  @Input() dbStream: Observable<IDbStream>;
-  @Input() dbElements: Observable<IDbElement[]>;
 
-  public myForm: Observable<any>;
+  public form: FormGroup;
+  public stream: IDbStream;
+  public elements: IDbElement[];
   public showElements = true;
+
+  @Input()
+  public set dbStream(val: IDbStream) {
+    this.stream = val;
+    this.buildForm(this.stream, this.elements);
+  }
+  @Input()
+  public set dbElements(val: IDbElement[]) {
+    this.elements = val
+    this.buildForm(this.stream, this.elements)
+  }
+
   constructor(
     private fb: FormBuilder
   ) { }
 
-  ngOnInit() {
-    this.myForm = this.dbStream
-      .combineLatest(this.dbElements)
-      .map(([dbStream, dbElements]) =>
-        this.fb.group({
-          name: [dbStream.name],
-          description: [dbStream.description],
-          elements: this.fb.array(this._buildElementGroups(dbElements))
-        })).do(x => console.log(x));
-  }
+  ngOnInit() {}
 
   public toggleElements() {
-    console.log('here!');
     this.showElements = !this.showElements;
+  }
+
+  buildForm(stream: IDbStream, elements: IDbElement[]) {
+    if (stream == null || elements == null) {
+      return;
+    }
+    this.form = this.fb.group({
+      name: [stream.name],
+      description: [stream.description],
+      elements: this.fb.array(this._buildElementGroups(elements))
+    });
   }
 
   private _buildElementGroups(dbElements: IDbElement[]) {

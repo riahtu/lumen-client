@@ -57,8 +57,8 @@
   <!-- folder/stream edits -->
   <div [ngSwitch]='dbAdminSelectors.selectedType$ | async' class='panel'>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
-      [dbStream]="dbAdminSelectors.selectedDbStream$" 
-      [dbElements]="dbAdminSelectors.selectedDbStreamElements$"></app-edit-stream>
+      [dbStream]="dbAdminSelectors.selectedDbStream$ | async" 
+      [dbElements]="dbAdminSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 
       [dbFolder]="dbAdminSelectors.selectedDbFolder$ | async "></app-edit-folder>
   </div>

@@ -35,6 +35,9 @@ export interface IDbFolder {
   hidden: boolean;
   subfolders: Array<number>;
   streams: Array<number>;
+  start_time: number;
+  end_time: number;
+  size_on_disk: number;
   shallow: boolean; // true if contents have not been retrieved from server
 }
 export interface IDbFolderRecord extends
@@ -51,6 +54,7 @@ export interface IDbStream {
   path: string;
   start_time: number;
   end_time: number;
+  size_on_disk: number;
   total_rows: number;
   total_time: number;
   data_type: string;
@@ -82,4 +86,10 @@ export interface IDbElementRecord extends
   TypedRecord<IDbElementRecord>, IDbElement { };
 export interface IDbElementRecords {
   [index: string]: IDbElementRecord;
+}
+
+// ---- API Structures ----
+export interface IStatusMessage {
+  errors: string[];
+  warnings: string[];
 }
