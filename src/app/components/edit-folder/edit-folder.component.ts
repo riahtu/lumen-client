@@ -3,10 +3,10 @@ import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
 import { 
   IDbFolder,
-  IStatusMessage 
+  IStatusMessages
 } from '../../store';
 
-import { DbFolderService } from '../../services';
+import { DbAdminService } from '../../services';
 
 import {
   FormBuilder,
@@ -20,13 +20,12 @@ import {
   styleUrls: ['./edit-folder.component.css']
 })
 export class EditFolderComponent implements OnInit {
+
+  @Input() messages: IStatusMessages
+  
+
   @Input()
   public set dbFolder(val: IDbFolder) {
-    if(!(this.folder === undefined)){
-      if(this.folder.id != val.id){
-        this.clearMessages();
-      }
-    }
     this.buildForm(val);
     this.folder = val;
   }
@@ -39,22 +38,14 @@ export class EditFolderComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dbFolderService: DbFolderService
+    private dbAdminService: DbAdminService
   ) { }
 
   ngOnInit() {}
 
   onSubmit(formValues: IDbFolder) {
-    this.clearMessages();
     formValues.id = this.folder.id;
-    this.dbFolderService.updateFolder(formValues,
-      error => {
-        this.errors = (<IStatusMessage>error).errors;
-        this.warnings = (<IStatusMessage>error).warnings;
-      },
-      ok => {
-        this.notices = ["Folder updated"];
-    });
+    this.dbAdminService.updateDbFolder(formValues);
   }
 
   buildForm(folder: IDbFolder) {
@@ -63,11 +54,5 @@ export class EditFolderComponent implements OnInit {
       description: [folder.description],
       hidden: [folder.hidden]
     });
-  }
-
-  clearMessages(){
-    this.errors = [];
-    this.warnings = [];
-    this.notices = [];
   }
 }

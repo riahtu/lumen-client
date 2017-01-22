@@ -1,5 +1,18 @@
 <div class="row" class="page-body">
   <h1 class="page-title">[Test Nilm] Administration</h1>
+
+  <div *ngFor="let messages of [(dbAdminSelectors.pageMessages$ | async)]">
+    <alert type="success" dismissible="true"
+      *ngFor="let notice of messages.notices">
+      {{notice}}
+    </alert>
+    <alert type="danger" *ngFor="let error of messages.errors">
+      <strong>Error:</strong> {{error}}
+    </alert>
+    <alert type="warning" *ngFor="let warning of messages.warnings">
+      <strong>Warning:</strong>{{warning}}
+    </alert>
+  </div>
   <!-- db info -->
   <!--<div class="row ">
     <div class="col-sm-6">
@@ -60,6 +73,7 @@
       [dbStream]="dbAdminSelectors.selectedDbStream$ | async" 
       [dbElements]="dbAdminSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 
+      [messages] = "dbAdminSelectors.dbFolderMessages$ | async"
       [dbFolder]="dbAdminSelectors.selectedDbFolder$ | async "></app-edit-folder>
   </div>
 

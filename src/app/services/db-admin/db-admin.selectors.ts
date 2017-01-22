@@ -13,7 +13,8 @@ import {
   IDbStreamRecords,
   IDbStreamRecord,
   IDbElementRecords,
-  IDbElementRecord
+  IDbElementRecord,
+  IStatusMessages
 } from '../../store';
 
 import { Observable } from 'rxjs';
@@ -42,6 +43,8 @@ export class DbAdminSelectors {
   @select(['dbAdmin', 'selectedDb']) db_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbStream']) dbStream_id$: Observable<number>;
+  @select(['dbAdmin', 'dbFolderMessages']) dbFolderMessages$: Observable<IStatusMessages>;
+  @select(['dbAdmin', 'pageMessages']) pageMessages$: Observable<IStatusMessages>;
 
   public dbNodes$: Observable<DbTreeNode[]>;
   public selectedDb$: Observable<IDbRecord>;
@@ -82,11 +85,12 @@ export class DbAdminSelectors {
         elements.reduce((i, e) => i && !(e === undefined), true))
       .distinctUntilChanged();
 
-
     // ---- dbNodes: DbTreeNode[] -----
     this.dbNodes$ = this.selectedDb$
       .combineLatest(this.data$)
       .map(([db, data]) => this._mapRoot(data, db.contents));
+
+    this.dbFolderMessages$.do(x => console.log(x))
   }
 
   ///----------- Tree Helper Functions -----------------------

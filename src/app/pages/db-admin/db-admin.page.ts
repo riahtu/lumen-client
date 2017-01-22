@@ -30,7 +30,7 @@ export class DbAdminPageComponent implements OnInit {
   };
 
   public getChildren(node: TreeNode) {
-    this.nilmService.loadFolder(node.data.id);
+   this.dbAdminService.loadDbFolder(node.data.id);
   }
 
   public selectNode(event) {
@@ -49,7 +49,7 @@ export class DbAdminPageComponent implements OnInit {
 
   ngOnInit() {
     this.dbAdminService.setDbId(87);
-    this.nilmService.loadNilms();
+    this.dbAdminService.loadNilms();
   }
 
 }

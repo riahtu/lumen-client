@@ -87,9 +87,3 @@ export interface IDbElementRecord extends
 export interface IDbElementRecords {
   [index: string]: IDbElementRecord;
 }
-
-// ---- API Structures ----
-export interface IStatusMessage {
-  errors: string[];
-  warnings: string[];
-}

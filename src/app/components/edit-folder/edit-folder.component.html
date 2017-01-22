@@ -12,13 +12,14 @@
   </dl>
   
   
-  <alert type="success" *ngFor="let notice of notices" dismissible="true">
+  <alert type="success" dismissible="true"
+     *ngFor="let notice of messages.notices">
     {{notice}}
   </alert>
-  <alert type="danger" *ngFor="let error of errors">
+  <alert type="danger" *ngFor="let error of messages.errors">
     <strong>Error:</strong> {{error}}
   </alert>
-  <alert type="warning" *ngFor="let warning of warnings">
+  <alert type="warning" *ngFor="let warning of messages.warnings">
     <strong>Warning:</strong>{{warning}}
   </alert>
 
