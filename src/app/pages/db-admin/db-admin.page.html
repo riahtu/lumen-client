@@ -1,75 +1,40 @@
 <div class="row" class="page-body">
   <h1 class="page-title">[Test Nilm] Administration</h1>
 
-  <div *ngFor="let messages of [(dbAdminSelectors.pageMessages$ | async)]">
-    <alert type="success" dismissible="true"
-      *ngFor="let notice of messages.notices">
-      {{notice}}
-    </alert>
-    <alert type="danger" *ngFor="let error of messages.errors">
-      <strong>Error:</strong> {{error}}
-    </alert>
-    <alert type="warning" *ngFor="let warning of messages.warnings">
-      <strong>Warning:</strong>{{warning}}
-    </alert>
-  </div>
-  <!-- db info -->
-  <!--<div class="row ">
-    <div class="col-sm-6">
-
-      <dl class="dl-horizontal">
-        <dt>Version</dt>
-        <dd>--</dd>
-        <dt>URL</dt>
-        <dd>--</dd>
-        <dt></dt>
-        <dd>
-          <button type=button
-              class="btn btn-default refresh">
-            <i class="fa fa-refresh"
-                aria-hidden="true"></i> Refresh
-              </button>
-        </dd>
-      </dl>
-
-    </div>
-    <div class="col-sm-5">
-      <span class="lead">Disk Usage</span><br/> NilmDB: <span class="text-warning">0 GiB</span> | Other:
-      <span class="text-info">0 GiB</span>
-      <progressbar value="55"
-          type="success"></progressbar>
-        <span class="lead">Plot Resolution: 0 pts</span>
-        <div class="btn-group"
-            role="group">
-          <button type="button"
-              class="btn btn-default">
-            <i class="fa fa-plus"
-                aria-hidden="true"></i>
-              </button>
-              <button type="button"
-                  class="btn btn-default">
-                <i class="fa fa-minus"
-                    aria-hidden="true"></i>
-                  </button>
-    </div>
-  </div>
-</div>
-<hr/>
--->
+  <app-messages *ngFor="let messages of [(dbAdminSelectors.pageMessages$ | async)]"
+    [contents]="messages"></app-messages>
+  
   <!-- db tree -->
 
   <div class="col-sm-3 panel">
-    <Tree [nodes]="dbAdminSelectors.dbNodes$ | async" [options]="treeOptions" (onActivate)="selectNode($event)">
+    <Tree [nodes]="dbAdminSelectors.dbNodes$ | async" 
+      [options]="treeOptions" 
+      (onActivate)="selectNode($event)">
       <template #treeNodeTemplate let-node="node">
-        <span class="{{node.data.type}}">
-            {{ node.data.name }}
+        <span [ngSwitch]="node.data.type">
+          <span *ngSwitchCase="'root'">
+            <i class="fa fa-database"></i>
           </span>
+          <span *ngSwitchCase="'dbFolder'">
+            <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
+            <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+          </span>
+          <span *ngSwitchCase="'dbStream'">
+            <i class="fa fa-file-text-o"></i>
+          </span>
+        </span>
+        {{ node.data.name }}
       </template>
     </Tree>
   </div>
   <!-- folder/stream edits -->
   <div [ngSwitch]='dbAdminSelectors.selectedType$ | async' class='panel'>
+    <app-edit-db *ngSwitchCase="'root'"
+      [messages] = "dbAdminSelectors.dbMessages$ | async"
+      [db] = "dbAdminSelectors.selectedDb$ | async"
+      [rootFolder] = "dbAdminSelectors.selectedDbRootFolder$ | async"></app-edit-db>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
+      [messages] = "dbAdminSelectors.dbStreamMessages$ | async"
       [dbStream]="dbAdminSelectors.selectedDbStream$ | async" 
       [dbElements]="dbAdminSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 

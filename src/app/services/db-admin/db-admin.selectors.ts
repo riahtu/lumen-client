@@ -25,6 +25,7 @@ export interface DbTreeNode {
   id: number;
   name: string;
   type: string;
+  isExpanded?: boolean;
   children: DbTreeNode[];
   hasChildren: boolean;
 };
@@ -43,14 +44,18 @@ export class DbAdminSelectors {
   @select(['dbAdmin', 'selectedDb']) db_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbStream']) dbStream_id$: Observable<number>;
+  @select(['dbAdmin', 'dbMessages']) dbMessages$: Observable<IStatusMessages>;
   @select(['dbAdmin', 'dbFolderMessages']) dbFolderMessages$: Observable<IStatusMessages>;
+  @select(['dbAdmin', 'dbStreamMessages']) dbStreamMessages$: Observable<IStatusMessages>;
   @select(['dbAdmin', 'pageMessages']) pageMessages$: Observable<IStatusMessages>;
 
   public dbNodes$: Observable<DbTreeNode[]>;
   public selectedDb$: Observable<IDbRecord>;
+  public selectedDbRootFolder$: Observable<IDbFolderRecord>;
   public selectedDbFolder$: Observable<IDbFolderRecord>;
   public selectedDbStream$: Observable<IDbStreamRecord>;
   public selectedDbStreamElements$: Observable<IDbElementRecord[]>;
+
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -60,7 +65,14 @@ export class DbAdminSelectors {
     this.selectedDb$ = this.dbs$
       .combineLatest(this.db_id$)
       .map(([dbs, id]) => dbs[id])
-      .filter(db => !(db === undefined));
+      .filter(db => !(db === undefined || db == null))
+
+
+    // ---- selectedDb: IDbRecord ------
+    this.selectedDbRootFolder$ = this.selectedDb$
+      .combineLatest(this.dbFolders$)
+      .map(([db, folders]) => folders[db.contents])
+      .filter(folder => !(folder === undefined));
 
     // ---- selectedDbFolder: IDbFolderRecord ------
     this.selectedDbFolder$ = this.dbFolders$
@@ -90,7 +102,6 @@ export class DbAdminSelectors {
       .combineLatest(this.data$)
       .map(([db, data]) => this._mapRoot(data, db.contents));
 
-    this.dbFolderMessages$.do(x => console.log(x))
   }
 
   ///----------- Tree Helper Functions -----------------------
@@ -100,8 +111,11 @@ export class DbAdminSelectors {
     if (!(db_folder_id in data.dbFolders)) {
       return [];
     }
-    return this._mapFolder(data, db_folder_id).children;
-
+    let root = this._mapFolder(data, db_folder_id);
+    root.type='root';
+    root.name='database';
+    root.isExpanded = true;
+    return [root];
   }
   private _mapFolder(data: IDataState, db_folder_id: number): DbTreeNode {
     let dbFolder = data.dbFolders[db_folder_id];

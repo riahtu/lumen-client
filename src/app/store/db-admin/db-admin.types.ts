@@ -16,7 +16,9 @@ export interface IDbAdmin {
   selectedDbFolder: number;
   selectedDbStream: number;
   selectedDb: number;
+  dbMessages: IStatusMessagesRecord;
   dbFolderMessages: IStatusMessagesRecord;
+  dbStreamMessages: IStatusMessagesRecord;
   pageMessages: IStatusMessagesRecord;
 }
 

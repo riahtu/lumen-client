@@ -1,0 +1,44 @@
+<div class="col-sm-12" *ngIf="rootFolder!=null && my_db!=null">
+  <div class="lead">Database Properties</div>
+  <dl class="dl-horizontal">
+    <dt>Time Range</dt>
+    <dd *ngIf="rootFolder && rootFolder.size_on_disk>0">
+        {{rootFolder.start_time/1e3 | date:"y MMM dd HH:mm:ss"}} &mdash;
+        {{rootFolder.end_time/1e3   | date:"y MMM dd HH:mm:ss"}}
+    </dd>
+    <dd *ngIf="rootFolder==null || rootFolder.size_on_disk==0"> &mdash;</dd>
+    <dt>Size on Disk</dt>
+    <dd>{{rootFolder.size_on_disk | byteSize }}</dd>
+    <dt>NilmDB Version</dt>
+    <dd>{{my_db.version}}</dd>
+  </dl>
+  
+  <app-messages [contents]="messages"></app-messages>
+
+  <form *ngIf="form!=null" [formGroup]="form">
+    <div class="form-group" [class.has-error]="!form.controls.url.valid">
+      <label class="control-label" for="folder-name">URL</label>
+      <input class="form-control" id="folder-name" placeholder="http://mynilm.com" type="text" [formControl]="form.controls.url">
+    </div>
+    <div class="form-group" 
+      [class.has-error]="!form.controls.max_points_per_plot.valid">
+      <label class="control-label" for="folder-description">Plot Resolution</label>
+      <input class="form-control" id="folder-description" 
+        placeholder="max points per plot" type="number" 
+        [formControl]="form.controls.max_points_per_plot">
+    </div>
+    <div class="form-group ">
+      <div class="pull-left ">
+        <button type="submit" (click) = "onSubmit(form.value)" class="btn btn-default " 
+          [disabled]="!form.valid">Save</button>
+      </div>
+      <div class="pull-right ">
+        <button class="btn btn-default" (click)="refreshDb()">
+          <i class="fa fa-refresh" aria-hidden="true"></i>
+          Refresh
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+  

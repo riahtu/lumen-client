@@ -1,5 +1,6 @@
 import { NilmService } from './nilm.service';
 import { DbFolderService } from './db-folder.service';
+import { DbService } from './db.service';
 import {
   IStatusMessages,
 } from '../../store/db-admin';
@@ -26,5 +27,6 @@ export function parseErrors(error): IStatusMessages {
 
 export {
   NilmService,
+  DbService,
   DbFolderService
 }

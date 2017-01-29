@@ -1,0 +1,10 @@
+<alert type="success" dismissible="true"
+     *ngFor="let notice of contents.notices">
+    {{notice}}
+  </alert>
+  <alert type="danger" *ngFor="let error of contents.errors">
+    <strong>Error:</strong> {{error}}
+  </alert>
+  <alert type="warning" *ngFor="let warning of contents.warnings">
+    <strong>Warning: </strong>{{warning}}
+</alert>

@@ -10,10 +10,22 @@ export function dbAdminReducer(
   state: IDbAdminRecord = INITIAL_STATE,
   action: IPayloadAction): IDbAdminRecord {
   switch (action.type) {
+    case DbAdminActions.SELECT_DB_ROOT:
+      return state.merge({
+        selectedType: 'root'
+      });
     case DbAdminActions.SELECT_DB_FOLDER:
       return state.merge({
         selectedDbFolder: action.payload.id,
         selectedType: 'dbFolder'
+      });
+    case DbAdminActions.SET_DB_STREAM_MESSAGES:
+      return state.merge({
+        dbStreamMessages: StatusMessagesFactory(action.payload)
+      });
+    case DbAdminActions.CLEAR_DB_STREAM_MESSAGES:
+      return state.merge({
+        dbStreamMessages: StatusMessagesFactory()
       });
     case DbAdminActions.SET_DB_FOLDER_MESSAGES:
       return state.merge({
@@ -30,6 +42,14 @@ export function dbAdminReducer(
     case DbAdminActions.CLEAR_PAGE_MESSAGES:
       return state.merge({
         pageMessages: StatusMessagesFactory()
+      });
+    case DbAdminActions.SET_DB_MESSAGES:
+      return state.merge({
+        dbMessages: StatusMessagesFactory(action.payload)
+      });
+    case DbAdminActions.CLEAR_DB_MESSAGES:
+      return state.merge({
+        dbMessages: StatusMessagesFactory()
       });
     case DbAdminActions.SELECT_DB_STREAM:
       return state.merge({

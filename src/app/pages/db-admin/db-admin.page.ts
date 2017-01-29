@@ -36,6 +36,9 @@ export class DbAdminPageComponent implements OnInit {
   public selectNode(event) {
     let node: TreeNode = event.node;
     switch (node.data.type) {
+      case 'root':
+        this.dbAdminService.selectDbRoot();
+        return;
       case 'dbFolder':
         this.dbAdminService.selectDbFolder(node.data.id);
         return;
@@ -48,8 +51,9 @@ export class DbAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dbAdminService.setDbId(87);
+    this.dbAdminService.setDbId(106);
     this.dbAdminService.loadNilms();
+    this.dbAdminService.selectDbRoot();
   }
 
 }

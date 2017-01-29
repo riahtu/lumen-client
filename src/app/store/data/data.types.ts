@@ -18,6 +18,11 @@ export interface INilmRecords {
 export interface IDb {
   id: number;
   url: string;
+  version: string;
+  size_total: number;
+  size_db: number;
+  size_other: number;
+  max_points_per_plot: number;
   contents: number;
 }
 export interface IDbRecord extends

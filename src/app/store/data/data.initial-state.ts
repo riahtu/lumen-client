@@ -14,6 +14,11 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
 export const DbFactory = makeTypedFactory<data.IDb, data.IDbRecord>({
   id: null,
   url: '',
+  version: 'unknown',
+  size_total: 0,
+  size_db: 0,
+  size_other: 0,
+  max_points_per_plot: 0,
   contents: null
 });
 

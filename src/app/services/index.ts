@@ -6,9 +6,10 @@ import {
 
 import {
   NilmService,
+  DbService,
   DbFolderService
 } from './api';
 
 export const SERVICE_PROVIDERS =
-  [NilmService, DbFolderService, DbAdminService, DbAdminSelectors,];
+  [NilmService, DbService, DbFolderService, DbAdminService, DbAdminSelectors,];
 export { NilmService, DbFolderService, DbAdminService, DbAdminSelectors };

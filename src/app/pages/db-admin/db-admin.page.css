@@ -59,18 +59,6 @@
   padding-bottom: 20px;
 }
 
-.dbFolder {
-  background-image: url(/assets/images/folder.png);
-  background-repeat: no-repeat;
-  background-color: transparent;
-  padding-left: 20px;
-  margin-left: -4px;
-}
-
-.dbStream {
-  background-image: url(/assets/images/stream.png);
-  background-repeat: no-repeat;
-  background-color: transparent;
-  padding-left: 20px;
-  margin-left: -4px;
+.folder{
+  color: tan;
 }

@@ -3,10 +3,17 @@ import {
   trigger, state, animate, transition, style
 } from '@angular/core';
 import { Observable } from 'rxjs';
+/*https://github.com/yuyang041060120/ng2-validation*/
+import { CustomValidators } from 'ng2-validation';
+
 import {
   IDbStream,
-  IDbElement
+  IDbElement,
+  IStatusMessages
 } from '../../store';
+
+import { DbAdminService } from '../../services';
+
 import {
   FormBuilder,
   FormGroup,
@@ -27,10 +34,7 @@ import {
 })
 export class EditStreamComponent implements OnInit {
 
-  public form: FormGroup;
-  public stream: IDbStream;
-  public elements: IDbElement[];
-  public showElements = true;
+  @Input() messages: IStatusMessages
 
   @Input()
   public set dbStream(val: IDbStream) {
@@ -43,16 +47,28 @@ export class EditStreamComponent implements OnInit {
     this.buildForm(this.stream, this.elements)
   }
 
+  public form: FormGroup;
+  public stream: IDbStream;
+  public elements: IDbElement[];
+  public showElements = true;
+
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dbAdminService: DbAdminService
   ) { }
 
   ngOnInit() {}
+
+  onSubmit(streamValues){
+    //console.log(streamValues);
+    this.dbAdminService.updateDbStream(streamValues);
+  }
 
   public toggleElements() {
     this.showElements = !this.showElements;
   }
 
+  // --- note: form attributes correspond to API parameters ---
   buildForm(stream: IDbStream, elements: IDbElement[]) {
     if (stream == null || elements == null) {
       return;
@@ -60,21 +76,23 @@ export class EditStreamComponent implements OnInit {
     this.form = this.fb.group({
       name: [stream.name],
       description: [stream.description],
-      elements: this.fb.array(this._buildElementGroups(elements))
+      id: [stream.id],
+      db_elements_attributes: this.fb.array(this._buildElementGroups(elements))
     });
   }
 
   private _buildElementGroups(dbElements: IDbElement[]) {
     return dbElements.map(element =>
       this.fb.group({
+        id: [element.id],
         plottable: [element.plottable],
         discrete: [element.discrete],
         name: [element.name, Validators.required],
         units: [element.units],
-        offset: [element.offset],
-        scaleFactor: [element.scale_factor],
-        defaultMin: [element.default_min],
-        defaultMax: [element.default_max]
+        offset: [element.offset, [Validators.required, CustomValidators.number]],
+        scale_factor: [element.scale_factor, [Validators.required, CustomValidators.number]],
+        default_min: [element.default_min, CustomValidators.number],
+        default_max: [element.default_max, CustomValidators.number]
       }));
   }
 

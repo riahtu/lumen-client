@@ -12,16 +12,7 @@
   </dl>
   
   
-  <alert type="success" dismissible="true"
-     *ngFor="let notice of messages.notices">
-    {{notice}}
-  </alert>
-  <alert type="danger" *ngFor="let error of messages.errors">
-    <strong>Error:</strong> {{error}}
-  </alert>
-  <alert type="warning" *ngFor="let warning of messages.warnings">
-    <strong>Warning:</strong>{{warning}}
-  </alert>
+  <app-messages [contents]="messages"></app-messages>
 
   <form [formGroup]="form"  (ngSubmit)="onSubmit(form.value)">
     <div class="form-group" [class.has-error]="!form.controls.name.valid">
@@ -30,7 +21,9 @@
     </div>
     <div class="form-group">
       <label for="folder-description">Description</label>
-      <input class="form-control" id="folder-description" placeholder="Name" type="text" [formControl]="form.controls['description']">
+      <input class="form-control" id="folder-description" 
+        placeholder="Description" type="text" 
+        [formControl]="form.controls['description']">
     </div>
     <div class=" checkbox ">
       <label>

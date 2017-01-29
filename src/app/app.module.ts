@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { NgReduxModule, NgRedux} from 'ng2-redux';
+import { NgReduxModule, NgRedux } from 'ng2-redux';
 
 
 import { TreeModule } from 'angular2-tree-component';
@@ -12,10 +12,14 @@ import { SERVICE_PROVIDERS } from './services';
 
 import {
   AlertModule,
-  ProgressbarModule } from 'ng2-bootstrap';
+  ProgressbarModule
+} from 'ng2-bootstrap';
 import {
+  EditDbComponent,
   EditFolderComponent,
-  EditStreamComponent } from './components';
+  EditStreamComponent,
+  MessagesComponent
+} from './components';
 
 import {
   DbAdminPageComponent
@@ -31,6 +35,8 @@ import { DurationPipe } from './duration.pipe';
     EditStreamComponent,
     ByteSizePipe,
     DurationPipe,
+    MessagesComponent,
+    EditDbComponent,
   ],
   imports: [
     BrowserModule,

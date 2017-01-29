@@ -21,7 +21,9 @@ export const DbAdminFactory =
     selectedDbFolder: null,
     selectedDbStream: null,
     selectedDb: null,
+    dbMessages: StatusMessagesFactory(),
     dbFolderMessages: StatusMessagesFactory(),
+    dbStreamMessages: StatusMessagesFactory(),
     pageMessages: StatusMessagesFactory(),
   });
 
