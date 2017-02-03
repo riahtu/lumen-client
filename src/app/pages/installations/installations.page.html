@@ -1,4 +1,7 @@
-<h1 style="text-align: center">Installations</h1>
+<h1>Installations</h1>
+<app-messages *ngFor="let messages of [(messages$ | async)]"
+    [contents]="messages"></app-messages>
+
 <div class="row">
   <div class="col-md-3">
     <img src="assets/images/robot_world_stand_250x300.jpg">
@@ -15,7 +18,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let nilm of (installationsSelectors.nilms$ | async)">
+        <tr *ngFor="let nilm of (nilms$ | async | toArray)">
           <!-- Name / Description -->
           <td><strong>{{nilm.name}}</strong><br>
             <span class="text-muted">{{nilm.description}}</span>
@@ -26,7 +29,8 @@
           <td>TODO</td>
           <!-- Admin actions -->
           <td>
-            <button class="btn btn-primary">Manage</button>
+            <a class="btn btn-primary" [routerLink]="[nilm.id]">
+              Manage</a>
           </td>
         </tr>
       </tbody>

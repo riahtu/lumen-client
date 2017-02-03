@@ -1,8 +1,8 @@
 import { ModuleWithProviders } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router';
 import { 
-  DbAdminPageComponent,
   InstallationsPageComponent,
+  InstallationPageComponent,
   HomePageComponent 
 } from './pages';
 
@@ -19,6 +19,10 @@ const routes: Routes = [
   { 
     path: 'installations',
     component: InstallationsPageComponent
+  },
+  {
+    path: 'installations/:id', 
+    component: InstallationPageComponent
   }
 ];
 

@@ -3,8 +3,12 @@ import { NgRedux } from 'ng2-redux';
 import { TreeNode } from 'angular2-tree-component';
 import {
   IAppState,
-  DbAdminActions,
 } from '../../store';
+
+import {
+  DbAdminActions
+} from '../../store/db-admin';
+
 import {
   IStatusMessages,
 } from '../../store';
@@ -119,6 +123,19 @@ export class DbAdminService {
 
   // ---setDbId: work on specified Db -----
   public setDbId(id: number) {
+    // if we don't have this database, retrieve it
+    let dbIds = this.ngRedux.getState().data.dbs;
+    if(!(id in dbIds)){
+      this.nilmService.loadNilm(id)
+        .subscribe(success => {},
+        error => {
+          this.ngRedux.dispatch({
+            type: DbAdminActions.SET_PAGE_MESSAGES,
+            payload: parseErrors(error)
+          })
+        })
+    }
+    // set the new db id
     this.ngRedux.dispatch({
       type: DbAdminActions.SET_DB_ID,
       payload: {

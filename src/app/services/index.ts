@@ -5,11 +5,6 @@ import {
 } from './db-admin';
 
 import {
-  InstallationsService,
-  InstallationsSelectors
-} from './installations'
-
-import {
   NilmService,
   DbService,
   DbFolderService,
@@ -18,8 +13,6 @@ import {
 
 export const SERVICE_PROVIDERS =
   [NilmService, DbService, DbFolderService, 
-   DbStreamService, DbAdminService, DbAdminSelectors,
-   InstallationsService, InstallationsSelectors];
+   DbStreamService, DbAdminService, DbAdminSelectors];
 export { NilmService, DbFolderService, DbStreamService, 
-  DbAdminService, DbAdminSelectors,
-  InstallationsService, InstallationsSelectors };
+  DbAdminService, DbAdminSelectors};

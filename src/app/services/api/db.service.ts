@@ -23,6 +23,14 @@ export class DbService {
     private ngRedux: NgRedux<IAppState>
   ) { }
 
+
+  public loadDb(dbId): Observable<any> {
+    return this.http
+      .get(`http://localhost:3000/dbs/${dbId}.json`, {})
+      .map(resp => resp.json())
+      .do(json => this._dispatch(json));
+  }
+
   public updateDb(db: IDb): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });

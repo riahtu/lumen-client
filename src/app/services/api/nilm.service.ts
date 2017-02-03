@@ -28,11 +28,18 @@ export class NilmService {
     return this.http
       .get('http://localhost:3000/nilms.json', {})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json))
+      .do(json => this._dispatch(json, schema.nilms))
   }
 
-  private _dispatch(json) {
-    let entities = normalize(json, schema.nilms).entities;
+  public loadNilm(nilmId): Observable<any> {
+    return this.http
+      .get(`http://localhost:3000/nilms/${nilmId}.json`, {})
+      .map(resp => resp.json())
+      .do(json => this._dispatch(json, schema.nilm))
+  }
+
+  private _dispatch(json, resp_schema) {
+    let entities = normalize(json, resp_schema).entities;
     this._receive(NilmActions, entities['nilms']);
     this._receive(DbActions, entities['dbs']);
     this._receive(DbFolderActions, entities['dbFolders']);

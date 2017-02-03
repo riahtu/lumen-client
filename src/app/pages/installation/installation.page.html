@@ -1,0 +1,10 @@
+
+
+<h1 class="page-title"> <b>[Name]</b> Administration</h1>
+<app-messages *ngFor="let messages of [(messages$ | async)]"
+    [contents]="messages"></app-messages>
+  
+<tabset>
+  <tab heading='Database'><app-db-admin [dbId]="dbId$"></app-db-admin></tab>
+  <tab heading='Permissions'>TODO</tab>
+</tabset>

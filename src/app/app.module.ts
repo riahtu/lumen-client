@@ -13,7 +13,8 @@ import { SERVICE_PROVIDERS } from './services';
 
 import {
   AlertModule,
-  ProgressbarModule
+  ProgressbarModule,
+  TabsModule
 } from 'ng2-bootstrap';
 import {
   EditDbComponent,
@@ -25,10 +26,12 @@ import {
 import {
   DbAdminPageComponent,
   HomePageComponent,
-  InstallationsPageComponent
+  InstallationsPageComponent,
+  InstallationPageComponent
 } from './pages';
 import { ByteSizePipe } from './byte-size.pipe';
 import { DurationPipe } from './duration.pipe';
+import { ToArrayPipe } from './to-array.pipe';
 
 
 @NgModule({
@@ -43,6 +46,8 @@ import { DurationPipe } from './duration.pipe';
     EditDbComponent,
     HomePageComponent,
     InstallationsPageComponent,
+    InstallationPageComponent,
+    ToArrayPipe,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +57,7 @@ import { DurationPipe } from './duration.pipe';
     TreeModule,
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
+    TabsModule.forRoot(),
     appRoutes
   ],
   providers: [

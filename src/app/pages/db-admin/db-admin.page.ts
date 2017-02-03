@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import {
   NilmService,
@@ -17,12 +17,14 @@ import { Observable } from 'rxjs';
 })
 export class DbAdminPageComponent implements OnInit {
 
+  @Input() dbId: Observable<number>
+
   public treeOptions = {};
 
   constructor(
     private nilmService: NilmService,
     private dbAdminService: DbAdminService,
-    public dbAdminSelectors: DbAdminSelectors
+    public dbAdminSelectors: DbAdminSelectors,
   ) {
     this.treeOptions = {
       getChildren: this.getChildren.bind(this)
@@ -51,8 +53,10 @@ export class DbAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.dbAdminService.setDbId(106);
-    this.dbAdminService.selectDbRoot();
+    this.dbId.subscribe(id => {
+      this.dbAdminService.setDbId(id);
+      this.dbAdminService.selectDbRoot();
+    })
   }
 
 }
