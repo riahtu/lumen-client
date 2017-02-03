@@ -10,9 +10,6 @@
     <dt>Size on Disk</dt>
     <dd>{{folder.size_on_disk | byteSize }}</dd>
   </dl>
-  
-  
-  <app-messages [contents]="messages"></app-messages>
 
   <form [formGroup]="form"  (ngSubmit)="onSubmit(form.value)">
     <div class="form-group" [class.has-error]="!form.controls.name.valid">

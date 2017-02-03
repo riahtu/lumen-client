@@ -1,5 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { IStatusMessages } from '../../store';
+import { Component, OnInit } from '@angular/core';
+import { NgRedux } from 'ng2-redux';
+
+import {
+  IAppState,
+  IStatusMessages
+} from '../../store';
+
+import { Observable } from 'rxjs';
+import { select } from 'ng2-redux';
 
 @Component({
   selector: 'app-messages',
@@ -7,8 +15,12 @@ import { IStatusMessages } from '../../store';
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit {
-  @Input() contents: IStatusMessages;
-  constructor() { }
+  
+  @select(['page', 'messages']) messages$: Observable<IStatusMessages>;
+
+  constructor(
+    private ngRedux: NgRedux<IAppState>
+  ) { }
 
   ngOnInit() {
   }

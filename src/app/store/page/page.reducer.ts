@@ -2,12 +2,9 @@ import { IPayloadAction } from '../helpers';
 import { PageActions } from './page.actions';
 import { IPageRecord } from './page.types';
 import {
-  INITIAL_STATE
-} from './page.initial-state';
-
-import {
+  INITIAL_STATE,
   StatusMessagesFactory
-} from '../helpers';
+} from './page.initial-state';
 
 export function pageReducer(
   state: IPageRecord = INITIAL_STATE,

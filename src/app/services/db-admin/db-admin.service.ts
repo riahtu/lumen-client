@@ -10,6 +10,10 @@ import {
 } from '../../store/db-admin';
 
 import {
+  PageActions
+} from '../../store';
+
+import {
   IStatusMessages,
 } from '../../store';
 import {
@@ -50,12 +54,12 @@ export class DbAdminService {
     this.dbFolderService.loadFolder(id)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.CLEAR_PAGE_MESSAGES,
+          type: PageActions.CLEAR_MESSAGES,
           payload: {}
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_PAGE_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: parseErrors(error)
         })
       })
@@ -69,7 +73,7 @@ export class DbAdminService {
       }
     });
     this.ngRedux.dispatch({
-      type: DbAdminActions.CLEAR_DB_FOLDER_MESSAGES,
+      type: PageActions.CLEAR_MESSAGES,
       payload: null
     });
   }
@@ -79,12 +83,12 @@ export class DbAdminService {
     this.dbFolderService.updateFolder(folder)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_FOLDER_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_FOLDER_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: parseErrors(error)
         })
       })
@@ -99,7 +103,7 @@ export class DbAdminService {
       }
     });
     this.ngRedux.dispatch({
-      type: DbAdminActions.CLEAR_DB_STREAM_MESSAGES,
+      type: PageActions.CLEAR_MESSAGES,
       payload: null
     });
   }
@@ -109,12 +113,12 @@ export class DbAdminService {
     this.dbStreamService.updateStream(stream)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_STREAM_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_STREAM_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: parseErrors(error)
         })
       })
@@ -123,18 +127,18 @@ export class DbAdminService {
 
   // ---setDbId: work on specified Db -----
   public setDbId(id: number) {
-    // if we don't have this database, retrieve it
+    /* assume we have the database in the store
     let dbIds = this.ngRedux.getState().data.dbs;
     if(!(id in dbIds)){
       this.nilmService.loadNilm(id)
         .subscribe(success => {},
         error => {
           this.ngRedux.dispatch({
-            type: DbAdminActions.SET_PAGE_MESSAGES,
+          type: PageActions.SET_MESSAGES,
             payload: parseErrors(error)
           })
         })
-    }
+    }*/
     // set the new db id
     this.ngRedux.dispatch({
       type: DbAdminActions.SET_DB_ID,
@@ -149,12 +153,12 @@ export class DbAdminService {
     this.dbService.updateDb(db)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: parseErrors(error)
         })
       })
@@ -164,17 +168,17 @@ export class DbAdminService {
   // ---refreshDb: refresh specified Db -----
   public refreshDb(db: IDb) {
     this.ngRedux.dispatch({
-          type: DbAdminActions.CLEAR_DB_MESSAGES,
+      type: PageActions.CLEAR_MESSAGES,
     });
     this.dbService.refreshDb(db)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_DB_MESSAGES,
+          type: PageActions.SET_MESSAGES,
           payload: parseErrors(error)
         })
       })

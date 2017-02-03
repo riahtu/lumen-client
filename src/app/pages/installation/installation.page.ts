@@ -57,7 +57,6 @@ export class InstallationPageComponent implements OnInit {
 
     this.dbId$ = this.nilm$
                     .map(nilm => nilm.db)
-                    .do(x => console.log(x));
   }
 
   ngOnInit() {

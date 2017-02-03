@@ -16,20 +16,3 @@ export interface IPayloadAction extends Action {
   payload?: any;
 }
 
-
-// ---- StatusMessages ---
-export interface IStatusMessages {
-  errors: string[];
-  warnings: string[];
-  notices: string[];
-}
-export interface IStatusMessagesRecord extends
-  TypedRecord<IStatusMessagesRecord>, IStatusMessages { };
-
-
-export const StatusMessagesFactory =
-  makeTypedFactory<IStatusMessages, IStatusMessagesRecord>({
-    notices: [],
-    errors: [],
-    warnings: []
-  });

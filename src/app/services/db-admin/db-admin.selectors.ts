@@ -44,10 +44,6 @@ export class DbAdminSelectors {
   @select(['dbAdmin', 'selectedDb']) db_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
   @select(['dbAdmin', 'selectedDbStream']) dbStream_id$: Observable<number>;
-  @select(['dbAdmin', 'dbMessages']) dbMessages$: Observable<IStatusMessages>;
-  @select(['dbAdmin', 'dbFolderMessages']) dbFolderMessages$: Observable<IStatusMessages>;
-  @select(['dbAdmin', 'dbStreamMessages']) dbStreamMessages$: Observable<IStatusMessages>;
-  @select(['dbAdmin', 'pageMessages']) pageMessages$: Observable<IStatusMessages>;
 
   public dbNodes$: Observable<DbTreeNode[]>;
   public selectedDb$: Observable<IDbRecord>;

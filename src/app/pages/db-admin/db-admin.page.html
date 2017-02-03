@@ -26,15 +26,12 @@
   <!-- folder/stream edits -->
   <div [ngSwitch]='dbAdminSelectors.selectedType$ | async' class='panel'>
     <app-edit-db *ngSwitchCase="'root'"
-      [messages] = "dbAdminSelectors.dbMessages$ | async"
       [db] = "dbAdminSelectors.selectedDb$ | async"
       [rootFolder] = "dbAdminSelectors.selectedDbRootFolder$ | async"></app-edit-db>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
-      [messages] = "dbAdminSelectors.dbStreamMessages$ | async"
       [dbStream]="dbAdminSelectors.selectedDbStream$ | async" 
       [dbElements]="dbAdminSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 
-      [messages] = "dbAdminSelectors.dbFolderMessages$ | async"
       [dbFolder]="dbAdminSelectors.selectedDbFolder$ | async "></app-edit-folder>
   </div>
 

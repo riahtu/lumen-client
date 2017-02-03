@@ -6,10 +6,6 @@ import {
   INITIAL_STATE 
 } from './db-admin.initial-state';
 
-import {
-  StatusMessagesFactory
-} from '../helpers';
-
 
 export function dbAdminReducer(
   state: IDbAdminRecord = INITIAL_STATE,
@@ -23,38 +19,6 @@ export function dbAdminReducer(
       return state.merge({
         selectedDbFolder: action.payload.id,
         selectedType: 'dbFolder'
-      });
-    case DbAdminActions.SET_DB_STREAM_MESSAGES:
-      return state.merge({
-        dbStreamMessages: StatusMessagesFactory(action.payload)
-      });
-    case DbAdminActions.CLEAR_DB_STREAM_MESSAGES:
-      return state.merge({
-        dbStreamMessages: StatusMessagesFactory()
-      });
-    case DbAdminActions.SET_DB_FOLDER_MESSAGES:
-      return state.merge({
-        dbFolderMessages: StatusMessagesFactory(action.payload)
-      });
-    case DbAdminActions.CLEAR_DB_FOLDER_MESSAGES:
-      return state.merge({
-        dbFolderMessages: StatusMessagesFactory()
-      });
-    case DbAdminActions.SET_PAGE_MESSAGES:
-      return state.merge({
-        pageMessages: StatusMessagesFactory(action.payload)
-      });
-    case DbAdminActions.CLEAR_PAGE_MESSAGES:
-      return state.merge({
-        pageMessages: StatusMessagesFactory()
-      });
-    case DbAdminActions.SET_DB_MESSAGES:
-      return state.merge({
-        dbMessages: StatusMessagesFactory(action.payload)
-      });
-    case DbAdminActions.CLEAR_DB_MESSAGES:
-      return state.merge({
-        dbMessages: StatusMessagesFactory()
       });
     case DbAdminActions.SELECT_DB_STREAM:
       return state.merge({

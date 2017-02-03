@@ -1,13 +1,19 @@
 import {
   IPage,
   IPageRecord,
+  IStatusMessages,
+  IStatusMessagesRecord
 } from './page.types';
 
-import {
-  StatusMessagesFactory
-} from '../helpers';
-
 import { makeTypedFactory } from 'typed-immutable-record';
+
+// --- Status Messages ---
+export const StatusMessagesFactory =
+  makeTypedFactory<IStatusMessages, IStatusMessagesRecord>({
+    notices: [],
+    errors: [],
+    warnings: []
+  });
 
 
 // ---- Page ----

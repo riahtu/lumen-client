@@ -17,8 +17,6 @@
     <dd>{{stream.path}} <button class="btn btn-xs btn-default">Move</button></dd>
   </dl>
 
-  <app-messages [contents]="messages"></app-messages>
-
   <form class="clearfix" [formGroup]="form" 
     (ngSubmit)="onSubmit(form.value)">
     <div class="form-group col-md-3">

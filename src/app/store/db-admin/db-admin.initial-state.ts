@@ -4,10 +4,6 @@ import {
   IDbAdminRecord,
 } from './db-admin.types';
 
-import {
-  StatusMessagesFactory
-} from '../helpers';
-
 import { makeTypedFactory } from 'typed-immutable-record';
 
 
@@ -17,11 +13,7 @@ export const DbAdminFactory =
     selectedType: 'unknown',
     selectedDbFolder: null,
     selectedDbStream: null,
-    selectedDb: null,
-    dbMessages: StatusMessagesFactory(),
-    dbFolderMessages: StatusMessagesFactory(),
-    dbStreamMessages: StatusMessagesFactory(),
-    pageMessages: StatusMessagesFactory(),
+    selectedDb: null
   });
 
 
