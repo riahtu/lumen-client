@@ -5,11 +5,21 @@ import {
 } from './db-admin';
 
 import {
+  InstallationsService,
+  InstallationsSelectors
+} from './installations'
+
+import {
   NilmService,
   DbService,
-  DbFolderService
+  DbFolderService,
+  DbStreamService
 } from './api';
 
 export const SERVICE_PROVIDERS =
-  [NilmService, DbService, DbFolderService, DbAdminService, DbAdminSelectors,];
-export { NilmService, DbFolderService, DbAdminService, DbAdminSelectors };
+  [NilmService, DbService, DbFolderService, 
+   DbStreamService, DbAdminService, DbAdminSelectors,
+   InstallationsService, InstallationsSelectors];
+export { NilmService, DbFolderService, DbStreamService, 
+  DbAdminService, DbAdminSelectors,
+  InstallationsService, InstallationsSelectors };

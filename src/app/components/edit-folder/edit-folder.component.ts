@@ -23,7 +23,6 @@ export class EditFolderComponent implements OnInit {
 
   @Input() messages: IStatusMessages
   
-
   @Input()
   public set dbFolder(val: IDbFolder) {
     this.buildForm(val);

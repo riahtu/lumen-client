@@ -7,6 +7,7 @@ export interface INilm {
   name: string;
   description: string;
   db: number;
+  url: string;
 }
 export interface INilmRecord extends
   TypedRecord<INilmRecord>, INilm { };
@@ -23,6 +24,7 @@ export interface IDb {
   size_db: number;
   size_other: number;
   max_points_per_plot: number;
+  available: boolean;
   contents: number;
 }
 export interface IDbRecord extends

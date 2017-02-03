@@ -7,6 +7,7 @@ import { NgReduxModule, NgRedux } from 'ng2-redux';
 
 import { TreeModule } from 'angular2-tree-component';
 
+import { appRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { SERVICE_PROVIDERS } from './services';
 
@@ -22,10 +23,13 @@ import {
 } from './components';
 
 import {
-  DbAdminPageComponent
+  DbAdminPageComponent,
+  HomePageComponent,
+  InstallationsPageComponent
 } from './pages';
 import { ByteSizePipe } from './byte-size.pipe';
 import { DurationPipe } from './duration.pipe';
+
 
 @NgModule({
   declarations: [
@@ -37,6 +41,8 @@ import { DurationPipe } from './duration.pipe';
     DurationPipe,
     MessagesComponent,
     EditDbComponent,
+    HomePageComponent,
+    InstallationsPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,7 +51,8 @@ import { DurationPipe } from './duration.pipe';
     NgReduxModule,
     TreeModule,
     AlertModule.forRoot(),
-    ProgressbarModule.forRoot()
+    ProgressbarModule.forRoot(),
+    appRoutes
   ],
   providers: [
     SERVICE_PROVIDERS

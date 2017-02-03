@@ -2,17 +2,14 @@
 import {
   IDbAdmin,
   IDbAdminRecord,
-  IStatusMessages,
-  IStatusMessagesRecord,
 } from './db-admin.types';
+
+import {
+  StatusMessagesFactory
+} from '../helpers';
+
 import { makeTypedFactory } from 'typed-immutable-record';
 
-export const StatusMessagesFactory =
-  makeTypedFactory<IStatusMessages, IStatusMessagesRecord>({
-    notices: [],
-    errors: [],
-    warnings: []
-  });
 
 // ---- DbAdmin ----
 export const DbAdminFactory =

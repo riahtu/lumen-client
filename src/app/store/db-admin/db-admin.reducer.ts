@@ -3,8 +3,13 @@ import { IPayloadAction } from '../helpers';
 import { DbAdminActions } from './db-admin.actions';
 import { IDbAdminRecord } from './db-admin.types';
 import { 
-  StatusMessagesFactory,
-  INITIAL_STATE } from './db-admin.initial-state';
+  INITIAL_STATE 
+} from './db-admin.initial-state';
+
+import {
+  StatusMessagesFactory
+} from '../helpers';
+
 
 export function dbAdminReducer(
   state: IDbAdminRecord = INITIAL_STATE,

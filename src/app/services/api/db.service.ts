@@ -30,9 +30,9 @@ export class DbService {
       .put(`http://localhost:3000/dbs/${db.id}.json`,
         JSON.stringify(db), options)
       .map(resp => resp.json())
-      .do(json => this._dispatch(json))
+      .do(json => this._dispatch(json.data))
   }
-  
+
   public refreshDb(db: IDb): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -40,7 +40,7 @@ export class DbService {
       .put(`http://localhost:3000/dbs/${db.id}.json`,
         JSON.stringify(Object.assign({},db,{'refresh': true})), options)
       .map(resp => resp.json())
-      .do(json => this._dispatch(json))
+      .do(json => this._dispatch(json.data))
   }
 
   private _dispatch(json) {

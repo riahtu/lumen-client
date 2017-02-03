@@ -1,0 +1,35 @@
+<h1 style="text-align: center">Installations</h1>
+<div class="row">
+  <div class="col-md-3">
+    <img src="assets/images/robot_world_stand_250x300.jpg">
+  </div>
+  <div class="col-md-8 translucent">
+    <!-- Monitor Installations -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Role</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nilm of (installationsSelectors.nilms$ | async)">
+          <!-- Name / Description -->
+          <td><strong>{{nilm.name}}</strong><br>
+            <span class="text-muted">{{nilm.description}}</span>
+          </td>
+          <!-- Installation status (nilm state) -->
+          <td>TODO</td>
+          <!-- Permission on the installation -->
+          <td>TODO</td>
+          <!-- Admin actions -->
+          <td>
+            <button class="btn btn-primary">Manage</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

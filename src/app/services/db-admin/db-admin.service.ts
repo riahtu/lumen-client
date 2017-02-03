@@ -7,7 +7,7 @@ import {
 } from '../../store';
 import {
   IStatusMessages,
-} from '../../store/db-admin';
+} from '../../store';
 import {
   IDb,
   IDbFolder,
@@ -16,6 +16,7 @@ import {
 } from '../../store/data';
 import {
   DbFolderService,
+  DbStreamService,
   NilmService,
   DbService,
   parseErrors
@@ -27,6 +28,7 @@ export class DbAdminService {
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private dbFolderService: DbFolderService,
+    private dbStreamService: DbStreamService,
     private nilmService: NilmService,
     private dbService: DbService
   ) { }
@@ -74,9 +76,7 @@ export class DbAdminService {
       .subscribe(success => {
         this.ngRedux.dispatch({
           type: DbAdminActions.SET_DB_FOLDER_MESSAGES,
-          payload: {
-            notices: ['Folder updated']
-          }
+          payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
@@ -102,13 +102,11 @@ export class DbAdminService {
 
   // ---updateDbStream: save edits ---------------
   public updateDbStream(stream) {
-    this.dbFolderService.updateStream(stream)
+    this.dbStreamService.updateStream(stream)
       .subscribe(success => {
         this.ngRedux.dispatch({
           type: DbAdminActions.SET_DB_STREAM_MESSAGES,
-          payload: {
-            notices: ['Stream updated']
-          }
+          payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
@@ -135,9 +133,7 @@ export class DbAdminService {
       .subscribe(success => {
         this.ngRedux.dispatch({
           type: DbAdminActions.SET_DB_MESSAGES,
-          payload: {
-            notices: ['Database updated']
-          }
+          payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
@@ -150,31 +146,20 @@ export class DbAdminService {
 
   // ---refreshDb: refresh specified Db -----
   public refreshDb(db: IDb) {
+    this.ngRedux.dispatch({
+          type: DbAdminActions.CLEAR_DB_MESSAGES,
+    });
     this.dbService.refreshDb(db)
       .subscribe(success => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_PAGE_MESSAGES,
-          payload: {
-            notices: ['Database refreshed']
-          }
+          type: DbAdminActions.SET_DB_MESSAGES,
+          payload: success.messages
         });
       }, error => {
         this.ngRedux.dispatch({
-          type: DbAdminActions.SET_PAGE_MESSAGES,
+          type: DbAdminActions.SET_DB_MESSAGES,
           payload: parseErrors(error)
         })
       })
-  }
-
-  // ---loadNilms: request nilms-----
-  public loadNilms() {
-    this.nilmService.loadNilms()
-      .subscribe(success => { }, error => {
-        this.ngRedux.dispatch({
-          type: DbAdminActions.SET_PAGE_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-
   }
 }

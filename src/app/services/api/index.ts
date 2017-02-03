@@ -1,32 +1,37 @@
 import { NilmService } from './nilm.service';
 import { DbFolderService } from './db-folder.service';
+import { DbStreamService } from './db-stream.service';
 import { DbService } from './db.service';
 import {
   IStatusMessages,
-} from '../../store/db-admin';
+} from '../../store';
 
 export function parseErrors(error): IStatusMessages {
-  var msgs: IStatusMessages = {
-    errors: [],
-    warnings: [],
-    notices: []
-  };
-
-
   if (error.status == 0) {
-    msgs.errors = ['cannot contact server']
-  } else if (error.status == 422) {
-    let json = error.json()
-    msgs.errors = json.errors;
-    msgs.warnings = json.warnings;
-  } else {
-    msgs.errors = [`server error: ${error.status}`]
+    return errorMessage('cannot contact server');
+  } 
+  try{
+    let msgs = error.json().messages;
+    if(msgs === undefined){
+      throw new TypeError("no message property")
+    }
+    return <IStatusMessages> msgs
+  } catch(e) {
+    return errorMessage(`server error: ${error.status}`)
+  } 
+}
+
+export function errorMessage(msg:string):IStatusMessages{
+  return {
+    'notices': [],
+    'warnings': [],
+    'errors': [msg]
   }
-  return msgs
 }
 
 export {
   NilmService,
   DbService,
-  DbFolderService
+  DbFolderService,
+  DbStreamService
 }

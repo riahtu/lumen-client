@@ -1,6 +1,6 @@
 <div class="container-fluid page-body">
   <div class="page-header hidden-print">
-    <a href="/">
+    <a [routerLink]="['/home']">
       <img src="assets/images/header_logo_80px.png"
           class="page-title">
     </a>
@@ -10,6 +10,6 @@
     </span>
   </div>
 
-  <app-db-admin></app-db-admin>
+  <router-outlet></router-outlet>
 
 </div>

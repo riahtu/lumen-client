@@ -1,14 +1,6 @@
 import { TypedRecord } from 'typed-immutable-record';
 
-
-// ---- StatusMessages ---
-export interface IStatusMessages {
-  errors: string[];
-  warnings: string[];
-  notices: string[];
-}
-export interface IStatusMessagesRecord extends
-  TypedRecord<IStatusMessagesRecord>, IStatusMessages { };
+import {IStatusMessagesRecord} from '../helpers';
 
 // ---- DbAdmin ----
 export interface IDbAdmin {

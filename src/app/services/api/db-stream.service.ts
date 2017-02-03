@@ -13,16 +13,14 @@ import {
 } from '../../store';
 
 import {
-  IDbFolder,
   IDbStream,
   IDbElement,
-  DbFolderActions,
   DbStreamActions,
   DbElementActions,
 } from '../../store/data';
 
 @Injectable()
-export class DbFolderService {
+export class DbStreamService {
 
 
   constructor(
@@ -30,27 +28,20 @@ export class DbFolderService {
     private ngRedux: NgRedux<IAppState>
   ) { }
 
-  
-  public loadFolder(dbFolderId): Observable<any> {
-    return this.http
-      .get(`http://localhost:3000/db_folders/${dbFolderId}.json`, {})
-      .map(resp => resp.json())
-      .do(json => this._dispatch(json));
-  }
 
-  public updateFolder(dbFolder: IDbFolder): Observable<any> {
+  public updateStream(stream): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+    console.log(stream);
     return this.http
-      .put(`http://localhost:3000/db_folders/${dbFolder.id}.json`,
-      JSON.stringify(dbFolder), options)
+      .put(`http://localhost:3000/db_streams/${stream.id}.json`,
+      JSON.stringify({'stream': stream}), options)
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
   }
 
   private _dispatch(json) {
-    let entities = normalize(json, schema.dbFolder).entities;
-    this._receive(DbFolderActions, entities['dbFolders']);
+    let entities = normalize(json, schema.dbStream).entities;
     this._receive(DbStreamActions, entities['dbStreams']);
     this._receive(DbElementActions, entities['dbElements']);
   }
