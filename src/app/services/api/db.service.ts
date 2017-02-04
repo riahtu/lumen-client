@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { Angular2TokenService } from 'angular2-token';
 import { NgRedux } from 'ng2-redux';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -19,14 +19,14 @@ export class DbService {
 
 
   constructor(
-    private http: Http,
+    private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>
   ) { }
 
 
   public loadDb(dbId): Observable<any> {
-    return this.http
-      .get(`http://localhost:3000/dbs/${dbId}.json`, {})
+    return this.tokenService
+      .get(`dbs/${dbId}.json`, {})
       .map(resp => resp.json())
       .do(json => this._dispatch(json));
   }
@@ -34,8 +34,8 @@ export class DbService {
   public updateDb(db: IDb): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http
-      .put(`http://localhost:3000/dbs/${db.id}.json`,
+    return this.tokenService
+      .put(`dbs/${db.id}.json`,
         JSON.stringify(db), options)
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
@@ -44,8 +44,8 @@ export class DbService {
   public refreshDb(db: IDb): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http
-      .put(`http://localhost:3000/dbs/${db.id}.json`,
+    return this.tokenService
+      .put(`dbs/${db.id}.json`,
         JSON.stringify(Object.assign({},db,{'refresh': true})), options)
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))

@@ -22,7 +22,10 @@
             <span class="text-muted">{{nilm.description}}</span>
           </td>
           <!-- Installation status (nilm state) -->
-          <td>TODO</td>
+          <td>
+            <i *ngIf="nilm.available" class = "fa fa-circle available"></i>
+            <i *ngIf="!nilm.available" class = "fa fa-circle offline"></i>
+          </td>
           <!-- Permission on the installation -->
           <td>TODO</td>
           <!-- Admin actions -->

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+import { Angular2TokenService } from 'angular2-token';
 import { NgRedux } from 'ng2-redux';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -20,20 +20,21 @@ export class NilmService {
 
 
   constructor(
-    private http: Http,
+    //private http: Http,
+    private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>
   ) { }
 
   public loadNilms(): Observable<any> {
-    return this.http
-      .get('http://localhost:3000/nilms.json', {})
+    return this.tokenService
+      .get('nilms.json', {})
       .map(resp => resp.json())
       .do(json => this._dispatch(json, schema.nilms))
   }
 
   public loadNilm(nilmId): Observable<any> {
-    return this.http
-      .get(`http://localhost:3000/nilms/${nilmId}.json`, {})
+    return this.tokenService
+      .get(`nilms/${nilmId}.json`, {})
       .map(resp => resp.json())
       .do(json => this._dispatch(json, schema.nilm))
   }

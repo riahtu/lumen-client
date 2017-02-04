@@ -4,12 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgReduxModule, NgRedux } from 'ng2-redux';
 
-
+import { Angular2TokenService} from 'angular2-token';
 import { TreeModule } from 'angular2-tree-component';
 
 import { appRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { SERVICE_PROVIDERS } from './services';
+import { EPIC_PROVIDERS } from './epics';
 
 import {
   AlertModule,
@@ -26,6 +27,7 @@ import {
 import {
   DbAdminPageComponent,
   HomePageComponent,
+  SignInPageComponent,
   InstallationsPageComponent,
   InstallationPageComponent
 } from './pages';
@@ -42,12 +44,14 @@ import { ToArrayPipe } from './to-array.pipe';
     EditStreamComponent,
     ByteSizePipe,
     DurationPipe,
+    ToArrayPipe,
     MessagesComponent,
     EditDbComponent,
     HomePageComponent,
     InstallationsPageComponent,
     InstallationPageComponent,
-    ToArrayPipe,
+    SignInPageComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -61,7 +65,9 @@ import { ToArrayPipe } from './to-array.pipe';
     appRoutes
   ],
   providers: [
-    SERVICE_PROVIDERS
+    [Angular2TokenService],
+    SERVICE_PROVIDERS,
+    EPIC_PROVIDERS
   ],
   bootstrap: [AppComponent]
 })

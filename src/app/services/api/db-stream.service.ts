@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
+import { Angular2TokenService } from 'angular2-token';
 import { Observable } from 'rxjs';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -24,7 +25,7 @@ export class DbStreamService {
 
 
   constructor(
-    private http: Http,
+    private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>
   ) { }
 
@@ -33,8 +34,8 @@ export class DbStreamService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     console.log(stream);
-    return this.http
-      .put(`http://localhost:3000/db_streams/${stream.id}.json`,
+    return this.tokenService
+      .put(`db_streams/${stream.id}.json`,
       JSON.stringify({'stream': stream}), options)
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))

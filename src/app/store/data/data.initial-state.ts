@@ -8,7 +8,8 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   name: '',
   description: '',
   url: '',
-  db: null
+  db: null,
+  available: false
 });
 
 // ---- Db ----

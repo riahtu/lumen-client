@@ -1,9 +1,13 @@
 
 
-<h1 class="page-title"> <b>[Name]</b> Administration</h1>
-
-
-<tabset>
-  <tab heading='Database'><app-db-admin [dbId]="dbId$"></app-db-admin></tab>
-  <tab heading='Permissions'>TODO</tab>
-</tabset>
+<div *ngFor="let nilm of [(nilm$ | async)]">
+<div *ngIf="nilm==null" class="well">
+  <h1><i class="fa fa-spinner fa-spin"></i> Loading</h1>
+</div>
+<div *ngIf="nilm!=null">
+  <h1 class="page-title"> <b>[{{nilm.name}}]</b> Administration</h1>
+  <tabset>
+    <tab heading='Database'><app-db-admin [dbId]="dbId$"></app-db-admin></tab>
+    <tab heading='Permissions'>TODO</tab>
+  </tabset>
+</div>

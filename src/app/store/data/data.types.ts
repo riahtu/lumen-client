@@ -7,6 +7,7 @@ export interface INilm {
   name: string;
   description: string;
   db: number;
+  available: boolean;
   url: string;
 }
 export interface INilmRecord extends

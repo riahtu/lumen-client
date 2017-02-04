@@ -2,7 +2,7 @@
   <alert type="success" dismissible="true" *ngFor="let notice of messages.notices">
     {{notice}}
   </alert>
-  <alert type="danger" *ngFor="let error of messages.errors">
+  <alert type="danger" dismissible="true" *ngFor="let error of messages.errors">
     <strong>Error:</strong> {{error}}
   </alert>
   <alert type="warning" dismissible="true" *ngFor="let warning of messages.warnings">

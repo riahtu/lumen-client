@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
 import { Observable } from 'rxjs';
+import { Angular2TokenService } from 'angular2-token';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
@@ -25,15 +26,15 @@ import {
 export class DbFolderService {
 
 
-  constructor(
-    private http: Http,
+  constructor(    
+    private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>
   ) { }
 
   
   public loadFolder(dbFolderId): Observable<any> {
-    return this.http
-      .get(`http://localhost:3000/db_folders/${dbFolderId}.json`, {})
+    return this.tokenService
+      .get(`db_folders/${dbFolderId}.json`, {})
       .map(resp => resp.json())
       .do(json => this._dispatch(json));
   }
@@ -41,8 +42,8 @@ export class DbFolderService {
   public updateFolder(dbFolder: IDbFolder): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
-    return this.http
-      .put(`http://localhost:3000/db_folders/${dbFolder.id}.json`,
+    return this.tokenService
+      .put(`db_folders/${dbFolder.id}.json`,
       JSON.stringify(dbFolder), options)
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))

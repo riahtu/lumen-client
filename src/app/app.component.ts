@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import * as createLogger from 'redux-logger';
 import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
+import { Angular2TokenService } from 'angular2-token';
+import { createEpicMiddleware } from 'redux-observable';
+
+import {PageEpics} from './epics';
 
 import {
   rootReducer,
@@ -15,14 +19,33 @@ import {
 export class AppComponent {
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private devTools: DevToolsExtension
+    private devTools: DevToolsExtension,
+    private epics: PageEpics,
+    private tokenService: Angular2TokenService
   ) {
 
+    //configure redux
+    const middleware = [
+      createLogger(),
+      createEpicMiddleware(this.epics.page)
+    ]
+    
 
     ngRedux.configureStore(rootReducer,
       {},
-      [createLogger()],
-      [devTools.enhancer()]);
+      middleware,
+      devTools.isEnabled() ?
+        [devTools.enhancer()] : 
+        []
+    );
+    
+    //configure angular2-token
+    tokenService.init({
+      apiPath: 'http://localhost:3000',
+      signInPath: 'auth/sign_in',
+      signInRedirect: 'session/sign_in',
+      signOutPath: 'auth/sign_out',
+    })
 
   }
 }
