@@ -8,11 +8,12 @@ import {
   NilmService,
   DbService,
   DbFolderService,
-  DbStreamService
+  DbStreamService,
+  SessionService
 } from './api';
 
 export const SERVICE_PROVIDERS =
   [NilmService, DbService, DbFolderService, 
-   DbStreamService, DbAdminService, DbAdminSelectors];
-export { NilmService, DbFolderService, DbStreamService, 
+   DbStreamService, DbAdminService, DbAdminSelectors, SessionService];
+export { NilmService, DbFolderService, DbStreamService, SessionService,
   DbAdminService, DbAdminSelectors};

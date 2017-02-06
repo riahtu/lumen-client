@@ -31,12 +31,12 @@ export class DbStreamService {
 
 
   public updateStream(stream): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    //let headers = new Headers({ 'Content-Type': 'application/json' });
+    //let options = new RequestOptions({ headers: headers });
     console.log(stream);
     return this.tokenService
       .put(`db_streams/${stream.id}.json`,
-      JSON.stringify({'stream': stream}), options)
+      JSON.stringify({'stream': stream}))
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
   }

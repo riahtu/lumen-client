@@ -14,3 +14,6 @@ export const DbStreamActions = {
 export const DbElementActions = {
   'RECEIVE': 'DB_ELEMENT_RECEIVE'
 };
+export const UserActions = {
+  'RECEIVE': 'USER_RECEIVE'
+};

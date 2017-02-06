@@ -4,7 +4,11 @@ import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
 import { Angular2TokenService } from 'angular2-token';
 import { createEpicMiddleware } from 'redux-observable';
 
-import {PageEpics} from './epics';
+import {AppEpics} from './epics';
+
+import {
+  SessionService
+} from './services';
 
 import {
   rootReducer,
@@ -17,17 +21,20 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private devTools: DevToolsExtension,
-    private epics: PageEpics,
-    private tokenService: Angular2TokenService
+    private epics: AppEpics,
+    private tokenService: Angular2TokenService,
+    private sessionService: SessionService
   ) {
 
     //configure redux
     const middleware = [
       createLogger(),
-      createEpicMiddleware(this.epics.page)
+      createEpicMiddleware(this.epics.root)
     ]
     
 
@@ -47,5 +54,7 @@ export class AppComponent {
       signOutPath: 'auth/sign_out',
     })
 
+    sessionService.validateToken();
   }
+
 }

@@ -21,7 +21,8 @@ import {
   EditDbComponent,
   EditFolderComponent,
   EditStreamComponent,
-  MessagesComponent
+  MessagesComponent,
+  SessionComponent
 } from './components';
 
 import {
@@ -29,7 +30,8 @@ import {
   HomePageComponent,
   SignInPageComponent,
   InstallationsPageComponent,
-  InstallationPageComponent
+  InstallationPageComponent,
+  AccountPageComponent
 } from './pages';
 import { ByteSizePipe } from './byte-size.pipe';
 import { DurationPipe } from './duration.pipe';
@@ -51,6 +53,8 @@ import { ToArrayPipe } from './to-array.pipe';
     InstallationsPageComponent,
     InstallationPageComponent,
     SignInPageComponent,
+    SessionComponent,
+    AccountPageComponent,
 
   ],
   imports: [

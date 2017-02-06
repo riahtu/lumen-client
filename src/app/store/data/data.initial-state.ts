@@ -41,7 +41,6 @@ export const DbFolderFactory =
     size_on_disk: 0
   });
 
-
 // ---- DbStream ----
 export const DbStreamFactory =
   makeTypedFactory<data.IDbStream, data.IDbStreamRecord>({
@@ -61,7 +60,7 @@ export const DbStreamFactory =
     size_on_disk: 0
   });
 
-// ---- DbElements ----
+// ---- DbElement ----
 export const DbElementFactory =
   makeTypedFactory<data.IDbElement, data.IDbElementRecord>({
     id: null,
@@ -74,4 +73,13 @@ export const DbElementFactory =
     offset: 0.0,
     plottable: true,
     discrete: false
+  });
+
+// ---- User ----
+export const UserFactory =
+  makeTypedFactory<data.IUser, data.IUserRecord>({
+    id: null,
+    first_name: null,
+    last_name: null,
+    email: null
   });

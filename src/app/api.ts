@@ -31,3 +31,5 @@ export const db = new schema.Entity('dbs',
 export const nilm = new schema.Entity('nilms',
   { db: db });
 export const nilms = new schema.Array(nilm);
+
+export const user = new schema.Entity('users')

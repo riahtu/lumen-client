@@ -95,3 +95,13 @@ export interface IDbElementRecord extends
 export interface IDbElementRecords {
   [index: string]: IDbElementRecord;
 }
+
+// ---- User ----
+export interface IUser {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+export interface IUserRecord extends
+  TypedRecord<IUserRecord>, IUser { };

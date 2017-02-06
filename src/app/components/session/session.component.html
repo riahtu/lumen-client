@@ -1,0 +1,6 @@
+
+<span *ngIf="(user$ | async).email!=null" class="pull-right">
+  <button class="btn btn-default" [routerLink]="['/account']">
+    my account</button>
+  <a href="/" class="btn btn-link btn-header" (click)="logout()">logout</a>
+</span>

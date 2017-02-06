@@ -40,11 +40,11 @@ export class DbFolderService {
   }
 
   public updateFolder(dbFolder: IDbFolder): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    //let headers = new Headers({ 'Content-Type': 'application/json' });
+    //let options = new RequestOptions({ headers: headers });
     return this.tokenService
       .put(`db_folders/${dbFolder.id}.json`,
-      JSON.stringify(dbFolder), options)
+      JSON.stringify(dbFolder))
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
   }

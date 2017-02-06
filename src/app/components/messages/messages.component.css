@@ -2,7 +2,6 @@
 .alerts{
 	position: fixed;
 	top: 20px;
-	width: 25%;
 	right: 10px;
   z-index: 999;
 }

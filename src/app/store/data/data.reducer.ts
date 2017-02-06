@@ -55,7 +55,6 @@ export function dbStreamReducer(
   }
 }
 
-
 export function dbElementReducer(
   state: records.IDbElementRecords = {},
   action: IPayloadAction): records.IDbElementRecords {
@@ -69,3 +68,15 @@ export function dbElementReducer(
       return state;
   }
 }
+
+export function userReducer(
+  state: records.IUserRecord = factories.UserFactory(),
+  action: IPayloadAction): records.IUserRecord {
+  switch (action.type) {
+    case actions.UserActions.RECEIVE:
+      return factories.UserFactory(action.payload);
+    default:
+      return state;
+  }
+}
+

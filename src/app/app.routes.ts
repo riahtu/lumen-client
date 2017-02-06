@@ -6,7 +6,8 @@ import {
   InstallationsPageComponent,
   InstallationPageComponent,
   HomePageComponent,
-  SignInPageComponent
+  SignInPageComponent,
+  AccountPageComponent
 } from './pages';
 
 const routes: Routes = [
@@ -19,6 +20,11 @@ const routes: Routes = [
   { 
     path: 'home',
     component: HomePageComponent,
+    canActivate: [Angular2TokenService]
+  },
+  {
+    path: 'account',
+    component: AccountPageComponent,
     canActivate: [Angular2TokenService]
   },
   { 

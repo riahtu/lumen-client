@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Angular2TokenService } from 'angular2-token';
+
+import {
+  SessionService
+} from "../../services";
 
 import {
   FormBuilder,
@@ -18,7 +21,7 @@ export class SignInPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private tokenService: Angular2TokenService
+    private sessionService: SessionService
   ) { }
 
   ngOnInit() {
@@ -28,11 +31,7 @@ export class SignInPageComponent implements OnInit {
     });
   }
   onSubmit(formValues: any){
-    this.tokenService.signIn({email: formValues.email,
-                              password: formValues.password})
-                      .subscribe(
-                        res => console.log(res),
-                        error => console.log(error));
+    this.sessionService.login(formValues.email, formValues.password);
   }
 
 }

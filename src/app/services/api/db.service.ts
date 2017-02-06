@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Angular2TokenService } from 'angular2-token';
 import { NgRedux } from 'ng2-redux';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, Headers, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 
@@ -32,21 +32,19 @@ export class DbService {
   }
 
   public updateDb(db: IDb): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
     return this.tokenService
       .put(`dbs/${db.id}.json`,
-        JSON.stringify(db), options)
+        JSON.stringify(db))
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
   }
 
   public refreshDb(db: IDb): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
+    //let headers = new Headers({ 'Content-Type': 'application/json' });
+    //let options = { headers: headers };
     return this.tokenService
       .put(`dbs/${db.id}.json`,
-        JSON.stringify(Object.assign({},db,{'refresh': true})), options)
+        JSON.stringify(Object.assign({},db,{'refresh': true})))
       .map(resp => resp.json())
       .do(json => this._dispatch(json.data))
   }
