@@ -5,20 +5,20 @@
 
   <form [formGroup]="form">
     <legend>Sign In</legend>
-    <div class="form-group" [class.has-error]="!form.controls.email.valid">
+    <div class="form-group" [class.has-error]="!form.controls.email.valid && !form.controls.email.pristine">
       <label class="control-label" for="email">E-mail</label>
       <input class="form-control" id="email" 
              type="email"
              [formControl]="form.controls.email" 
               placeholder="name@wattsworth.net">
     </div>
-    <div class="form-group" [class.has-error]="!form.controls.password.valid">
+    <div class="form-group">
       <label class="control-label" for="email">Password</label>
       <input type="password" class="form-control" 
              [formControl]="form.controls.password" 
              id="password">
     </div>
-    <a class="btn btn-link" (click)="forgotPassword()">
+    <a class="btn btn-link" (click)="resetPassword(form.controls.email.value)">
       Forgot your password?</a>
 
     <button class="btn btn-primary btn-block" 

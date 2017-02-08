@@ -52,6 +52,7 @@ export class AppComponent {
       signInPath: 'auth/sign_in',
       signInRedirect: 'session/sign_in',
       signOutPath: 'auth/sign_out',
+      resetPasswordCallback:  'http://localhost:4200/session/reset_password'
     })
 
     sessionService.validateToken();

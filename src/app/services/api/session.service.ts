@@ -19,7 +19,8 @@ import {
 import {
   PageActions,
   createMessage,
-  IAppState
+  IAppState,
+  IUser
 } from '../../store';
 
 @Injectable()
@@ -64,6 +65,49 @@ export class SessionService {
         })
       })
   }
+  public updateAccount(accountParams: any){
+    this.tokenService.put(
+      '/auth.json', accountParams)
+      .subscribe(
+        success => {
+          this.ngRedux.dispatch({
+            type: PageActions.SET_MESSAGES,
+            payload: createMessage(["account updated"],"notice")
+          })
+        },
+        error => {
+          this.ngRedux.dispatch({
+            type: PageActions.SET_MESSAGES,
+            payload: createMessage(error.json().errors.full_messages,"error")
+          })
+        }
+      );
+  }
+
+  public resetPassword(email: string):void{
+    this.tokenService.resetPassword({email: email})
+      .subscribe(
+        success=>{
+          this.ngRedux.dispatch({
+            type: PageActions.SET_MESSAGES,
+            payload: createMessage(["sent e-mail with password reset"],"notice")
+          })
+        },
+        error => console.log(error)
+
+      )
+  }
+  public updatePassword(password: string, 
+                        passwordConfirmation: string, 
+                        token: string): void{
+      this.tokenService.updatePassword({
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+        resetPasswordToken: token,
+        passwordCurrent: null}).subscribe( res => console.log(res),
+        error => console.log(error));
+  };
+  
   public validateToken(): void{
     this.tokenService.validateToken()
       .map(resp => resp.json())

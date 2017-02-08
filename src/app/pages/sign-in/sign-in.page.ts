@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import {
   SessionService
 } from "../../services";
-
+/*https://github.com/yuyang041060120/ng2-validation*/
+import { CustomValidators } from 'ng2-validation';
 import {
   FormBuilder,
   FormGroup,
@@ -26,12 +27,16 @@ export class SignInPageComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, CustomValidators.email]],
+      password: ['']
     });
   }
   onSubmit(formValues: any){
     this.sessionService.login(formValues.email, formValues.password);
   }
 
+
+  resetPassword(email: string){
+    this.sessionService.resetPassword(email);
+  }
 }

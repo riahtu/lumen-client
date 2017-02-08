@@ -31,12 +31,13 @@ import {
   SignInPageComponent,
   InstallationsPageComponent,
   InstallationPageComponent,
-  AccountPageComponent
+  AccountPageComponent,
+  PasswordResetPageComponent
 } from './pages';
+
 import { ByteSizePipe } from './byte-size.pipe';
 import { DurationPipe } from './duration.pipe';
 import { ToArrayPipe } from './to-array.pipe';
-
 
 @NgModule({
   declarations: [
@@ -55,7 +56,7 @@ import { ToArrayPipe } from './to-array.pipe';
     SignInPageComponent,
     SessionComponent,
     AccountPageComponent,
-
+    PasswordResetPageComponent
   ],
   imports: [
     BrowserModule,

@@ -7,7 +7,8 @@ import {
   InstallationPageComponent,
   HomePageComponent,
   SignInPageComponent,
-  AccountPageComponent
+  AccountPageComponent,
+  PasswordResetPageComponent
 } from './pages';
 
 const routes: Routes = [
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'session/sign_in',
     component: SignInPageComponent
+  },
+  {
+    path: 'session/reset_password',
+    component: PasswordResetPageComponent
   }
 ];
 
