@@ -38,6 +38,7 @@ export class DbAdminService {
       type: DbAdminActions.SELECT_DB_ROOT,
       payload: {}
     });
+    this.messageService.clearMessages();
   }
 
   // ---selectDbFolder: pick folder from tree -----
@@ -48,10 +49,7 @@ export class DbAdminService {
         id: id,
       }
     });
-    this.ngRedux.dispatch({
-      type: PageActions.CLEAR_MESSAGES,
-      payload: null
-    });
+    this.messageService.clearMessages();
   }
 
 
@@ -63,10 +61,7 @@ export class DbAdminService {
         id: id,
       }
     });
-    this.ngRedux.dispatch({
-      type: PageActions.CLEAR_MESSAGES,
-      payload: null
-    });
+    this.messageService.clearMessages();
   }
 
 

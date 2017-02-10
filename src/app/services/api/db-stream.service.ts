@@ -21,7 +21,7 @@ export class DbStreamService {
 
   constructor(
     private tokenService: Angular2TokenService,
-    private ngRedux: NgRedux<IAppState>.
+    private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
   ) { }
 
