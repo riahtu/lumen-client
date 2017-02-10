@@ -22,23 +22,14 @@ import {
   IDbStream,
   IDbElement
 } from '../../store/data';
-import {
-  DbFolderService,
-  DbStreamService,
-  NilmService,
-  DbService,
-  parseErrors
-} from '../api';
+import { MessageService } from '../message.service';
 
 @Injectable()
 export class DbAdminService {
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private dbFolderService: DbFolderService,
-    private dbStreamService: DbStreamService,
-    private nilmService: NilmService,
-    private dbService: DbService
+    private messageService: MessageService
   ) { }
 
   // ---selectDbRoot: pick the root from tree -----
@@ -49,21 +40,6 @@ export class DbAdminService {
     });
   }
 
-  // ---loadDbFolder: expand a shallow folder -----
-  public loadDbFolder(id: number) {
-    this.dbFolderService.loadFolder(id)
-      .subscribe(success => {
-        this.ngRedux.dispatch({
-          type: PageActions.CLEAR_MESSAGES,
-          payload: {}
-        });
-      }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-  }
   // ---selectDbFolder: pick folder from tree -----
   public selectDbFolder(id: number) {
     this.ngRedux.dispatch({
@@ -78,21 +54,6 @@ export class DbAdminService {
     });
   }
 
-  // ---updateDbFolder: save edits ---------------
-  public updateDbFolder(folder: IDbFolder) {
-    this.dbFolderService.updateFolder(folder)
-      .subscribe(success => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: success.messages
-        });
-      }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-  }
 
   // ---selectDbStream: pick a stream from tree---
   public selectDbStream(id: number) {
@@ -108,21 +69,6 @@ export class DbAdminService {
     });
   }
 
-  // ---updateDbStream: save edits ---------------
-  public updateDbStream(stream) {
-    this.dbStreamService.updateStream(stream)
-      .subscribe(success => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: success.messages
-        });
-      }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-  }
 
 
   // ---setDbId: work on specified Db -----
@@ -148,39 +94,4 @@ export class DbAdminService {
     });
   }
 
-  // ---updateDb: save edits ---------------
-  public updateDb(db) {
-    this.dbService.updateDb(db)
-      .subscribe(success => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: success.messages
-        });
-      }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-  }
-
-
-  // ---refreshDb: refresh specified Db -----
-  public refreshDb(db: IDb) {
-    this.ngRedux.dispatch({
-      type: PageActions.CLEAR_MESSAGES,
-    });
-    this.dbService.refreshDb(db)
-      .subscribe(success => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: success.messages
-        });
-      }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
-  }
 }

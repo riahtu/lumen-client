@@ -3,22 +3,22 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { DbAdminComponent } from './db-admin.component';
+import { DbAdminPageComponent } from './db-admin.page';
 import {} from 'jasmine';
 
-describe('DbAdminComponent', () => {
-  let component: DbAdminComponent;
-  let fixture: ComponentFixture<DbAdminComponent>;
+describe('DbAdminPageComponent', () => {
+  let component: DbAdminPageComponent;
+  let fixture: ComponentFixture<DbAdminPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DbAdminComponent]
+      declarations: [DbAdminPageComponent]
     })
       .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DbAdminComponent);
+    fixture = TestBed.createComponent(DbAdminPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@ import {
   IStatusMessages
 } from '../../store';
 
-import { DbAdminService } from '../../services';
+import { DbFolderService } from '../../services';
 
 import {
   FormBuilder,
@@ -37,14 +37,14 @@ export class EditFolderComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dbAdminService: DbAdminService
+    private dbFolderService: DbFolderService
   ) { }
 
   ngOnInit() {}
 
   onSubmit(formValues: IDbFolder) {
     formValues.id = this.folder.id;
-    this.dbAdminService.updateDbFolder(formValues);
+    this.dbFolderService.updateFolder(formValues);
   }
 
   buildForm(folder: IDbFolder) {

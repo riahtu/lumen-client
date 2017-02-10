@@ -12,8 +12,12 @@ import {
   SessionService
 } from './api';
 
+import {
+  MessageService
+} from './message.service';
+
 export const SERVICE_PROVIDERS =
-  [NilmService, DbService, DbFolderService, 
+  [NilmService, DbService, DbFolderService, MessageService,
    DbStreamService, DbAdminService, DbAdminSelectors, SessionService];
-export { NilmService, DbFolderService, DbStreamService, SessionService,
-  DbAdminService, DbAdminSelectors};
+export { NilmService, DbService, DbFolderService, DbStreamService, SessionService,
+  DbAdminService, DbAdminSelectors, MessageService};

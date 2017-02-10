@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   NilmService,
   DbAdminService,
+  DbFolderService,
   DbAdminSelectors,
 } from '../../services';
 
@@ -24,6 +25,7 @@ export class DbAdminPageComponent implements OnInit {
   constructor(
     private nilmService: NilmService,
     private dbAdminService: DbAdminService,
+    private dbFolderService: DbFolderService,
     public dbAdminSelectors: DbAdminSelectors,
   ) {
     this.treeOptions = {
@@ -32,7 +34,7 @@ export class DbAdminPageComponent implements OnInit {
   };
 
   public getChildren(node: TreeNode) {
-   this.dbAdminService.loadDbFolder(node.data.id);
+   this.dbFolderService.loadFolder(node.data.id);
   }
 
   public selectNode(event) {

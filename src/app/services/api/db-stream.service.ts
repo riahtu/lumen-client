@@ -5,14 +5,9 @@ import { Observable } from 'rxjs';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
-
-import {
-  IAppState,
-} from '../../store';
-import {
-    IStatusMessages,
-} from '../../store';
-
+import{ MessageService } from '../message.service';
+import { parseAPIErrors } from './helpers';
+import { IAppState } from '../../store';
 import {
   IDbStream,
   IDbElement,
@@ -26,21 +21,24 @@ export class DbStreamService {
 
   constructor(
     private tokenService: Angular2TokenService,
-    private ngRedux: NgRedux<IAppState>
+    private ngRedux: NgRedux<IAppState>.
+    private messageService: MessageService
   ) { }
 
 
-  public updateStream(stream): Observable<any> {
-    //let headers = new Headers({ 'Content-Type': 'application/json' });
-    //let options = new RequestOptions({ headers: headers });
-    console.log(stream);
-    return this.tokenService
-      .put(`db_streams/${stream.id}.json`,
-      JSON.stringify({'stream': stream}))
+  public updateStream(stream): void {
+    this.tokenService
+      .put(`db_streams/${stream.id}.json`, 
+        JSON.stringify({'stream': stream}))
       .map(resp => resp.json())
-      .do(json => this._dispatch(json.data))
-  }
+      .subscribe(
+        json => {
+          this._dispatch(json.data);
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error)));  }
 
+  // -------- private helper functions --------
   private _dispatch(json) {
     let entities = normalize(json, schema.dbStream).entities;
     this._receive(DbStreamActions, entities['dbStreams']);

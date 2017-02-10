@@ -4,11 +4,14 @@ import { Angular2TokenService } from 'angular2-token';
 import { NgRedux } from 'ng2-redux';
 import { Http, Headers, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
-import * as schema from '../../api';
 
+import * as schema from '../../api';
+import{ MessageService } from '../message.service';
+import { parseAPIErrors } from './helpers';
 import { 
   IDb,
-  IAppState } from '../../store';
+  IAppState 
+} from '../../store';
 import {
   DbActions,
   DbFolderActions,
@@ -20,35 +23,45 @@ export class DbService {
 
   constructor(
     private tokenService: Angular2TokenService,
-    private ngRedux: NgRedux<IAppState>
+    private ngRedux: NgRedux<IAppState>,
+    private messageService: MessageService
   ) { }
 
 
-  public loadDb(dbId): Observable<any> {
-    return this.tokenService
+  public loadDb(dbId): void {
+    this.tokenService
       .get(`dbs/${dbId}.json`, {})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json));
+      .subscribe(
+        json => this._dispatch(json),
+        error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
-  public updateDb(db: IDb): Observable<any> {
-    return this.tokenService
-      .put(`dbs/${db.id}.json`,
-        JSON.stringify(db))
+  public updateDb(db: IDb): void {
+    this.tokenService
+      .put(`dbs/${db.id}.json`, JSON.stringify(db))
       .map(resp => resp.json())
-      .do(json => this._dispatch(json.data))
+      .subscribe(
+        json => {
+          this._dispatch(json.data);
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
-  public refreshDb(db: IDb): Observable<any> {
-    //let headers = new Headers({ 'Content-Type': 'application/json' });
-    //let options = { headers: headers };
-    return this.tokenService
-      .put(`dbs/${db.id}.json`,
-        JSON.stringify(Object.assign({},db,{'refresh': true})))
+  public refreshDb(db: IDb): void {
+    this.tokenService
+      .put(`dbs/${db.id}`,{refresh: true})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json.data))
+      .subscribe(
+        json => {
+          this._dispatch(json.data);
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
+  // -------- private helper functions --------
   private _dispatch(json) {
     let entities = normalize(json, schema.db).entities;
     this._receive(DbActions, entities['dbs']);

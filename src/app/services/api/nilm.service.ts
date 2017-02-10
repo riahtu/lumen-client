@@ -14,6 +14,12 @@ import {
   DbStreamActions,
   DbElementActions
 } from '../../store/data';
+import {
+  MessageService
+} from '../message.service';
+import {
+  parseAPIErrors
+} from './helpers';
 
 @Injectable()
 export class NilmService {
@@ -22,22 +28,31 @@ export class NilmService {
   constructor(
     //private http: Http,
     private tokenService: Angular2TokenService,
-    private ngRedux: NgRedux<IAppState>
+    private ngRedux: NgRedux<IAppState>,
+    private messageService: MessageService
   ) { }
 
-  public loadNilms(): Observable<any> {
-    return this.tokenService
+  public loadNilms(): void {
+    this.tokenService
       .get('nilms.json', {})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json, schema.nilms))
+      .subscribe(
+      json => this._dispatch(json, schema.nilms),
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
   }
 
-  public loadNilm(nilmId): Observable<any> {
-    return this.tokenService
+  public loadNilm(nilmId): void {
+    this.tokenService
       .get(`nilms/${nilmId}.json`, {})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json, schema.nilm))
+      .subscribe(
+      json => this._dispatch(json, schema.nilm),
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
   }
+
+  // ------------ private helper functions ----------
 
   private _dispatch(json, resp_schema) {
     let entities = normalize(json, resp_schema).entities;
@@ -45,6 +60,7 @@ export class NilmService {
     this._receive(DbActions, entities['dbs']);
     this._receive(DbFolderActions, entities['dbFolders']);
   }
+
   private _receive(target: any, data: any) {
     if (!(data === undefined)) {
       this.ngRedux.dispatch({

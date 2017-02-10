@@ -5,19 +5,19 @@ import { DebugElement } from '@angular/core';
 
 import { InstallationPageComponent } from './installation.page';
 
-describe('InstallationComponent', () => {
-  let component: InstallationComponent;
-  let fixture: ComponentFixture<InstallationComponent>;
+describe('InstallationPageComponent', () => {
+  let component: InstallationPageComponent;
+  let fixture: ComponentFixture<InstallationPageComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ InstallationComponent ]
+      declarations: [ InstallationPageComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(InstallationComponent);
+    fixture = TestBed.createComponent(InstallationPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

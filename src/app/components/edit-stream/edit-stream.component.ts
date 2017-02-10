@@ -12,7 +12,7 @@ import {
   IStatusMessages
 } from '../../store';
 
-import { DbAdminService } from '../../services';
+import { DbStreamService } from '../../services';
 
 import {
   FormBuilder,
@@ -54,14 +54,13 @@ export class EditStreamComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dbAdminService: DbAdminService
+    private dbStreamService: DbStreamService
   ) { }
 
   ngOnInit() {}
 
   onSubmit(streamValues){
-    //console.log(streamValues);
-    this.dbAdminService.updateDbStream(streamValues);
+    this.dbStreamService.updateStream(streamValues);
   }
 
   public toggleElements() {

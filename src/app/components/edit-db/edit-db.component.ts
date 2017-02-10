@@ -13,7 +13,7 @@ import {
   IStatusMessages
 } from '../../store';
 
-import { DbAdminService } from '../../services';
+import { DbService } from '../../services';
 
 
 @Component({
@@ -41,7 +41,7 @@ export class EditDbComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private dbAdminService: DbAdminService
+    private dbService: DbService
   ) { }
 
   ngOnInit() {
@@ -56,12 +56,12 @@ export class EditDbComponent implements OnInit {
   }
 
   refreshDb(){
-    this.dbAdminService.refreshDb(this.my_db);
+    this.dbService.refreshDb(this.my_db);
   }
   onSubmit(formValues: IDb){
     //console.log(streamValues);
     formValues.id = this.my_db.id;
-    this.dbAdminService.updateDb(formValues);
+    this.dbService.updateDb(formValues);
   }
 
 

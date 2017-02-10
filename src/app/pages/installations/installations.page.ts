@@ -10,7 +10,6 @@ import {
 
 import {
   NilmService,
-  parseErrors
 } from '../../services/api';
 
 import { Observable } from 'rxjs';
@@ -37,12 +36,6 @@ export class InstallationsPageComponent implements OnInit {
 
   // ---loadNilms: request nilms-----
   private loadNilms() {
-    this.nilmService.loadNilms()
-      .subscribe(success => { }, error => {
-        this.ngRedux.dispatch({
-          type: PageActions.SET_MESSAGES,
-          payload: parseErrors(error)
-        })
-      })
+    this.nilmService.loadNilms();
   }
 }

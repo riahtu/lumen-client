@@ -5,13 +5,9 @@ import { Angular2TokenService } from 'angular2-token';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
-
-import {
-  IAppState,
-} from '../../store';
-import {
-    IStatusMessages,
-} from '../../store';
+import { MessageService } from '../message.service';
+import { parseAPIErrors } from './helpers';
+import { IAppState } from '../../store';
 
 import {
   IDbFolder,
@@ -26,29 +22,35 @@ import {
 export class DbFolderService {
 
 
-  constructor(    
+  constructor(
     private tokenService: Angular2TokenService,
-    private ngRedux: NgRedux<IAppState>
+    private ngRedux: NgRedux<IAppState>,
+    private messageService: MessageService
   ) { }
 
-  
-  public loadFolder(dbFolderId): Observable<any> {
-    return this.tokenService
+
+  public loadFolder(dbFolderId): void {
+    this.tokenService
       .get(`db_folders/${dbFolderId}.json`, {})
       .map(resp => resp.json())
-      .do(json => this._dispatch(json));
+      .subscribe(
+      json => this._dispatch(json),
+      error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
-  public updateFolder(dbFolder: IDbFolder): Observable<any> {
-    //let headers = new Headers({ 'Content-Type': 'application/json' });
-    //let options = new RequestOptions({ headers: headers });
-    return this.tokenService
-      .put(`db_folders/${dbFolder.id}.json`,
-      JSON.stringify(dbFolder))
+  public updateFolder(dbFolder: IDbFolder): void {
+    this.tokenService
+      .put(`db_folders/${dbFolder.id}.json`, JSON.stringify(dbFolder))
       .map(resp => resp.json())
-      .do(json => this._dispatch(json.data))
+      .subscribe(
+        json => {
+          this._dispatch(json.data);
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error)));  
   }
 
+  // -------- private helper functions --------
   private _dispatch(json) {
     let entities = normalize(json, schema.dbFolder).entities;
     this._receive(DbFolderActions, entities['dbFolders']);

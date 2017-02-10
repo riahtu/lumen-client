@@ -7,7 +7,6 @@ import { select } from 'ng2-redux';
 
 import {
   NilmService,
-  parseErrors
 } from '../../services/api';
 
 import {
@@ -40,12 +39,6 @@ export class InstallationPageComponent implements OnInit {
     route.params.subscribe(params => { 
       if(!(params['id'] in ngRedux.getState().data.nilms)){
         this.nilmService.loadNilm(params['id'])
-          .subscribe(null, error=> {
-            this.ngRedux.dispatch({
-            type: PageActions.SET_MESSAGES,
-            payload: parseErrors(error)
-          })
-        })
       }
     });
 
