@@ -6,15 +6,25 @@ export interface INilm {
   id: number;
   name: string;
   description: string;
-  db: number;
   available: boolean;
   url: string;
+  db_id: number;
 }
 export interface INilmRecord extends
   TypedRecord<INilmRecord>, INilm { };
 export interface INilmRecords {
   [index: string]: INilmRecord;
 }
+
+export interface INilmStore {
+  admin: number[];
+  owner: number[];
+  viewer: number[];
+  entities: INilmRecords;
+}
+export interface INilmStoreRecord extends
+  TypedRecord<INilmStoreRecord>, INilmStore { };
+
 
 // ---- Db ----
 export interface IDb {

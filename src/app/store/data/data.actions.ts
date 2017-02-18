@@ -1,6 +1,9 @@
 
-export class NilmActions {
-  static RECEIVE = 'NILM_RECEIVE';
+export const NilmActions = {
+  'RECEIVE_ADMIN_NILMS': 'NILM_RECEIVE_ADMIN_NILMS',
+  'RECEIVE_OWNER_NILMS': 'NILM_RECEIVE_OWNER_NILMS',
+  'RECEIVE_VIEWER_NILMS': 'NILM_RECEIVE_VIEWER_NILMS',
+  'RECEIVE_NILM': 'NILM_RECEIVE_NILM'
 };
 export const DbActions = {
   'RECEIVE': 'DB_RECEIVE'

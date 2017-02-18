@@ -7,7 +7,7 @@
 <div *ngIf="nilm!=null">
   <h1 class="page-title"> <b>[{{nilm.name}}]</b> Administration</h1>
   <tabset>
-    <tab heading='Database'><app-db-admin [dbId]="dbId$"></app-db-admin></tab>
+    <tab heading='Database'><app-db-admin [nilm]="nilm$"></app-db-admin></tab>
     <tab heading='Permissions'>TODO</tab>
   </tabset>
 </div>

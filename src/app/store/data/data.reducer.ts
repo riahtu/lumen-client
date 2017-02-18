@@ -1,19 +1,44 @@
 
 import * as actions from './data.actions';
 import * as factories from './data.initial-state';
-import { recordify,
-  IPayloadAction } from '../helpers';
+import {
+  recordify,
+  IPayloadAction
+} from '../helpers';
 import * as records from './data.types';
 
 export function nilmReducer(
-  state: records.INilmRecords = {},
-  action: IPayloadAction): records.INilmRecords {
+  state: records.INilmStoreRecord = factories.NilmStoreFactory(),
+  action: IPayloadAction): records.INilmStoreRecord {
   switch (action.type) {
-    case actions.NilmActions.RECEIVE:
-      return recordify(action.payload, factories.NilmFactory);
+    case actions.NilmActions.RECEIVE_ADMIN_NILMS:
+      return state.set('admin', action.payload.result)
+        .set('entities', mergeNilmEntities(state.entities,
+          action.payload))
+    case actions.NilmActions.RECEIVE_OWNER_NILMS:
+      return state.set('owner', action.payload.result)
+        .set('entities', mergeNilmEntities(state.entities,
+          action.payload))
+    case actions.NilmActions.RECEIVE_VIEWER_NILMS:
+      return state.set('viewer', action.payload.result)
+        .set('entities', mergeNilmEntities(state.entities,
+          action.payload))
+    case actions.NilmActions.RECEIVE_NILM:
+      return state.set('entities', mergeNilmEntities(state.entities,
+        action.payload))
     default:
       return state;
   }
+}
+
+export function mergeNilmEntities(currentEntities, payload): any {
+  if (payload.entities.nilms === undefined) {
+    return currentEntities;
+  }
+  return Object.assign({},
+    currentEntities,
+    recordify(payload.entities.nilms,
+      factories.NilmFactory));
 }
 
 export function dbReducer(
@@ -21,7 +46,9 @@ export function dbReducer(
   action: IPayloadAction): records.IDbRecords {
   switch (action.type) {
     case actions.DbActions.RECEIVE:
-      return recordify(action.payload, factories.DbFactory);
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.DbFactory));
     default:
       return state;
   }
@@ -35,7 +62,6 @@ export function dbFolderReducer(
       return Object.assign({},
         state,
         recordify(action.payload, factories.DbFolderFactory));
-
     default:
       return state;
   }

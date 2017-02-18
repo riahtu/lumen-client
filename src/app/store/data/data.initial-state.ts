@@ -2,14 +2,22 @@
 import * as data from './data.types';
 import { makeTypedFactory } from 'typed-immutable-record';
 
+export const NilmStoreFactory = 
+  makeTypedFactory<data.INilmStore, data.INilmStoreRecord>({
+    admin: [],
+    owner: [],
+    viewer: [],
+    entities: {}
+});
+
 // ---- Nilm ----
 export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   id: null,
   name: '',
   description: '',
   url: '',
-  db: null,
-  available: false
+  available: false,
+  db_id: null
 });
 
 // ---- Db ----

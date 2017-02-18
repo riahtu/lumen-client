@@ -29,7 +29,7 @@ export class DbStreamService {
   public updateStream(stream): void {
     this.tokenService
       .put(`db_streams/${stream.id}.json`, 
-        JSON.stringify({'stream': stream}))
+        JSON.stringify(stream))
       .map(resp => resp.json())
       .subscribe(
         json => {

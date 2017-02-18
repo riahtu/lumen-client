@@ -22,7 +22,7 @@ import { select } from 'ng2-redux';
 })
 export class InstallationsPageComponent implements OnInit {
 
-  @select(['data', 'nilms']) nilms$: Observable<INilmRecords>;
+  @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
   @select(['page', 'messages']) messages$: Observable<IStatusMessages>;
 
   constructor(

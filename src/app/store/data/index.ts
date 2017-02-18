@@ -3,12 +3,12 @@ import * as types from './data.types';
 import * as reducers from './data.reducer';
 
 export interface IDataState {
-  nilms: types.INilmRecords;
+  nilms: types.INilmStoreRecord;
   dbs: types.IDbRecords;
   dbFolders: types.IDbFolderRecords;
   dbStreams: types.IDbStreamRecords;
   dbElements: types.IDbElementRecords;
-  user: types.IUser;
+  user: types.IUserRecord;
 }
 
 export const dataReducer = combineReducers<IDataState>({

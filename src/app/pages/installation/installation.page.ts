@@ -14,6 +14,8 @@ import {
   IStatusMessages,
   INilmRecords,
   INilmRecord,
+  IDbRecord,
+  IDbRecords,
   PageActions
 } from '../../store';
 
@@ -26,30 +28,28 @@ import {
 export class InstallationPageComponent implements OnInit {
 
   @select(['page', 'messages']) messages$: Observable<IStatusMessages>;
-  @select(['data', 'nilms']) nilms$: Observable<INilmRecords>;
-  
+  @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
+
   public nilm$: Observable<INilmRecord>
-  public dbId$: Observable<number>
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private route: ActivatedRoute,
     private nilmService: NilmService
-  ) { 
-    route.params.subscribe(params => { 
-      if(!(params['id'] in ngRedux.getState().data.nilms)){
+  ) {
+    route.params.subscribe(params => {
+      if (!(params['id'] in ngRedux.getState().data.nilms.entities)) {
         this.nilmService.loadNilm(params['id'])
       }
     });
 
     this.nilm$ = this.nilms$
-                    .combineLatest(route.params)
-                    
-                    .map(([nilms,params]) => nilms[params['id']])
-                    .filter(nilm => !(nilm === undefined))
+      .combineLatest(route.params)
 
-    this.dbId$ = this.nilm$
-                    .map(nilm => nilm.db)
+      .map(([nilms, params]) => nilms[params['id']])
+      .filter(nilm => !(nilm === undefined))
+
+   
   }
 
   ngOnInit() {

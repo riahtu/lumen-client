@@ -28,8 +28,9 @@ dbFolder.define({
 export const db = new schema.Entity('dbs',
   { contents: dbFolder });
 
-export const nilm = new schema.Entity('nilms',
-  { db: db });
+export const nilm = new schema.Entity('nilms');
+
 export const nilms = new schema.Array(nilm);
+
 
 export const user = new schema.Entity('users')

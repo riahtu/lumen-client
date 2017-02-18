@@ -37,7 +37,20 @@ export class NilmService {
       .get('nilms.json', {})
       .map(resp => resp.json())
       .subscribe(
-      json => this._dispatch(json, schema.nilms),
+      json => {
+        this.ngRedux.dispatch({
+          type: NilmActions.RECEIVE_ADMIN_NILMS,
+          payload: normalize(json.admin, schema.nilms)
+        });
+        this.ngRedux.dispatch({
+          type: NilmActions.RECEIVE_OWNER_NILMS,
+          payload: normalize(json.owner, schema.nilms)
+        });
+        this.ngRedux.dispatch({
+          type: NilmActions.RECEIVE_VIEWER_NILMS,
+          payload: normalize(json.viewer, schema.nilms)
+        });
+      },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
   }
@@ -47,27 +60,13 @@ export class NilmService {
       .get(`nilms/${nilmId}.json`, {})
       .map(resp => resp.json())
       .subscribe(
-      json => this._dispatch(json, schema.nilm),
+      json => {
+        this.ngRedux.dispatch({
+          type: NilmActions.RECEIVE_NILM,
+          payload: normalize(json, schema.nilm)
+        });
+      },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
   }
-
-  // ------------ private helper functions ----------
-
-  private _dispatch(json, resp_schema) {
-    let entities = normalize(json, resp_schema).entities;
-    this._receive(NilmActions, entities['nilms']);
-    this._receive(DbActions, entities['dbs']);
-    this._receive(DbFolderActions, entities['dbFolders']);
-  }
-
-  private _receive(target: any, data: any) {
-    if (!(data === undefined)) {
-      this.ngRedux.dispatch({
-        type: target.RECEIVE,
-        payload: data
-      });
-    }
-  }
-
 }

@@ -6,11 +6,11 @@ import { Http, Headers, RequestOptionsArgs, URLSearchParams } from '@angular/htt
 import { normalize } from 'normalizr';
 
 import * as schema from '../../api';
-import{ MessageService } from '../message.service';
+import { MessageService } from '../message.service';
 import { parseAPIErrors } from './helpers';
-import { 
+import {
   IDb,
-  IAppState 
+  IAppState
 } from '../../store';
 import {
   DbActions,
@@ -33,8 +33,8 @@ export class DbService {
       .get(`dbs/${dbId}.json`, {})
       .map(resp => resp.json())
       .subscribe(
-        json => this._dispatch(json),
-        error => this.messageService.setErrors(parseAPIErrors(error)));
+      json => this._dispatch(json),
+      error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
   public updateDb(db: IDb): void {
@@ -42,23 +42,24 @@ export class DbService {
       .put(`dbs/${db.id}.json`, JSON.stringify(db))
       .map(resp => resp.json())
       .subscribe(
-        json => {
-          this._dispatch(json.data);
-          this.messageService.setMessages(json.messages);
-        },
-        error => this.messageService.setErrors(parseAPIErrors(error)));
+      json => {
+        this._dispatch(json.data);
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
   public refreshDb(db: IDb): void {
+    this.messageService.clearMessages();
     this.tokenService
-      .put(`dbs/${db.id}`,{refresh: true})
+      .put(`dbs/${db.id}`, { refresh: true })
       .map(resp => resp.json())
       .subscribe(
-        json => {
-          this._dispatch(json.data);
-          this.messageService.setMessages(json.messages);
-        },
-        error => this.messageService.setErrors(parseAPIErrors(error)));
+      json => {
+        this._dispatch(json.data);
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
   // -------- private helper functions --------

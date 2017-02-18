@@ -30,6 +30,7 @@ export class DbFolderService {
 
 
   public loadFolder(dbFolderId): void {
+    
     this.tokenService
       .get(`db_folders/${dbFolderId}.json`, {})
       .map(resp => resp.json())
