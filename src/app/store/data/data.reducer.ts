@@ -106,3 +106,16 @@ export function userReducer(
   }
 }
 
+
+export function permissionReducer(
+  state: records.IPermissionRecords = {},
+  action: IPayloadAction): records.IPermissionRecords {
+  switch (action.type) {
+    case actions.PermissionActions.RECEIVE:
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.PermissionFactory));
+    default:
+      return state;
+  }
+}

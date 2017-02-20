@@ -20,3 +20,6 @@ export const DbElementActions = {
 export const UserActions = {
   'RECEIVE': 'USER_RECEIVE'
 };
+export const PermissionActions = {
+  'RECEIVE': 'PERMISSION_RECEIVE'
+};

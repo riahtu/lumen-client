@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
 
 import {
-  NilmService,
   DbAdminService,
   DbFolderService,
   DbService,
@@ -29,7 +28,6 @@ export class DbAdminPageComponent implements OnInit {
   public treeOptions = {};
 
   constructor(
-    private nilmService: NilmService,
     public dbService: DbService,
     private dbAdminService: DbAdminService,
     private dbFolderService: DbFolderService,

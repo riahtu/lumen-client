@@ -1,0 +1,18 @@
+div {
+  margin: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  background: #eee;
+    border: solid;
+    border-width: 1px;
+    border-color: #bbb;
+    color: black;
+}
+
+i{
+  color: black;
+}
+i.fa-close{
+  color: grey;
+}

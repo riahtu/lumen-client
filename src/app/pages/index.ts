@@ -1,6 +1,7 @@
 
 
 export { DbAdminPageComponent } from './db-admin/db-admin.page'
+export { InstallationAdminPageComponent } from './installation-admin/installation-admin.page'
 export { InstallationsPageComponent } from './installations/installations.page'
 export { InstallationPageComponent } from './installation/installation.page'
 export { SignInPageComponent } from './sign-in/sign-in.page';

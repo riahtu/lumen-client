@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -22,11 +23,15 @@ import {
   EditFolderComponent,
   EditStreamComponent,
   MessagesComponent,
-  SessionComponent
+  SessionComponent,
+  EditNilmComponent,
+  EditPermissionsComponent,
+  PermissionComponent
 } from './components';
 
 import {
   DbAdminPageComponent,
+  InstallationAdminPageComponent,
   HomePageComponent,
   SignInPageComponent,
   InstallationsPageComponent,
@@ -56,7 +61,11 @@ import { ToArrayPipe } from './to-array.pipe';
     SignInPageComponent,
     SessionComponent,
     AccountPageComponent,
-    PasswordResetPageComponent
+    PasswordResetPageComponent,
+    InstallationAdminPageComponent,
+    EditNilmComponent,
+    EditPermissionsComponent,
+    PermissionComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +73,7 @@ import { ToArrayPipe } from './to-array.pipe';
     HttpModule,
     NgReduxModule,
     TreeModule,
+    RouterModule,
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),

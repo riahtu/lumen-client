@@ -32,5 +32,7 @@ export const nilm = new schema.Entity('nilms');
 
 export const nilms = new schema.Array(nilm);
 
-
 export const user = new schema.Entity('users')
+
+export const permission = new schema.Entity('permissions')
+export const permissions = new schema.Array(permission);

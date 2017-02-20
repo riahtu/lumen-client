@@ -9,6 +9,7 @@ export interface IDataState {
   dbStreams: types.IDbStreamRecords;
   dbElements: types.IDbElementRecords;
   user: types.IUserRecord;
+  permissions: types.IPermissionRecords;
 }
 
 export const dataReducer = combineReducers<IDataState>({
@@ -17,6 +18,7 @@ export const dataReducer = combineReducers<IDataState>({
   dbFolders: reducers.dbFolderReducer,
   dbStreams: reducers.dbStreamReducer,
   dbElements: reducers.dbElementReducer,
+  permissions: reducers.permissionReducer,
   user: reducers.userReducer
 });
 

@@ -115,3 +115,19 @@ export interface IUser {
 }
 export interface IUserRecord extends
   TypedRecord<IUserRecord>, IUser { };
+
+
+// ---- Permission ----
+export interface IPermission {
+  id: number;
+  target_name: string;
+  target_type: string;
+  nilm_id: number;
+  role: string;
+}
+
+export interface IPermissionRecord extends
+  TypedRecord<IPermissionRecord>, IPermission { };
+export interface IPermissionRecords {
+  [index: string]: IPermission;
+}

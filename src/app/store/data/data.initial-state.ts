@@ -91,3 +91,13 @@ export const UserFactory =
     last_name: null,
     email: null
   });
+
+// ---- User ----
+export const PermissionFactory =
+  makeTypedFactory<data.IPermission, data.IPermissionRecord>({
+    id: null,
+    target_name: '',
+    target_type: 'unknown',
+    role: 'invalid',
+    nilm_id: null
+  });
