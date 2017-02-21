@@ -16,3 +16,11 @@ i{
 i.fa-close{
   color: grey;
 }
+
+i.fa-close:hover{
+  color: firebrick;
+}
+
+.remove-permission:hover{
+  cursor: pointer;
+}

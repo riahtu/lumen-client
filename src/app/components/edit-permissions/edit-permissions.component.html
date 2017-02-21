@@ -4,11 +4,18 @@
   </div>
   <div class="panel-body">
     <span class="lead">Administrators</span><hr/>
-    <app-permission  *ngFor="let permission of admins" [permission]='permission'></app-permission>
+    <app-permission  *ngFor="let permission of admins" 
+      [permission]='permission'
+      (remove)='removePermission(permission)'></app-permission>
     <div class="lead permission-list">Owners</div><hr/>
-    <app-permission *ngFor="let permission of owners" [permission]='permission'></app-permission>
+    <app-permission *ngFor="let permission of owners" 
+      [permission]='permission'
+      (remove)='removePermission(permission)'></app-permission>
     <div class="lead permission-list">Viewers</div><hr/>
-    <app-permission *ngFor="let permission of viewers" [permission]='permission'></app-permission>
+    <app-permission *ngFor="let permission of viewers"
+     [permission]='permission'
+     (remove)='removePermission(permission)'></app-permission>
+ 
   <button class="btn btn-default">
     <i class="fa fa-user-plus"></i> Add Permission</button>
   </div>

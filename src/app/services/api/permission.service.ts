@@ -6,7 +6,10 @@ import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 
-import { IAppState } from '../../store';
+import { 
+  IAppState,
+  IPermission 
+} from '../../store';
 import {
   PermissionActions
 } from '../../store/data';
@@ -36,7 +39,6 @@ export class PermissionService {
       .map(resp => resp.json())
       .subscribe(
       json => {
-        console.log()
         this.ngRedux.dispatch({
           type: PermissionActions.RECEIVE,
           payload: normalize(json, schema.permissions).entities.permissions
@@ -44,5 +46,23 @@ export class PermissionService {
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
+  }
+
+  public removePermission(permission: IPermission):void {
+    let params: URLSearchParams = new URLSearchParams();
+    params.set('nilm_id',permission.nilm_id.toString());
+    this.tokenService
+      .delete(`permissions/${permission.id}.json`, {search: params})
+      .map(resp => resp.json())
+      .subscribe(
+        json => {
+          this.ngRedux.dispatch({
+            type: PermissionActions.REMOVE,
+            payload: permission.id
+          });
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error))
+        );
   }
 }

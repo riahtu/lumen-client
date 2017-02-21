@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { select } from 'ng2-redux';
 
 
@@ -27,6 +27,7 @@ export class InstallationAdminPageComponent implements OnInit {
   public owners$: Observable<IPermission[]>
   public viewers$: Observable<IPermission[]>
 
+  private nilmSub: Subscription;
   constructor(
     private permissionService: PermissionService
   ) { 
@@ -34,7 +35,7 @@ export class InstallationAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.nilm.subscribe(
+    this.nilmSub = this.nilm.subscribe(
       nilm => this.permissionService.loadPermissions(nilm.id)
     )
     let nilmPermissions = 
@@ -52,6 +53,10 @@ export class InstallationAdminPageComponent implements OnInit {
       permissions.filter(p => p.role=='viewer'))
 
 
+  }
+
+  ngOnDestroy() {
+    this.nilmSub.unsubscribe();
   }
 
 }

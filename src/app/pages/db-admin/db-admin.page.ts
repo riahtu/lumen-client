@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TreeNode } from 'angular2-tree-component';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { select } from 'ng2-redux';
 
 import {
@@ -26,6 +26,7 @@ export class DbAdminPageComponent implements OnInit {
   @select(['data', 'dbs']) dbs$: Observable<IDbRecords>;
 
   public treeOptions = {};
+  private subs: Subscription[];
 
   constructor(
     public dbService: DbService,
@@ -36,6 +37,7 @@ export class DbAdminPageComponent implements OnInit {
     this.treeOptions = {
       getChildren: this.getChildren.bind(this)
     };
+    this.subs = [];
 
   };
 
@@ -61,19 +63,27 @@ export class DbAdminPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.nilm
-      .combineLatest(this.dbs$)
-      .subscribe(([nilm, dbs]) => {
-        console.log(nilm.db_id,dbs);
-        if (dbs[nilm.db_id] === undefined) {
-          this.dbService.loadDb(nilm.db_id);
-        }
-      })
-    this.nilm
-      .subscribe(nilm => {
-        this.dbAdminService.setDbId(nilm.db_id);
-        this.dbAdminService.selectDbRoot();
-      })
+    this.subs.push(
+       this.nilm
+        .combineLatest(this.dbs$)
+        .subscribe(([nilm, dbs]) => {
+          if (dbs[nilm.db_id] === undefined) {
+            this.dbService.loadDb(nilm.db_id);
+          }
+        })
+    );
+    this.subs.push(
+      this.nilm
+        .subscribe(nilm => {
+          this.dbAdminService.setDbId(nilm.db_id);
+          this.dbAdminService.selectDbRoot();
+        })
+    );
   }
 
+  ngOnDestroy(){
+    for (var sub of this.subs) {
+      sub.unsubscribe();
+    }
+  }
 }

@@ -99,5 +99,6 @@ export const PermissionFactory =
     target_name: '',
     target_type: 'unknown',
     role: 'invalid',
-    nilm_id: null
+    nilm_id: null,
+    removable: false
   });

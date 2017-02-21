@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, EventEmitter } from '@angular/core';
 
 import {
   IPermission,
@@ -7,6 +7,7 @@ import {
 
 @Component({
   selector: 'app-permission',
+  outputs: ['remove'],
   templateUrl: './permission.component.html',
   styleUrls: ['./permission.component.css']
 })
@@ -14,10 +15,16 @@ import {
 export class PermissionComponent implements OnInit {
 
   @Input() permission: IPermission;
+  remove: EventEmitter<IPermission>;
 
-  constructor() { }
+  constructor() { 
+    this.remove = new EventEmitter();
+  }
 
   ngOnInit() {
   }
 
+  removePermission(){
+    this.remove.emit(this.permission);
+  }
 }

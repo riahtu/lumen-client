@@ -21,5 +21,6 @@ export const UserActions = {
   'RECEIVE': 'USER_RECEIVE'
 };
 export const PermissionActions = {
-  'RECEIVE': 'PERMISSION_RECEIVE'
+  'RECEIVE': 'PERMISSION_RECEIVE',
+  'REMOVE': 'PERMISSION_REMOVE'
 };

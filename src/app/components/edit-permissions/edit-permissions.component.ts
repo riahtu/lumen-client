@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import {
+  PermissionService
+} from '../../services';
+
+import {
   IPermission,
 } from '../../store';
 
@@ -15,8 +19,13 @@ export class EditPermissionsComponent implements OnInit {
   @Input() owners: IPermission[]
   @Input() viewers: IPermission[]
 
-  constructor() { }
+  constructor(
+    private permissionService: PermissionService
+  ) { }
 
+  removePermission(permission: IPermission){
+    this.permissionService.removePermission(permission);
+  }
   ngOnInit() {
   }
 

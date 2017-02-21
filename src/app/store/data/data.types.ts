@@ -124,6 +124,7 @@ export interface IPermission {
   target_type: string;
   nilm_id: number;
   role: string;
+  removable: boolean
 }
 
 export interface IPermissionRecord extends

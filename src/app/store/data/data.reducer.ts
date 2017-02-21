@@ -3,6 +3,7 @@ import * as actions from './data.actions';
 import * as factories from './data.initial-state';
 import {
   recordify,
+  removeByKey,
   IPayloadAction
 } from '../helpers';
 import * as records from './data.types';
@@ -115,6 +116,10 @@ export function permissionReducer(
       return Object.assign({},
         state,
         recordify(action.payload, factories.PermissionFactory));
+    case actions.PermissionActions.REMOVE:
+      let new_state = removeByKey(state, action.payload)
+      console.log(new_state,state);
+      return new_state;
     default:
       return state;
   }

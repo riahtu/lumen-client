@@ -4,7 +4,9 @@
   <i *ngIf="permission.target_type=='group'" class="fa fa-group fa-fw"></i> 
   {{permission.target_name}}
   </span>
-  <span class="pull-right">
+  <span *ngIf="permission.removable"
+   (click) = 'removePermission()'
+   class="pull-right remove-permission">
     <i class="fa fa-close"></i>
   </span>
 </div>

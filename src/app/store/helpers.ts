@@ -12,6 +12,15 @@ export const recordify = (obj_dict: any, factory: any) => {
     }, {});
 };
 
+export function removeByKey (myObj, deleteKey) {
+  return Object.keys(myObj)
+    .filter(key => key != deleteKey)
+    .reduce((result, current) => {
+      result[current] = myObj[current];
+      return result;
+  }, {});
+}
+
 export interface IPayloadAction extends Action {
   payload?: any;
 }
