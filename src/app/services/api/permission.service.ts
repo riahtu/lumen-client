@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Angular2TokenService } from 'angular2-token';
-import { NgRedux } from 'ng2-redux';
+import {
+  NgRedux,
+  select
+} from 'ng2-redux';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 
-import { 
+import {
   IAppState,
-  IPermission 
+  IPermission,
+  IUserRecords,
+  IUserGroupRecords
 } from '../../store';
 import {
   PermissionActions
 } from '../../store/data';
+import { UserService } from './user.service';
+import { UserGroupService } from './user-group.service';
+
 import {
   MessageService
 } from '../message.service';
@@ -23,19 +31,50 @@ import {
 @Injectable()
 export class PermissionService {
 
+  @select(['data', 'users', 'entities']) users$: Observable<IUserRecords>;
+  @select(['data', 'userGroups', 'entities']) userGroups$: Observable<IUserGroupRecords>;
+
+  public targets$: Observable<PermissionTarget[]>;
 
   constructor(
     //private http: Http,
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
-    private messageService: MessageService
-  ) { }
+    private messageService: MessageService,
+    private userService: UserService,
+    private userGroupService: UserGroupService
+  ) {
+    this.targets$ = this.users$.combineLatest(this.userGroups$)
+      .map(([users, userGroups]) => {
+        let targets: PermissionTarget[] = []
+        Object.keys(users).reduce((acc: PermissionTarget[], id) => {
+          let user = users[id];
+          acc.push({
+            id: +id,
+            name: `${user.first_name} ${user.last_name}`,
+            type: 'user'
+          })
+          return acc;
+        }, targets)
+        Object.keys(userGroups).reduce((acc: PermissionTarget[], id) => {
+          let group = userGroups[id];
+          acc.push({
+            id: +id,
+            name: `${group.name}`,
+            type: 'group'
+          })
+          return acc;
+        }, targets)
+        console.log(targets);
+        return targets;
+      });
+  }
 
   public loadPermissions(nilmId: number): void {
     let params: URLSearchParams = new URLSearchParams();
-    params.set('nilm_id',nilmId.toString());
+    params.set('nilm_id', nilmId.toString());
     this.tokenService
-      .get('permissions.json', {search: params})
+      .get('permissions.json', { search: params })
       .map(resp => resp.json())
       .subscribe(
       json => {
@@ -48,21 +87,59 @@ export class PermissionService {
       );
   }
 
-  public removePermission(permission: IPermission):void {
+  public removePermission(permission: IPermission): void {
     let params: URLSearchParams = new URLSearchParams();
-    params.set('nilm_id',permission.nilm_id.toString());
+    params.set('nilm_id', permission.nilm_id.toString());
     this.tokenService
-      .delete(`permissions/${permission.id}.json`, {search: params})
+      .delete(`permissions/${permission.id}.json`, { search: params })
       .map(resp => resp.json())
       .subscribe(
-        json => {
-          this.ngRedux.dispatch({
-            type: PermissionActions.REMOVE,
-            payload: permission.id
-          });
-          this.messageService.setMessages(json.messages);
-        },
-        error => this.messageService.setErrors(parseAPIErrors(error))
-        );
+      json => {
+        this.ngRedux.dispatch({
+          type: PermissionActions.REMOVE,
+          payload: permission.id
+        });
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
   }
+
+  public createPermission(
+    nilmId: number,
+    role: string,
+    targetId: string,
+    targetType: string): Observable<string> {
+    let o = this.tokenService
+      .post('/permissions.json', {
+        nilm_id: nilmId,
+        role: role,
+        target: targetType,
+        target_id: targetId
+      })
+      .map(resp => resp.json());
+
+      o.subscribe(
+      json => {
+        this.ngRedux.dispatch({
+          type: PermissionActions.RECEIVE,
+          payload: normalize(json.data, schema.permission).entities.permissions
+        });
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
+      return o;
+  }
+
+  public loadTargets(): void {
+    this.userService.loadUsers();
+    this.userGroupService.loadUserGroups();
+  }
+}
+
+export interface PermissionTarget {
+  id: number,
+  name: string,
+  type: string
 }

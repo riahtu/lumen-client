@@ -7,16 +7,77 @@
     <app-permission  *ngFor="let permission of admins" 
       [permission]='permission'
       (remove)='removePermission(permission)'></app-permission>
-    <div class="lead permission-list">Owners</div><hr/>
+    <div class="lead compact">Owners</div><hr/>
     <app-permission *ngFor="let permission of owners" 
       [permission]='permission'
       (remove)='removePermission(permission)'></app-permission>
-    <div class="lead permission-list">Viewers</div><hr/>
+    <div class="lead compact">Viewers</div><hr/>
     <app-permission *ngFor="let permission of viewers"
      [permission]='permission'
      (remove)='removePermission(permission)'></app-permission>
  
-  <button class="btn btn-default">
+  <button class="btn btn-default" (click)='permissionModal.show()'>
     <i class="fa fa-user-plus"></i> Add Permission</button>
+  </div>
+</div>
+
+<div class="modal fade" bsModal #permissionModal="bs-modal" [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog" (onShow)="addPermissionShown()"
+     (onHide)="resetModal()" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Add Permission</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="permissionModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="lead xcompact">Select one:</div><hr/>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+            select existing user or group
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+            invite new user by e-mail
+          </label>
+        </div>
+         <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option3">
+            create a new user
+          </label>
+        </div>
+        
+
+        <div class="lead compact">Permission:</div><hr/>
+        <label class="radio-inline">
+          <input type="radio" name="role" value="admin" [(ngModel)]="role"> admin
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="role" value="owner" [(ngModel)]="role"> owner
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="role" value="viewer" [(ngModel)]="role"> viewer
+        </label>
+      
+        <div class="lead compact">User/Group:</div><hr/>
+        <ng-select [(ngModel)]="target"
+          [options]="selectEntries$ | async">
+        </ng-select>
+        <div class="clearfix">
+          <button class="btn btn-primary pull-left" 
+                  [disabled]="target==null"
+                  (click)="createPermission()">Save</button>
+          <button class="btn btn-default pull-right"
+                  (click)="permissionModal.hide()">
+                  Cancel</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

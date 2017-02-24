@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { combineEpics } from 'redux-observable';
+import { Epic } from 'redux-observable';
+
 import {PageEpics} from './page.epics';
 import {SessionEpics } from './session.epics';
-import { Epic } from 'redux-observable';
+
 import { 
   IAppState,
   IPayloadAction 

@@ -105,7 +105,7 @@ export class SessionService {
 
   private setUser(json) {
     this.ngRedux.dispatch({
-      type: UserActions.RECEIVE,
+      type: UserActions.SET_CURRENT,
       payload: json
     });
   }

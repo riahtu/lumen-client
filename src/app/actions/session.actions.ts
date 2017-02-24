@@ -22,3 +22,5 @@ export class SessionActions {
     this.ngRedux.dispatch({ type: SessionActions.LOGOUT_USER });
   };
 }
+
+/******* IS THIS USED?  ************/

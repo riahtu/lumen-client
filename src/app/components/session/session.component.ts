@@ -14,7 +14,7 @@ import {
 })
 export class SessionComponent implements OnInit {
 
-  @select(['data', 'user']) user$: Observable<IUserRecord>;
+  @select(['data', 'users', 'current']) userId$: Observable<number>;
 
   constructor(
     private tokenService: Angular2TokenService

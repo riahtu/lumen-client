@@ -8,7 +8,8 @@ export interface IDataState {
   dbFolders: types.IDbFolderRecords;
   dbStreams: types.IDbStreamRecords;
   dbElements: types.IDbElementRecords;
-  user: types.IUserRecord;
+  users: types.IUserStoreRecord;
+  userGroups: types.IUserGroupStoreRecord;
   permissions: types.IPermissionRecords;
 }
 
@@ -19,7 +20,8 @@ export const dataReducer = combineReducers<IDataState>({
   dbStreams: reducers.dbStreamReducer,
   dbElements: reducers.dbElementReducer,
   permissions: reducers.permissionReducer,
-  user: reducers.userReducer
+  users: reducers.userReducer,
+  userGroups: reducers.userGroupReducer
 });
 
 export * from './data.actions';

@@ -4,7 +4,8 @@
     
   </div>
   <div class="col-md-6">
-    <app-edit-permissions [admins]="admins$ | async"
+    <app-edit-permissions [nilm]="nilm | async"
+                          [admins]="admins$ | async"
                           [owners]="owners$ | async"
                           [viewers]="viewers$ | async"></app-edit-permissions>
   </div>

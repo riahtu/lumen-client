@@ -97,16 +97,46 @@ export function dbElementReducer(
 }
 
 export function userReducer(
-  state: records.IUserRecord = factories.UserFactory(),
-  action: IPayloadAction): records.IUserRecord {
+  state: records.IUserStoreRecord = factories.UserStoreFactory(),
+  action: IPayloadAction): records.IUserStoreRecord {
   switch (action.type) {
     case actions.UserActions.RECEIVE:
-      return factories.UserFactory(action.payload);
+      //current user has more data fields, don't 
+      //overwrite it with this limited 'public' view
+      let others = Object.keys(action.payload)
+        .filter(id => +id != state.current)
+        .reduce((acc, id: string) => {
+          acc[id] = factories.UserFactory(action.payload[id]);
+          return acc;
+        }, {});
+      return state.set('entities', Object.assign({},
+        state.entities,
+        others));
+    case actions.UserActions.SET_CURRENT:
+      //let user = factories.UserFactory(action.payload);
+      let entity = {};
+      entity[action.payload.id] = factories.UserFactory(action.payload);
+      return state
+        .set('current', action.payload.id)
+        .set('entities', Object.assign({},
+          state.entities,
+          entity));
     default:
       return state;
   }
 }
 
+export function userGroupReducer(
+  state: records.IUserGroupStoreRecord = factories.UserGroupStoreFactory(),
+  action: IPayloadAction): records.IUserGroupStoreRecord {
+  switch (action.type) {
+    case actions.UserGroupActions.RECEIVE:
+      return state.set('entities', Object.assign({},
+        state.entities, action.payload));
+    default:
+      return state;
+  }
+}
 
 export function permissionReducer(
   state: records.IPermissionRecords = {},
@@ -118,7 +148,6 @@ export function permissionReducer(
         recordify(action.payload, factories.PermissionFactory));
     case actions.PermissionActions.REMOVE:
       let new_state = removeByKey(state, action.payload)
-      console.log(new_state,state);
       return new_state;
     default:
       return state;

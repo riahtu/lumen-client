@@ -2,11 +2,15 @@ hr {
   margin-top: 0px;
   margin-bottom: 10px;
 }
-.permission-list{
+div.compact{
   margin-bottom: 0px;
   margin-top: 15px;
 }
 
+div.xcompact{
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
 .btn{
   margin-top: 10px;
 }

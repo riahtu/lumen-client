@@ -115,6 +115,35 @@ export interface IUser {
 }
 export interface IUserRecord extends
   TypedRecord<IUserRecord>, IUser { };
+export interface IUserRecords {
+    [index: number]: IUserRecord;
+};
+export interface IUserStore {
+  current: number;
+  entities: IUserRecords;
+}
+export interface IUserStoreRecord extends
+  TypedRecord<IUserStoreRecord>, IUserStore { };
+
+
+// ---- UserGroup ----
+export interface IUserGroup {
+  id: number;
+  name: string;
+  owner: number;
+  members: number[];
+}
+export interface IUserGroupRecord extends
+  TypedRecord<IUserGroupRecord>, IUserGroup { };
+export interface IUserGroupRecords {
+    [index: number]: IUserGroupRecord;
+};
+export interface IUserGroupStore {
+  owner: number[];
+  entities: IUserRecords;
+}
+export interface IUserGroupStoreRecord extends
+  TypedRecord<IUserGroupStoreRecord>, IUserGroupStore { };
 
 
 // ---- Permission ----

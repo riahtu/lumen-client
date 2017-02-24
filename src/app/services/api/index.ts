@@ -4,6 +4,8 @@ import { DbStreamService } from './db-stream.service';
 import { DbService } from './db.service';
 import { SessionService } from './session.service';
 import { PermissionService } from './permission.service';
+import { UserGroupService } from './user-group.service';
+import { UserService } from './user.service';
 
 export {
   NilmService,
@@ -11,5 +13,7 @@ export {
   DbFolderService,
   DbStreamService,
   SessionService,
-  PermissionService
+  PermissionService,
+  UserGroupService,
+  UserService
 }

@@ -26,13 +26,22 @@ dbFolder.define({
 });
 
 export const db = new schema.Entity('dbs',
-  { contents: dbFolder });
+  {
+    contents: dbFolder
+  });
 
 export const nilm = new schema.Entity('nilms');
-
 export const nilms = new schema.Array(nilm);
 
 export const user = new schema.Entity('users')
+export const users = new schema.Array(user);
 
 export const permission = new schema.Entity('permissions')
 export const permissions = new schema.Array(permission);
+
+export const userGroup = new schema.Entity('user_groups',
+  {
+    owner: user,
+    members: [user]
+  });
+export const userGroups = new schema.Array(userGroup);

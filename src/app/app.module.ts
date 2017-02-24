@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { NgReduxModule, NgRedux } from 'ng2-redux';
 
 import { Angular2TokenService} from 'angular2-token';
 import { TreeModule } from 'angular2-tree-component';
-
+import { SelectModule } from 'angular2-select';
 import { appRoutes } from './app.routes';
 import { AppComponent } from './app.component';
 import { SERVICE_PROVIDERS } from './services';
@@ -16,7 +16,8 @@ import { EPIC_PROVIDERS } from './epics';
 import {
   AlertModule,
   ProgressbarModule,
-  TabsModule
+  TabsModule,
+  ModalModule
 } from 'ng2-bootstrap';
 import {
   EditDbComponent,
@@ -70,13 +71,16 @@ import { ToArrayPipe } from './to-array.pipe';
   imports: [
     BrowserModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpModule,
     NgReduxModule,
     TreeModule,
+    SelectModule,
     RouterModule,
     AlertModule.forRoot(),
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
+    ModalModule.forRoot(),
     appRoutes
   ],
   providers: [

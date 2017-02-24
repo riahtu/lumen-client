@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { select } from 'ng2-redux';
 
 import {
@@ -7,8 +7,8 @@ import {
 } from '../../services';
 
 import{
-  IUser,
-  IUserRecord
+  IUserRecord,
+  IUserStoreRecord
 } from '../../store';
 
 import {
@@ -26,8 +26,9 @@ import { CustomValidators } from 'ng2-validation';
 })
 export class AccountPageComponent implements OnInit {
 
-  @select(['data','user']) user$: Observable<IUserRecord>
+  @select(['data','users']) users$: Observable<IUserStoreRecord>
   public form: FormGroup;
+  private sub: Subscription;
 
   constructor(
      private fb: FormBuilder,
@@ -35,9 +36,17 @@ export class AccountPageComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.user$.subscribe(user => this.buildForm(user));
+    this.sub = this.users$.subscribe(
+      users =>{
+        if(users.current!=null && 
+           users.entities[users.current]!==undefined){
+          this.buildForm(users.entities[users.current]);
+        }
+      }); 
   }
-
+  ngOnDestroy(){
+    this.sub.unsubscribe();
+  }
 
   buildForm(user: IUserRecord) {
     this.form = this.fb.group({

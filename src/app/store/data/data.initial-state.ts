@@ -92,7 +92,27 @@ export const UserFactory =
     email: null
   });
 
-// ---- User ----
+export const UserStoreFactory = 
+  makeTypedFactory<data.IUserStore, data.IUserStoreRecord>({
+    current: null,
+    entities: {}
+});
+
+// ---- UserGroup ----
+export const UserGroupFactory =
+  makeTypedFactory<data.IUserGroup, data.IUserGroupRecord>({
+    id: null,
+    name: '',
+    owner: null,
+    members: []
+  });
+export const UserGroupStoreFactory = 
+  makeTypedFactory<data.IUserGroupStore, data.IUserGroupStoreRecord>({
+    owner: [],
+    entities: {}
+});
+
+// ---- Permission ----
 export const PermissionFactory =
   makeTypedFactory<data.IPermission, data.IPermissionRecord>({
     id: null,

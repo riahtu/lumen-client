@@ -18,7 +18,11 @@ export const DbElementActions = {
   'RECEIVE': 'DB_ELEMENT_RECEIVE'
 };
 export const UserActions = {
+  'SET_CURRENT': 'USER_SET_CURRENT',
   'RECEIVE': 'USER_RECEIVE'
+};
+export const UserGroupActions = {
+  'RECEIVE': 'USER_GROUP_RECEIVE'
 };
 export const PermissionActions = {
   'RECEIVE': 'PERMISSION_RECEIVE',

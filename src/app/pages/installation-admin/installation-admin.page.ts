@@ -10,7 +10,9 @@ import {
 import {
   IPermissionRecords,
   IPermission,
-  INilmRecord
+  INilmRecord,
+  IUserRecords,
+  IUserGroupRecords
 } from '../../store';
 
 @Component({
@@ -21,6 +23,9 @@ import {
 export class InstallationAdminPageComponent implements OnInit {
 
   @select(['data', 'permissions']) permissions$: Observable<IPermissionRecords>;
+  @select(['data','users','entities']) users$: Observable<IUserRecords>;
+  @select(['data','groups','entities']) groups$: Observable<IUserGroupRecords>;
+
   @Input() nilm: Observable<INilmRecord>
 
   public admins$: Observable<IPermission[]>
@@ -51,12 +56,9 @@ export class InstallationAdminPageComponent implements OnInit {
       permissions.filter(p => p.role=='owner'))
     this.viewers$ = nilmPermissions.map(permissions =>
       permissions.filter(p => p.role=='viewer'))
-
-
   }
 
   ngOnDestroy() {
     this.nilmSub.unsubscribe();
   }
-
 }
