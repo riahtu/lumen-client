@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { DropdownModule } from 'ng2-bootstrap/dropdown'
 import {
   ReactiveFormsModule,
@@ -21,6 +22,7 @@ import {
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    RouterModule,
     DropdownModule.forRoot()
   ],
   declarations: [

@@ -9,7 +9,7 @@
     <!-- Installation name -->
     <td style="vertical-align: middle"> {{nilm.name}} </td>
     <!-- Admin/Owner access -->
-    <td><button class="btn btn-default">view</button></td>
+    <td><button class="btn btn-default" [routerLink]="['/installations',nilm.id]">view</button></td>
   </tr>
 
   <!-- nilms with just viewer privleges -->

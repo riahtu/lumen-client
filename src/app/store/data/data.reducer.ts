@@ -138,7 +138,7 @@ export function userGroupReducer(
       return state.set('member', action.payload.result)
         .set('entities', mergeGroupEntities(state.entities,
           action.payload))
-    case actions.UserGroupActions.RECEIVE_OTHER_GROUPS:
+    case actions.UserGroupActions.RECEIVE_GROUPS:
       return state.set('entities', mergeGroupEntities(state.entities,
           action.payload))
     default:

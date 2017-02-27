@@ -1,0 +1,8 @@
+i.fa-close{
+  color: grey;
+}
+
+i.fa-close:hover{
+  color: firebrick;
+  cursor: pointer;
+}

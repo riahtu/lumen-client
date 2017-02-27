@@ -11,9 +11,9 @@
   </ul>
 </div>
 <table class="table table-striped">
-  <tr *ngFor="let user of members$ | async">
-    <td>{{user.first_name}} {{user.last_name}}
-      <span class="pull-right">
+  <tr *ngFor="let member of members$ | async">
+    <td>{{member.first_name}} {{member.last_name}}
+      <span class="pull-right" (click)='removeMember(member)'>
         <i class="fa fa-close"></i></span>
     </td>
   </tr>
