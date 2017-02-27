@@ -1,0 +1,14 @@
+<account-group *ngFor="let grp of ownedGroups" [group]="grp">
+
+</account-group>
+<div class="clearfix">
+<button class="btn btn-default pull-right"><i class="fa fa-plus"></i> New Group</button>
+</div>
+<hr/>
+<span class="lead">Member Of:</span>
+<ul class="list">
+  <li *ngFor="let grp of memberGroups">
+    {{grp.name}}
+  </li>
+</ul>
+

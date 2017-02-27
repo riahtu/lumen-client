@@ -103,12 +103,12 @@ export const UserGroupFactory =
   makeTypedFactory<data.IUserGroup, data.IUserGroupRecord>({
     id: null,
     name: '',
-    owner: null,
     members: []
   });
 export const UserGroupStoreFactory = 
   makeTypedFactory<data.IUserGroupStore, data.IUserGroupStoreRecord>({
     owner: [],
+    member: [],
     entities: {}
 });
 

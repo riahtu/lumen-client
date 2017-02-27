@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { SERVICE_PROVIDERS } from './services';
 import { EPIC_PROVIDERS } from './epics';
 
+import { AccountModule } from './account/account.module';
 import {
   AlertModule,
   ProgressbarModule,
@@ -37,13 +38,13 @@ import {
   SignInPageComponent,
   InstallationsPageComponent,
   InstallationPageComponent,
-  AccountPageComponent,
   PasswordResetPageComponent
 } from './pages';
 
 import { ByteSizePipe } from './byte-size.pipe';
 import { DurationPipe } from './duration.pipe';
 import { ToArrayPipe } from './to-array.pipe';
+
 
 @NgModule({
   declarations: [
@@ -61,12 +62,11 @@ import { ToArrayPipe } from './to-array.pipe';
     InstallationPageComponent,
     SignInPageComponent,
     SessionComponent,
-    AccountPageComponent,
     PasswordResetPageComponent,
     InstallationAdminPageComponent,
     EditNilmComponent,
     EditPermissionsComponent,
-    PermissionComponent
+    PermissionComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +81,7 @@ import { ToArrayPipe } from './to-array.pipe';
     ProgressbarModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot(),
+    AccountModule,
     appRoutes
   ],
   providers: [

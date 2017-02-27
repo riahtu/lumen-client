@@ -1,0 +1,31 @@
+<table class="table">
+  <!-- nilms with admin or owner privleges -->
+  <tr *ngFor="let nilm of managedNilms$ | async">
+    <!-- Installation status (nilm state) -->
+    <td style="vertical-align: middle">
+      <i *ngIf="nilm.available" class="fa fa-circle available"></i>
+      <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
+    </td>
+    <!-- Installation name -->
+    <td style="vertical-align: middle"> {{nilm.name}} </td>
+    <!-- Admin/Owner access -->
+    <td><button class="btn btn-default">view</button></td>
+  </tr>
+
+  <!-- nilms with just viewer privleges -->
+  <tr *ngFor="let nilm of viewedNilms$ | async">
+    <!-- Installation status (nilm state) -->
+    <td style="vertical-align: middle">
+      <i *ngIf="nilm.available" class="fa fa-circle available"></i>
+      <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
+    </td>
+    <!-- Installation name -->
+    <td style="vertical-align: middle"> {{nilm.name}} </td>
+    <td></td>
+  </tr>
+</table>
+
+<button class="btn btn-default pull-right">
+  <i class="fa fa-plus"></i> 
+  New Installation
+</button>

@@ -3,13 +3,17 @@ import { Observable, Subscription } from 'rxjs';
 import { select } from 'ng2-redux';
 
 import {
-  SessionService
-} from '../../services';
+  SessionService,
+  UserGroupService,
+  NilmService
+} from '../../../services';
 
 import{
   IUserRecord,
-  IUserStoreRecord
-} from '../../store';
+  IUserStoreRecord,
+  IUserGroupRecord,
+  IUserGroupStore
+} from '../../../store';
 
 import {
   FormBuilder,
@@ -27,13 +31,28 @@ import { CustomValidators } from 'ng2-validation';
 export class AccountPageComponent implements OnInit {
 
   @select(['data','users']) users$: Observable<IUserStoreRecord>
+  @select(['data', 'userGroups']) userGroups$: Observable<IUserGroupStore>
+
+  public ownedGroups$: Observable<IUserGroupRecord[]>;
+  public memberGroups$: Observable<IUserGroupRecord[]>;
+
   public form: FormGroup;
   private sub: Subscription;
 
   constructor(
      private fb: FormBuilder,
-     private sessionService: SessionService
-  ) { }
+     private sessionService: SessionService,
+     private nilmService: NilmService,
+     private userGroupService: UserGroupService
+  ) { 
+    this.ownedGroups$ = this.userGroups$.map(store =>{
+       return store.owner.map(id => store.entities[id]);
+    });
+    this.memberGroups$ = this.userGroups$.map(store =>{
+       return store.member.map(id => store.entities[id]);
+    });
+    
+  }
 
   ngOnInit() {
     this.sub = this.users$.subscribe(
@@ -42,7 +61,8 @@ export class AccountPageComponent implements OnInit {
            users.entities[users.current]!==undefined){
           this.buildForm(users.entities[users.current]);
         }
-      }); 
+      });
+    this.userGroupService.loadUserGroups();
   }
   ngOnDestroy(){
     this.sub.unsubscribe();

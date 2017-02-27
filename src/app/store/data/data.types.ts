@@ -130,7 +130,6 @@ export interface IUserStoreRecord extends
 export interface IUserGroup {
   id: number;
   name: string;
-  owner: number;
   members: number[];
 }
 export interface IUserGroupRecord extends
@@ -140,7 +139,8 @@ export interface IUserGroupRecords {
 };
 export interface IUserGroupStore {
   owner: number[];
-  entities: IUserRecords;
+  member: number[];
+  entities: IUserGroupRecords;
 }
 export interface IUserGroupStoreRecord extends
   TypedRecord<IUserGroupStoreRecord>, IUserGroupStore { };

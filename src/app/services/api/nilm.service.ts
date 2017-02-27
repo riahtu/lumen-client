@@ -23,21 +23,29 @@ import {
 
 @Injectable()
 export class NilmService {
-
+  
+  private nilmsLoaded: boolean;
 
   constructor(
     //private http: Http,
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
-  ) { }
+  ) { 
+    this.nilmsLoaded = false;
+  }
 
   public loadNilms(): void {
+    if(this.nilmsLoaded) {
+      return;
+    }
+
     this.tokenService
       .get('nilms.json', {})
       .map(resp => resp.json())
       .subscribe(
       json => {
+        this.nilmsLoaded = true;
         this.ngRedux.dispatch({
           type: NilmActions.RECEIVE_ADMIN_NILMS,
           payload: normalize(json.admin, schema.nilms)

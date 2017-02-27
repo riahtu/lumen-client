@@ -1,0 +1,9 @@
+i.available{
+    color: green;
+    font-size: 1.5em;
+}
+
+i.offline{
+    color: firebrick;
+    font-size: 1.5em;
+}

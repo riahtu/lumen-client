@@ -130,14 +130,31 @@ export function userGroupReducer(
   state: records.IUserGroupStoreRecord = factories.UserGroupStoreFactory(),
   action: IPayloadAction): records.IUserGroupStoreRecord {
   switch (action.type) {
-    case actions.UserGroupActions.RECEIVE:
-      return state.set('entities', Object.assign({},
-        state.entities, action.payload));
+    case actions.UserGroupActions.RECEIVE_OWNER_GROUPS:
+      return state.set('owner', action.payload.result)
+        .set('entities', mergeGroupEntities(state.entities,
+          action.payload))
+    case actions.UserGroupActions.RECEIVE_MEMBER_GROUPS:
+      return state.set('member', action.payload.result)
+        .set('entities', mergeGroupEntities(state.entities,
+          action.payload))
+    case actions.UserGroupActions.RECEIVE_OTHER_GROUPS:
+      return state.set('entities', mergeGroupEntities(state.entities,
+          action.payload))
     default:
       return state;
   }
 }
 
+export function mergeGroupEntities(currentEntities, payload): any {
+  if (payload.entities.user_groups === undefined) {
+    return currentEntities;
+  }
+  return Object.assign({},
+    currentEntities,
+    recordify(payload.entities.user_groups,
+      factories.UserGroupFactory));
+}
 export function permissionReducer(
   state: records.IPermissionRecords = {},
   action: IPayloadAction): records.IPermissionRecords {
