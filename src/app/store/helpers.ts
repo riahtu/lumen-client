@@ -21,6 +21,10 @@ export function removeByKey (myObj, deleteKey) {
   }, {});
 }
 
+export function removeByValue(myArray, deleteVal){
+  return myArray.filter(element => element != deleteVal)
+}
+
 export interface IPayloadAction extends Action {
   payload?: any;
 }

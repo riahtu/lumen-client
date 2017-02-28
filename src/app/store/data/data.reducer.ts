@@ -4,6 +4,7 @@ import * as factories from './data.initial-state';
 import {
   recordify,
   removeByKey,
+  removeByValue,
   IPayloadAction
 } from '../helpers';
 import * as records from './data.types';
@@ -131,16 +132,20 @@ export function userGroupReducer(
   action: IPayloadAction): records.IUserGroupStoreRecord {
   switch (action.type) {
     case actions.UserGroupActions.RECEIVE_OWNER_GROUPS:
-      return state.set('owner', action.payload.result)
-        .set('entities', mergeGroupEntities(state.entities,
-          action.payload))
+      return state
+        .set('owner', state.owner.concat(action.payload.result))
+        .set('entities', mergeGroupEntities(state.entities, action.payload))
     case actions.UserGroupActions.RECEIVE_MEMBER_GROUPS:
-      return state.set('member', action.payload.result)
-        .set('entities', mergeGroupEntities(state.entities,
-          action.payload))
+      return state
+        .set('member', state.member.concat(action.payload.result))
+        .set('entities', mergeGroupEntities(state.entities, action.payload))
     case actions.UserGroupActions.RECEIVE_GROUPS:
-      return state.set('entities', mergeGroupEntities(state.entities,
-          action.payload))
+      return state
+        .set('entities', mergeGroupEntities(state.entities, action.payload))
+    case actions.UserGroupActions.REMOVE:
+      return state
+        .set('entities', removeByKey(state.entities, action.payload))
+        .set('owner', removeByValue(state.owner, action.payload))
     default:
       return state;
   }

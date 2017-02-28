@@ -89,4 +89,60 @@ export class UserGroupService {
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
   }
+
+  public addMember(group: IUserGroup, member: IUser) {
+    this.tokenService
+      .put(`user_groups/${group.id}/add_member.json`, {user_id: member.id})
+      .map(resp => resp.json())
+      .subscribe(
+      json => {
+        let data = normalize(json.data, schema.userGroup)
+        this.ngRedux.dispatch({
+          type: UserGroupActions.RECEIVE_GROUPS,
+          payload: data
+        })
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
+  }
+
+  public createGroup(name: string, description: string): Observable<any>{
+    let o = this.tokenService
+      .post('user_groups.json', {
+        name: name, 
+        description: description
+      })
+      .map(resp => resp.json());
+
+      o.subscribe(
+        json => {
+          let data = normalize(json.data, schema.userGroup)
+          this.ngRedux.dispatch({
+            type: UserGroupActions.RECEIVE_OWNER_GROUPS,
+            payload: data
+          })
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error))
+      )
+      return o; //for other subscribers
+  }
+
+  public destroyGroup(group: IUserGroup){
+    this.tokenService
+      .delete(`user_groups/${group.id}`)
+      .map(resp => resp.json())
+      .subscribe(
+        json => {
+          this.ngRedux.dispatch({
+            type: UserGroupActions.REMOVE,
+            payload: group.id
+          })
+          this.messageService.setMessages(json.messages);
+        },
+        error => this.messageService.setErrors(parseAPIErrors(error))
+      )
+  }
+  
 }

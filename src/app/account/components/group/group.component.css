@@ -6,3 +6,24 @@ i.fa-close:hover{
   color: firebrick;
   cursor: pointer;
 }
+
+li.menu {
+  cursor: pointer;
+}
+
+hr.popup {
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+div.compact{
+  margin-bottom: 0px;
+  margin-top: 15px;
+}
+
+div.xcompact{
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+.popup.btn{
+  margin-top: 10px;
+}

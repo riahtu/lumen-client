@@ -1,20 +1,108 @@
-<span class="lead">{{group.name}}
-</span>
+<!-- ====== group display ====== -->
+
+<!-- group name -->
+<span class="lead" [tooltip]="group.description" >{{group.name}}</span>
+<!-- drop down menu -->
 <div class="btn-group pull-right" dropdown>
   <button id="menu-button" class="btn btn-sm btn-default" dropdownToggle>
     <i class="fa fa-bars"></i>
   </button>
   <ul dropdownMenu role="menu" aria-labelledby="menu-button">
-    <li role="menuitem"><a>Add user</a></li>
-    <li role="menuitem"><a>Edit Name</a></li>
-    <li role="menuitem"><a>Remove</a></li>
+    <!-- add a new member -->
+    <li class="menu" role="menuitem"><a (click)="userModal.show()">Add user</a></li>
+    <!-- edit the group -->
+    <li class="menu" role="menuitem"><a (click)="groupModal.show()">Edit Group</a></li>
+    <!-- remove the group -->
+    <li class="menu" role="menuitem"><a (click)="destroyGroup()">Remove</a></li>
   </ul>
 </div>
+<!-- group members -->
 <table class="table table-striped">
   <tr *ngFor="let member of members$ | async">
+    <!-- member name -->
     <td>{{member.first_name}} {{member.last_name}}
+    <!-- remove the member -->
       <span class="pull-right" (click)='removeMember(member)'>
         <i class="fa fa-close"></i></span>
     </td>
   </tr>
 </table>
+
+<!-- ====== edit group modal ==== -->
+<div class="modal fade" bsModal #groupModal="bs-modal" 
+     [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Edit Group [{{group.name}}]</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="groupModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <account-group-form (cancel)="groupModal.hide()" (save)="updateGroup(values)"
+          [group] = "group"></account-group-form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ====== add user modal ====== -->
+
+<div class="modal fade" bsModal #userModal="bs-modal" 
+     [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog"
+     (onHide)="resetModal()" (onShow)="addMemberShown()" 
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Add User to [{{group.name}}]</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="userModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- select how to add a user -->
+        <div class="lead xcompact">Select one:</div><hr class="popup"/>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+            select existing user or group
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+            invite new user by e-mail
+          </label>
+        </div>
+         <div class="radio">
+          <label>
+            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option3">
+            create a new user
+          </label>
+        </div>
+        <!-- Option 1: select an existing user -->
+        <div class="lead compact">User:</div><hr class="popup"/>
+        <ng-select [(ngModel)]="selectedUser"
+          [options]="selectEntries$ | async">
+        </ng-select>
+
+        <!-- Save and Cancel buttons -->
+        <div class="clearfix">
+          <!-- save -->
+          <button class="btn btn-primary pull-left popup" 
+                  [disabled]="selectedUser==null"
+                  (click)="addMember(selectedUser)">Save</button>
+          <!-- cancel -->
+          <button class="btn btn-default pull-right popup"
+                  (click)="userModal.hide()">
+                  Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>

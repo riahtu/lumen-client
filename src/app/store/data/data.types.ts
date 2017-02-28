@@ -130,6 +130,7 @@ export interface IUserStoreRecord extends
 export interface IUserGroup {
   id: number;
   name: string;
+  description: string;
   members: number[];
 }
 export interface IUserGroupRecord extends

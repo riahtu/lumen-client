@@ -1,9 +1,20 @@
-<account-group *ngFor="let grp of ownedGroups" [group]="grp">
-
+<!-- list of groups user owns -->
+<account-group  *ngFor="let grp of ownedGroups" [group]="grp">
 </account-group>
+<!-- ...or a message if the user doesn't own any groups -->
+<div class="alert alert-info" *ngIf="ownedGroups.length==0">
+  You do not manage any groups</div>
+
+<!-- create a new group -->
 <div class="clearfix">
-<button class="btn btn-default pull-right"><i class="fa fa-plus"></i> New Group</button>
+  <button class="btn btn-default pull-right" 
+    (click)="newGroupModal.show()">
+    <i class="fa fa-plus" ></i> 
+    New Group
+  </button>
 </div>
+
+<!-- list of groups user is a member of -->
 <hr/>
 <span class="lead">Member Of:</span>
 <ul class="list">
@@ -12,3 +23,28 @@
   </li>
 </ul>
 
+
+<!-- ====== create group modal ====== -->
+
+<div class="modal fade" bsModal #newGroupModal="bs-modal" 
+     [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Create a New Group</h4>
+        <button type="button" class="close pull-right" 
+          aria-label="Close" (click)="newGroupModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <account-group-form (cancel)="newGroupModal.hide()" 
+          (save)="createGroup($event)">
+
+         </account-group-form>
+      </div>
+    </div>
+  </div>

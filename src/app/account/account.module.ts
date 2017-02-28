@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { DropdownModule } from 'ng2-bootstrap/dropdown'
+import { 
+  DropdownModule,
+  ModalModule,
+  TooltipModule
+} from 'ng2-bootstrap'
+import { SelectModule } from 'angular2-select';
 import {
   ReactiveFormsModule,
   FormsModule
@@ -14,6 +19,7 @@ import {
 import {
   GroupsComponent,
   GroupComponent,
+  GroupFormComponent,
   NilmsComponent
 } from './components';
 
@@ -23,13 +29,17 @@ import {
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    DropdownModule.forRoot()
+    SelectModule,
+    DropdownModule.forRoot(),
+    ModalModule.forRoot(),
+    TooltipModule.forRoot()
   ],
   declarations: [
     GroupsComponent,
     NilmsComponent,
     AccountPageComponent,
-    GroupComponent
+    GroupComponent,
+    GroupFormComponent
   ],
   exports: [
     AccountPageComponent
