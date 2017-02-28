@@ -41,7 +41,8 @@ export class GroupFormComponent implements OnInit {
   }
   onSave() {
     this.save.emit(this.form.value);
-    this.resetForm();
+    //no need to reset because these values are now the actual group values
+    //this.resetForm();
   }
 
   resetForm() {

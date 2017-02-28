@@ -28,6 +28,8 @@ import {
 })
 export class GroupComponent implements OnInit {
   @ViewChild('userModal') public userModal: ModalDirective;
+  @ViewChild('groupModal') public groupModal: ModalDirective;
+
   @select(['data', 'users', 'entities']) users$: Observable<IUserRecords>
   @Input() group: IUserGroup;
 
@@ -44,8 +46,11 @@ export class GroupComponent implements OnInit {
     this.userGroupService.destroyGroup(this.group);
   }
   updateGroup(values: any){
-    console.log('updating...');
-   // this.userGroupService.updateGroup(this.group, values.name, values.description);
+    this.userGroupService.updateGroup(
+      this.group, 
+      values.name, 
+      values.description)
+    .subscribe(resp => this.groupModal.hide())
   }
   removeMember(user: IUser) {
     this.userGroupService.removeMember(this.group, user);
@@ -56,9 +61,7 @@ export class GroupComponent implements OnInit {
   addMemberShown(){
     this.userService.loadUsers();
   }
-  resetModal(){
-
-  }
+  
   ngOnInit() {
     this.members$ = this.users$.map(users =>
       this.group.members.map(id => users[id])

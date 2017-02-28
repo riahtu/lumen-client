@@ -43,14 +43,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <account-group-form (cancel)="groupModal.hide()" (save)="updateGroup(values)"
+        <account-group-form (cancel)="groupModal.hide()" (save)="updateGroup($event)"
           [group] = "group"></account-group-form>
       </div>
     </div>
   </div>
 </div>
-<!-- ====== add user modal ====== -->
 
+
+<!-- ====== add member modal ====== -->
 <div class="modal fade" bsModal #userModal="bs-modal" 
      [config]="{backdrop: 'static', show: true}"
      tabindex="-1" role="dialog"
@@ -89,7 +90,9 @@
         <!-- Option 1: select an existing user -->
         <div class="lead compact">User:</div><hr class="popup"/>
         <ng-select [(ngModel)]="selectedUser"
-          [options]="selectEntries$ | async">
+          [options]="selectEntries$ | async"
+          placeholder = "select a user"
+          notFoundMsg = "no users found">
         </ng-select>
 
         <!-- Save and Cancel buttons -->
