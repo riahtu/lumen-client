@@ -14,20 +14,20 @@ export function nilmReducer(
   action: IPayloadAction): records.INilmStoreRecord {
   switch (action.type) {
     case actions.NilmActions.RECEIVE_ADMIN_NILMS:
-      return state.set('admin', action.payload.result)
-        .set('entities', mergeNilmEntities(state.entities,
-          action.payload))
+      return state
+        .set('admin', state.admin.concat(action.payload.result))
+        .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_OWNER_NILMS:
-      return state.set('owner', action.payload.result)
-        .set('entities', mergeNilmEntities(state.entities,
-          action.payload))
+      return state
+        .set('owner', state.owner.concat(action.payload.result))
+        .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_VIEWER_NILMS:
-      return state.set('viewer', action.payload.result)
-        .set('entities', mergeNilmEntities(state.entities,
-          action.payload))
+      return state
+        .set('viewer', state.viewer.concat(action.payload.result))
+        .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_NILM:
-      return state.set('entities', mergeNilmEntities(state.entities,
-        action.payload))
+      return state
+        .set('entities', mergeNilmEntities(state.entities, action.payload))
     default:
       return state;
   }

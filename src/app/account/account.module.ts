@@ -20,7 +20,8 @@ import {
   GroupsComponent,
   GroupComponent,
   GroupFormComponent,
-  NilmsComponent
+  NilmsComponent,
+  NilmFormComponent
 } from './components';
 
 @NgModule({
@@ -39,7 +40,8 @@ import {
     NilmsComponent,
     AccountPageComponent,
     GroupComponent,
-    GroupFormComponent
+    GroupFormComponent,
+    NilmFormComponent
   ],
   exports: [
     AccountPageComponent

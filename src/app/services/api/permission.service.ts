@@ -65,7 +65,6 @@ export class PermissionService {
           })
           return acc;
         }, targets)
-        console.log(targets);
         return targets;
       });
   }

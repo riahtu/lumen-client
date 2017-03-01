@@ -1,0 +1,30 @@
+<form [formGroup]="form">
+  <!-- Installation Name -->
+  <div class="form-group" [class.has-error]="!form.controls.name.valid && !form.controls.name.pristine">
+    <label class="control-label" for="name">Name</label>
+    <input class="form-control" placeholder="Installation Name" 
+          id="name" [formControl]="form.controls.name">
+  </div>
+  <!-- Installation Description -->
+  <div class="form-group">
+    <label class="control-label" for="description">Description</label>
+    <input class="form-control" id="description" type="text" [formControl]="form.controls.description">
+  </div>
+  <!-- Installation URL -->
+  <div class="form-group">
+    <label class="control-label" for="description">URL</label>
+    <input class="form-control" id="description" placeholder="http://localhost/nilmdb" 
+      type="text" [formControl]="form.controls.url">
+  </div>
+  <!-- Save and Cancel buttons -->
+  <div class="clearfix">
+    <!-- save -->
+    <button class="btn btn-primary pull-left popup" 
+            [disabled]="form.valid==false"
+            (click)="onSave()">Save</button>
+    <!-- cancel -->
+    <button class="btn btn-default pull-right popup"
+            (click)="onCancel()">
+            Cancel</button>
+  </div>
+</form>

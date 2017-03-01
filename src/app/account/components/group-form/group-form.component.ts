@@ -9,7 +9,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-/*https://github.com/yuyang041060120/ng2-validation*/
 
 import {
   IUserGroup,

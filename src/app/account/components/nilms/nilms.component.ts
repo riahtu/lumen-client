@@ -1,6 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { 
+  Component,
+  ViewChild,
+  OnInit 
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
+import { ModalDirective } from 'ng2-bootstrap/modal';
 
 import {
   NilmService
@@ -17,10 +22,9 @@ import {
   styleUrls: ['./nilms.component.css']
 })
 export class NilmsComponent implements OnInit {
-
+  @ViewChild('nilmModal') public nilmModal: ModalDirective;
   @select(['data','nilms']) nilmStore$: Observable<INilmStore>;
-  private managedNilms$: Observable<INilm[]>
-  private viewedNilms$: Observable<INilm[]>
+  private nilms$: Observable<INilmWithRole[]>
 
   constructor(
     private nilmService: NilmService
@@ -28,14 +32,35 @@ export class NilmsComponent implements OnInit {
 
   ngOnInit() {
     this.nilmService.loadNilms();
-    
-    //nilms with admin or owner permissions
-    this.managedNilms$ = this.nilmStore$.map(store => 
-      store.admin.map(id => store.entities[id]).concat(
-      store.owner.map(id => store.entities[id])));
-    //nilms with viewer permissions
-    this.viewedNilms$ = this.nilmStore$.map(store => 
-      store.viewer.map(id=>store.entities[id]));
+
+    //combine all nilms into a flat array of INilmWithRole objects
+    this.nilms$ = this.nilmStore$.map(store =>{
+      return store.admin.map(id=> {
+        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'admin'})
+      }).concat(
+      store.owner.map(id=> {
+        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'owner'})
+      }),
+      store.viewer.map(id=> {
+        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'viewer'})
+      })
+      ).sort((a,b)=>{ 
+        return a.name == b.name ? 0 : +(a.name > b.name) || -1;
+      });
+    })
   }
 
+  createNilm(values: any){
+    this.nilmService
+      .createNilm(
+        values.name, 
+        values.description, 
+        values.url)
+      .subscribe(result => this.nilmModal.hide())
+  }
+
+}
+
+interface INilmWithRole extends INilm{
+  role: string;
 }

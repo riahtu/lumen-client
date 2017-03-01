@@ -12,8 +12,8 @@ import {
 import {
   IAppState,
   IStatusMessages,
-  INilmRecords,
-  INilmRecord,
+  INilmStore,
+  INilm,
   IDbRecord,
   IDbRecords,
   PageActions
@@ -28,28 +28,35 @@ import {
 export class InstallationPageComponent implements OnInit {
 
   @select(['page', 'messages']) messages$: Observable<IStatusMessages>;
-  @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
+  @select(['data', 'nilms']) nilmStore$: Observable<INilmStore>;
 
-  public nilm$: Observable<INilmRecord>
+  public nilm$: Observable<INilm>
+  public role$: Observable<string>
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private route: ActivatedRoute,
     private nilmService: NilmService
   ) {
-    route.params.subscribe(params => {
-      if (!(params['id'] in ngRedux.getState().data.nilms.entities)) {
-        this.nilmService.loadNilm(params['id'])
-      }
-    });
+    this.nilmService.loadNilms();
 
-    this.nilm$ = this.nilms$
+    this.nilm$ = this.nilmStore$
       .combineLatest(route.params)
-
-      .map(([nilms, params]) => nilms[params['id']])
+      .map(([store, params]) => store.entities[params['id']])
       .filter(nilm => !(nilm === undefined))
 
-   
+    this.role$ = this.nilmStore$
+      .combineLatest(route.params)
+      .map(([store,params]) => {
+        //figure out the role for this nilm
+        if(store.admin.indexOf(+params['id'])!=-1){
+          return 'admin'
+        } else if(store.owner.indexOf(+params['id'])!=-1) {
+          return 'owner'
+        } else {
+          return 'viewer'
+        }
+      })
   }
 
   ngOnInit() {

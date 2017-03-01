@@ -58,7 +58,6 @@ export class EditPermissionsComponent implements OnInit {
   }
   ngOnInit() {
     this.selectEntries$ = this.permissionService.targets$.map(targets => {
-      console.log(targets);
       return targets.map(t => {
         return { value: { id: t.id, type: t.type }, label: `${t.type}: ${t.name}` }
       })

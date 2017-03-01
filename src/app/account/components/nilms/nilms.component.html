@@ -1,15 +1,34 @@
 <table class="table">
+  <thead>
+    <tr>
+      <th>status</th>
+      <th>role</th>
+      <th>name</th>
+      <th></th>
+    </tr>
+  </thead>
+
   <!-- nilms with admin or owner privleges -->
-  <tr *ngFor="let nilm of managedNilms$ | async">
+  <tr *ngFor="let nilm of nilms$ | async">
     <!-- Installation status (nilm state) -->
     <td style="vertical-align: middle">
       <i *ngIf="nilm.available" class="fa fa-circle available"></i>
       <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
     </td>
+    <!-- admin icon -->
+    <td style="vertical-align: middle">
+      <i *ngIf="nilm.role=='admin'" class="fa fa-user fa-fw"   tooltip="admin"></i>
+      <i *ngIf="nilm.role=='owner'" class="fa fa-user-o fa-fw" tooltip="owner"></i>
+      <i *ngIf="nilm.role=='viewer'" class="fa fa-eye fa-fw"   tooltip="viewer"></i>
+    </td>
     <!-- Installation name -->
     <td style="vertical-align: middle"> {{nilm.name}} </td>
     <!-- Admin/Owner access -->
-    <td><button class="btn btn-default" [routerLink]="['/installations',nilm.id]">view</button></td>
+    <td>
+      <button *ngIf="nilm.role=='admin' || nilm.role=='owner'"
+        class="btn btn-default" [routerLink]="['/installations',nilm.id]">
+      <i class="fa fa-gear" tooltip="manage installation"></i></button>
+    </td>
   </tr>
 
   <!-- nilms with just viewer privleges -->
@@ -19,13 +38,39 @@
       <i *ngIf="nilm.available" class="fa fa-circle available"></i>
       <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
     </td>
+    <!-- viewer icon -->
+    <td style="vertical-align: middle">
+      <i class="fa fa-eye fa-fw" tooltip="viewer"></i></td>
     <!-- Installation name -->
     <td style="vertical-align: middle"> {{nilm.name}} </td>
     <td></td>
   </tr>
 </table>
-
-<button class="btn btn-default pull-right">
+<!-- add a new NILM -->
+<button class="btn btn-default pull-right"
+  (click)="nilmModal.show()">
   <i class="fa fa-plus"></i> 
   New Installation
 </button>
+
+<!-- ====== add NILM modal ==== -->
+<div class="modal fade" bsModal #nilmModal="bs-modal" 
+     [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Add New Installation</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="nilmModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <account-nilm-form (cancel)="nilmModal.hide()" (save)="createNilm($event)">
+        </account-nilm-form>
+      </div>
+    </div>
+  </div>
+</div>

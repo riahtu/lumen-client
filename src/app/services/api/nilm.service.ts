@@ -63,18 +63,28 @@ export class NilmService {
       );
   }
 
-  public loadNilm(nilmId): void {
-    this.tokenService
-      .get(`nilms/${nilmId}.json`, {})
-      .map(resp => resp.json())
-      .subscribe(
+  public createNilm(name: string, 
+                    description: string,
+                    url: string): Observable<any> {
+    let o = this.tokenService
+      .post('nilms.json', {
+        name: name,
+        description: description,
+        url: url
+      })
+      .map(resp => resp.json());
+
+    o.subscribe(
       json => {
+        let data = normalize(json.data, schema.nilm)
         this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_NILM,
-          payload: normalize(json, schema.nilm)
-        });
+          type: NilmActions.RECEIVE_ADMIN_NILMS,
+          payload: data
+        })
+        this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
+    )
+    return o; //for other subscribers
   }
 }
