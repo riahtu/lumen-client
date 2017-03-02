@@ -14,7 +14,7 @@ import {
 import {
   INilmStore,
   INilm
-} from '../../../store';
+} from '../../../store/data';
 
 @Component({
   selector: 'app-account-nilms',

@@ -2,14 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgRedux } from 'ng2-redux';
 
-import {
-  IAppState,
-  IStatusMessages
-} from '../store';
-import {
-  PageActions
-} from '../store/';
-
+import {IAppState } from '../app.store';
+import { 
+  UIActions,
+  IStatusMessages 
+} from '../store/ui';
 @Injectable()
 export class MessageService {
 
@@ -19,7 +16,7 @@ export class MessageService {
 
   public setMessages(messages: IStatusMessages): void {
     this.ngRedux.dispatch({
-      type: PageActions.SET_MESSAGES,
+      type: UIActions.SET_MESSAGES,
       payload: messages
     });
   }
@@ -55,7 +52,7 @@ export class MessageService {
   }
   public clearMessages(): void {
     this.ngRedux.dispatch({
-      type: PageActions.CLEAR_MESSAGES,
+      type: UIActions.CLEAR_MESSAGES,
       payload: null
     });
   }

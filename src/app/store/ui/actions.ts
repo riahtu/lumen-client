@@ -1,0 +1,4 @@
+export const UIActions = {
+  'SET_MESSAGES': 'UI_SET_PAGE_MESSAGES',
+  'CLEAR_MESSAGES': 'UI_CLEAR_PAGE_MESSAGES',
+};

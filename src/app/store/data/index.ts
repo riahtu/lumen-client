@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import * as types from './data.types';
-import * as reducers from './data.reducer';
+import * as types from './types';
+import * as reducers from './reducer';
 
-export interface IDataState {
+export interface IState {
   nilms: types.INilmStoreRecord;
   dbs: types.IDbRecords;
   dbFolders: types.IDbFolderRecords;
@@ -13,7 +13,7 @@ export interface IDataState {
   permissions: types.IPermissionRecords;
 }
 
-export const dataReducer = combineReducers<IDataState>({
+export const reducer = combineReducers<IState>({
   nilms: reducers.nilmReducer,
   dbs: reducers.dbReducer,
   dbFolders: reducers.dbFolderReducer,
@@ -24,5 +24,5 @@ export const dataReducer = combineReducers<IDataState>({
   userGroups: reducers.userGroupReducer
 });
 
-export * from './data.actions';
-export * from './data.types';
+export * from './actions';
+export * from './types';

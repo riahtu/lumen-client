@@ -7,23 +7,13 @@ import { normalize } from 'normalizr';
 import { Router } from '@angular/router';
 
 import * as schema from '../../api';
-
+import { MessageService } from '../message.service';
+import { parseDeviseErrors } from './helpers';
+import { IAppState } from '../../app.store'
 import {
-  MessageService
-} from '../message.service';
-
-import {
-  parseDeviseErrors
-} from './helpers';
-
-import {
+  IUser,
   UserActions
 } from '../../store/data';
-
-import {
-  IAppState,
-  IUser
-} from '../../store';
 
 @Injectable()
 export class SessionService {

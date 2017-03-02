@@ -13,7 +13,7 @@ import{
   IUserStoreRecord,
   IUserGroupRecord,
   IUserGroupStore
-} from '../../../store';
+} from '../../../store/data';
 
 import {
   FormBuilder,

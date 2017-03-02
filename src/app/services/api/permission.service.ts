@@ -8,13 +8,12 @@ import {
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
-
+import { IAppState } from '../../app.store';
 import {
-  IAppState,
   IPermission,
   IUserRecords,
   IUserGroupRecords
-} from '../../store';
+} from '../../store/data';
 import {
   PermissionActions
 } from '../../store/data';

@@ -12,7 +12,7 @@ import {
 
 import {
   IUserGroup,
-} from '../../../store';
+} from '../../../store/data';
 
 @Component({
   selector: 'account-group-form',

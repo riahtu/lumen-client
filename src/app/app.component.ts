@@ -11,9 +11,9 @@ import {
 } from './services';
 
 import {
-  rootReducer,
-  IAppState
-} from './store';
+  IAppState,
+  rootReducer
+} from './app.store';
 
 @Component({
   selector: 'app-root',
@@ -21,8 +21,6 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
-
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private devTools: DevToolsExtension,
@@ -36,6 +34,7 @@ export class AppComponent {
       createLogger(),
       createEpicMiddleware(this.epics.root)
     ]
+
     
 
     ngRedux.configureStore(rootReducer,

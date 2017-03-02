@@ -1,4 +1,0 @@
-export const PageActions = {
-  'SET_MESSAGES': 'PAGES_SET_PAGE_MESSAGES',
-  'CLEAR_MESSAGES': 'PAGES_CLEAR_PAGE_MESSAGES',
-};

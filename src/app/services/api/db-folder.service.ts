@@ -7,7 +7,7 @@ import { normalize } from 'normalizr';
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { parseAPIErrors } from './helpers';
-import { IAppState } from '../../store';
+import { IAppState } from '../../app.store';
 
 import {
   IDbFolder,

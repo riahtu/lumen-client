@@ -14,7 +14,7 @@ import {
   IUserGroup,
   IUser,
   IUserRecords
-} from '../../../store';
+} from '../../../store/data';
 
 import {
   UserGroupService,

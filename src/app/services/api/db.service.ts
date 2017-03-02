@@ -9,10 +9,10 @@ import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { parseAPIErrors } from './helpers';
 import {
-  IDb,
   IAppState
-} from '../../store';
+} from '../../app.store';
 import {
+  IDb,
   DbActions,
   DbFolderActions,
 } from '../../store/data';

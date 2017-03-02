@@ -12,7 +12,7 @@ import {
 
 import{
   IUserGroupRecord,
-} from '../../../store';
+} from '../../../store/data';
 
 @Component({
   selector: 'app-account-groups',
@@ -35,7 +35,6 @@ export class GroupsComponent implements OnInit {
   }
 
   createGroup(values: any){
-    console.log(values);
     this.userGroupService
       .createGroup(values.name, values.description)
       .subscribe(result => this.newGroupModal.hide());

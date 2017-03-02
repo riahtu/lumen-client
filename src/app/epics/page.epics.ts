@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActionsObservable } from 'redux-observable';
-import { PageActions } from '../store';
+import { UIActions } from '../store/ui';
 import { Observable } from 'rxjs/Observable';
 import { Epic } from 'redux-observable';
-import { 
-  IAppState,
-  IPayloadAction 
-} from '../store';
+import { IPayloadAction } from '../store';
+import {   IAppState } from '../app.store';
 const BASE_URL = '/api';
 
 @Injectable()
@@ -19,11 +17,11 @@ export class PageEpics {
   }
 
   messages = action$ => {
-    return action$.ofType(PageActions.SET_MESSAGES)
+    return action$.ofType(UIActions.SET_MESSAGES)
       .do(x => console.log(x))
       .delay(5000)
       .mapTo({
-        type: PageActions.CLEAR_MESSAGES
+        type: UIActions.CLEAR_MESSAGES
       });
   }
 }

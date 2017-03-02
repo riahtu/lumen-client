@@ -6,10 +6,9 @@ import {PageEpics} from './page.epics';
 import {SessionEpics } from './session.epics';
 
 import { 
-  IAppState,
   IPayloadAction 
 } from '../store';
-
+import {IAppState } from '../app.store';
 
 @Injectable()
 export class AppEpics {

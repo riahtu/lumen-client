@@ -1,0 +1,38 @@
+<div class="row" class="page-body">
+  
+  <!-- db tree -->
+
+  <div class="col-sm-3 panel">
+    <Tree [nodes]="installationSelectors.dbNodes$ | async" 
+      [options]="treeOptions" 
+      (onActivate)="selectNode($event)">
+      <template #treeNodeTemplate let-node="node">
+        <span [ngSwitch]="node.data.type">
+          <span *ngSwitchCase="'root'">
+            <i class="fa fa-database"></i>
+          </span>
+          <span *ngSwitchCase="'dbFolder'">
+            <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
+            <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+          </span>
+          <span *ngSwitchCase="'dbStream'">
+            <i class="fa fa-file-text-o"></i>
+          </span>
+        </span>
+        {{ node.data.name }}
+      </template>
+    </Tree>
+  </div>
+  <!-- folder/stream edits -->
+  <div [ngSwitch]='installationSelectors.selectedType$ | async' class='panel'>
+    <app-edit-db *ngSwitchCase="'root'"
+      [db] = "installationSelectors.selectedDb$ | async"
+      [rootFolder] = "installationSelectors.selectedDbRootFolder$ | async"></app-edit-db>
+    <app-edit-stream *ngSwitchCase="'dbStream'" 
+      [dbStream]="installationSelectors.selectedDbStream$ | async" 
+      [dbElements]="installationSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
+    <app-edit-folder *ngSwitchCase="'dbFolder'" 
+      [dbFolder]="installationSelectors.selectedDbFolder$ | async "></app-edit-folder>
+  </div>
+
+</div>

@@ -1,7 +1,7 @@
 
 import {
   IStatusMessages,
-} from '../../store';
+} from '../../store/ui';
 
 
 
