@@ -49,19 +49,6 @@ export class DbService {
       error => this.messageService.setErrors(parseAPIErrors(error)));
   }
 
-  public refreshDb(db: IDb): void {
-    this.messageService.clearMessages();
-    this.tokenService
-      .put(`dbs/${db.id}`, { refresh: true })
-      .map(resp => resp.json())
-      .subscribe(
-      json => {
-        this._dispatch(json.data);
-        this.messageService.setMessages(json.messages);
-      },
-      error => this.messageService.setErrors(parseAPIErrors(error)));
-  }
-
   // -------- private helper functions --------
   private _dispatch(json) {
     let entities = normalize(json, schema.db).entities;

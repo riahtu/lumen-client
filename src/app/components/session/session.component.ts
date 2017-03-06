@@ -2,10 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Angular2TokenService } from 'angular2-token';
 import { Observable } from 'rxjs';
 import { select } from 'ng2-redux';
-import {
-  IAppState,
-  IUserRecord
-} from '../../store';
+import { IUserRecord } from '../../store/data';
+import {IAppState} from '../../app.store';
 
 @Component({
   selector: 'app-session',

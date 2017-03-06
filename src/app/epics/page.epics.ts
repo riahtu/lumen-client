@@ -18,7 +18,6 @@ export class PageEpics {
 
   messages = action$ => {
     return action$.ofType(UIActions.SET_MESSAGES)
-      .do(x => console.log(x))
       .delay(5000)
       .mapTo({
         type: UIActions.CLEAR_MESSAGES

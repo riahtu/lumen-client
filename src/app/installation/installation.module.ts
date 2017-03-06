@@ -14,6 +14,7 @@ import {
  } from 'ng2-bootstrap';
 
 import { COMPONENTS } from './components';
+import { TABS } from './tabs';
 import { PIPES } from './pipes';
 import { InstallationPageComponent } from './pages';
 import { InstallationService } from './installation.service'
@@ -33,6 +34,7 @@ import { InstallationSelectors } from './installation.selectors';
   ],
   declarations: [
     COMPONENTS,
+    TABS,
     PIPES,
     InstallationPageComponent
   ],

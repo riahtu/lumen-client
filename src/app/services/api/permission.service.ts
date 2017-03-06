@@ -35,6 +35,8 @@ export class PermissionService {
 
   public targets$: Observable<PermissionTarget[]>;
 
+  private nilmsWithPermissions: number[];
+
   constructor(
     //private http: Http,
     private tokenService: Angular2TokenService,
@@ -43,6 +45,9 @@ export class PermissionService {
     private userService: UserService,
     private userGroupService: UserGroupService
   ) {
+    //keep track of NILM's we retrieve permissions for
+    this.nilmsWithPermissions = []; 
+
     this.targets$ = this.users$.combineLatest(this.userGroups$)
       .map(([users, userGroups]) => {
         let targets: PermissionTarget[] = []
@@ -69,6 +74,10 @@ export class PermissionService {
   }
 
   public loadPermissions(nilmId: number): void {
+    //don't retrieve permissions if we already loaded them
+    if(this.nilmsWithPermissions.indexOf(nilmId)>-1){
+      return;
+    }
     let params: URLSearchParams = new URLSearchParams();
     params.set('nilm_id', nilmId.toString());
     this.tokenService
@@ -76,6 +85,7 @@ export class PermissionService {
       .map(resp => resp.json())
       .subscribe(
       json => {
+        this.nilmsWithPermissions.push(nilmId);
         this.ngRedux.dispatch({
           type: PermissionActions.RECEIVE,
           payload: normalize(json, schema.permissions).entities.permissions

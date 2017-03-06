@@ -1,6 +1,8 @@
 
 import * as actions from './actions';
 import * as factories from './initial-state';
+import * as _ from 'lodash';
+
 import {
   recordify,
   removeByKey,
@@ -15,15 +17,15 @@ export function nilmReducer(
   switch (action.type) {
     case actions.NilmActions.RECEIVE_ADMIN_NILMS:
       return state
-        .set('admin', state.admin.concat(action.payload.result))
+        .set('admin', _.union(state.admin,action.payload.result))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_OWNER_NILMS:
       return state
-        .set('owner', state.owner.concat(action.payload.result))
+        .set('owner', _.union(state.owner,action.payload.result))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_VIEWER_NILMS:
       return state
-        .set('viewer', state.viewer.concat(action.payload.result))
+        .set('viewer', _.union(state.viewer,action.payload.result))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_NILM:
       return state

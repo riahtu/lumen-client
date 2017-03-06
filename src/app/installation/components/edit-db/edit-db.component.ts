@@ -1,4 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  EventEmitter
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,18 +18,21 @@ import {
 } from '../../../store/data';
 
 import { DbService } from '../../../services';
+import { select } from 'ng2-redux';
+import { Observable } from 'rxjs';
 
 
 @Component({
   selector: 'app-edit-db',
+  outputs: ['refresh'],
   templateUrl: './edit-db.component.html',
   styleUrls: ['./edit-db.component.css']
 })
 export class EditDbComponent implements OnInit {
 
-  @Input() 
-  public set db(val: IDb){
-    if(val==null){
+  @Input()
+  public set db(val: IDb) {
+    if (val == null) {
       return; //TODO: why does a NULL get here???
     }
     this.buildForm(val);
@@ -32,7 +40,9 @@ export class EditDbComponent implements OnInit {
   }
 
   @Input() rootFolder: IDbFolder
-  @Input() busy: boolean
+  @select(['ui','installation','busy']) busy$: Observable<boolean>;
+  @select(['ui','installation','refreshing']) refreshing$: Observable<boolean>;
+  refresh: EventEmitter<any>;
 
   public form: FormGroup;
   public my_db: IDb;
@@ -40,7 +50,10 @@ export class EditDbComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private dbService: DbService
-  ) { }
+  ) {
+    this.refresh = new EventEmitter();
+
+  }
 
   ngOnInit() {
   }
@@ -48,15 +61,15 @@ export class EditDbComponent implements OnInit {
   buildForm(db: IDb) {
     this.form = this.fb.group({
       url: [db.url, Validators.required],
-      max_points_per_plot: [db.max_points_per_plot, 
-        [Validators.required, CustomValidators.number]]
+      max_points_per_plot: [db.max_points_per_plot,
+      [Validators.required, CustomValidators.number]]
     });
   }
 
-  refreshDb(){
-    this.dbService.refreshDb(this.my_db);
+  refreshDb() {
+    this.refresh.emit();
   }
-  onSubmit(formValues: IDb){
+  onSubmit(formValues: IDb) {
     //console.log(streamValues);
     formValues.id = this.my_db.id;
     this.dbService.updateDb(formValues);

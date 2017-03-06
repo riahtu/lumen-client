@@ -2,8 +2,8 @@
 import { IPayloadAction } from '../../store/helpers';
 import { InstallationActions } from './actions';
 import { IInstallationRecord } from './types';
-import { 
-  INITIAL_STATE 
+import {
+  INITIAL_STATE
 } from './initial-state';
 
 
@@ -29,6 +29,14 @@ export function reducer(
       return state.merge({
         selectedDb: action.payload.id
       });
+    case InstallationActions.REFRESHING:
+      return state
+        .set('refreshing', true)
+        .set('busy', true);
+    case InstallationActions.NOT_BUSY:
+      return state
+        .set('refreshing', false)
+        .set('busy', false);
     default:
       return state;
   }

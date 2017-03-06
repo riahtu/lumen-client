@@ -1,0 +1,14 @@
+/* Make all content fit on the page */
+@media (min-width: 768px) {
+  .app-content{
+    max-height: calc(100vh - 260px);
+    height: calc(100vh - 260px);
+    overflow-y: auto;
+    margin-bottom: 0px;
+  }
+}
+@media(max-width: 767px){
+  .app-content{
+    margin-bottom: 10px;
+  }
+}

@@ -8,19 +8,24 @@ import {
 import { InstallationActions } from './store';
 
 import {
+  INilm,
   IDb,
   IDbFolder,
   IDbStream,
   IDbElement
 } from '../store/data';
-import { MessageService } from '../services/';
+import { 
+  NilmService,
+  MessageService 
+} from '../services/';
 
 @Injectable()
 export class InstallationService {
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private nilmService: NilmService
   ) { }
 
   // ---selectDbRoot: pick the root from tree -----
@@ -29,7 +34,7 @@ export class InstallationService {
       type: InstallationActions.SELECT_DB_ROOT,
       payload: {}
     });
-    this.messageService.clearMessages();
+    //this.messageService.clearMessages();
   }
 
   // ---selectDbFolder: pick folder from tree -----
@@ -43,7 +48,6 @@ export class InstallationService {
     this.messageService.clearMessages();
   }
 
-
   // ---selectDbStream: pick a stream from tree---
   public selectDbStream(id: number) {
     this.ngRedux.dispatch({
@@ -55,8 +59,6 @@ export class InstallationService {
     this.messageService.clearMessages();
   }
 
-
-
   // ---setDbId: work on specified Db -----
   public setDbId(id: number) {
     // set the new db id
@@ -66,6 +68,23 @@ export class InstallationService {
         id: id
       }
     });
+  }
+
+  // ---refreshInstallation: refresh current installation ----
+  public refreshNilm(nilm: INilm){
+    this.ngRedux.dispatch({
+      type: InstallationActions.REFRESHING
+    })
+    this.nilmService.refreshNilm(nilm).subscribe(
+      success => this.notBusy(),
+      error => this.notBusy()
+    );
+  }
+
+  private notBusy(){
+    this.ngRedux.dispatch({
+      type:InstallationActions.NOT_BUSY
+    })
   }
 
 }

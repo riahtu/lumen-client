@@ -13,7 +13,9 @@ export const InstallationFactory =
     selectedType: 'unknown',
     selectedDbFolder: null,
     selectedDbStream: null,
-    selectedDb: null
+    selectedDb: null,
+    refreshing: false,
+    busy: false
   });
 
 

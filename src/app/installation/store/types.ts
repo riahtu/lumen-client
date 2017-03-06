@@ -6,6 +6,8 @@ export interface IInstallation {
   selectedDbFolder?: number;
   selectedDbStream?: number;
   selectedDb?: number;
+  refreshing?: boolean;
+  busy?: boolean;
 }
 
 export interface IInstallationRecord extends

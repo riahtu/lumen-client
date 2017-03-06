@@ -1,0 +1,29 @@
+<!-- Two Column Layout -->
+<div class="row ">
+  <div class="col-sm-6">
+    <!--Installation Details -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"> Installation Details</h3>
+      </div>
+      <div class="panel-body app-content">
+        <app-edit-nilm [nilm]="nilm | async"></app-edit-nilm>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <!-- Installation Permissions -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"> Installation Permissions</h3>
+      </div>
+      <div class="panel-body app-content">
+        <app-edit-permissions [nilm]="nilm | async"
+                              [admins]="admins$ | async"
+                              [owners]="owners$ | async"
+                              [viewers]="viewers$ | async">
+                              </app-edit-permissions>
+      </div>
+    </div>
+  </div>
+</div>

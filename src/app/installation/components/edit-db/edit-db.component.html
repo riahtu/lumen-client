@@ -33,11 +33,12 @@
     <div class="form-group ">
       <div class="pull-left ">
         <button type="submit" (click) = "onSubmit(form.value)" class="btn btn-default " 
-          [disabled]="!form.valid">Save</button>
+          [disabled]="!form.valid || (busy$ | async)">Save</button>
       </div>
       <div class="pull-right ">
-        <button class="btn btn-default" (click)="refreshDb()">
-          <i class="fa fa-refresh" aria-hidden="true"></i>
+        <button class="btn btn-default" [disabled]='busy$ | async'
+          (click)="refreshDb()">
+          <i class="fa fa-refresh fa-spin" *ngIf='refreshing$ | async'></i>
           Refresh
         </button>
       </div>

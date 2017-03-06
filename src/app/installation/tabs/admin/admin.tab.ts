@@ -16,11 +16,11 @@ import {
 } from '../../../store/data';
 
 @Component({
-  selector: 'app-installation-admin',
-  templateUrl: './installation-admin.component.html',
-  styleUrls: ['./installation-admin.component.css']
+  selector: 'installation-admin-tab',
+  templateUrl: './admin.tab.html',
+  styleUrls: ['./admin.tab.css']
 })
-export class InstallationAdminComponent implements OnInit {
+export class AdminTabComponent implements OnInit {
 
   @select(['data', 'permissions']) permissions$: Observable<IPermissionRecords>;
   @select(['data','users','entities']) users$: Observable<IUserRecords>;

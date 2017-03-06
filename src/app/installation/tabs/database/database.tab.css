@@ -1,5 +1,20 @@
 
+/* Make all content fit on the page */
+@media (min-width: 768px) {
+  .app-content{
+    max-height: calc(100vh - 200px);
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+    margin-bottom: 0px;
+  }
+}
+@media(max-width: 767px){
+  .app-content{
+    margin-bottom: 10px;
+  }
+}
 
+/* Tree styling */
 :host>>>.node-content-wrapper {
   display: block;
 }
@@ -41,16 +56,11 @@
   z-index: 1;
 }
 
-.panel {
-  max-height: 70vh;
-  height: 65vh;
-  overflow-y: auto;
+.app-content {
   border: 1px;
   border-style: solid;
   border-color: #bbb;
   border-radius: 2px;
-  margin-left: 15px;
-  padding-bottom: 20px;
 }
 
 .folder{

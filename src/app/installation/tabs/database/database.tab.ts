@@ -10,22 +10,23 @@ import {
 import { InstallationService } from '../../installation.service';
 import { InstallationSelectors } from '../../installation.selectors';
 import {
-  INilmRecord,
+  INilm,
   IDbRecords
 } from '../../../store/data';
 
 @Component({
-  selector: 'app-db-admin',
-  templateUrl: './db-admin.component.html',
-  styleUrls: ['./db-admin.component.css']
+  selector: 'installation-database-tab',
+  templateUrl: './database.tab.html',
+  styleUrls: ['./database.tab.css']
 })
-export class DbAdminComponent implements OnInit {
+export class DatabaseTabComponent implements OnInit {
 
-  @Input() nilm: Observable<INilmRecord>
+  @Input() nilm: Observable<INilm>
   @select(['data', 'dbs']) dbs$: Observable<IDbRecords>;
 
   public treeOptions = {};
   private subs: Subscription[];
+  private myNilm: INilm;
 
   constructor(
     public dbService: DbService,
@@ -37,13 +38,20 @@ export class DbAdminComponent implements OnInit {
       getChildren: this.getChildren.bind(this)
     };
     this.subs = [];
-
+    this.myNilm = null;
   };
 
   public getChildren(node: TreeNode) {
     this.dbFolderService.loadFolder(node.data.id);
   }
 
+  public refresh(){
+    if(this.myNilm==null){
+      console.log('error, nilm is not set');
+      return;
+    }
+    this.installationService.refreshNilm(this.myNilm);
+  }
   public selectNode(event) {
     let node: TreeNode = event.node;
     switch (node.data.type) {
@@ -63,16 +71,19 @@ export class DbAdminComponent implements OnInit {
 
   ngOnInit() {
     this.subs.push(
-       this.nilm
+      this.nilm
         .combineLatest(this.dbs$)
         .subscribe(([nilm, dbs]) => {
           if (dbs[nilm.db_id] === undefined) {
             this.dbService.loadDb(nilm.db_id);
           }
+          //store nilm locally
+          this.myNilm = nilm;
         })
     );
     this.subs.push(
       this.nilm
+        .distinctUntilChanged((x, y) => x.id === y.id)
         .subscribe(nilm => {
           this.installationService.setDbId(nilm.db_id);
           this.installationService.selectDbRoot();
@@ -80,7 +91,7 @@ export class DbAdminComponent implements OnInit {
     );
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     for (var sub of this.subs) {
       sub.unsubscribe();
     }

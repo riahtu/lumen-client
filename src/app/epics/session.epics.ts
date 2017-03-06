@@ -4,10 +4,8 @@ import { ActionsObservable } from 'redux-observable';
 import { SessionActions } from '../actions/session.actions';
 import { Observable } from 'rxjs/Observable';
 import { Epic } from 'redux-observable';
-import { 
-  IAppState,
-  IPayloadAction 
-} from '../store';
+import { IPayloadAction } from '../store';
+import {IAppState} from '../app.store';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/mergeMap';
 import 'rxjs/add/operator/map';

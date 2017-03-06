@@ -1,35 +1,61 @@
-<div class="panel panel-default">
-  <div class="panel-heading">
-    <h3 class="panel-title"> Installation Details</h3>
+<alert *ngIf="!nilm.available" type="danger">
+  Installation Offline
+  <button class="btn btn-danger" [disabled]="busy$ | async"
+    (click) = "refreshNilm()">
+    <i *ngIf="retryingConnection" class="fa fa-refresh fa-spin"></i>
+     retry</button> 
+</alert>
+
+<form [formGroup]="form">
+  <div class="form-group" [class.has-error]="!form.controls.name.valid">
+    <label class="control-label" for="nilm-name">Name</label>
+    <input class="form-control" id="nilm-name" type="text" [formControl]="form.controls.name">
   </div>
-  <div class="panel-body">
+  <div class="form-group" [class.has-error]="!form.controls.description.valid">
+    <label class="control-label" for="nilm-description">Description</label>
+    <input class="form-control" id="nilm-description" type="text" [formControl]="form.controls.description">
+  </div>
+  <div class="form-group" [class.has-error]="!form.controls.url.valid">
+    <label class="control-label" for="nilm-url">URL</label>
+    <input class="form-control" id="nilm-url" placeholder="http://localhost/nilmdb" type="text" [formControl]="form.controls.url">
+  </div>
+  <div class="form-group ">
+    <div class="pull-left ">
+      <button type="submit" (click) = "updateNilm(form.value)" class="btn btn-default " 
+        [disabled]="!form.valid">Save</button>
+    </div>
+    <div class="pull-right">
+      <button (click) = "removeNilmModal.show()" class="btn btn-danger">
+      Remove</button>
+    </div>
+  </div>
+</form>
 
-    <dl class="dl-horizontal">
-      <dt>Status</dt>
-      <dd><span class="label label-success">available</span></dd>
-    </dl>
+<!-- confirm remove NILM modal -->
 
-    <form [formGroup]="form">
-      <div class="form-group" [class.has-error]="!form.controls.name.valid">
-        <label class="control-label" for="nilm-name">Name</label>
-        <input class="form-control" id="nilm-name" type="text" [formControl]="form.controls.name">
+<div class="modal fade" bsModal #removeNilmModal="bs-modal" [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog" 
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Remove [{{nilm.name}}]?</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="removeNilmModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-      <div class="form-group" [class.has-error]="!form.controls.description.valid">
-        <label class="control-label" for="nilm-description">Description</label>
-        <input class="form-control" id="nilm-description" type="text" [formControl]="form.controls.description">
-      </div>
-      <div class="form-group" [class.has-error]="!form.controls.url.valid">
-        <label class="control-label" for="nilm-url">URL</label>
-        <input class="form-control" id="nilm-url" placeholder="http://localhost/nilmdb" type="text" [formControl]="form.controls.url">
-      </div>
-      <div class="form-group ">
-        <div class="pull-left ">
-          <button type="submit" (click) = "onSubmit(form.value)" class="btn btn-default " 
-            [disabled]="!form.valid">Save</button>
+      <div class="modal-body">
+        <ul class="lead">
+          <li> This will not delete any data from the installation. </li>
+          <li> This will not affect any processes running on the installation. </li>
+          <li> You can add the installation back at any time. </li>
+        </ul>
+        <hr/>
+        <div class="clearfix">
+          <button class="btn btn-danger pull-left" (click)="removeNilm()">Yes, remove it</button>
+          <button class="btn btn-success pull-right" (click)="removeNilmModal.hide()">No, keep it</button>
         </div>
       </div>
-    </form>
+    </div>
   </div>
 </div>
-
-  

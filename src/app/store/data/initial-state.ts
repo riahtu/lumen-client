@@ -1,5 +1,5 @@
 
-import * as data from './data.types';
+import * as data from './types';
 import { makeTypedFactory } from 'typed-immutable-record';
 
 export const NilmStoreFactory = 

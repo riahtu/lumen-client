@@ -15,6 +15,8 @@ import {
   INilm
 } from '../../../store/data';
 
+import {InstallationService} from '../../installation.service';
+
 @Component({
   selector: 'app-edit-nilm',
   templateUrl: './edit-nilm.component.html',
@@ -27,7 +29,8 @@ export class EditNilmComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private nilmService: NilmService
+    private nilmService: NilmService,
+    private installationService: InstallationService
   )
    { }
 
@@ -41,6 +44,21 @@ export class EditNilmComponent implements OnInit {
       description: [nilm.description],
       url: [nilm.url, Validators.required],
     });
+  }
+
+  refreshNilm(){
+    this.installationService.refreshNilm(this.nilm);
+  }
+  removeNilm(){
+    this.nilmService.removeNilm(this.nilm);
+  }
+  updateNilm(values: any){
+    this.nilmService.updateNilm(
+      this.nilm, 
+      values.name, 
+      values.description, 
+      values.url
+    );
   }
 
 }
