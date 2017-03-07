@@ -137,8 +137,9 @@ export class NilmService {
   public removeNilm(nilm: INilm) {
     let o = this.tokenService
       .delete(`nilms/${nilm.id}.json`)
-      .map(resp => resp.json())
-      .subscribe(
+      .map(resp => resp.json());
+
+      o.subscribe(
       json => {
         this.ngRedux.dispatch({
           type: NilmActions.REMOVE_NILM,
@@ -148,7 +149,7 @@ export class NilmService {
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
-
+      return o;
   }
 
   // -------- private helper functions --------

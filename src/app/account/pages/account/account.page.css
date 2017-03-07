@@ -1,5 +1,5 @@
 
-@media (min-width: 992px) {
+@media (min-width: 768px) {
   .panel-body{
     max-height: calc(100vh - 140px);
     height: calc(100vh - 140px);

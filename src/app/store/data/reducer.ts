@@ -7,6 +7,7 @@ import {
   recordify,
   removeByKey,
   removeByValue,
+  toArray,
   IPayloadAction
 } from '../helpers';
 import * as records from './types';
@@ -17,19 +18,26 @@ export function nilmReducer(
   switch (action.type) {
     case actions.NilmActions.RECEIVE_ADMIN_NILMS:
       return state
-        .set('admin', _.union(state.admin,action.payload.result))
+        .set('admin', _.union(state.admin,toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_OWNER_NILMS:
       return state
-        .set('owner', _.union(state.owner,action.payload.result))
+        .set('owner', _.union(state.owner,toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_VIEWER_NILMS:
       return state
-        .set('viewer', _.union(state.viewer,action.payload.result))
+        .set('viewer', _.union(state.viewer,toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_NILM:
       return state
         .set('entities', mergeNilmEntities(state.entities, action.payload))
+    case actions.NilmActions.REMOVE_NILM:
+      return state
+        .set('entities', _.omit(state.entities,action.payload))
+        //remove the nilm wherever it is [probably admin]
+        .set('admin', state.admin.filter(id => id!=action.payload))
+        .set('owner', state.owner.filter(id => id!=action.payload))
+        .set('viewer', state.viewer.filter(id => id!=action.payload))
     default:
       return state;
   }

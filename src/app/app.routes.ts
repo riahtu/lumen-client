@@ -16,28 +16,28 @@ const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
-    //canActivate: [Angular2TokenService]
+    canActivate: [Angular2TokenService]
   },
   { 
     path: 'home',
     component: HomePageComponent,
-    //canActivate: [Angular2TokenService]
+    canActivate: [Angular2TokenService]
   },
   {
     path: 'account',
     component: AccountPageComponent,
-    //canActivate: [Angular2TokenService]
+    canActivate: [Angular2TokenService]
   },
   { 
     path: 'installations',
     component: InstallationsPageComponent,
-    //canActivate: [Angular2TokenService]
+    canActivate: [Angular2TokenService]
 
   },
   {
     path: 'installations/:id', 
     component: InstallationPageComponent,
-    //canActivate: [Angular2TokenService]
+    canActivate: [Angular2TokenService]
 
   },
   {

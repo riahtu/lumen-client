@@ -25,6 +25,12 @@ export function removeByValue(myArray, deleteVal){
   return myArray.filter(element => element != deleteVal)
 }
 
+export function toArray(val: any){
+  if(val instanceof Array){
+    return val;
+  }
+  return [val];
+}
 export interface IPayloadAction extends Action {
   payload?: any;
 }
