@@ -107,6 +107,31 @@ export class UserGroupService {
       );
   }
 
+  public createMember(group: IUserGroup, userParams: any){
+    let o = this.tokenService
+      .put(`user_groups/${group.id}/create_member.json`, userParams)
+      .map(resp => resp.json());
+
+      o.subscribe(
+        json => {
+        let data = normalize(json.data, schema.userGroup)
+        this.ngRedux.dispatch({
+          type: UserGroupActions.RECEIVE_GROUPS,
+          payload: data
+        })
+        if (data.entities['users'] !== undefined) {
+          this.ngRedux.dispatch({
+            type: UserActions.RECEIVE,
+            payload: data.entities['users']
+          })
+        }
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
+      return o;
+  }
+
   public createGroup(name: string, description: string): Observable<any> {
     let o = this.tokenService
       .post('user_groups.json', {

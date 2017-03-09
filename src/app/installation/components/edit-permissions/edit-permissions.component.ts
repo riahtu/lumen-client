@@ -19,7 +19,7 @@ import {
   styleUrls: ['./edit-permissions.component.css']
 })
 export class EditPermissionsComponent implements OnInit {
-  @ViewChild('permissionModal') public permissionModal:ModalDirective;
+  @ViewChild('permissionModal') public permissionModal: ModalDirective;
 
   @Input() admins: IPermission[]
   @Input() owners: IPermission[]
@@ -28,13 +28,28 @@ export class EditPermissionsComponent implements OnInit {
 
   private selectEntries$: Observable<SelectEntry[]>;
 
-  private role: string;
   private target: any;
+  private userType: string;
+  private userOptions: any[];
+  private role: string;
+  private roleOptions: any[];
 
   constructor(
     private permissionService: PermissionService
   ) {
     this.resetModal();
+    this.userType='select';
+    this.userOptions = [
+      {value: 'select', label: 'pick an existing user or group'},
+      {value: 'invite', label: 'invite a user by e-mail'},
+      {value: 'create', label: 'create a new user'}
+    ];
+    this.role='viewer';
+    this.roleOptions = [
+      {value: 'viewer', label: 'a viewer'},
+      {value: 'owner', label: 'an owner'},
+      {value: 'admin', label: 'an admin'}
+    ];
   }
 
   resetModal() {
@@ -48,13 +63,25 @@ export class EditPermissionsComponent implements OnInit {
   removePermission(permission: IPermission) {
     this.permissionService.removePermission(permission);
   }
-  createPermission() {
-    console.log(this.role, this.target['id']);
+  createPermission(selection: SelectionValue) {
     this.permissionService.createPermission(
       this.nilm.id,
       this.role,
-      this.target['id'],
-      this.target['type']).subscribe( result => this.permissionModal.hide());
+      selection.id,
+      selection.type)
+      .subscribe(result => this.permissionModal.hide());
+  }
+  cancel() {
+    this.permissionModal.hide();
+  }
+  createUserWithPermission(userParams: any) {
+    this.permissionService.createUserWithPermission(
+      this.nilm.id,
+      this.role,
+      userParams)
+      /*.subscribe(
+      success => this.permissionModal.hide()
+      );*/
   }
   ngOnInit() {
     this.selectEntries$ = this.permissionService.targets$.map(targets => {
@@ -67,6 +94,10 @@ export class EditPermissionsComponent implements OnInit {
 }
 
 interface SelectEntry {
-  value: {},
+  value: SelectionValue,
   label: string
+}
+interface SelectionValue {
+  id: number,
+  type: string
 }

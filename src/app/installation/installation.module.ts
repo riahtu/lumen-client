@@ -19,6 +19,7 @@ import { PIPES } from './pipes';
 import { InstallationPageComponent } from './pages';
 import { InstallationService } from './installation.service'
 import { InstallationSelectors } from './installation.selectors';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { InstallationSelectors } from './installation.selectors';
     RouterModule,
     TreeModule,
     SelectModule,
+    SharedModule,
     AlertModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot()

@@ -55,7 +55,7 @@
 <div class="modal fade" bsModal #userModal="bs-modal" 
      [config]="{backdrop: 'static', show: true}"
      tabindex="-1" role="dialog"
-     (onHide)="resetModal()" (onShow)="addMemberShown()" 
+     (onShow)="addMemberShown()" 
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -68,44 +68,44 @@
       </div>
       <div class="modal-body">
         <!-- select how to add a user -->
-        <div class="lead xcompact">Select one:</div><hr class="popup"/>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            select existing user or group
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-            invite new user by e-mail
-          </label>
-        </div>
-         <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option3">
-            create a new user
-          </label>
-        </div>
-        <!-- Option 1: select an existing user -->
-        <div class="lead compact">User:</div><hr class="popup"/>
-        <ng-select [(ngModel)]="selectedUser"
-          [options]="selectEntries$ | async"
-          placeholder = "select a user"
-          notFoundMsg = "no users found">
+        <span class="lead">I want to:</span> 
+        <ng-select [(ngModel)]="userType"
+        class="selection-options"
+              [options]="userOptions"
+              placeholder = "select one">
         </ng-select>
+        <hr/>
 
-        <!-- Save and Cancel buttons -->
-        <div class="clearfix">
-          <!-- save -->
-          <button class="btn btn-primary pull-left popup" 
-                  [disabled]="selectedUser==null"
-                  (click)="addMember(selectedUser)">Save</button>
-          <!-- cancel -->
-          <button class="btn btn-default pull-right popup"
-                  (click)="userModal.hide()">
-                  Cancel</button>
-        </div>
+        <div [ngSwitch]='userType'>
+          <!-- Option 1: select an existing user -->
+          <div *ngSwitchCase="'select'">
+            <ng-select [(ngModel)]="selectedUser"
+              [options]="selectEntries$ | async"
+              placeholder = "select a user"
+              notFoundMsg = "no users found">
+            </ng-select>
+            <!-- Save and Cancel buttons -->
+            <div class="clearfix">
+              <!-- save -->
+              <button class="btn btn-primary pull-left mtop" 
+                      [disabled]="selectedUser==null"
+                      (click)="addMember(selectedUser)">Save</button>
+              <!-- cancel -->
+              <button class="btn btn-default pull-right mtop"
+                      (click)="userModal.hide()">
+                      Cancel</button>
+            </div>
+          </div>
+          <!-- Option 2: create a new user -->
+          <div *ngSwitchCase="'create'">
+            <app-user-form (save)="createMember($event)"
+                          (cancel)="cancel()">
+            </app-user-form>
+          </div>
+          <!-- Option 3: invite a new user-->
+          <div *ngSwitchCase="'invite'">
+            TODO
+          </div>
       </div>
     </div>
   </div>

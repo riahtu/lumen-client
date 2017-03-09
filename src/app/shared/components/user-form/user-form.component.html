@@ -1,0 +1,40 @@
+<form [formGroup]="form">
+  <!-- First Name -->
+  <div class="form-group" [class.has-error]="!form.controls.first_name.valid && !form.controls.first_name.pristine">
+    <label class="control-label" for="first_name">First Name</label>
+    <input class="form-control" placeholder="first name" id="first_name" [formControl]="form.controls.first_name">
+  </div>
+  <!-- Last Name -->
+  <div class="form-group" [class.has-error]="!form.controls.last_name.valid && !form.controls.last_name.pristine">
+    <label class="control-label" for="last_name">Last Name</label>
+    <input class="form-control" placeholder="last name" id="last_name" [formControl]="form.controls.last_name">
+  </div>
+  <!-- E-mail -->
+  <div class="form-group" [class.has-error]="!form.controls.email.valid && !form.controls.email.pristine">
+    <label class="control-label" for="email">E-mail</label>
+    <input class="form-control" placeholder="e-mail address" id="email" [formControl]="form.controls.email">
+  </div>
+  <!-- Password -->
+  <div class="form-group" [class.has-error]="!form.controls.passwords.controls.password.valid">
+    <label class="control-label" for="password">Password </label>
+    <input class="form-control" id="password" type="password" 
+      [formControl]="form.controls.passwords.controls.password">
+  </div>
+  <!-- Confirm Password -->
+  <div class="form-group" [class.has-error]="!form.controls.passwords.valid">
+    <label class="control-label" for="password_confirmation">Confirm Password</label>
+    <input class="form-control" id="password_confirmation" type="password" 
+      [formControl]="form.controls.passwords.controls.password_confirmation">
+    <span *ngIf="!form.controls.passwords.valid" class="help-block danger">passwords must match</span>
+  </div>
+  <!-- Save and Cancel buttons -->
+  <div class="clearfix">
+    <!-- save -->
+    <button class="btn btn-primary pull-left popup" 
+      [disabled]="form.valid==false" 
+      (click)="onSave(form.value)">Save</button>
+    <!-- cancel -->
+    <button class="btn btn-default pull-right popup" (click)="onCancel()">
+            Cancel</button>
+  </div>
+</form>

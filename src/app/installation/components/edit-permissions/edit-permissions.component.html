@@ -1,13 +1,13 @@
 
-<span class="lead">Administrators</span><hr/>
+<span class="lead">Administrators</span><hr class="compact"/>
 <app-permission  *ngFor="let permission of admins" 
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
-<div class="lead compact">Owners</div><hr/>
+<div class="lead compact">Owners</div><hr class="compact"/>
 <app-permission *ngFor="let permission of owners" 
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
-<div class="lead compact">Viewers</div><hr/>
+<div class="lead compact">Viewers</div><hr class="compact"/>
 <app-permission *ngFor="let permission of viewers"
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
@@ -29,49 +29,59 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="lead xcompact">Select one:</div><hr/>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-            select existing user or group
-          </label>
-        </div>
-        <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-            invite new user by e-mail
-          </label>
-        </div>
-         <div class="radio">
-          <label>
-            <input type="radio" name="optionsRadios" id="optionsRadios2" value="option3">
-            create a new user
-          </label>
-        </div>
         
 
-        <div class="lead compact">Permission:</div><hr/>
-        <label class="radio-inline">
-          <input type="radio" name="role" value="admin" [(ngModel)]="role"> admin
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="role" value="owner" [(ngModel)]="role"> owner
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="role" value="viewer" [(ngModel)]="role"> viewer
-        </label>
-      
-        <div class="lead compact">User/Group:</div><hr/>
-        <ng-select [(ngModel)]="target"
-          [options]="selectEntries$ | async">
-        </ng-select>
-        <div class="clearfix">
-          <button class="btn btn-primary pull-left" 
-                  [disabled]="target==null"
-                  (click)="createPermission()">Save</button>
-          <button class="btn btn-default pull-right"
-                  (click)="permissionModal.hide()">
-                  Cancel</button>
+        <!-- select how to add a user -->
+        <div>
+          <span class="lead">I want to:</span> 
+          <ng-select [(ngModel)]="userType"
+          class="selection-options"
+                [options]="userOptions"
+                placeholder = "select one">
+          </ng-select>
+        </div>
+        <div>
+          <span class="lead">to be:</span> 
+          <ng-select [(ngModel)]="role"
+          class="selection-options"
+                [options]="roleOptions"
+                placeholder = "select one">
+          </ng-select>
+        </div>
+        <hr/>
+
+
+        <!-- ================================= -->
+        <div [ngSwitch]='userType'>
+          <!-- Option 1: select an existing user -->
+          <div *ngSwitchCase="'select'">
+            <ng-select [(ngModel)]="target"
+              [options]="selectEntries$ | async"
+              placeholder = "select a user or group"
+              notFoundMsg = "no users or groups found">
+            </ng-select>
+            <!-- Save and Cancel buttons -->
+            <div class="clearfix">
+              <!-- save -->
+              <button class="btn btn-primary pull-left mtop" 
+                      [disabled]="target==null"
+                      (click)="createPermission(target)">Save</button>
+              <!-- cancel -->
+              <button class="btn btn-default pull-right mtop"
+                      (click)="cancel()">
+                      Cancel</button>
+            </div>
+          </div>
+          <!-- Option 2: create a new user -->
+          <div *ngSwitchCase="'create'">
+            <app-user-form (save)="createUserWithPermission($event)"
+                          (cancel)="cancel()">
+            </app-user-form>
+          </div>
+          <!-- Option 3: invite a new user-->
+          <div *ngSwitchCase="'invite'">
+            TODO
+          </div>
         </div>
       </div>
     </div>

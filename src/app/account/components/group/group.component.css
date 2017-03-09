@@ -11,7 +11,7 @@ li.menu {
   cursor: pointer;
 }
 
-hr.popup {
+hr.mbottom {
   margin-top: 0px;
   margin-bottom: 10px;
 }
@@ -24,6 +24,12 @@ div.xcompact{
   margin-bottom: 0px;
   margin-top: 0px;
 }
-.popup.btn{
+.mtop{
   margin-top: 10px;
+}
+.selection-options{
+  width: 50%;
+  margin: 0px;
+  font-weight: 300;
+  line-height: 1.4;
 }

@@ -22,7 +22,9 @@
       <i *ngIf="nilm.role=='viewer'" class="fa fa-eye fa-fw"   tooltip="viewer"></i>
     </td>
     <!-- Installation name -->
-    <td style="vertical-align: middle"> {{nilm.name}} </td>
+    <td style="vertical-align: middle"> 
+      <span [tooltip]="nilm.description">{{nilm.name}}</span>
+    </td>
     <!-- Admin/Owner access -->
     <td>
       <button *ngIf="nilm.role=='admin' || nilm.role=='owner'"

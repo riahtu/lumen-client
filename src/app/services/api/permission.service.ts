@@ -116,7 +116,7 @@ export class PermissionService {
   public createPermission(
     nilmId: number,
     role: string,
-    targetId: string,
+    targetId: number,
     targetType: string): Observable<string> {
     let o = this.tokenService
       .post('/permissions.json', {
@@ -138,6 +138,14 @@ export class PermissionService {
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
       return o;
+  }
+
+  public createUserWithPermission(
+    nilmId: number,
+    role: string,
+    userParams: any
+  ){
+    console.log(role, userParams);
   }
 
   public loadTargets(): void {

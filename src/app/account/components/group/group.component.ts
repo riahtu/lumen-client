@@ -35,11 +35,20 @@ export class GroupComponent implements OnInit {
 
   private members$: Observable<IUser[]>
   private selectEntries$: Observable<ISelectEntry[]>
+  private userType: string;
+  private userOptions: any[];
 
   constructor(
     private userGroupService: UserGroupService,
     private userService: UserService
-  ) { }
+  ) {
+    this.userType='select';
+    this.userOptions = [
+      {value: 'select', label: 'pick an existing user or group'},
+      {value: 'invite', label: 'invite a user by e-mail'},
+      {value: 'create', label: 'create a new user'}
+    ];
+   }
 
 
   destroyGroup(){
@@ -60,6 +69,15 @@ export class GroupComponent implements OnInit {
   }
   addMemberShown(){
     this.userService.loadUsers();
+  }
+  cancel(){
+    this.userModal.hide();
+  }
+  createMember(values: any){
+    this.userGroupService.createMember(this.group, values)
+      .subscribe(
+        success => this.userModal.hide()
+      );
   }
   
   ngOnInit() {

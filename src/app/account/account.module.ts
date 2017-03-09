@@ -12,17 +12,11 @@ import {
   FormsModule
 } from '@angular/forms';
 
+import {SharedModule} from '../shared/shared.module';
 import {
   AccountPageComponent
 } from './pages';
-
-import {
-  GroupsComponent,
-  GroupComponent,
-  GroupFormComponent,
-  NilmsComponent,
-  NilmFormComponent
-} from './components';
+import { COMPONENTS } from './components';
 
 @NgModule({
   imports: [
@@ -31,17 +25,14 @@ import {
     ReactiveFormsModule,
     RouterModule,
     SelectModule,
+    SharedModule,
     DropdownModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot()
   ],
   declarations: [
-    GroupsComponent,
-    NilmsComponent,
+    COMPONENTS,
     AccountPageComponent,
-    GroupComponent,
-    GroupFormComponent,
-    NilmFormComponent
   ],
   exports: [
     AccountPageComponent
