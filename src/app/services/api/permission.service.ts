@@ -145,7 +145,27 @@ export class PermissionService {
     role: string,
     userParams: any
   ){
-    console.log(role, userParams);
+    let o = this.tokenService
+      .put(`permissions/create_user.json`, 
+        Object.assign({},userParams,
+        {
+        nilm_id: nilmId,
+        role: role,
+      }))
+      .map(resp => resp.json());
+
+      o.subscribe(
+        json => {
+        let data = normalize(json.data, schema.permission)
+        this.ngRedux.dispatch({
+          type: PermissionActions.RECEIVE,
+          payload: data.entities.permissions
+        });
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
+      return o;
   }
 
   public loadTargets(): void {

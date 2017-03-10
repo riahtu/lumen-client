@@ -37,28 +37,30 @@ export class EditPermissionsComponent implements OnInit {
   constructor(
     private permissionService: PermissionService
   ) {
-    this.resetModal();
-    this.userType='select';
+    this.userType = 'select';
     this.userOptions = [
-      {value: 'select', label: 'pick an existing user or group'},
-      {value: 'invite', label: 'invite a user by e-mail'},
-      {value: 'create', label: 'create a new user'}
+      { value: 'select', label: 'pick an existing user or group' },
+      { value: 'invite', label: 'invite a user by e-mail' },
+      { value: 'create', label: 'create a new user' }
     ];
-    this.role='viewer';
+    this.role = 'viewer';
     this.roleOptions = [
-      {value: 'viewer', label: 'a viewer'},
-      {value: 'owner', label: 'an owner'},
-      {value: 'admin', label: 'an admin'}
+      { value: 'viewer', label: 'a viewer' },
+      { value: 'owner', label: 'an owner' },
+      { value: 'admin', label: 'an admin' }
     ];
+    this.resetModal();
   }
 
   resetModal() {
     //clear out the fields
     this.target = null;
     this.role = "viewer";
+    this.userType = 'select';
   }
   addPermissionShown() {
     this.permissionService.loadTargets();
+    this.resetModal();
   }
   removePermission(permission: IPermission) {
     this.permissionService.removePermission(permission);
@@ -79,9 +81,9 @@ export class EditPermissionsComponent implements OnInit {
       this.nilm.id,
       this.role,
       userParams)
-      /*.subscribe(
+      .subscribe(
       success => this.permissionModal.hide()
-      );*/
+      );
   }
   ngOnInit() {
     this.selectEntries$ = this.permissionService.targets$.map(targets => {
