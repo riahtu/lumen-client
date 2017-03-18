@@ -95,20 +95,20 @@ export class InstallationSelectors {
     // ---- dbNodes: DbTreeNode[] -----
     this.dbNodes$ = this.selectedDb$
       .combineLatest(this.data$)
-      .map(([db, data]) => this._mapRoot(data, db.contents));
+      .map(([db, data]) => this._mapRoot(data, db));
 
   }
 
   ///----------- Tree Helper Functions -----------------------
   ///
-  private _mapRoot(data: IState, db_folder_id: number): DbTreeNode[] {
+  private _mapRoot(data: IState, db: IDbRecord): DbTreeNode[] {
     // make sure the root folder exists
-    if (!(db_folder_id in data.dbFolders)) {
+    if (!(db.contents in data.dbFolders)) {
       return [];
     }
-    let root = this._mapFolder(data, db_folder_id);
-    root.type='root';
+    let root = this._mapFolder(data, db.contents);
     root.name='database';
+    root.type='root';
     root.isExpanded = true;
     return [root];
   }

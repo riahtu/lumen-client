@@ -1,11 +1,10 @@
-
-
 <div *ngFor="let nilm of [(nilm$ | async)]">
+<div class="page-title-bar">Installation Settings 
+  <span *ngIf="nilm!=null">[{{nilm.name}}]</span></div>
 <div *ngIf="nilm==null" class="well">
   <h1><i class="fa fa-spinner fa-spin"></i> Loading</h1>
 </div>
 <div *ngIf="nilm!=null">
-  <h1 class="page-title"> <b>[{{nilm.name}}]</b> Administration</h1>
   <tabset>
     <tab heading='Database'>
       <installation-database-tab [nilm]="nilm$">

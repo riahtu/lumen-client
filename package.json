@@ -48,6 +48,7 @@
     "@angular/cli": "^1.0.0-beta.32.3",
     "@angular/compiler-cli": "^2.4.9",
     "@types/jasmine": "2.5.38",
+    "@types/jquery": "^2.0.40",
     "@types/node": "^6.0.42",
     "@types/redux-logger": "^2.6.32",
     "angular-cli": "1.0.0-beta.24",

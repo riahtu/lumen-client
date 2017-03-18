@@ -3,7 +3,15 @@ import { schema } from 'normalizr';
 
 
 
-export const dbElement = new schema.Entity('dbElements');
+export const dbElement = new schema.Entity('dbElements',
+{},
+{
+  processStrategy: (entity) => {
+    if(entity.units == '' || entity.units==null)
+      entity.units = 'none'
+    return entity;
+  }
+});
 
 export const dbStream = new schema.Entity('dbStreams',
   { elements: [dbElement] });

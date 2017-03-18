@@ -1,0 +1,41 @@
+<Tree [nodes]="dbNodes$ | async" 
+  [options]="treeOptions">
+
+  <template #treeNodeTemplate let-node="node">
+    <span [ngSwitch]="node.data.type">
+      <span *ngSwitchCase="'nilm'">
+        {{ node.data.name }}
+        <i *ngIf="node.data.priveleged"
+          class="fa fa-gear icon-button"
+          [routerLink]="['/installations',node.data.nilmId]"
+          tooltip="installation settings"></i>
+      </span>
+      <span *ngSwitchCase="'dbFolder'">
+        <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
+        <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+        {{ node.data.name }}
+      </span>
+      <span *ngSwitchCase="'dbStream'">
+        <i class="fa fa-database"></i>
+        {{ node.data.name }}
+      </span>
+      <span *ngSwitchCase="'dbElement'">
+        <span class="tree-button plot" 
+          *ngIf="node.data.plotted==false && node.data.plottable"
+          (click)="explorerService.plotElement(node.data.element)">
+          <i class="fa fa-line-chart"></i> add </span>
+        <span class="tree-button unplot" 
+          *ngIf="node.data.plotted==true"
+          (click)="explorerService.hideElement(node.data.element)">
+          <i class="fa fa-line-chart"></i> hide </span>
+        <a class="tree-button noplot"
+          *ngIf="node.data.plottable==false"
+          [tooltip]="node.data.tooltip">
+          <i class="fa fa-line-chart"></i> add </a>
+        {{ node.data.name }}
+      </span>
+
+    </span>
+    
+  </template>
+</Tree>

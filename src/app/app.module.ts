@@ -18,7 +18,7 @@ import {
 
 import { AccountModule } from './account/account.module';
 import { InstallationModule } from './installation/installation.module';
-
+import { ExplorerModule } from './explorer/explorer.module';
 
 import {
   MessagesComponent,
@@ -59,6 +59,7 @@ import { ToArrayPipe } from './to-array.pipe';
     ModalModule.forRoot(),
     AccountModule,
     InstallationModule,
+    ExplorerModule,
     appRoutes
   ],
   providers: [

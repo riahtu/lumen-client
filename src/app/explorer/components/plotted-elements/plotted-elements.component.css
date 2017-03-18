@@ -1,0 +1,17 @@
+.green{
+  color: green;
+}
+.icon-button.fa-close{
+  padding-top: 13px;
+  margin-right: 10px;
+}
+.icon-button{
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+    margin-left: 10px;
+}
+.icon-button:hover{
+  cursor: pointer;
+  opacity: 0.5;
+}

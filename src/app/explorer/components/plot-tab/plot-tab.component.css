@@ -1,0 +1,22 @@
+ .axis-title.lead{
+  background: #c8dbea;
+  padding-left: 10px;
+  padding-bottom: 2px;
+  margin-bottom: 0px;
+}
+
+.empty-plot{
+    text-align: center;
+    color: #bbb;
+    margin: 10px;
+}
+
+.plotted-element { background: inherit; }
+
+.plotted-element:nth-child(odd) { 
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: #bbb;
+  background:#ddd; }

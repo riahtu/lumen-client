@@ -99,7 +99,6 @@ export class AccountPageComponent implements OnInit {
       password: formValues.passwords.password,
       password_confirmation: formValues.passwords.password_confirmation
     }
-    console.log(userParams);
     this.sessionService.updateAccount(userParams);
   }
 

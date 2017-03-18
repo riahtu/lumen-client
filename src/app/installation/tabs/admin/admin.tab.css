@@ -1,8 +1,8 @@
 /* Make all content fit on the page */
 @media (min-width: 768px) {
   .app-content{
-    max-height: calc(100vh - 260px);
-    height: calc(100vh - 260px);
+    max-height: calc(100vh - 221px);
+    height: calc(100vh - 221px);
     overflow-y: auto;
     margin-bottom: 0px;
   }

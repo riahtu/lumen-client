@@ -1,5 +1,3 @@
-
-
 export const InstallationActions = {
   'SELECT_DB_ROOT': 'INSTALLATION_SELECT_DB_ROOT',
   'SELECT_DB_FOLDER': 'INSTALLATION_SELECT_DB_FOLDER',

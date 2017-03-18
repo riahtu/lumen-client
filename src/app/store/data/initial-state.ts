@@ -73,7 +73,7 @@ export const DbElementFactory =
   makeTypedFactory<data.IDbElement, data.IDbElementRecord>({
     id: null,
     name: '',
-    units: '',
+    units: 'none',
     column: null,
     default_max: null,
     default_min: null,

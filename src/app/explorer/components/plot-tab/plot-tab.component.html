@@ -1,0 +1,19 @@
+<div *ngIf="leftElements.length==0 && rightElements.length==0">
+  <p class="empty-plot"><i class="fa fa-line-chart fa-2x"></i></p>
+  <p class="lead empty-plot"> no elements plotted</p>
+</div>
+
+<p *ngIf="leftElements.length>0" class="axis-title lead">Left Axis:</p>
+<app-plotted-elements
+  class="plotted-element"
+  *ngFor="let element of leftElements"
+  [element]="element">
+</app-plotted-elements>
+
+
+<p *ngIf="rightElements.length>0" class="axis-title lead">Right Axis:</p>
+<app-plotted-elements 
+  class="plotted-element"
+  *ngFor="let element of rightElements"
+  [element]="element">
+</app-plotted-elements>

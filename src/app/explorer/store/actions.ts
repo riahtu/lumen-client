@@ -1,0 +1,4 @@
+export const ExplorerActions = {
+  'PLOT_ELEMENT': 'EXPLORER_PLOT_ELEMENT',
+  'HIDE_ELEMENT': 'EXPLORER_HIDE_ELEMENT'
+}

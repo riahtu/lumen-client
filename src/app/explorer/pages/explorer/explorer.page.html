@@ -1,0 +1,19 @@
+<p class="page-title-bar">Data Explorer</p>
+<div class="row">
+  <div class="col-md-3 col-sm-4">
+    <tabset>
+      <tab heading='Files'>
+        <div id="file-tree">
+          <app-file-tree></app-file-tree>
+        </div>
+      </tab>
+      <tab heading='Plot'>
+        <app-plot-tab 
+          [leftElements]  = "testLeftElements"
+          [rightElements] = "rightElements$ | async">
+        </app-plot-tab>
+      </tab>
+    </tabset>
+  </div>
+  <app-main-plot id="main-plot" class="col-md-9 col-sm8"></app-main-plot>
+</div>

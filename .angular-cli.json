@@ -23,6 +23,8 @@
         "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
+        "../src/assets/flot/jquery.js",
+        "../src/assets/flot/jquery.flot.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

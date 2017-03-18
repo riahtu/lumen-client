@@ -11,8 +11,18 @@
     border-color: #265986;
     background: #5d81a0;
 }
-
-.well {
-  text-align: center;
-  color: grey;
+#main-plot{
+  height: calc(100vh - 150px);
+}
+.tab-pane{
+  max-height: calc(100vh - 171px);
+  height: calc(100vh - 171px);
+  overflow-y: auto;
+  overflow-x: scroll;
+}
+.tab-pane{
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ddd;
+    border-top-style: none;
 }

@@ -4,6 +4,7 @@ import {Angular2TokenService } from 'angular2-token';
 
 import {  AccountPageComponent } from './account/pages';
 import { InstallationPageComponent } from './installation/pages';
+import { ExplorerPageComponent } from './explorer/pages';
 import { 
   InstallationsPageComponent,
   HomePageComponent,
@@ -14,25 +15,19 @@ import {
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'explorer',
     pathMatch: 'full',
     canActivate: [Angular2TokenService]
   },
   { 
-    path: 'home',
-    component: HomePageComponent,
+    path: 'explorer',
+    component: ExplorerPageComponent,
     canActivate: [Angular2TokenService]
   },
   {
     path: 'account',
     component: AccountPageComponent,
     canActivate: [Angular2TokenService]
-  },
-  { 
-    path: 'installations',
-    component: InstallationsPageComponent,
-    canActivate: [Angular2TokenService]
-
   },
   {
     path: 'installations/:id', 

@@ -9,14 +9,13 @@
       <template #treeNodeTemplate let-node="node">
         <span [ngSwitch]="node.data.type">
           <span *ngSwitchCase="'root'">
-            <i class="fa fa-database"></i>
           </span>
           <span *ngSwitchCase="'dbFolder'">
             <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
             <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
           </span>
           <span *ngSwitchCase="'dbStream'">
-            <i class="fa fa-file-text-o"></i>
+            <i class="fa fa-database"></i>
           </span>
         </span>
         {{ node.data.name }}

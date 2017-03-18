@@ -1,0 +1,43 @@
+<div class="plotted-element">
+  <i class="fa fa-gear fa-lg icon-button"
+    (click)="elementModal.show()"></i>
+  <span class="fa-stack fa-lg">
+        <i class="fa fa-square fa-stack-1x fa-lg"></i>
+       <i class="fa fa-square fa-stack-1x green"></i>
+      </span> {{element.name}}
+  <i class="fa fa-close pull-right icon-button"
+    (click)="hideElement()"></i>
+</div>
+
+
+<!-- ====== edit plot settings ====== -->
+<div class="modal fade" bsModal #elementModal="bs-modal" 
+     [config]="{backdrop: 'static', show: true}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Plot Settings for <strong>{{element.name}}</strong></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="elementModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- select how to add a user -->
+        <span class="lead">TODO</span> 
+        <!-- Save and Cancel buttons -->
+        <div class="clearfix">
+          <!-- save -->
+          <button class="btn btn-primary pull-left popup" 
+                  >Save</button>
+          <!-- cancel -->
+          <button class="btn btn-default pull-right popup"
+                  (click)="elementModal.hide()">
+                  Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,108 @@
+
+.folder{
+  color: tan;
+}
+.tree-button{
+  cursor: pointer;
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  padding-left: 3px;
+}
+
+
+.tree-button.plot{
+  padding-right: 5px;
+  margin-right: 4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #3c763d;
+}
+.tree-button.plot:hover{
+  background-color: #449d44;
+  border-color: #398439;
+  color: white;
+  cursor: pointer;
+}
+
+.tree-button.unplot{
+  padding-right: 2px;
+  margin-right: 4px;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #a94442;
+}
+.tree-button.unplot:hover{
+  color: white;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+  cursor: pointer;
+}
+
+.tree-button.noplot{
+  padding-right: 5px;
+  margin-right: 4px;
+  color: #8fbd90;
+  background-color: #dff0d8;
+  border-color: #8fbd90;
+  text-decoration: none;
+}
+
+.icon-button{
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .2;
+}
+.icon-button:hover{
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+:host>>>.tree{
+  cursor: default;
+}
+:host>>>.node-content-wrapper:hover{
+  background: inherit !important;
+  border-style: none;
+}
+:host>>>.node-content-wrapper{
+  background: inherit !important;
+  border-style: none !important;
+  box-shadow: unset !important;
+}
+
+/* Tree styling 
+:host>>>.node-content-wrapper {
+  display: block;
+}
+:host>>>.node-content-wrapper, .tree-children {
+  position: relative;
+}
+:host>>>.node-content-wrapper::before, .tree-children::after {
+  content: "";
+  position: absolute;
+}
+:host>>>.node-content-wrapper::before {
+  border-bottom: 1px solid lightgrey;
+  border-left: 1px solid lightgrey;
+  height: 28px;
+  top: -17px;
+  width: 20px;
+  left: -28px;
+}
+:host>>>.tree-node-leaf>.node-wrapper>.node-content-wrapper::before {
+  width: 25px;
+}
+:host>>>.tree-children::after {
+  border-left: 1px solid lightgrey;
+  height: 100%;
+  top: -15px;
+  left: -15px;
+}
+:host>>>treenode:last-child>.tree-node>.tree-children::after {
+  border-left: none;
+}
+:host>>>.toggle-children {
+  z-index: 1;
+}
+*/
