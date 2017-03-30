@@ -11,6 +11,7 @@ import {
 import { COMPONENTS } from './components';
 import { ExplorerPageComponent } from './pages/explorer/explorer.page';
 import { ExplorerService } from './explorer.service';
+import { ExplorerSelectors } from './explorer.selectors';
 import { TreeModule } from 'angular2-tree-component';
 
 @NgModule({
@@ -27,7 +28,8 @@ import { TreeModule } from 'angular2-tree-component';
     ExplorerPageComponent
   ],
   providers: [
-    ExplorerService
+    ExplorerService,
+    ExplorerSelectors
   ],
   exports: [
     ExplorerPageComponent

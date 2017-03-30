@@ -4,14 +4,14 @@ import { schema } from 'normalizr';
 
 
 export const dbElement = new schema.Entity('dbElements',
-{},
-{
-  processStrategy: (entity) => {
-    if(entity.units == '' || entity.units==null)
-      entity.units = 'none'
-    return entity;
-  }
-});
+  {},
+  {
+    processStrategy: (entity) => {
+      if (entity.units == '' || entity.units == null)
+        entity.units = 'none'
+      return entity;
+    }
+  });
 
 export const dbStream = new schema.Entity('dbStreams',
   { elements: [dbElement] });
@@ -38,8 +38,25 @@ export const db = new schema.Entity('dbs',
     contents: dbFolder
   });
 
+export const data = new schema.Entity('data', {},
+  {
+    idAttribute: 'element_id',
+    processStrategy: (entity) => {
+      if (entity.data != null) {
+        entity.data = entity.data.map(d => {
+          if (d != null && d.length != 0) {
+            d[0] = d[0] / 1e3; //convert to ms
+          }
+          return d;
+        })
+      }
+      return entity;
+    }
+  })
+export const datas = new schema.Array(data);
+
 export const nilm = new schema.Entity('nilms',
-  {db: db});
+  { db: db });
 export const nilms = new schema.Array(nilm);
 
 export const user = new schema.Entity('users')

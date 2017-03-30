@@ -16,7 +16,9 @@ export const DbStreamActions = {
   'RECEIVE': 'DB_STREAM_RECEIVE'
 };
 export const DbElementActions = {
-  'RECEIVE': 'DB_ELEMENT_RECEIVE'
+  'RECEIVE': 'DB_ELEMENT_RECEIVE',
+  'SET_COLOR': 'DB_ELEMENT_SET_COLOR',
+  'SET_DISPLAY_NAME': 'DB_ELEMENT_SET_DISPLAY_NAME'
 };
 export const UserActions = {
   'SET_CURRENT': 'USER_SET_CURRENT',

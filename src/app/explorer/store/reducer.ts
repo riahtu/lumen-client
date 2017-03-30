@@ -1,11 +1,14 @@
 import { IPayloadAction } from '../../store/helpers';
 import { ExplorerActions } from './actions';
 import { IExplorerRecord } from './types';
-import { IDbElement } from '../../store/data'
+import { 
+  IDbElement,
+  IDataSet 
+} from '../../store/data'
 import {
   INITIAL_STATE
 } from './initial-state';
-
+import { IRange } from './types';
 
 export function reducer(
   state: IExplorerRecord = INITIAL_STATE,
@@ -40,7 +43,30 @@ export function reducer(
           .filter(id => id!=element.id))
         .set('right_elements',state.right_elements
           .filter(id => id!=element.id))
+    case ExplorerActions.ADD_PLOT_DATA:
+      let data = action.payload;
+      //set plot time range if bounds are null
+      return state
+        .set('plot_data', Object.assign({}, state.plot_data, data))
+        .set('plot_time', setTimeRange(state.plot_time, data))
     default:
       return state;
+  }
+
+  function setTimeRange(range: IRange, data: IDataSet){
+    let autoRange = {min: range.min, max: range.max}
+    if(data == {})
+      return range;
+    if(range.min == null && data != {}){
+      autoRange.min = Object.keys(data)
+        .map(id => data[id].start_time)
+        .sort((a,b)=> a-b)[0]
+    }
+    if(range.max == null && data != {}){
+      autoRange.max = Object.keys(data)
+        .map(id => data[id].end_time)
+        .sort((a,b)=> b-a)[0]
+    }
+    return autoRange;
   }
 }

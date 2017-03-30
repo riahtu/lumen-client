@@ -12,7 +12,7 @@
     background: #5d81a0;
 }
 #main-plot{
-  height: calc(100vh - 150px);
+  /*height: calc(100vh - 150px);*/
 }
 .tab-pane{
   max-height: calc(100vh - 171px);

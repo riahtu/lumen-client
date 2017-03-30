@@ -80,7 +80,11 @@ export const DbElementFactory =
     scale_factor: 1.0,
     offset: 0.0,
     plottable: true,
-    discrete: false
+    discrete: false,
+    path: '',
+    data: null,
+    color: null,
+    display_name: ''
   });
 
 // ---- User ----

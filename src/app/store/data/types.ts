@@ -99,6 +99,11 @@ export interface IDbElement {
   offset: number;
   plottable: boolean;
   discrete: boolean;
+  path: string; 
+  //dynamically managed by the client
+  data: any[];
+  color: string;
+  display_name: string;
 }
 export interface IDbElementRecord extends
   TypedRecord<IDbElementRecord>, IDbElement { };
@@ -161,4 +166,18 @@ export interface IPermissionRecord extends
   TypedRecord<IPermissionRecord>, IPermission { };
 export interface IPermissionRecords {
   [index: string]: IPermission;
+}
+
+// ---- DataSet ----
+export interface IData {
+  start_time: number;
+  end_time: number;
+  data: any[];
+}
+
+export interface IDataRecord extends
+  TypedRecord<IDataRecord>, IData { };
+
+export interface IDataSet {
+  [index: string]: IData; //indexed by DbElement ID
 }

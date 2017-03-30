@@ -101,7 +101,11 @@ export function dbElementReducer(
       return Object.assign({},
         state,
         recordify(action.payload, factories.DbElementFactory));
-
+    case actions.DbElementActions.SET_COLOR:
+      let elemId = action.payload.id;
+      let color = action.payload.color;
+      return Object.assign({}, state,
+        {[elemId]: state[elemId].set('color',color)})
     default:
       return state;
   }

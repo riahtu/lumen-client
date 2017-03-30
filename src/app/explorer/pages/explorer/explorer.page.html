@@ -9,11 +9,11 @@
       </tab>
       <tab heading='Plot'>
         <app-plot-tab 
-          [leftElements]  = "testLeftElements"
-          [rightElements] = "rightElements$ | async">
+          [leftElements]  = "explorerSelectors.leftElements$ | async"
+          [rightElements] = "explorerSelectors.rightElements$ | async">
         </app-plot-tab>
       </tab>
     </tabset>
   </div>
-  <app-main-plot id="main-plot" class="col-md-9 col-sm8"></app-main-plot>
+  <app-main-plot id="main-plot" class="col-md-9 col-sm-8"></app-main-plot>
 </div>

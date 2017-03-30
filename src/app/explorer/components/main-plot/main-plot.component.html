@@ -1,2 +1,9 @@
-<div class="plot" #plotArea type="text">
+<div class="parent">
+  <div class="plot" #plotArea>
+  </div>
+  <div class="plot overlay" *ngIf="!showPlot" [@fadeInOut]>
+    <div class="message"><i class="fa fa-line-chart fa-5x"></i>
+    <p>Select Data to Plot</p>
+    </div>
+  </div>
 </div>

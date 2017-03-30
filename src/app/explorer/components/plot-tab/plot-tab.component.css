@@ -11,12 +11,3 @@
     margin: 10px;
 }
 
-.plotted-element { background: inherit; }
-
-.plotted-element:nth-child(odd) { 
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-color: #bbb;
-  background:#ddd; }

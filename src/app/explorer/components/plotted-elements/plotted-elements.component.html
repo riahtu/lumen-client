@@ -3,7 +3,7 @@
     (click)="elementModal.show()"></i>
   <span class="fa-stack fa-lg">
         <i class="fa fa-square fa-stack-1x fa-lg"></i>
-       <i class="fa fa-square fa-stack-1x green"></i>
+       <i class="fa fa-square fa-stack-1x" [style.color]="element.color"></i>
       </span> {{element.name}}
   <i class="fa fa-close pull-right icon-button"
     (click)="hideElement()"></i>

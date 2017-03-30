@@ -6,10 +6,13 @@ import {
   DbService,
   DbFolderService,
   DbStreamService,
+  DataService,
   SessionService,
   PermissionService,
   UserGroupService,
-  UserService
+  UserService,
+  ColorService,
+  DbElementService
 } from './api';
 
 import {
@@ -18,9 +21,10 @@ import {
 
 export const SERVICE_PROVIDERS =
   [NilmService, DbService, DbFolderService, MessageService,
-    DbStreamService, SessionService,
-    PermissionService, UserGroupService, UserService];
+    DbStreamService, SessionService,DataService, ColorService,
+    PermissionService, UserGroupService, UserService, DbElementService];
 export {
   NilmService, DbService, DbFolderService, DbStreamService, SessionService,
-  MessageService, PermissionService, UserGroupService, UserService
+  DataService, MessageService, PermissionService, UserGroupService, UserService,
+  ColorService, DbElementService
 };
