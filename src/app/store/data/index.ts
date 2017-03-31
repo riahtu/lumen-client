@@ -23,6 +23,6 @@ export const reducer = combineReducers<IState>({
   users: reducers.userReducer,
   userGroups: reducers.userGroupReducer
 });
-
+export {DataFactory } from './initial-state';
 export * from './actions';
 export * from './types';

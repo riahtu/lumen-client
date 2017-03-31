@@ -40,17 +40,17 @@ export const FLOT_OPTIONS = {
 		pan:{
 			interactive: true,
 			cursor: "pointer",
-			frameRate: 30,
+			frameRate: 20,
 		},
 		crosshair: {
-			mode: "xy"
+			mode: ""
 		},
-		shadowSize: 1,
+		//shadowSize: 1,
 		series:{
 			lines:{
 				show: true,
 				fill: false,
-				lineWidth: 2,
+				//lineWidth: 2,
 			}
 		},
 		legend: {

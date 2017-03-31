@@ -173,6 +173,7 @@ export interface IData {
   start_time: number;
   end_time: number;
   data: any[];
+  type: string;
 }
 
 export interface IDataRecord extends

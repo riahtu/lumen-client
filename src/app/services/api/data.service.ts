@@ -24,16 +24,16 @@ export class DataService {
   ) { }
 
   public loadData(
-    startTime: number, 
+    startTime: number, //values in milliseconds!
     endTime: number, 
     elements: IDbElement[]): Observable<any>{
       let params: URLSearchParams = new URLSearchParams();
       params.set('elements', 
         JSON.stringify(elements.map(e => e.id)));
       if(startTime != null)
-        params.set('start_time', startTime.toString());
+        params.set('start_time', (startTime*1e3).toString());
       if(endTime != null)
-        params.set('end_time', endTime.toString());
+        params.set('end_time', (endTime*1e3).toString());
     
       return this.tokenService
         .get(`db_elements/data.json`, 

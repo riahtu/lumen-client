@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from 'ng2-redux';
 
+
+
 import {
   ExplorerActions,
   IRange
 } from './store';
-
 import { IAppState } from '../app.store';
 import { MessageService } from '../services/';
 import { IDbElement } from '../store/data';
@@ -64,5 +65,11 @@ export class ExplorerService {
         })
       })
   }
-
+  public setPlotTimeRange( range: IRange) {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_PLOT_TIME_RANGE,
+      payload: range
+    })
+  }
+  
 }

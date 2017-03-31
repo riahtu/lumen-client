@@ -87,6 +87,15 @@ export const DbElementFactory =
     display_name: ''
   });
 
+// --- Data ----
+export const DataFactory = 
+  makeTypedFactory<data.IData, data.IDataRecord>({
+  start_time: null,
+  end_time: null,
+  data: [],
+  type: 'unknown'
+});
+
 // ---- User ----
 export const UserFactory =
   makeTypedFactory<data.IUser, data.IUserRecord>({

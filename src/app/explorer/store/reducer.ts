@@ -3,8 +3,12 @@ import { ExplorerActions } from './actions';
 import { IExplorerRecord } from './types';
 import { 
   IDbElement,
-  IDataSet 
+  IDataSet,
+  DataFactory
 } from '../../store/data'
+import {
+  recordify
+} from '../../store/helpers';
 import {
   INITIAL_STATE
 } from './initial-state';
@@ -44,13 +48,16 @@ export function reducer(
         .set('right_elements',state.right_elements
           .filter(id => id!=element.id))
     case ExplorerActions.ADD_PLOT_DATA:
-      let data = action.payload;
+      let data = recordify(action.payload, DataFactory);
       //set plot time range if bounds are null
       return state
         .set('plot_data', Object.assign({}, state.plot_data, data))
         .set('plot_time', setTimeRange(state.plot_time, data))
     default:
       return state;
+    case ExplorerActions.SET_PLOT_TIME_RANGE:
+      return state
+        .set('plot_time', action.payload);
   }
 
   function setTimeRange(range: IRange, data: IDataSet){

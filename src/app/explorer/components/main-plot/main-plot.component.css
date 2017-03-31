@@ -20,7 +20,7 @@ div.overlay{
   color: #999;
 }
 div.overlay > div.message {
-  margin-top: calc((100vh - 215px)/2);
+  margin-top: calc((100vh - 260px)/2);
   text-align: center;
   font-weight: 300;
   font-size: 2em;

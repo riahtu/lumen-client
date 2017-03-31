@@ -38,6 +38,7 @@ export const db = new schema.Entity('dbs',
     contents: dbFolder
   });
 
+//convert all unix microsecond times to ms times
 export const data = new schema.Entity('data', {},
   {
     idAttribute: 'element_id',
@@ -49,6 +50,12 @@ export const data = new schema.Entity('data', {},
           }
           return d;
         })
+      }
+      if(entity.start_time != null){
+        entity.start_time = entity.start_time/1e3;
+      }
+      if(entity.end_time != null){
+        entity.end_time = entity.end_time/1e3;
       }
       return entity;
     }
