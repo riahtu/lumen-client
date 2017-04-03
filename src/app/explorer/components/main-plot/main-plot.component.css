@@ -1,33 +1,8 @@
-div.parent{
-  position: relative;
-  top: 0;
-  left: 0;
-}
-div.plot{
-  height: calc(100vh - 125px);
+.plot{
+  /*height: calc(75vh - 125px);*/
+  height: 75%;
   width: 100%;
-  position: absolute;
+  /*position: absolute;
   top: 0;
-  left: 0;
-}
-div.overlay{
-  background: grey;
-  background: #fafcfe;
-  border-style: solid;
-  border-radius: 15px;
-  border-width: 1px;
-  border-color: #bbb;
-  color: #999;
-}
-div.overlay > div.message {
-  margin-top: calc((100vh - 260px)/2);
-  text-align: center;
-  font-weight: 300;
-  font-size: 2em;
-}
-
-@media(max-width: 767px){
-  div.plot{
-    height: 400px;
-  }
+  left: 0;*/
 }

@@ -13,6 +13,8 @@ import { ExplorerPageComponent } from './pages/explorer/explorer.page';
 import { ExplorerService } from './explorer.service';
 import { ExplorerSelectors } from './explorer.selectors';
 import { TreeModule } from 'angular2-tree-component';
+import { NavPlotComponent } from './components/nav-plot/nav-plot.component';
+import { ToolTabComponent } from './components/tool-tab/tool-tab.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,7 @@ import { TreeModule } from 'angular2-tree-component';
   ],
   declarations: [
     COMPONENTS, 
-    ExplorerPageComponent
+    ExplorerPageComponent, NavPlotComponent, ToolTabComponent
   ],
   providers: [
     ExplorerService,

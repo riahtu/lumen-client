@@ -7,6 +7,7 @@ export interface IExplorer {
   right_elements?: number[];
   left_units?: string;
   right_units?: string;
+  show_plot?: boolean;
   nav_y1?: IRange;
   nav_y2?: IRange;
   nav_time?: IRange;

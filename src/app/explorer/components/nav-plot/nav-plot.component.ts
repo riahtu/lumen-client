@@ -23,16 +23,13 @@ import { FLOT_OPTIONS } from './flot.options';
 import * as _ from 'lodash';
 
 declare var $: any;
-
 @Component({
-  
-  selector: 'app-main-plot',
-  templateUrl: './main-plot.component.html',
-  styleUrls: ['./main-plot.component.css']
+  selector: 'app-nav-plot',
+  templateUrl: './nav-plot.component.html',
+  styleUrls: ['./nav-plot.component.css']
 })
-export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  @ViewChild('plotArea') plotArea: ElementRef
+export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy  {
+@ViewChild('plotArea') plotArea: ElementRef
 
   private subs: Subscription[];
   private plot: any;
@@ -51,17 +48,12 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(
   ) {
-    let s = this.explorerSelectors.plotTimeRange$
+    let s = this.explorerSelectors.navTimeRange$
       .distinctUntilChanged((x,y)=>_.isEqual(x,y))      
       .combineLatest(this.explorerSelectors.plottedElements$)
       .subscribe(([timeRange, elements]) => {
-        this.explorerService.loadPlotData(elements, timeRange)
+        this.explorerService.loadNavData(elements, timeRange)
       })
-    this.subs.push(s);
-    s = this.xBounds
-      .debounceTime(250)
-      .distinctUntilChanged((x,y)=>_.isEqual(x,y))   
-      .subscribe(range => this.explorerService.setPlotTimeRange(range));
     this.subs.push(s);
   }
   ngOnDestroy() {
@@ -73,30 +65,26 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.explorerSelectors.leftElements$
       .combineLatest(this.explorerSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(this.explorerSelectors.plotData$)
+      .combineLatest(this.explorerSelectors.navData$)
       .subscribe(([elementsByAxis, data]) => {
         //build data structure
         let leftAxis = this.buildDataset(elementsByAxis.left, data, 1);
         let rightAxis = this.buildDataset(elementsByAxis.right, data, 2);
         let dataset = leftAxis.concat(rightAxis);
         if (dataset.length == 0) {
-          this.explorerService.hidePlot();
           return; //no data to plot
         }
-        this.explorerService.showPlot();
+        console.log(dataset);
         if (this.plot == null) {
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
-          $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
-          $(this.plotArea.nativeElement).bind('plotzoom',this.updateAxes.bind(this))
-
+          
         } else {
           this.plot.setData(dataset);
           this.plot.setupGrid();
           this.plot.draw();
         }
       })
-    //this.renderer.invokeElementMethod(this.plotArea.nativeElement,'focus2');
   }
 
   buildDataset(elements: IDbElement[], data: IDataSet, axis: number) {
@@ -129,13 +117,5 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       return 
     }).filter(data => data != null)
-  }
-
-  updateAxes(){
-    let axes = this.plot.getAxes();
-    this.xBounds.next({
-      min: axes.xaxis.options.min, 
-      max: axes.xaxis.options.max
-    })
   }
 }

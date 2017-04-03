@@ -9,11 +9,29 @@
       </tab>
       <tab heading='Plot'>
         <app-plot-tab 
-          [leftElements]  = "explorerSelectors.leftElements$ | async"
-          [rightElements] = "explorerSelectors.rightElements$ | async">
+          [leftElements]="explorerSelectors.leftElements$ | async" 
+          [rightElements]="explorerSelectors.rightElements$ | async">
         </app-plot-tab>
       </tab>
     </tabset>
   </div>
-  <app-main-plot id="main-plot" class="col-md-9 col-sm-8"></app-main-plot>
+  <div class="col-md-9 col-sm-8">
+    <div class="parent">
+      
+      <!-- navigation plot (25% of view) -->
+      <div class="plot-container">
+        <app-nav-plot class="nav-plot"></app-nav-plot>
+        <!-- main plot (75% of view) -->
+        <app-main-plot class="main-plot"></app-main-plot>
+      </div>
+      <!-- modal overlay if no plot -->
+      <div class="plot overlay" [@fadeInOut]
+        *ngIf="!(explorerSelectors.showPlot$ |async)" >
+        <div class="message">
+          <i class="fa fa-line-chart fa-5x"></i>
+          <p>Select Data to Plot</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

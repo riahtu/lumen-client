@@ -1,7 +1,7 @@
 import { IPayloadAction } from '../../store/helpers';
 import { ExplorerActions } from './actions';
 import { IExplorerRecord } from './types';
-import { 
+import {
   IDbElement,
   IDataSet,
   DataFactory
@@ -17,7 +17,8 @@ import { IRange } from './types';
 export function reducer(
   state: IExplorerRecord = INITIAL_STATE,
   action: IPayloadAction): IExplorerRecord {
-  let element:IDbElement;
+  let element: IDbElement;
+  let data: IDataSet;
   switch (action.type) {
     case ExplorerActions.PLOT_ELEMENT:
       element = action.payload;
@@ -25,34 +26,48 @@ export function reducer(
       if (state.left_elements.length == 0 ||
         state.left_units == element.units) {
         return state
-          .set('left_units',element.units)
+          .set('left_units', element.units)
           .set('left_elements',
-            [].concat(state.left_elements, [element.id]));
+          [].concat(state.left_elements, [element.id]));
       }
       //next try to plot element on the right
       if (state.right_elements.length == 0 ||
         state.right_units == element.units) {
         return state
-          .set('right_units',element.units)
+          .set('right_units', element.units)
           .set('right_elements',
-            [].concat(state.right_elements, [element.id]));
+          [].concat(state.right_elements, [element.id]));
       }
       //error, cannot plot this element
-      console.log('error cannot plot unit:',element.units);
+      console.log('error cannot plot unit:', element.units);
       return state;
     case ExplorerActions.HIDE_ELEMENT:
       element = action.payload;
       return state
-        .set('left_elements',state.left_elements
-          .filter(id => id!=element.id))
-        .set('right_elements',state.right_elements
-          .filter(id => id!=element.id))
+        .set('left_elements', state.left_elements
+          .filter(id => id != element.id))
+        .set('right_elements', state.right_elements
+          .filter(id => id != element.id))
+
+    case ExplorerActions.SHOW_PLOT:
+      return state.set('show_plot', true);
+    case ExplorerActions.HIDE_PLOT:
+      return state.set('show_plot', false);
+
     case ExplorerActions.ADD_PLOT_DATA:
-      let data = recordify(action.payload, DataFactory);
+      data = recordify(action.payload, DataFactory);
       //set plot time range if bounds are null
       return state
         .set('plot_data', Object.assign({}, state.plot_data, data))
         .set('plot_time', setTimeRange(state.plot_time, data))
+
+    case ExplorerActions.ADD_NAV_DATA:
+      data = recordify(action.payload, DataFactory);
+      //set plot time range if bounds are null
+      return state
+        .set('nav_data', Object.assign({}, state.plot_data, data))
+        .set('nav_time', setTimeRange(state.plot_time, data))
+
     default:
       return state;
     case ExplorerActions.SET_PLOT_TIME_RANGE:
@@ -60,19 +75,19 @@ export function reducer(
         .set('plot_time', action.payload);
   }
 
-  function setTimeRange(range: IRange, data: IDataSet){
-    let autoRange = {min: range.min, max: range.max}
-    if(data == {})
+  function setTimeRange(range: IRange, data: IDataSet) {
+    let autoRange = { min: range.min, max: range.max }
+    if (data == {})
       return range;
-    if(range.min == null && data != {}){
+    if (range.min == null && data != {}) {
       autoRange.min = Object.keys(data)
         .map(id => data[id].start_time)
-        .sort((a,b)=> a-b)[0]
+        .sort((a, b) => a - b)[0]
     }
-    if(range.max == null && data != {}){
+    if (range.max == null && data != {}) {
       autoRange.max = Object.keys(data)
         .map(id => data[id].end_time)
-        .sort((a,b)=> b-a)[0]
+        .sort((a, b) => b - a)[0]
     }
     return autoRange;
   }

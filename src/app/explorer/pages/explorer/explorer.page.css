@@ -11,9 +11,7 @@
     border-color: #265986;
     background: #5d81a0;
 }
-#main-plot{
-  /*height: calc(100vh - 150px);*/
-}
+
 .tab-pane{
   max-height: calc(100vh - 171px);
   height: calc(100vh - 171px);
@@ -25,4 +23,43 @@
     border-width: 1px;
     border-color: #ddd;
     border-top-style: none;
+}
+
+div.parent{
+  position: relative;
+  top: 0;
+  left: 0;
+}
+div.plot-container{
+  height: calc(100vh - 125px);
+  width: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+
+div.overlay{
+  height: calc(100vh - 125px);
+  width: 100%;
+  background: grey;
+  background: #fafcfe;
+  border-style: solid;
+  border-radius: 15px;
+  border-width: 1px;
+  border-color: #bbb;
+  color: #999;
+  position: absolute;
+}
+div.overlay > div.message {
+  margin-top: calc((75vh - 260px)/2);
+  text-align: center;
+  font-weight: 300;
+  font-size: 2em;
+}
+
+@media(max-width: 767px){
+  :host(.main-plot) >>> plot{
+    height: 400px;
+  }
 }

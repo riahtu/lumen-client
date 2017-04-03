@@ -21,9 +21,12 @@ export class ExplorerSelectors {
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
   @select(['ui', 'explorer', 'right_elements']) rightElementIDs$: Observable<number[]>;
-
+  @select(['ui', 'explorer', 'show_plot']) showPlot$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_time']) plotTimeRange$: Observable<IRange>
   @select(['ui', 'explorer', 'plot_data']) plotData$: Observable<IDataSet>;
+  @select(['ui', 'explorer', 'nav_time']) navTimeRange$: Observable<IRange>
+  @select(['ui', 'explorer', 'nav_data']) navData$: Observable<IDataSet>;
+  
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>
   //both left and right elements
