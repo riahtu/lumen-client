@@ -13,7 +13,7 @@ import {
   IRange
 } from '../../store';
 
-import { 
+import {
   IDataSet,
   IDbElement
 } from '../../../store/data';
@@ -25,7 +25,7 @@ import * as _ from 'lodash';
 declare var $: any;
 
 @Component({
-  
+
   selector: 'app-main-plot',
   templateUrl: './main-plot.component.html',
   styleUrls: ['./main-plot.component.css']
@@ -37,8 +37,8 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private subs: Subscription[];
   private plot: any;
 
-  private xBounds:  Subject<IRange>
-  
+  private xBounds: Subject<IRange>
+
   constructor(
     private renderer: Renderer,
     private explorerSelectors: ExplorerSelectors,
@@ -51,26 +51,39 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(
   ) {
-    let s = this.explorerSelectors.plotTimeRange$
-      .distinctUntilChanged((x,y)=>_.isEqual(x,y))      
+    /* load data based on changes to the plotTimeRange */
+    this.subs.push(this.explorerSelectors.plotTimeRange$
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$)
       .subscribe(([timeRange, elements]) => {
         this.explorerService.loadPlotData(elements, timeRange)
-      })
-    this.subs.push(s);
-    s = this.xBounds
+      }));
+    /* set the plotTimeRange based on changes to xbounds */
+    this.subs.push(this.xBounds
       .debounceTime(250)
-      .distinctUntilChanged((x,y)=>_.isEqual(x,y))   
-      .subscribe(range => this.explorerService.setPlotTimeRange(range));
-    this.subs.push(s);
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .subscribe(range =>
+        this.explorerService.setPlotTimeRange(range)));
+    /* set plot axes based on changes to plotTimeRange */
+    this.subs.push(this.explorerSelectors.plotTimeRange$
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .subscribe(timeRange => {
+        if (this.plot == null)
+          return;
+        let xaxis = this.plot.getAxes().xaxis;
+        xaxis.options.min = timeRange.min;
+        xaxis.options.max = timeRange.max;
+        this.plot.setupGrid();
+        this.plot.draw();
+      }));
   }
   ngOnDestroy() {
-    while(this.subs.length>0)
+    while (this.subs.length > 0)
       this.subs.pop().unsubscribe()
   }
- 
+
   ngAfterViewInit() {
-    this.explorerSelectors.leftElements$
+    this.subs.push(this.explorerSelectors.leftElements$
       .combineLatest(this.explorerSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
       .combineLatest(this.explorerSelectors.plotData$)
@@ -88,15 +101,14 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
-          $(this.plotArea.nativeElement).bind('plotzoom',this.updateAxes.bind(this))
+          $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
 
         } else {
           this.plot.setData(dataset);
           this.plot.setupGrid();
           this.plot.draw();
         }
-      })
-    //this.renderer.invokeElementMethod(this.plotArea.nativeElement,'focus2');
+      }));
   }
 
   buildDataset(elements: IDbElement[], data: IDataSet, axis: number) {
@@ -111,30 +123,31 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         color: element.color,
         data: data[element.id].data
       }
-      switch(data[element.id].type){
+      switch (data[element.id].type) {
         case 'raw':
           return baseConfig;
         case 'decimated':
-          return Object.assign({},baseConfig,
+          return Object.assign({}, baseConfig,
             {
               fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
             })
         case 'interval':
-          return Object.assign({},baseConfig,
+          return Object.assign({}, baseConfig,
             {
               label: `${element.name} *`
             })
         default:
-          console.log("unknown data type: ",data[element.id].type)
+          console.log("unknown data type: ", data[element.id].type)
       }
-      return 
+      return
     }).filter(data => data != null)
   }
 
-  updateAxes(){
+  //flot hook to listen for zoom/scroll events
+  updateAxes() {
     let axes = this.plot.getAxes();
     this.xBounds.next({
-      min: axes.xaxis.options.min, 
+      min: axes.xaxis.options.min,
       max: axes.xaxis.options.max
     })
   }

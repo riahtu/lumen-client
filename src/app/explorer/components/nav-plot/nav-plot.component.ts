@@ -13,7 +13,7 @@ import {
   IRange
 } from '../../store';
 
-import { 
+import {
   IDataSet,
   IDbElement
 } from '../../../store/data';
@@ -28,14 +28,14 @@ declare var $: any;
   templateUrl: './nav-plot.component.html',
   styleUrls: ['./nav-plot.component.css']
 })
-export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy  {
-@ViewChild('plotArea') plotArea: ElementRef
+export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('plotArea') plotArea: ElementRef
 
   private subs: Subscription[];
   private plot: any;
 
-  private xBounds:  Subject<IRange>
-  
+  private xBounds: Subject<IRange>
+
   constructor(
     private renderer: Renderer,
     private explorerSelectors: ExplorerSelectors,
@@ -48,21 +48,38 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy  {
 
   ngOnInit(
   ) {
-    let s = this.explorerSelectors.navTimeRange$
-      .distinctUntilChanged((x,y)=>_.isEqual(x,y))      
+    /* load data based on changes to navTimeRange */
+    this.subs.push(this.explorerSelectors.navTimeRange$
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$)
       .subscribe(([timeRange, elements]) => {
         this.explorerService.loadNavData(elements, timeRange)
-      })
-    this.subs.push(s);
+      }));
+    /* set the plot time range based on changes to selected range */
+    this.subs.push(this.xBounds
+      .debounceTime(100)
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .subscribe(range => this.explorerService.setPlotTimeRange(range)));
+    /* set the nav time range based on changes to the plot time range */
+    this.subs.push(this.explorerSelectors.plotTimeRange$
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .subscribe(timeRange => {
+        if (this.plot == null) {
+          return;
+        }
+        this.plot.setSelection(
+          { xaxis: { from: timeRange.min, to: timeRange.max } },
+          true); //do not fire the plot selected event
+      }));
   }
   ngOnDestroy() {
-    while(this.subs.length>0)
+    while (this.subs.length > 0)
       this.subs.pop().unsubscribe()
   }
- 
+
   ngAfterViewInit() {
-    this.explorerSelectors.leftElements$
+    /* update the plot when new data comes in */
+    this.subs.push(this.explorerSelectors.leftElements$
       .combineLatest(this.explorerSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
       .combineLatest(this.explorerSelectors.navData$)
@@ -74,17 +91,24 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy  {
         if (dataset.length == 0) {
           return; //no data to plot
         }
-        console.log(dataset);
         if (this.plot == null) {
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
-          
+          $(this.plotArea.nativeElement).bind('plotselected', this.selectRange.bind(this))
+
         } else {
           this.plot.setData(dataset);
           this.plot.setupGrid();
           this.plot.draw();
         }
-      })
+      }));
+  }
+  //flot hook to listen for selection events
+  selectRange(event, range) {
+    this.xBounds.next({
+      min: range.xaxis.from,
+      max: range.xaxis.to
+    })
   }
 
   buildDataset(elements: IDbElement[], data: IDataSet, axis: number) {
@@ -99,23 +123,23 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy  {
         color: element.color,
         data: data[element.id].data
       }
-      switch(data[element.id].type){
+      switch (data[element.id].type) {
         case 'raw':
           return baseConfig;
         case 'decimated':
-          return Object.assign({},baseConfig,
+          return Object.assign({}, baseConfig,
             {
               fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
             })
         case 'interval':
-          return Object.assign({},baseConfig,
+          return Object.assign({}, baseConfig,
             {
               label: `${element.name} *`
             })
         default:
-          console.log("unknown data type: ",data[element.id].type)
+          console.log("unknown data type: ", data[element.id].type)
       }
-      return 
+      return
     }).filter(data => data != null)
   }
 }
