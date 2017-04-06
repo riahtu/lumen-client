@@ -15,12 +15,14 @@ import { ExplorerSelectors } from './explorer.selectors';
 import { TreeModule } from 'angular2-tree-component';
 import { NavPlotComponent } from './components/nav-plot/nav-plot.component';
 import { ToolTabComponent } from './components/tool-tab/tool-tab.component';
+import {ColorPickerModule} from 'angular2-color-picker';
 
 @NgModule({
   imports: [
     CommonModule,
     TreeModule,
     RouterModule,
+    ColorPickerModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot()

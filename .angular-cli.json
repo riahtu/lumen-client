@@ -9,7 +9,9 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico"
+        "favicon.ico",
+        "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.png"
+
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -20,7 +22,8 @@
       "styles": [
         "styles.css",
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
-        "../node_modules/font-awesome/css/font-awesome.css"
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.css"
       ],
       "scripts": [
         "../src/assets/flot/jquery.js",
@@ -32,7 +35,8 @@
         "../src/assets/flot/jquery.flot.crosshair.js",
         "../src/assets/flot/jquery.flot.time.js",
         "../src/assets/flot/jquery.flot.tooltip.js",
-        "../src/assets/flot/jquery.flot.selection.js"
+        "../src/assets/flot/jquery.flot.selection.js",
+        "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
