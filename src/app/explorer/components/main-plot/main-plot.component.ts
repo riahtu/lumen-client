@@ -115,8 +115,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     return elements.map(element => {
       if (data[element.id] === undefined || data[element.id] == null)
         return null;
+      //use custom display_name if present
+      let label = element.name;
+      if(element.display_name!="")
+        label = element.display_name;
+        
       let baseConfig = {
-        label: element.name,
+        label: label,
         yaxis: axis,
         //bars: { show: false, barWidth: 2 },
         //points: { show: false },

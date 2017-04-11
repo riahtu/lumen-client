@@ -1,10 +1,10 @@
 <div class="plotted-element">
   <i class="fa fa-gear fa-lg icon-button"
-    (click)="elementModal.show()"></i>
+    (click)="showModal()"></i>
   <span class="fa-stack fa-lg">
         <i class="fa fa-square fa-stack-1x fa-lg"></i>
        <i class="fa fa-square fa-stack-1x" [style.color]="element.color"></i>
-      </span> {{element.name}}
+      </span> {{displayName}}
   <i class="fa fa-close pull-right icon-button"
     (click)="hideElement()"></i>
 </div>
@@ -25,32 +25,38 @@
         </button>
       </div>
       <div class="modal-body">
-        <!-- select plot color -->
-        <form>
+     
+          <!-- customize plot display name -->
           <div class="form-group">
-              <label for="element-name">Display Name</label>
-              <input type="text" id="element-name" class="form-control" placeholder="{{element.name}}">
+              <label class="form-label" for="element-name">Display Name</label>
+              <input type="text" id="element-name" class="form-control" placeholder="{{element.name}}"
+                [(ngModel)]="newName">
           </div>
+          <!-- select plot color -->
           <div class="form-group">
-              <label for="element-color">Color</label>
+              <label class="form-label" for="element-color">Color</label>
               <input type="text" id="element-color" class="form-control" #colorPicker value="{{element.color}}">
           </div>
-          <div class="form-group">
-              <label for="element-axis">Axis</label>
-              <input type="text" id="element-axis" class="form-control" placeholder="todo">
+          <!-- set plot axis -->
+          <div class="form-group" [ngClass]="{'has-error': axisMessage!=''}">
+            <label class="control-label" for="element-axis">Axis</label>
+            <ng-select [(ngModel)]="newAxis"
+                class="selection-options"
+                [options]="axisOptions"
+                placeholder = "select one">
+            </ng-select>
+            <span class="help-block">{{axisMessage}}</span>
+          </div>      
+          <!-- Save and Cancel buttons -->
+          <div class="clearfix">
+            <!-- save -->
+            <button class="btn btn-primary pull-left" 
+                    (click)="onSave()">Save</button>
+            <!-- cancel -->
+            <button class="btn btn-default pull-right"
+                    (click)="elementModal.hide()">
+                    Cancel</button>
           </div>
-        </form>
-        <div #colorPicker></div>
-        <!-- Save and Cancel buttons -->
-            <div class="clearfix">
-              <!-- save -->
-              <button class="btn btn-primary pull-left" 
-                      (click)="onSave()">Save</button>
-              <!-- cancel -->
-              <button class="btn btn-default pull-right"
-                      (click)="elementModal.hide()">
-                      Cancel</button>
-            </div>
       </div>
     </div>
   </div>

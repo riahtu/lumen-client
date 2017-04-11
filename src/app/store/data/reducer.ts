@@ -96,16 +96,22 @@ export function dbStreamReducer(
 export function dbElementReducer(
   state: records.IDbElementRecords = {},
   action: IPayloadAction): records.IDbElementRecords {
+  let elemId: number;
   switch (action.type) {
     case actions.DbElementActions.RECEIVE:
       return Object.assign({},
         state,
         recordify(action.payload, factories.DbElementFactory));
     case actions.DbElementActions.SET_COLOR:
-      let elemId = action.payload.id;
+      elemId = action.payload.id;
       let color = action.payload.color;
       return Object.assign({}, state,
         {[elemId]: state[elemId].set('color',color)})
+    case actions.DbElementActions.SET_DISPLAY_NAME:
+      elemId = action.payload.id;
+      let name = action.payload.name;
+      return Object.assign({}, state,
+        {[elemId]: state[elemId].set('display_name',name)})
     default:
       return state;
   }

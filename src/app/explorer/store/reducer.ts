@@ -12,6 +12,7 @@ import {
 import {
   INITIAL_STATE
 } from './initial-state';
+import * as _ from 'lodash';
 import { IRange } from './types';
 
 export function reducer(
@@ -20,6 +21,9 @@ export function reducer(
   let element: IDbElement;
   let data: IDataSet;
   switch (action.type) {
+
+    // plot an element, auto select the appropriate axis
+    //
     case ExplorerActions.PLOT_ELEMENT:
       element = action.payload;
       //first try to plot element on the left
@@ -41,6 +45,9 @@ export function reducer(
       //error, cannot plot this element
       console.log('error cannot plot unit:', element.units);
       return state;
+
+    //hide a plotted element
+    //
     case ExplorerActions.HIDE_ELEMENT:
       element = action.payload;
       return state
@@ -49,11 +56,37 @@ export function reducer(
         .set('right_elements', state.right_elements
           .filter(id => id != element.id))
 
+    //change a plotted element's axis
+    //
+    case ExplorerActions.SET_ELEMENT_AXIS:
+      element =action.payload.element;
+      let targetAxis = action.payload.axis;
+      let src, dest;
+      if (targetAxis == 'right') {
+        src = 'left'; dest = 'right';
+      } else if (targetAxis == 'left') {
+        src = 'right'; dest = 'left';
+      } else {
+        console.log(`invalid axis ${action.payload.axis}`)
+        return state;
+      }
+      return state
+        .set(`${dest}_elements`,_.uniq(_.concat(state[`${dest}_elements`], element.id)))
+        .set(`${dest}_units`,element.units)
+        .set(`${src}_elements`, state[`${src}_elements`].filter(id => id != element.id))
+
+    //show the plot window
+    //
     case ExplorerActions.SHOW_PLOT:
       return state.set('show_plot', true);
+    
+    //hide the plot window
+    //
     case ExplorerActions.HIDE_PLOT:
       return state.set('show_plot', false);
 
+    //add data retrieved from server to the plot dataset
+    //
     case ExplorerActions.ADD_PLOT_DATA:
       data = recordify(action.payload, DataFactory);
       //set plot time range if bounds are null
@@ -61,6 +94,8 @@ export function reducer(
         .set('plot_data', Object.assign({}, state.plot_data, data))
         .set('plot_time', setTimeRange(state.plot_time, data))
 
+    //add data retrieved from server to the nav dataset
+    //
     case ExplorerActions.ADD_NAV_DATA:
       data = recordify(action.payload, DataFactory);
       //set plot time range if bounds are null
@@ -68,12 +103,15 @@ export function reducer(
         .set('nav_data', Object.assign({}, state.plot_data, data))
         .set('nav_time', setTimeRange(state.plot_time, data))
 
-    default:
-      return state;
+    //set plot time range
+    //
     case ExplorerActions.SET_PLOT_TIME_RANGE:
       return state
         .set('plot_time', action.payload);
-  }
+
+    default:
+      return state;
+      }
 
   function setTimeRange(range: IRange, data: IDataSet) {
     let autoRange = { min: range.min, max: range.max }

@@ -8,7 +8,8 @@
   class="plotted-element odd"
   *ngFor="let element of leftElements; let isOdd=odd"
   [class.odd]="isOdd"
-  [element]="element">
+  [element]="element"
+  [axis]="'left'">
 </app-plotted-elements>
 
 
@@ -16,5 +17,6 @@
 <app-plotted-elements 
   class="plotted-element"
   *ngFor="let element of rightElements"
-  [element]="element">
+  [element]="element"
+  [axis]="'right'">
 </app-plotted-elements>

@@ -17,6 +17,15 @@ export class DbElementService {
     private colorService: ColorService
   ) { }
 
+  public setDisplayName(element: IDbElement, name: string){
+     this.ngRedux.dispatch({
+      type: DbElementActions.SET_DISPLAY_NAME,
+      payload: {
+        id: element.id,
+        name: name
+      }
+    })  
+  }
   public setColor(element: IDbElement, color: string){
     if(element.color == color)
       return; //nothing to do

@@ -6,9 +6,9 @@ import {
 } from './store';
 import { IAppState } from '../app.store';
 import { MessageService } from '../services/';
-import { 
+import {
   IDbElement,
-  IDataSet 
+  IDataSet
 } from '../store/data';
 import {
   DataService,
@@ -39,6 +39,29 @@ export class ExplorerService {
       payload: element
     })
   }
+  public setElementAxis(element: IDbElement, axis: string) {
+    //if the destination axis has elements plotted, this element
+    //must have the same units, otherwise return false
+    if (axis == "left") {
+      if (this.ngRedux.getState().ui.explorer.left_elements.length > 0 &&
+        element.units != this.ngRedux.getState().ui.explorer.left_units)
+        return false;
+    } else if (axis == "right") {
+      if (this.ngRedux.getState().ui.explorer.right_elements.length > 0 &&
+        element.units != this.ngRedux.getState().ui.explorer.right_units)
+        return false;
+    } else {
+      console.log(`invalid axis ${axis}`)
+      return false;
+    }
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_ELEMENT_AXIS,
+      payload: {
+        element: element,
+        axis: axis
+      }
+    })
+  }
   public showPlot() {
     if (this.ngRedux.getState().ui.explorer.show_plot == false)
       this.ngRedux.dispatch({
@@ -54,10 +77,10 @@ export class ExplorerService {
   public loadPlotData(
     elements: IDbElement[],
     timeRange: IRange
-  ){
+  ) {
     let existingData = this.ngRedux.getState().ui.explorer.plot_data;
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
-    if(neededElements.length==0)
+    if (neededElements.length == 0)
       return; //nothing to do
     this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
       .subscribe(data => {
@@ -70,10 +93,10 @@ export class ExplorerService {
   public loadNavData(
     elements: IDbElement[],
     timeRange: IRange
-  ){
+  ) {
     let existingData = this.ngRedux.getState().ui.explorer.nav_data;
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
-    if(neededElements.length==0)
+    if (neededElements.length == 0)
       return; //nothing to do
     this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
       .subscribe(data => {
@@ -84,7 +107,7 @@ export class ExplorerService {
       })
   }
 
-  
+
   public setPlotTimeRange(range: IRange) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,

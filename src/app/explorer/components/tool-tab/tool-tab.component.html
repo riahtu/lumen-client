@@ -1,3 +1,46 @@
-<p>
-  tool-tab works!
-</p>
+
+<div class="tt-container">
+  <p class="lead">Navigation Plot</p>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Lock Selection Width
+    </label>
+  </div>
+  <button class="btn btn-default btn-block">
+    Sync To Main Plot <i class="fa fa-level-down"></i> </button>
+
+
+  <p class="lead">Main Plot</p>
+  <p>Auto Scale to Fit</p>
+  <div class="btn-group btn-block" role="group">
+    <button class="btn btn-default autoscale">Left</button>
+    <button class="btn btn-default autoscale">Time</button>
+    <button class="btn btn-default autoscale">Right</button>
+  </div>
+  
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Show Data Cursor
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox"> Live Update
+    </label>
+  </div>
+  <hr/>
+  <div class="btn-group btn-block" dropdown>
+    <button id="menu-button" class="btn btn-block btn-default" dropdownToggle>
+      <i class="fa fa-download"></i> Download <span class="caret"></span>
+    </button>
+    <ul dropdownMenu role="menu" aria-labelledby="menu-button">
+      <!-- add a new member -->
+      <li class="menu" role="menuitem"><a>Image</a></li>
+      <!-- edit the group -->
+      <li class="menu" role="menuitem"><a>Data</a></li>
+    </ul>
+  </div>
+
+  <button class="btn btn-default btn-block">Save View</button>
+  <button class="btn btn-default btn-block">Open View</button>
+</div>
