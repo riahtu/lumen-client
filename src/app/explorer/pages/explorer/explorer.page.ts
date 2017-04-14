@@ -1,7 +1,8 @@
-import { Component, OnInit,
-  trigger, animate, style, transition } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {
+  trigger, animate, style, transition } from '@angular/animations';
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 import { IExplorer } from '../../store';
 import { ExplorerSelectors } from '../../explorer.selectors';
 

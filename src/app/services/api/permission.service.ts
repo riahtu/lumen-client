@@ -4,7 +4,7 @@ import { Angular2TokenService } from 'angular2-token';
 import {
   NgRedux,
   select
-} from 'ng2-redux';
+} from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';

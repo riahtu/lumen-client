@@ -8,9 +8,9 @@ import {
   AfterViewInit,
   SimpleChanges
 } from '@angular/core';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 import { Subject, Observable, Subscription } from 'rxjs';
-import { ModalDirective } from 'ng2-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { IExplorer } from '../../store';
 import { DbElementService } from '../../../services';
 import { IDbElement } from '../../../store/data';

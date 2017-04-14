@@ -1,4 +1,4 @@
-<Tree [nodes]="dbNodes$ | async" 
+<tree-root [nodes]="dbNodes$ | async" 
   [options]="treeOptions">
 
   <template #treeNodeTemplate let-node="node">
@@ -38,4 +38,5 @@
     </span>
     
   </template>
-</Tree>
+  
+</tree-root>

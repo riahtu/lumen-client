@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 
 
 import {

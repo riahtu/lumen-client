@@ -12,7 +12,7 @@ import {
 /*https://github.com/yuyang041060120/ng2-validation*/
 import { CustomValidators } from 'ng2-validation';
 import {Router} from '@angular/router';
-import { ModalDirective } from 'ng2-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import {
   NilmService,

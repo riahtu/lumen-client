@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { NgReduxModule, NgRedux } from 'ng2-redux';
+import { NgReduxModule, NgRedux } from '@angular-redux/store';
 import { Angular2TokenService} from 'angular2-token';
 import { appRoutes } from './app.routes';
 import { AppComponent } from './app.component';
@@ -14,7 +14,7 @@ import {
   AlertModule,
   ProgressbarModule,
   ModalModule
-} from 'ng2-bootstrap';
+} from 'ngx-bootstrap';
 
 import { AccountModule } from './account/account.module';
 import { InstallationModule } from './installation/installation.module';

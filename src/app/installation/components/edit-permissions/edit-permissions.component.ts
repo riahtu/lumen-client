@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ModalDirective } from 'ng2-bootstrap/modal';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import {
   PermissionService,

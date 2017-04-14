@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { select } from '@angular-redux/store';
+import {ExplorerService} from '../../explorer.service';
+import {ExplorerSelectors} from '../../explorer.selectors';
 
 @Component({
   selector: 'app-tool-tab',
@@ -7,7 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolTabComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(
+    private explorerService: ExplorerService,
+    private explorerSelectors: ExplorerSelectors
+  ) { }
 
   ngOnInit() {
   }

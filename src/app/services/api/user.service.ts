@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Angular2TokenService } from 'angular2-token';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';

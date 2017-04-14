@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { 
-  DropdownModule,
+  BsDropdownModule,
   ModalModule,
   TooltipModule
-} from 'ng2-bootstrap'
-import { SelectModule } from 'angular2-select';
+} from 'ngx-bootstrap'
+import { SelectModule } from 'ng-select';
 import {
   ReactiveFormsModule,
   FormsModule
@@ -26,7 +26,7 @@ import { COMPONENTS } from './components';
     RouterModule,
     SelectModule,
     SharedModule,
-    DropdownModule.forRoot(),
+    BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot()
   ],

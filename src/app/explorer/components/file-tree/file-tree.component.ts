@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
-import { TreeNode } from 'angular2-tree-component';
+import { select } from '@angular-redux/store';
+import { TreeNode } from 'angular-tree-component';
 
 import {
   NilmService,
@@ -56,17 +56,17 @@ export class FileTreeComponent implements OnInit {
       .combineLatest(this.uiState$)
       .map(([data, ui]) => {
         let nilms = _.toArray(data.nilms.entities);
-        let privelegedNilms = [].concat(data.nilms.admin,data.nilms.owner);
+        let privelegedNilms = [].concat(data.nilms.admin, data.nilms.owner);
         return nilms.map(nilm => {
           //check if user had owner/admin priveleges
           let priveleged = false;
-          if(privelegedNilms.indexOf(nilm.id)!=-1){
-            priveleged=true;
+          if (privelegedNilms.indexOf(nilm.id) != -1) {
+            priveleged = true;
           }
           return this.mapNilm(nilm, priveleged, data.dbs[nilm.db_id],
-          data.dbFolders, data.dbStreams, data.dbElements, ui);
+            data.dbFolders, data.dbStreams, data.dbElements, ui);
         })
-      });
+      })
   }
 
   public getChildren(node: TreeNode) {
@@ -96,7 +96,7 @@ export class FileTreeComponent implements OnInit {
       //nilm is loaded, map it out
       let root = this.mapFolder(folders[db.contents],
         folders, streams, elements, ui);
-      
+
       return Object.assign({}, root, {
         id: 'n' + nilm.db_id,
         type: 'nilm',
@@ -184,9 +184,9 @@ export class FileTreeComponent implements OnInit {
       ui.right_elements.length == 0) {
       plottable = true;
     }
-    let tooltip="";
-    if(plottable==false){
-      tooltip=`no axis for [ ${element.units} ]`;
+    let tooltip = "";
+    if (plottable == false) {
+      tooltip = `no axis for [ ${element.units} ]`;
     }
     //create the DbNode and return it
     return {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 
 import {IAppState} from '../app.store';
 import { 
@@ -26,11 +26,15 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'plot_data']) plotData$: Observable<IDataSet>;
   @select(['ui', 'explorer', 'nav_time']) navTimeRange$: Observable<IRange>
   @select(['ui', 'explorer', 'nav_data']) navData$: Observable<IDataSet>;
-  
+  @select(['ui', 'explorer', 'nav_zoom_lock']) navZoomLock$: Observable<boolean>;
+  @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
+
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>
+  
   //both left and right elements
   public plottedElements$: Observable<IDbElement[]>
+  public isPlotEmpty$: Observable<boolean>
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -48,5 +52,8 @@ export class ExplorerSelectors {
     this.plottedElements$ = this.leftElements$
       .combineLatest(this.rightElements$)
       .map(([left,right]) => left.concat(right))
+      
+    this.isPlotEmpty$ = this.plottedElements$
+      .map(elements => elements.length==0)
   }
 }

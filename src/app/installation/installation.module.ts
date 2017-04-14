@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SelectModule } from 'angular2-select';
+import { SelectModule } from 'ng-select';
 import { 
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms';
-import { TreeModule } from 'angular2-tree-component';
+import { TreeModule } from 'angular-tree-component';
 import { 
   AlertModule,
   ModalModule,
   TabsModule
- } from 'ng2-bootstrap';
+ } from 'ngx-bootstrap';
 
 import { COMPONENTS } from './components';
 import { TABS } from './tabs';

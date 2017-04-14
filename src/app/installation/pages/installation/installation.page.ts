@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 
 import {
   NilmService,
@@ -13,6 +13,8 @@ import {
   INilm
 } from '../../../store/data';
 
+import { ViewChild } from '@angular/core';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-installation',
@@ -52,6 +54,16 @@ export class InstallationPageComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  @ViewChild('childModal') public childModal:ModalDirective;
+ 
+  public showChildModal():void {
+    this.childModal.show();
+  }
+ 
+  public hideChildModal():void {
+    this.childModal.hide();
   }
 
 }

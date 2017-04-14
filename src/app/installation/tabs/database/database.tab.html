@@ -3,7 +3,7 @@
   <!-- db tree -->
 
   <div class="col-sm-3 app-content">
-    <Tree [nodes]="installationSelectors.dbNodes$ | async" 
+    <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
       [options]="treeOptions" 
       (onActivate)="selectNode($event)">
       <template #treeNodeTemplate let-node="node">
@@ -20,7 +20,7 @@
         </span>
         {{ node.data.name }}
       </template>
-    </Tree>
+    </tree-root>
   </div>
   <!-- folder/stream edits -->
   <div [ngSwitch]='installationSelectors.selectedType$ | async' class='app-content'>

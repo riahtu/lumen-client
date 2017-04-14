@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import {
   ExplorerActions,
   IRange
@@ -107,11 +107,36 @@ export class ExplorerService {
       })
   }
 
+  public toggleNavZoomLock() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.TOGGLE_ZOOM_LOCK
+    });
+  }
+  public disableNavZoomLock() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.DISABLE_ZOOM_LOCK
+    });
+  }
+  public toggleDataCursor() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.TOGGLE_DATA_CURSOR
+    });
+  }
+  public disableDataCursor() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.DISABLE_DATA_CURSOR
+    });
+  }
 
   public setPlotTimeRange(range: IRange) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,
       payload: range
+    })
+  }
+  public setNavRangeToPlotRange() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_NAV_RANGE_TO_PLOT_RANGE
     })
   }
 

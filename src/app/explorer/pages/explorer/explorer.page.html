@@ -2,21 +2,20 @@
 <div class="row">
   <div class="col-md-3 col-sm-4">
     <tabset>
-      <tab heading='Tools'>
-        <app-tool-tab></app-tool-tab>
-      </tab>
       <tab heading='Files'>
         <div id="file-tree">
           <app-file-tree></app-file-tree>
         </div>
       </tab>
-      <tab heading='Plot'>
+      <tab heading='Plot' [disabled]="explorerSelectors.isPlotEmpty$ | async">
         <app-plot-tab 
           [leftElements]="explorerSelectors.leftElements$ | async" 
           [rightElements]="explorerSelectors.rightElements$ | async">
         </app-plot-tab>
       </tab>
-      
+      <tab heading='Tools' [disabled]="explorerSelectors.isPlotEmpty$ | async">
+        <app-tool-tab></app-tool-tab>
+      </tab>
     </tabset>
   </div>
   <div class="col-md-9 col-sm-8">

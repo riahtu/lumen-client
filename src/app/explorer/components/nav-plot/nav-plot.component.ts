@@ -8,7 +8,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 import {
   IRange
 } from '../../store';
@@ -53,14 +53,16 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$)
       .subscribe(([timeRange, elements]) => {
-        this.explorerService.loadNavData(elements, timeRange)
+        this.explorerService.loadNavData(elements, timeRange);
+        if(this.plot!=null)
+          this.plot.clearSelection(true);
       }));
     /* set the plot time range based on changes to selected range */
     this.subs.push(this.xBounds
       .debounceTime(100)
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .subscribe(range => this.explorerService.setPlotTimeRange(range)));
-    /* set the nav time range based on changes to the plot time range */
+    /* set the selection window to track the plot time range */
     this.subs.push(this.explorerSelectors.plotTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .subscribe(timeRange => {
@@ -71,6 +73,13 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           { xaxis: { from: timeRange.min, to: timeRange.max } },
           true); //do not fire the plot selected event
       }));
+      /* toggle the zoom lock feature based on the state */
+      this.subs.push(this.explorerSelectors.navZoomLock$
+        .distinctUntilChanged()
+        .subscribe(val => {
+          if(this.plot!=null)
+            this.plot.lockZoom(val);
+        }));
   }
   ngOnDestroy() {
     while (this.subs.length > 0)
@@ -94,6 +103,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this.plot == null) {
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
+          this.explorerService.disableNavZoomLock();
           $(this.plotArea.nativeElement).bind('plotselected', this.selectRange.bind(this))
 
         } else {

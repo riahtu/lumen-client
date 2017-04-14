@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 
 import {IAppState} from '../../app.store';
 import { INilmRecords } from '../../store/data';
@@ -9,7 +9,7 @@ import {
 } from '../../services/api';
 
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 
 @Component({
   selector: 'app-installations',

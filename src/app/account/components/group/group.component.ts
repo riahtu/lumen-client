@@ -7,8 +7,8 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { select } from 'ng2-redux';
-import { ModalDirective } from 'ng2-bootstrap/modal';
+import { select } from '@angular-redux/store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import {
   IUserGroup,

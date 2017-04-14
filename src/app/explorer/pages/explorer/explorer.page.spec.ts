@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ExplorerPageComponent } from './explorer-page.component';
+import { ExplorerPageComponent } from './explorer.page';
 
 describe('ExplorerPageComponent', () => {
   let component: ExplorerPageComponent;

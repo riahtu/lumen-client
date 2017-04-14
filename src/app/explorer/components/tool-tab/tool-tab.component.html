@@ -3,11 +3,13 @@
   <p class="lead">Navigation Plot</p>
   <div class="checkbox">
     <label>
-      <input type="checkbox"> Lock Selection Width
+      <input type="checkbox" [checked]="explorerSelectors.navZoomLock$ | async" 
+        (change)="explorerService.toggleNavZoomLock()"> Lock Selection Width
     </label>
   </div>
-  <button class="btn btn-default btn-block">
-    Sync To Main Plot <i class="fa fa-level-down"></i> </button>
+  <button class="btn btn-default btn-block"
+    (click)="explorerService.setNavRangeToPlotRange()">
+    Sync To Main Plot <i class="fa fa-exchange fa-rotate-90"></i> </button>
 
 
   <p class="lead">Main Plot</p>
@@ -20,7 +22,8 @@
   
   <div class="checkbox">
     <label>
-      <input type="checkbox"> Show Data Cursor
+      <input type="checkbox" [checked]="explorerSelectors.dataCursor$ | async" 
+        (change)="explorerService.toggleDataCursor()"> Show Data Cursor
     </label>
   </div>
   <div class="checkbox">
@@ -30,14 +33,14 @@
   </div>
   <hr/>
   <div class="btn-group btn-block" dropdown>
-    <button id="menu-button" class="btn btn-block btn-default" dropdownToggle>
+    <button id="menu-button" class="btn btn-block btn-default dropdown-toggle" dropdownToggle>
       <i class="fa fa-download"></i> Download <span class="caret"></span>
     </button>
-    <ul dropdownMenu role="menu" aria-labelledby="menu-button">
+    <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="menu-button">
       <!-- add a new member -->
-      <li class="menu" role="menuitem"><a>Image</a></li>
+      <li class="menu" class="dropdown-item" role="menuitem"><a>Image</a></li>
       <!-- edit the group -->
-      <li class="menu" role="menuitem"><a>Data</a></li>
+      <li class="menu" class="dropdown-item" role="menuitem"><a>Data</a></li>
     </ul>
   </div>
 

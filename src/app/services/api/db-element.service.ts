@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
 import { IAppState } from '../../app.store';
 import{ ColorService } from './color.service';

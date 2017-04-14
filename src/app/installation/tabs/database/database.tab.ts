@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TreeNode } from 'angular2-tree-component';
+import { TreeNode } from 'angular-tree-component';
 import { Observable, Subscription } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 
 import {
   DbFolderService,

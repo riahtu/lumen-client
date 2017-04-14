@@ -4,16 +4,16 @@
 <span class="lead" [tooltip]="group.description" >{{group.name}}</span>
 <!-- drop down menu -->
 <div class="btn-group pull-right" dropdown>
-  <button id="menu-button" class="btn btn-sm btn-default" dropdownToggle>
+  <button id="menu-button" class="btn btn-sm btn-default dropdown-toggle" dropdownToggle>
     <i class="fa fa-bars"></i>
   </button>
-  <ul dropdownMenu role="menu" aria-labelledby="menu-button">
+  <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="menu-button">
     <!-- add a new member -->
-    <li class="menu" role="menuitem"><a (click)="userModal.show()">Add user</a></li>
+    <li class="menu" role="menuitem"><a class="dropdown-item" (click)="userModal.show()">Add user</a></li>
     <!-- edit the group -->
-    <li class="menu" role="menuitem"><a (click)="groupModal.show()">Edit Group</a></li>
+    <li class="menu" role="menuitem"><a class="dropdown-item" (click)="groupModal.show()">Edit Group</a></li>
     <!-- remove the group -->
-    <li class="menu" role="menuitem"><a (click)="destroyGroup()">Remove</a></li>
+    <li class="menu" role="menuitem"><a class="dropdown-item" (click)="destroyGroup()">Remove</a></li>
   </ul>
 </div>
 <!-- group members -->
@@ -30,7 +30,7 @@
 
 <!-- ====== edit group modal ==== -->
 <div class="modal fade" bsModal #groupModal="bs-modal" 
-     [config]="{backdrop: 'static', show: true}"
+     [config]="{backdrop: 'static'}"
      tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -53,7 +53,7 @@
 
 <!-- ====== add member modal ====== -->
 <div class="modal fade" bsModal #userModal="bs-modal" 
-     [config]="{backdrop: 'static', show: true}"
+     [config]="{backdrop: 'static'}"
      tabindex="-1" role="dialog"
      (onShow)="addMemberShown()" 
      aria-labelledby="mySmallModalLabel" aria-hidden="true">

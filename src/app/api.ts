@@ -46,16 +46,16 @@ export const data = new schema.Entity('data', {},
       if (entity.data != null) {
         entity.data = entity.data.map(d => {
           if (d != null && d.length != 0) {
-            d[0] = d[0] / 1e3; //convert to ms
+            d[0] = Math.round(d[0] / 1e3); //convert to ms
           }
           return d;
         })
       }
       if(entity.start_time != null){
-        entity.start_time = entity.start_time/1e3;
+        entity.start_time = Math.round(entity.start_time/1e3);
       }
       if(entity.end_time != null){
-        entity.end_time = entity.end_time/1e3;
+        entity.end_time = Math.round(entity.end_time/1e3);
       }
       return entity;
     }

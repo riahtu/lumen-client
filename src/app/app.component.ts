@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import * as createLogger from 'redux-logger';
-import { NgReduxModule, NgRedux, DevToolsExtension } from 'ng2-redux';
+import { createLogger } from 'redux-logger'
+import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { Angular2TokenService } from 'angular2-token';
 import { createEpicMiddleware } from 'redux-observable';
 
@@ -31,7 +31,7 @@ export class AppComponent {
 
     //configure redux
     const middleware = [
-      createLogger(),
+      createLogger({collapsed: true}),
       createEpicMiddleware(this.epics.root)
     ]
 

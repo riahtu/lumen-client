@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
 import { Angular2TokenService } from 'angular2-token';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';

@@ -17,7 +17,7 @@ import { NilmService } from './nilm.service';
 
 import {} from 'jasmine';
 
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 import { configureMockStores } from 'redux-mock-store';
 /*
 const mockRedux = {

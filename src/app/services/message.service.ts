@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgRedux } from 'ng2-redux';
+import { NgRedux } from '@angular-redux/store';
 
 import {IAppState } from '../app.store';
 import { 

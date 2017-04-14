@@ -12,10 +12,12 @@ export interface IExplorer {
   nav_y2?: IRange;
   nav_time?: IRange;
   nav_data?: IDataSet;
+  nav_zoom_lock?: boolean;
   plot_y1?: IRange;
   plot_y2?: IRange;
   plot_time?: IRange;
   plot_data?: IDataSet;
+  data_cursor?: boolean;
 }
 
 export interface IExplorerRecord extends

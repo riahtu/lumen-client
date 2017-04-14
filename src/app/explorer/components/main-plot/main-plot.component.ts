@@ -8,7 +8,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
-import { select } from 'ng2-redux';
+import { select } from '@angular-redux/store';
 import {
   IRange
 } from '../../store';
@@ -76,6 +76,14 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         this.plot.setupGrid();
         this.plot.draw();
       }));
+    /* set data cursor visibility based on state */
+    this.subs.push(this.explorerSelectors.dataCursor$
+      .distinctUntilChanged()
+      .subscribe(val => {
+        if (this.plot != null)
+          this.plot.enableTooltip(val);
+      })
+    );
   }
   ngOnDestroy() {
     while (this.subs.length > 0)
@@ -102,6 +110,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
             dataset, FLOT_OPTIONS);
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
+          this.explorerService.disableDataCursor();
 
         } else {
           this.plot.setData(dataset);
@@ -117,9 +126,9 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         return null;
       //use custom display_name if present
       let label = element.name;
-      if(element.display_name!="")
+      if (element.display_name != "")
         label = element.display_name;
-        
+
       let baseConfig = {
         label: label,
         yaxis: axis,
@@ -152,8 +161,8 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   updateAxes() {
     let axes = this.plot.getAxes();
     this.xBounds.next({
-      min: axes.xaxis.options.min,
-      max: axes.xaxis.options.max
+      min: Math.round(axes.xaxis.options.min),
+      max: Math.round(axes.xaxis.options.max)
     })
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NgRedux } from 'ng2-redux';
-import { TreeNode } from 'angular2-tree-component';
+import { NgRedux } from '@angular-redux/store';
+import { TreeNode } from 'angular-tree-component';
 import {
   IAppState,
 } from '../app.store';

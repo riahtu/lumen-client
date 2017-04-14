@@ -100,14 +100,44 @@ export function reducer(
       data = recordify(action.payload, DataFactory);
       //set plot time range if bounds are null
       return state
-        .set('nav_data', Object.assign({}, state.plot_data, data))
-        .set('nav_time', setTimeRange(state.plot_time, data))
+        .set('nav_data', Object.assign({}, state.nav_data, data))
+        .set('nav_time', setTimeRange(state.nav_time, data))
 
     //set plot time range
     //
     case ExplorerActions.SET_PLOT_TIME_RANGE:
       return state
         .set('plot_time', action.payload);
+
+    //set nav range to the plot range
+    //
+    case ExplorerActions.SET_NAV_RANGE_TO_PLOT_RANGE:
+      return state
+        .set('nav_time', state.plot_time);
+
+    //toggle whether the nav zoom window is locked
+    //
+    case ExplorerActions.TOGGLE_ZOOM_LOCK:
+      return state
+        .set('nav_zoom_lock', !state.nav_zoom_lock)
+
+    //disable the nav zoom window lock
+    //
+    case ExplorerActions.DISABLE_ZOOM_LOCK:
+      return state
+        .set('nav_zoom_lock', false)
+
+    //toggle whether the nav zoom window is locked
+    //
+    case ExplorerActions.TOGGLE_DATA_CURSOR:
+      return state
+        .set('data_cursor', !state.data_cursor)
+
+    //disable the nav zoom window lock
+    //
+    case ExplorerActions.DISABLE_DATA_CURSOR:
+      return state
+        .set('data_cursor', false)
 
     default:
       return state;
