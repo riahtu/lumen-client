@@ -32,7 +32,7 @@ export class SignInPageComponent implements OnInit {
     });
   }
   onSubmit(formValues: any){
-    this.sessionService.login(formValues.email, formValues.password);
+    this.sessionService.login(formValues.email, formValues.password)
   }
 
 

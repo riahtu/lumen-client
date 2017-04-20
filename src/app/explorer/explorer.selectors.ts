@@ -28,6 +28,8 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'nav_data']) navData$: Observable<IDataSet>;
   @select(['ui', 'explorer', 'nav_zoom_lock']) navZoomLock$: Observable<boolean>;
   @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
+  @select(['ui', 'explorer', 'plot_y1']) plotY1$: Observable<IRange>;
+  @select(['ui', 'explorer', 'plot_y2']) plotY2$: Observable<IRange>;
 
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>

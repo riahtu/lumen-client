@@ -90,6 +90,7 @@ export interface IDbStreamRecords {
 // ---- DbElements ----
 export interface IDbElement {
   id: number;
+  db_stream_id: number;
   name: string;
   units: string;
   column: number;

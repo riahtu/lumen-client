@@ -15,9 +15,12 @@
   <p class="lead">Main Plot</p>
   <p>Auto Scale to Fit</p>
   <div class="btn-group btn-block" role="group">
-    <button class="btn btn-default autoscale">Left</button>
-    <button class="btn btn-default autoscale">Time</button>
-    <button class="btn btn-default autoscale">Right</button>
+    <button class="btn btn-default autoscale"
+      (click)="explorerService.autoScaleAxis('left')">Left</button>
+    <button class="btn btn-default autoscale"
+      (click)="explorerService.autoScaleTime()">Time</button>
+    <button class="btn btn-default autoscale"
+      (click)="explorerService.autoScaleAxis('right')">Right</button>
   </div>
   
   <div class="checkbox">

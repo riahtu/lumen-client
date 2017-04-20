@@ -4,6 +4,7 @@ import { IExplorerRecord } from './types';
 import {
   IDbElement,
   IDataSet,
+  IData,
   DataFactory
 } from '../../store/data'
 import {
@@ -59,7 +60,7 @@ export function reducer(
     //change a plotted element's axis
     //
     case ExplorerActions.SET_ELEMENT_AXIS:
-      element =action.payload.element;
+      element = action.payload.element;
       let targetAxis = action.payload.axis;
       let src, dest;
       if (targetAxis == 'right') {
@@ -71,15 +72,15 @@ export function reducer(
         return state;
       }
       return state
-        .set(`${dest}_elements`,_.uniq(_.concat(state[`${dest}_elements`], element.id)))
-        .set(`${dest}_units`,element.units)
+        .set(`${dest}_elements`, _.uniq(_.concat(state[`${dest}_elements`], element.id)))
+        .set(`${dest}_units`, element.units)
         .set(`${src}_elements`, state[`${src}_elements`].filter(id => id != element.id))
 
     //show the plot window
     //
     case ExplorerActions.SHOW_PLOT:
       return state.set('show_plot', true);
-    
+
     //hide the plot window
     //
     case ExplorerActions.HIDE_PLOT:
@@ -139,9 +140,23 @@ export function reducer(
       return state
         .set('data_cursor', false)
 
+    //auto scale specified axis to include
+    // all available data
+    case ExplorerActions.AUTO_SCALE_AXIS:
+      let axis = action.payload;
+      switch (axis) {
+        case 'left':
+          return state.set('plot_y1', { min: null, max: null });
+        case 'right':
+          return state.set('plot_y2', { min: null, max: null });
+        default:
+          console.log(`error, invalid axis ${axis}`)
+      }
+      return state;
+
     default:
       return state;
-      }
+  }
 
   function setTimeRange(range: IRange, data: IDataSet) {
     let autoRange = { min: range.min, max: range.max }
@@ -159,4 +174,44 @@ export function reducer(
     }
     return autoRange;
   }
+  //return the min and max bounds of IData.data
+  /*function calcRange(data: IData[]) {
+    return data.reduce((range, d) => {
+      let min, max;
+      switch (d.type) {
+        case 'raw':
+          max = Math.max(...extractDataColumn(d,1));
+          min = Math.min(...extractDataColumn(d,1));
+          break;
+        case 'decimated':
+          max = Math.max(...extractDataColumn(d,3));
+          min = Math.min(...extractDataColumn(d,2));
+          break;
+        case 'interval':
+          return range;
+        default:
+          console.log(`invalid data type ${d.type}`)
+          return range;
+      };
+      if(range.min==null)
+        range.min = min;
+      else if(min != null && range.min > min)
+          range.min = min;
+      if(range.max==null)
+        range.max = max;
+      else if(max != null && range.max < max)
+          range.max = max;
+      return range;
+    }, { min: null, max: null })
+  }
+
+  //extract specified column from IData.data 
+  //which is a 2D array that may contain nulls
+  function extractDataColumn(
+    data: IData,
+    column: number): number[] {
+    return data.data
+      .filter(x => x != null)
+      .map(x => x[column])
+  }*/
 }

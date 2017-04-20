@@ -38,6 +38,9 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private plot: any;
 
   private xBounds: Subject<IRange>
+  //saved by the time range listener if the plot
+  //isn't drawn yet
+  private storedPlotTimeRange: IRange;
 
   constructor(
     private renderer: Renderer,
@@ -47,6 +50,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.plot = null;
     this.xBounds = new Subject();
     this.subs = [];
+    this.storedPlotTimeRange = { min: null, max: null }
   }
 
   ngOnInit(
@@ -68,8 +72,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.plotTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .subscribe(timeRange => {
-        if (this.plot == null)
+        if (this.plot == null) {
+          this.storedPlotTimeRange = timeRange;
           return;
+        }
         let xaxis = this.plot.getAxes().xaxis;
         xaxis.options.min = timeRange.min;
         xaxis.options.max = timeRange.max;
@@ -84,6 +90,54 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.enableTooltip(val);
       })
     );
+    /* set the left axis (y1) range based on state */
+    this.subs.push(this.explorerSelectors.plotY1$
+      .subscribe(range => {
+        if (this.plot != null) {
+          console.log('resacle y1')
+          this.plot.getAxes().yaxis.options.min = range.min;
+          this.plot.getAxes().yaxis.options.max = range.max;
+          this.plot.setupGrid();
+          this.plot.draw();
+        }
+      }));
+    /* set the right axis (y2) range based on state */
+    this.subs.push(this.explorerSelectors.plotY2$
+      .subscribe(range => {
+        if (this.plot != null) {
+          console.log('rescale y2')
+          this.plot.getAxes().y2axis.options.min = range.min;
+          this.plot.getAxes().y2axis.options.max = range.max;
+          this.plot.setupGrid();
+          this.plot.draw();
+        }
+      }));
+    // ---------
+    //auto scale the axes to match the data when elements
+    //are added to an empty axis
+    //autoscale y1 (left)
+    this.subs.push(this.explorerSelectors.leftElementIDs$
+      .map(ids => ids.length == 0)
+      .distinctUntilChanged()
+      .filter(isEmpty => isEmpty == true)
+      .subscribe(x => {
+        if (this.plot == null)
+          return;
+        console.log("removing scale on y1")
+        this.explorerService.autoScaleAxis('right');
+      }));
+    this.subs.push(this.explorerSelectors.rightElementIDs$
+      .map(ids => ids.length == 0)
+      .distinctUntilChanged()
+      .filter(isEmpty => isEmpty == true)
+      .subscribe(x => {
+        if (this.plot == null)
+          return;
+        console.log("removing scale on y2")
+        this.explorerService.autoScaleAxis('right');
+      }));
+    
+
   }
   ngOnDestroy() {
     while (this.subs.length > 0)
@@ -106,11 +160,15 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.explorerService.showPlot();
         if (this.plot == null) {
+          //let xrange = this.calcDatasetTimeRange(dataset);
+          FLOT_OPTIONS.xaxis.min = this.storedPlotTimeRange.min;
+          FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
           this.explorerService.disableDataCursor();
+
 
         } else {
           this.plot.setData(dataset);
@@ -165,4 +223,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       max: Math.round(axes.xaxis.options.max)
     })
   }
+
+
 }

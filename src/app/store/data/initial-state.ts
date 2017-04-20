@@ -72,6 +72,7 @@ export const DbStreamFactory =
 export const DbElementFactory =
   makeTypedFactory<data.IDbElement, data.IDbElementRecord>({
     id: null,
+    db_stream_id: null,
     name: '',
     units: 'none',
     column: null,

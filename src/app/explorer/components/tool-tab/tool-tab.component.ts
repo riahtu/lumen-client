@@ -19,5 +19,4 @@ export class ToolTabComponent implements OnInit {
 
   ngOnInit() {
   }
-
 }

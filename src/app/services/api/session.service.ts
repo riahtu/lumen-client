@@ -33,7 +33,7 @@ export class SessionService {
       .subscribe(
       json => {
         this.setUser(json.data)
-        this.router.navigate(['/home']);
+        this.router.navigate(['/explorer']);
         this.messageService.clearMessages();
       },
       error => this.messageService.setErrors(parseDeviseErrors(error)));
