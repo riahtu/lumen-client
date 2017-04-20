@@ -20,10 +20,12 @@
         {{ node.data.name }}
       </span>
       <span *ngSwitchCase="'dbElement'">
+        <!--plot element button-->
         <span class="tree-button plot" 
           *ngIf="node.data.plotted==false && node.data.plottable"
           (click)="explorerService.plotElement(node.data.element)">
           <i class="fa fa-line-chart"></i> add </span>
+        <!--hide plotted element button -->
         <span class="tree-button unplot" 
           *ngIf="node.data.plotted==true"
           (click)="explorerService.hideElement(node.data.element)">
@@ -33,8 +35,9 @@
           [tooltip]="node.data.tooltip">
           <i class="fa fa-line-chart"></i> add </a>
         {{ node.data.name }}
+        <span class="element-color" *ngIf="node.data.plotted==true" [style.background]="node.data.color">
+        </span>
       </span>
-
     </span>
     
   </template>

@@ -94,7 +94,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.plotY1$
       .subscribe(range => {
         if (this.plot != null) {
-          console.log('resacle y1')
           this.plot.getAxes().yaxis.options.min = range.min;
           this.plot.getAxes().yaxis.options.max = range.max;
           this.plot.setupGrid();
@@ -105,7 +104,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.plotY2$
       .subscribe(range => {
         if (this.plot != null) {
-          console.log('rescale y2')
           this.plot.getAxes().y2axis.options.min = range.min;
           this.plot.getAxes().y2axis.options.max = range.max;
           this.plot.setupGrid();
@@ -123,7 +121,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(x => {
         if (this.plot == null)
           return;
-        console.log("removing scale on y1")
         this.explorerService.autoScaleAxis('right');
       }));
     this.subs.push(this.explorerSelectors.rightElementIDs$
@@ -133,7 +130,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(x => {
         if (this.plot == null)
           return;
-        console.log("removing scale on y2")
         this.explorerService.autoScaleAxis('right');
       }));
     

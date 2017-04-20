@@ -57,7 +57,16 @@
   cursor: pointer;
   opacity: 0.5;
 }
-
+.element-color{
+  height: 20px;
+  width: 20px;
+  border-color: black;
+  border-radius: 2px;
+  float: right;
+  margin-left: 5px;
+  border-style: solid;
+  border-width: 2px;
+}
 :host>>>.tree{
   cursor: default;
 }

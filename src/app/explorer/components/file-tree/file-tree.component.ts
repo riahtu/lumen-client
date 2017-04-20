@@ -196,6 +196,7 @@ export class FileTreeComponent implements OnInit {
       element: element,
       plotted: plotted,
       plottable: plottable,
+      color: element.color,
       tooltip: tooltip,
       children: [],
       hasChildren: false
@@ -220,4 +221,5 @@ export interface IDbElementNode
   plotted: boolean;
   plottable: boolean;
   tooltip: string;
+  color: string;
 }
