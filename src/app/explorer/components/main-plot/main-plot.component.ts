@@ -20,6 +20,7 @@ import {
 import { ExplorerService } from '../../explorer.service';
 import { ExplorerSelectors } from '../../explorer.selectors';
 import { FLOT_OPTIONS } from './flot.options';
+
 import * as _ from 'lodash';
 
 declare var $: any;
@@ -202,7 +203,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         case 'interval':
           return Object.assign({}, baseConfig,
             {
-              label: `${element.name} *`
+              yaxis: baseConfig.yaxis+2,
+              lines:{
+				        lineWidth: 5,
+			        },
+              points: {
+                show: true
+              }
             })
         default:
           console.log("unknown data type: ", data[element.id].type)
@@ -220,5 +227,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  saveImage(){
+    html2canvas(this.plotArea.nativeElement).then( canvas => {
+      console.log('got it!')
+        let z = canvas.toDataURL("image/png");
+        let myWindow = window.open('', 'header', 'menubar=0');
+        myWindow.document.write('Right click to save image<br/><img src="' + z + '"/>');
+    })
+  };
 
-}
+};

@@ -36,7 +36,9 @@
         "../src/assets/flot/jquery.flot.time.js",
         "../src/assets/flot/jquery.flot.tooltip.js",
         "../src/assets/flot/jquery.flot.selection.js",
-        "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.js"
+        "../src/assets/flot/jquery.flot.canvas.js",
+        "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.js",
+        "../node_modules/html2canvas/dist/html2canvas.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

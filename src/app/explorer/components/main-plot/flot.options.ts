@@ -5,6 +5,7 @@ export const FLOT_OPTIONS = {
 			clickable: true,
 		},
 		tooltip: true,
+		canvas: true,
 		tooltipOpts:{
 			content: "<strong>%s</strong> %y.2",
 			lines: {
@@ -18,12 +19,13 @@ export const FLOT_OPTIONS = {
 			min: 0,
 			max: 0
 		},
-		yaxis:{
+		/*yaxis:{
 			//min: 0,
 			//max: 10
-		},
+		},*/
 		yaxes:[
 			{
+				 axisLabel: "Sin(x)",
 				//axisLabel: "undefineds",
 				//axisLabelPadding: 10,
 				//show: false
@@ -33,6 +35,16 @@ export const FLOT_OPTIONS = {
 				position: "right",
 				//axisLabelPadding: 10,
 				//show: false
+			},
+			{ //left axis interval data
+				min: -1,
+				max: 1,
+				position: "left", 
+				show: false
+			},
+			{ //left axis interval data
+				position: "right", 
+				show: false
 			}],
 		zoom: {
 			interactive: true,

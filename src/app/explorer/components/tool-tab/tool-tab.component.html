@@ -41,7 +41,7 @@
     </button>
     <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="menu-button">
       <!-- add a new member -->
-      <li class="menu" class="dropdown-item" role="menuitem"><a>Image</a></li>
+      <li class="menu" class="dropdown-item" role="menuitem" (click)="savePlotImage.emit('save')"><a>Image</a></li>
       <!-- edit the group -->
       <li class="menu" class="dropdown-item" role="menuitem"><a>Data</a></li>
     </ul>

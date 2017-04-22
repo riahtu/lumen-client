@@ -14,7 +14,7 @@
         </app-plot-tab>
       </tab>
       <tab heading='Tools' [disabled]="explorerSelectors.isPlotEmpty$ | async">
-        <app-tool-tab></app-tool-tab>
+        <app-tool-tab (savePlotImage)="plot.saveImage()"></app-tool-tab>
       </tab>
     </tabset>
   </div>
@@ -25,7 +25,7 @@
       <div class="plot-container">
         <app-nav-plot class="nav-plot"></app-nav-plot>
         <!-- main plot (75% of view) -->
-        <app-main-plot class="main-plot"></app-main-plot>
+        <app-main-plot class="main-plot" #plot></app-main-plot>
       </div>
       <!-- modal overlay if no plot -->
       <div class="plot overlay" [@fadeInOut]

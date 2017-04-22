@@ -143,8 +143,14 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
             })
         case 'interval':
           return Object.assign({}, baseConfig,
-            {
-              label: `${element.name} *`
+           {
+              yaxis: baseConfig.yaxis+2,
+              lines:{
+				        //lineWidth: 5,
+			        },
+              points: {
+                show: true
+              }
             })
         default:
           console.log("unknown data type: ", data[element.id].type)
