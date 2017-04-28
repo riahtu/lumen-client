@@ -34,7 +34,7 @@ export class ExplorerPageComponent implements OnInit {
   public rightElements$: Observable<IDbElement[]>*/
 
   constructor(
-    private explorerSelectors: ExplorerSelectors
+    public explorerSelectors: ExplorerSelectors
   ) {}
 
   ngOnInit() {

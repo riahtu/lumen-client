@@ -5,6 +5,7 @@ import { Angular2TokenService } from 'angular2-token';
 import { createEpicMiddleware } from 'redux-observable';
 
 import {AppEpics} from './epics';
+import { environment } from '../environments/environment';
 
 import {
   SessionService
@@ -47,7 +48,7 @@ export class AppComponent {
     
     //configure angular2-token
     tokenService.init({
-      apiPath: 'http://localhost:3000',
+      apiPath: environment.apiUrl,
       signInPath: 'auth/sign_in',
       signInRedirect: 'session/sign_in',
       signOutPath: 'auth/sign_out',

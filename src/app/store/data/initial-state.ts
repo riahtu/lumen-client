@@ -81,7 +81,7 @@ export const DbElementFactory =
     scale_factor: 1.0,
     offset: 0.0,
     plottable: true,
-    discrete: false,
+    display_type: '',
     path: '',
     data: null,
     color: null,

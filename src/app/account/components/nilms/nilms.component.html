@@ -32,21 +32,6 @@
       <i class="fa fa-gear" tooltip="manage installation"></i></button>
     </td>
   </tr>
-
-  <!-- nilms with just viewer privleges -->
-  <tr *ngFor="let nilm of viewedNilms$ | async">
-    <!-- Installation status (nilm state) -->
-    <td style="vertical-align: middle">
-      <i *ngIf="nilm.available" class="fa fa-circle available"></i>
-      <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
-    </td>
-    <!-- viewer icon -->
-    <td style="vertical-align: middle">
-      <i class="fa fa-eye fa-fw" tooltip="viewer"></i></td>
-    <!-- Installation name -->
-    <td style="vertical-align: middle"> {{nilm.name}} </td>
-    <td></td>
-  </tr>
 </table>
 <!-- add a new NILM -->
 <button class="btn btn-default pull-right"

@@ -24,7 +24,7 @@ import {
 export class NilmsComponent implements OnInit {
   @ViewChild('nilmModal') public nilmModal: ModalDirective;
   @select(['data','nilms']) nilmStore$: Observable<INilmStore>;
-  private nilms$: Observable<INilmWithRole[]>
+  public nilms$: Observable<INilmWithRole[]>
 
   constructor(
     private nilmService: NilmService

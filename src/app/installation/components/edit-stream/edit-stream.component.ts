@@ -16,6 +16,7 @@ import { DbStreamService } from '../../../services';
 import {
   FormBuilder,
   FormGroup,
+  FormArray,
   Validators
 } from '@angular/forms';
 
@@ -46,9 +47,16 @@ export class EditStreamComponent implements OnInit {
   }
 
   public form: FormGroup;
+  public formElementsArray: FormArray;
   public stream: IDbStream;
   public elements: IDbElement[];
   public showElements = true;
+
+  public displayTypeOptions = [
+    {value: 'continuous', label: 'continuous'},
+    {value: 'discrete', label: 'discrete'},
+    {value: 'event', label: 'event'}
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -76,6 +84,7 @@ export class EditStreamComponent implements OnInit {
       id: [stream.id],
       db_elements_attributes: this.fb.array(this._buildElementGroups(elements))
     });
+    this.formElementsArray = <FormArray>this.form.get('db_elements_attributes');
   }
 
   private _buildElementGroups(dbElements: IDbElement[]) {
@@ -83,7 +92,7 @@ export class EditStreamComponent implements OnInit {
       this.fb.group({
         id: [element.id],
         plottable: [element.plottable],
-        discrete: [element.discrete],
+        display_type: [element.display_type],
         name: [element.name, Validators.required],
         units: [element.units],
         offset: [element.offset, [Validators.required, CustomValidators.number]],

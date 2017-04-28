@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import {BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
@@ -20,8 +20,7 @@ import { ExplorerPageComponent } from './pages/explorer/explorer.page';
 import { ExplorerService } from './explorer.service';
 import { ExplorerSelectors } from './explorer.selectors';
 import { TreeModule } from 'angular-tree-component';
-import { NavPlotComponent } from './components/nav-plot/nav-plot.component';
-import { ToolTabComponent } from './components/tool-tab/tool-tab.component';
+import { DurationPipe } from './duration.pipe';
 
 @NgModule({
   imports: [
@@ -39,11 +38,13 @@ import { ToolTabComponent } from './components/tool-tab/tool-tab.component';
   ],
   declarations: [
     COMPONENTS,
-    ExplorerPageComponent, NavPlotComponent, ToolTabComponent
+    ExplorerPageComponent,
+    DurationPipe
   ],
   providers: [
     ExplorerService,
-    ExplorerSelectors
+    ExplorerSelectors,
+    DatePipe
   ],
   exports: [
     ExplorerPageComponent

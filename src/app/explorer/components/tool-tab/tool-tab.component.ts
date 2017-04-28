@@ -13,8 +13,8 @@ export class ToolTabComponent implements OnInit {
   @Output() savePlotImage: EventEmitter<string>;
 
   constructor(
-    private explorerService: ExplorerService,
-    private explorerSelectors: ExplorerSelectors
+    public explorerService: ExplorerService,
+    public explorerSelectors: ExplorerSelectors
   ) { 
     this.savePlotImage = new EventEmitter();
   }

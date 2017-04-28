@@ -133,7 +133,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         this.explorerService.autoScaleAxis('right');
       }));
-    
+
 
   }
   ngOnDestroy() {
@@ -189,24 +189,51 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         yaxis: axis,
         //bars: { show: false, barWidth: 2 },
         //points: { show: false },
+        lines: {show: false},
         color: element.color,
         data: data[element.id].data
       }
       switch (data[element.id].type) {
         case 'raw':
-          return baseConfig;
+          switch (element.display_type) {
+            case 'continuous':
+              return Object.assign({}, baseConfig,
+                {
+                  lines: { show: true },
+                });
+            case 'discrete':
+              return Object.assign({}, baseConfig,
+                {
+                  points: { show: true, radius: 2},
+                });
+            case 'event':
+              return Object.assign({}, baseConfig,
+                {
+                  bars: { show: true, barWidth: 2 },
+                });
+          }
         case 'decimated':
-          return Object.assign({}, baseConfig,
-            {
-              fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
-            })
+          switch (element.display_type) {
+            case 'continuous':
+              return Object.assign({}, baseConfig,
+                {
+                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  lines: {show: true}
+                });
+            case 'discrete':
+              return Object.assign({}, baseConfig,
+                {
+                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  points: {show: true, radius: 1}
+                });
+          }
         case 'interval':
           return Object.assign({}, baseConfig,
             {
-              yaxis: baseConfig.yaxis+2,
-              lines:{
-				        lineWidth: 5,
-			        },
+              yaxis: baseConfig.yaxis + 2,
+              lines: {
+                lineWidth: 5,
+              },
               points: {
                 show: true
               }
@@ -227,14 +254,14 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  saveImage(){
-    html2canvas(this.plotArea.nativeElement).then( canvas => {
+  saveImage() {
+    html2canvas(this.plotArea.nativeElement).then(canvas => {
       console.log('got it!')
-        let z = canvas.toDataURL("image/png");
-        let myWindow = window.open('', 'header', 'menubar=0');
-        let note = "<p>Right click to save image. To increase resolution zoom out on the browser (view => zoom out)</p>"+
-                   "<p>Chrome: right click => 'open image in new tab', then save the image</p>"
-        myWindow.document.write(`${note}<br/><img src="${z}"/>`);
+      let z = canvas.toDataURL("image/png");
+      let myWindow = window.open('', 'header', 'menubar=0');
+      let note = "<p>Right click to save image. To increase resolution zoom out on the browser (view => zoom out)</p>" +
+        "<p>Chrome: right click => 'open image in new tab', then save the image</p>"
+      myWindow.document.write(`${note}<br/><img src="${z}"/>`);
     })
   };
 

@@ -33,10 +33,10 @@ export class GroupComponent implements OnInit {
   @select(['data', 'users', 'entities']) users$: Observable<IUserRecords>
   @Input() group: IUserGroup;
 
-  private members$: Observable<IUser[]>
-  private selectEntries$: Observable<ISelectEntry[]>
-  private userType: string;
-  private userOptions: any[];
+  public members$: Observable<IUser[]>
+  public selectEntries$: Observable<ISelectEntry[]>
+  public userType: string;
+  public userOptions: any[];
 
   constructor(
     private userGroupService: UserGroupService,

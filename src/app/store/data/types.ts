@@ -99,7 +99,7 @@ export interface IDbElement {
   scale_factor: number;
   offset: number;
   plottable: boolean;
-  discrete: boolean;
+  display_type: string;
   path: string; 
   //dynamically managed by the client
   data: any[];

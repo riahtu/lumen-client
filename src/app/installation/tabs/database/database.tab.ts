@@ -26,7 +26,7 @@ export class DatabaseTabComponent implements OnInit {
 
   public treeOptions = {};
   private subs: Subscription[];
-  private myNilm: INilm;
+  public myNilm: INilm;
 
   constructor(
     public dbService: DbService,

@@ -46,7 +46,7 @@
       <thead>
         <tr>
           <th>Plottable</th>
-          <th>Discrete</th>
+          <th>Type</th>
           <th>Name</th>
           <th>Units</th>
           <th>Offset</th>
@@ -56,43 +56,43 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let subform of form.controls.db_elements_attributes.controls">
+        <tr *ngFor="let subform of formElementsArray.controls">
           <td>
             <input type="checkbox"
-                [formControl]="subform.controls['plottable']"></td>
+                [formControl]="subform.get('plottable')"></td>
           <td>
-            <input type="checkbox"
-                [formControl]="subform.controls['discrete']"></td>
-          <td class="form-group" [class.has-error]="!subform.controls['name'].valid"> 
+            <ng-select [formControl]="subform.get('display_type')"
+              [options]="displayTypeOptions"></ng-select></td>
+          <td class="form-group" [class.has-error]="!subform.get('name').valid"> 
             <input type="text" class="form-control"
                 
-                [formControl]="subform.controls['name']"></td>
+                [formControl]="subform.get('name')"></td>
           <td>
             <input type="text"
                 class="form-control"
-                [formControl]="subform.controls['units']">
+                [formControl]="subform.get('units')">
           </td>
-          <td class="form-group" [class.has-error]="!subform.controls['offset'].valid">
+          <td class="form-group" [class.has-error]="!subform.get('offset').valid">
             <input type="text"
                 class="form-control"
-                [formControl]="subform.controls['offset']">
+                [formControl]="subform.get('offset')">
           </td>
-          <td class="form-group" [class.has-error]="!subform.controls['scale_factor'].valid">
+          <td class="form-group" [class.has-error]="!subform.get('scale_factor').valid">
             <input type="text"
                 class="form-control"
-                [formControl]="subform.controls['scale_factor']">
+                [formControl]="subform.get('scale_factor')">
           </td>
-          <td class="form-group" [class.has-error]="!subform.controls['default_min'].valid">
-            <input type="text"
-                class="form-control"
-                placeholder="auto"
-                [formControl]="subform.controls['default_min']">
-          </td>
-          <td class="form-group" [class.has-error]="!subform.controls['default_max'].valid">
+          <td class="form-group" [class.has-error]="!subform.get('default_min').valid">
             <input type="text"
                 class="form-control"
                 placeholder="auto"
-                [formControl]="subform.controls['default_max']">
+                [formControl]="subform.get('default_min')">
+          </td>
+          <td class="form-group" [class.has-error]="!subform.get('default_max').valid">
+            <input type="text"
+                class="form-control"
+                placeholder="auto"
+                [formControl]="subform.get('default_max')">
           </td>
         </tr>
 

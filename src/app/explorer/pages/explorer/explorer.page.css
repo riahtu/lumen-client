@@ -38,6 +38,13 @@ div.plot-container{
   left: 0px;
 }
 
+div.date-bar{
+  height: 5%;
+  width: 100%;
+  text-align: center;
+  font-size: large;
+  font-weight: 200;
+}
 
 div.overlay{
   height: calc(100vh - 125px);

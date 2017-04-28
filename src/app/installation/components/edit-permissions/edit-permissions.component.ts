@@ -26,13 +26,13 @@ export class EditPermissionsComponent implements OnInit {
   @Input() viewers: IPermission[]
   @Input() nilm: INilm
 
-  private selectEntries$: Observable<SelectEntry[]>;
+  public selectEntries$: Observable<SelectEntry[]>;
 
-  private target: any;
-  private userType: string;
-  private userOptions: any[];
-  private role: string;
-  private roleOptions: any[];
+  public target: any;
+  public userType: string;
+  public userOptions: any[];
+  public role: string;
+  public roleOptions: any[];
 
   constructor(
     private permissionService: PermissionService

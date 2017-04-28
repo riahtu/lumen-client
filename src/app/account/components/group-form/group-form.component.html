@@ -1,13 +1,13 @@
 
 <form [formGroup]="form">
-  <div class="form-group" [class.has-error]="!form.controls.name.valid && !form.controls.name.pristine">
+  <div class="form-group" [class.has-error]="!form.get('name').valid && !form.get('name').pristine">
     <label class="control-label" for="name">Name</label>
     <input class="form-control" placeholder="Group Name" 
-          id="name" [formControl]="form.controls.name">
+          id="name" [formControl]="form.get('name')">
   </div>
   <div class="form-group">
     <label class="control-label" for="description">Description</label>
-    <input class="form-control" id="description" type="text" [formControl]="form.controls.description">
+    <input class="form-control" id="description" type="text" [formControl]="form.get('description')">
   </div>
   <!-- Save and Cancel buttons -->
   <div class="clearfix">

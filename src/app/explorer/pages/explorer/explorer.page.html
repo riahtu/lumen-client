@@ -26,6 +26,9 @@
         <app-nav-plot class="nav-plot"></app-nav-plot>
         <!-- main plot (75% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
+        <div class="date-bar">
+          {{explorerSelectors.plotTimeRange$ | async | duration}}
+        </div>
       </div>
       <!-- modal overlay if no plot -->
       <div class="plot overlay" [@fadeInOut]

@@ -30,14 +30,14 @@ export class PlottedElementsComponent
   @ViewChild('elementModal') public elementModal: ModalDirective;
   @ViewChild('colorPicker') colorPicker: ElementRef
 
-  private displayName: string;
+  public displayName: string;
 
   //--state for customization modal--
-  private newColor: string;
-  private newAxis: string;
-  private newName: string;
-  private axisMessage: string;
-  private axisOptions = [
+  public newColor: string;
+  public newAxis: string;
+  public newName: string;
+  public axisMessage: string;
+  public axisOptions = [
     { value: 'left', label: 'left side' },
     { value: 'right', label: 'right side' }];
   //----------------------------------
