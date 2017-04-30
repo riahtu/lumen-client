@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { IExplorer } from '../../store';
 import { ExplorerSelectors } from '../../explorer.selectors';
+import { ExplorerService } from '../../explorer.service';
 
 import {
   IDbElement,
@@ -27,27 +28,25 @@ import {
   styleUrls: ['./explorer.page.css']
 })
 export class ExplorerPageComponent implements OnInit {
- /* @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
-  @select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
-
-  public leftElements$: Observable<IDbElement[]>
-  public rightElements$: Observable<IDbElement[]>*/
+ 
+  public plotZValue$: Observable<number>;
 
   constructor(
-    public explorerSelectors: ExplorerSelectors
-  ) {}
+    public explorerSelectors: ExplorerSelectors,
+    public explorerService: ExplorerService
+  ) {
+    this.plotZValue$ = this.explorerSelectors.showDateSelector$
+      .map(show => {
+        if(show)
+          return -1;
+        else
+          return 0;
+      })
+  }
 
   ngOnInit() {
-    /*this.leftElements$ = this.elements$
-      .combineLatest(this.uiState$)
-      .map(([elements, state]) => {
-        return state.left_elements.map(id => elements[id]);
-      });
-    this.rightElements$ = this.elements$
-      .combineLatest(this.uiState$)
-      .map(([elements, state]) => {
-        return state.right_elements.map(id => elements[id])
-      });*/
   }
+
+
 
 }

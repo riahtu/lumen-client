@@ -36,6 +36,7 @@ div.plot-container{
   position: absolute;
   top: 0px;
   left: 0px;
+  /*z-index: -1;*/
 }
 
 div.date-bar{
@@ -45,11 +46,18 @@ div.date-bar{
   font-size: large;
   font-weight: 200;
 }
+div.date-bar:hover{
+    background: #ccc;
+    border-radius: 8px;
+    cursor: pointer;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #999;
+}
 
 div.overlay{
   height: calc(100vh - 125px);
   width: 100%;
-  background: grey;
   background: #fafcfe;
   border-style: solid;
   border-radius: 15px;
@@ -67,6 +75,9 @@ div.overlay > div.message {
 
 @media(max-width: 767px){
   :host(.main-plot) >>> plot{
+    height: 400px;
+  }
+  .date-picker {
     height: 400px;
   }
 }

@@ -69,6 +69,17 @@ export class ExplorerService {
         type: ExplorerActions.SHOW_PLOT
       })
   }
+  public showDateSelector(){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SHOW_DATE_SELECTOR
+    })
+  }
+  public hideDateSelector(){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.HIDE_DATE_SELECTOR
+    })
+  }
+
   public hidePlot() {
     if (this.ngRedux.getState().ui.explorer.show_plot)
       this.ngRedux.dispatch({

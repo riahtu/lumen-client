@@ -15,6 +15,7 @@ export const ExplorerFactory =
     left_units: 'none',
     right_units: 'none',
     show_plot: false,
+    show_date_selector: false,
     nav_y1: {min: null, max: null},
     nav_y2: {min: null, max: null},
     nav_time: {min: null, max: null},

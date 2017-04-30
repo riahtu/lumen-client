@@ -6,7 +6,9 @@ import {
   TooltipModule,
   TabsModule,
   ModalModule,
-  BsDropdownModule
+  BsDropdownModule,
+  DatepickerModule,
+  TimepickerModule
 } from 'ngx-bootstrap';
 import {
   ReactiveFormsModule,
@@ -34,7 +36,9 @@ import { DurationPipe } from './duration.pipe';
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    DatepickerModule.forRoot(),
+    TimepickerModule.forRoot()
   ],
   declarations: [
     COMPONENTS,

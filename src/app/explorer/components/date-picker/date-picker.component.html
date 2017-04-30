@@ -1,0 +1,36 @@
+<div class="root-div" [@fadeInOut]>
+  <div class="row">
+    <div class="col-md-6">
+      <div class='bounds'>
+        <div class='time clearfix'>
+          <span class='time-header'>Start Time:</span>
+          <timepicker [(ngModel)]="startTime" [showSpinners]=false [showMeridian]=false></timepicker>
+        </div>
+        <div class='date'>
+          <datepicker [(ngModel)]="startDate" ></datepicker>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="bounds">
+        <div class='time clearfix'>
+          <span class='time-header'>End Time:</span>
+          <timepicker [(ngModel)]="endTime" [showSpinners]=false [showMeridian]=false></timepicker>
+        </div>
+        <div class='date'>
+          <datepicker [(ngModel)]="endDate"></datepicker>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-offset-4 col-md-4">
+      <div class="text-danger range-error"
+        *ngIf="invalidRange">Invalid Time Range</div>
+      <button class="btn btn-primary btn-block btn-lg"
+        (click)="setRange()">Set Plot Time</button>
+      <button class="btn btn-default btn-block"
+        (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

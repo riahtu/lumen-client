@@ -86,6 +86,16 @@ export function reducer(
     case ExplorerActions.HIDE_PLOT:
       return state.set('show_plot', false);
 
+    //show the plot date selector
+    //
+    case ExplorerActions.SHOW_DATE_SELECTOR:
+      return state.set('show_date_selector', true);
+    
+    //hide the plot date selector
+    //
+    case ExplorerActions.HIDE_DATE_SELECTOR:
+      return state.set('show_date_selector', false);
+      
     //add data retrieved from server to the plot dataset
     //
     case ExplorerActions.ADD_PLOT_DATA:
@@ -174,44 +184,4 @@ export function reducer(
     }
     return autoRange;
   }
-  //return the min and max bounds of IData.data
-  /*function calcRange(data: IData[]) {
-    return data.reduce((range, d) => {
-      let min, max;
-      switch (d.type) {
-        case 'raw':
-          max = Math.max(...extractDataColumn(d,1));
-          min = Math.min(...extractDataColumn(d,1));
-          break;
-        case 'decimated':
-          max = Math.max(...extractDataColumn(d,3));
-          min = Math.min(...extractDataColumn(d,2));
-          break;
-        case 'interval':
-          return range;
-        default:
-          console.log(`invalid data type ${d.type}`)
-          return range;
-      };
-      if(range.min==null)
-        range.min = min;
-      else if(min != null && range.min > min)
-          range.min = min;
-      if(range.max==null)
-        range.max = max;
-      else if(max != null && range.max < max)
-          range.max = max;
-      return range;
-    }, { min: null, max: null })
-  }
-
-  //extract specified column from IData.data 
-  //which is a 2D array that may contain nulls
-  function extractDataColumn(
-    data: IData,
-    column: number): number[] {
-    return data.data
-      .filter(x => x != null)
-      .map(x => x[column])
-  }*/
 }

@@ -22,14 +22,20 @@
     <div class="parent">
       
       <!-- navigation plot (25% of view) -->
-      <div class="plot-container">
+      <div class="plot-container" 
+        [ngStyle]="{ 'z-index': plotZValue$ | async }">
         <app-nav-plot class="nav-plot"></app-nav-plot>
         <!-- main plot (75% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
-        <div class="date-bar">
+        <div class="date-bar" (click)="explorerService.showDateSelector()">
           {{explorerSelectors.plotTimeRange$ | async | duration}}
         </div>
       </div>
+      <!--modal overlay to pick date -->
+      <app-date-picker class="plot overlay" 
+        *ngIf="explorerSelectors.showDateSelector$ | async"
+        [timeRange]="explorerSelectors.plotTimeRange$ | async"></app-date-picker>
+
       <!-- modal overlay if no plot -->
       <div class="plot overlay" [@fadeInOut]
         *ngIf="!(explorerSelectors.showPlot$ |async)" >

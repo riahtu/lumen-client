@@ -22,6 +22,7 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
   @select(['ui', 'explorer', 'right_elements']) rightElementIDs$: Observable<number[]>;
   @select(['ui', 'explorer', 'show_plot']) showPlot$: Observable<boolean>;
+  @select(['ui', 'explorer', 'show_date_selector']) showDateSelector$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_time']) plotTimeRange$: Observable<IRange>
   @select(['ui', 'explorer', 'plot_data']) plotData$: Observable<IDataSet>;
   @select(['ui', 'explorer', 'nav_time']) navTimeRange$: Observable<IRange>
