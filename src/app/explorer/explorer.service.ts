@@ -94,6 +94,9 @@ export class ExplorerService {
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
     if (neededElements.length == 0)
       return; //nothing to do
+    this.ngRedux.dispatch({
+      type: ExplorerActions.ADDING_PLOT_DATA
+    });
     this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
       .subscribe(data => {
         this.ngRedux.dispatch({
@@ -110,6 +113,9 @@ export class ExplorerService {
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
     if (neededElements.length == 0)
       return; //nothing to do
+    this.ngRedux.dispatch({
+      type: ExplorerActions.ADDING_NAV_DATA
+    });  
     this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
       .subscribe(data => {
         this.ngRedux.dispatch({

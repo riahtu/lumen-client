@@ -25,8 +25,10 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'show_date_selector']) showDateSelector$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_time']) plotTimeRange$: Observable<IRange>
   @select(['ui', 'explorer', 'plot_data']) plotData$: Observable<IDataSet>;
+  @select(['ui', 'explorer', 'adding_plot_data']) addingPlotData$: Observable<boolean>;
   @select(['ui', 'explorer', 'nav_time']) navTimeRange$: Observable<IRange>
   @select(['ui', 'explorer', 'nav_data']) navData$: Observable<IDataSet>;
+  @select(['ui', 'explorer', 'adding_nav_data']) addingNavData$: Observable<boolean>;
   @select(['ui', 'explorer', 'nav_zoom_lock']) navZoomLock$: Observable<boolean>;
   @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_y1']) plotY1$: Observable<IRange>;
@@ -38,6 +40,9 @@ export class ExplorerSelectors {
   //both left and right elements
   public plottedElements$: Observable<IDbElement[]>
   public isPlotEmpty$: Observable<boolean>
+
+  //is either nav or data loading?
+  public isDataLoading$: Observable<boolean>
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -58,5 +63,9 @@ export class ExplorerSelectors {
       
     this.isPlotEmpty$ = this.plottedElements$
       .map(elements => elements.length==0)
+    
+    this.isDataLoading$ = this.addingNavData$
+      .combineLatest(this.addingPlotData$)
+      .map(([nav,plot])=>nav&&plot )
   }
 }

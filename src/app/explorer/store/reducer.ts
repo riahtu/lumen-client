@@ -95,7 +95,12 @@ export function reducer(
     //
     case ExplorerActions.HIDE_DATE_SELECTOR:
       return state.set('show_date_selector', false);
-      
+    
+    //adding data: indicate a server request has been made
+    //
+    case ExplorerActions.ADDING_PLOT_DATA:
+      return state.set('adding_plot_data',true);
+
     //add data retrieved from server to the plot dataset
     //
     case ExplorerActions.ADD_PLOT_DATA:
@@ -104,6 +109,12 @@ export function reducer(
       return state
         .set('plot_data', Object.assign({}, state.plot_data, data))
         .set('plot_time', setTimeRange(state.plot_time, data))
+        .set('adding_plot_data', false);
+
+    //adding nav data: indicate a server request has been made
+    //
+    case ExplorerActions.ADDING_NAV_DATA:
+      return state.set('adding_nav_data',true);
 
     //add data retrieved from server to the nav dataset
     //
@@ -113,6 +124,7 @@ export function reducer(
       return state
         .set('nav_data', Object.assign({}, state.nav_data, data))
         .set('nav_time', setTimeRange(state.nav_time, data))
+        .set('adding_nav_data', false);
 
     //set plot time range
     //

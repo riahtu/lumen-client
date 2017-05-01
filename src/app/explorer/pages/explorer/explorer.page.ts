@@ -14,14 +14,17 @@ import {
 @Component({
   animations: [
     trigger('fadeInOut', [
-      /*transition(':enter', [   // :enter is alias to 'void => *'
+      transition(':enter', [   // :enter is alias to 'void => *'
         style({ opacity: 0 }),
-        animate(500, style({ opacity: 1 }))
-      ]),*/
+        animate(100, style({ opacity: 1 }))
+      ]),
       transition(':leave', [   // :leave is alias to '* => void'
         animate(500, style({ opacity: 0 }))
-      ])
-    ])
+      ])]),
+    trigger('fadeOut', [
+      transition(':leave', [   // :leave is alias to '* => void'
+        animate(500, style({ opacity: 0 }))
+      ])])
   ],
   selector: 'app-explorer-page',
   templateUrl: './explorer.page.html',

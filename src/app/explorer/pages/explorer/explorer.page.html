@@ -24,7 +24,17 @@
       <!-- navigation plot (25% of view) -->
       <div class="plot-container" 
         [ngStyle]="{ 'z-index': plotZValue$ | async }">
+        <!-- loading spinner -->
+        <span class="data-loading" [@fadeInOut]
+          *ngIf="explorerSelectors.addingNavData$ | async">
+          <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
+        </span>
         <app-nav-plot class="nav-plot"></app-nav-plot>
+        <!-- loading spinner -->
+        <span class="data-loading" [@fadeInOut]
+          *ngIf="explorerSelectors.addingPlotData$ | async">
+          <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
+        </span>
         <!-- main plot (75% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
         <div class="date-bar" (click)="explorerService.showDateSelector()">
@@ -37,12 +47,19 @@
         [timeRange]="explorerSelectors.plotTimeRange$ | async"></app-date-picker>
 
       <!-- modal overlay if no plot -->
-      <div class="plot overlay" [@fadeInOut]
+      <div class="plot overlay" [@fadeOut]
         *ngIf="!(explorerSelectors.showPlot$ |async)" >
         <div class="message">
+          <span *ngIf="explorerSelectors.addingPlotData$ | async; then loading else default"></span>
+        </div>
+        <ng-template #loading>
+           <i class="fa fa-spinner fa-spin fa-5x"></i>
+          <p>Loading Data...</p>
+        </ng-template>
+        <ng-template #default>
           <i class="fa fa-line-chart fa-5x"></i>
           <p>Select Data to Plot</p>
-        </div>
+        </ng-template>
       </div>
     </div>
   </div>
