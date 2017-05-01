@@ -102,7 +102,6 @@ export interface IDbElement {
   display_type: string;
   path: string; 
   //dynamically managed by the client
-  data: any[];
   color: string;
   display_name: string;
 }

@@ -10,6 +10,7 @@ import {
   toArray,
   IPayloadAction
 } from '../helpers';
+
 import * as records from './types';
 
 export function nilmReducer(
@@ -18,26 +19,26 @@ export function nilmReducer(
   switch (action.type) {
     case actions.NilmActions.RECEIVE_ADMIN_NILMS:
       return state
-        .set('admin', _.union(state.admin,toArray(action.payload.result)))
+        .set('admin', _.union(state.admin, toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_OWNER_NILMS:
       return state
-        .set('owner', _.union(state.owner,toArray(action.payload.result)))
+        .set('owner', _.union(state.owner, toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_VIEWER_NILMS:
       return state
-        .set('viewer', _.union(state.viewer,toArray(action.payload.result)))
+        .set('viewer', _.union(state.viewer, toArray(action.payload.result)))
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.RECEIVE_NILM:
       return state
         .set('entities', mergeNilmEntities(state.entities, action.payload))
     case actions.NilmActions.REMOVE_NILM:
       return state
-        .set('entities', _.omit(state.entities,action.payload))
+        .set('entities', _.omit(state.entities, action.payload))
         //remove the nilm wherever it is [probably admin]
-        .set('admin', state.admin.filter(id => id!=action.payload))
-        .set('owner', state.owner.filter(id => id!=action.payload))
-        .set('viewer', state.viewer.filter(id => id!=action.payload))
+        .set('admin', state.admin.filter(id => id != action.payload))
+        .set('owner', state.owner.filter(id => id != action.payload))
+        .set('viewer', state.viewer.filter(id => id != action.payload))
     default:
       return state;
   }
@@ -101,20 +102,43 @@ export function dbElementReducer(
     case actions.DbElementActions.RECEIVE:
       return Object.assign({},
         state,
-        recordify(action.payload, factories.DbElementFactory));
+        mergeWithDisplayAttrs(
+          state, recordify(action.payload, factories.DbElementFactory)));
     case actions.DbElementActions.SET_COLOR:
       elemId = action.payload.id;
       let color = action.payload.color;
       return Object.assign({}, state,
-        {[elemId]: state[elemId].set('color',color)})
+        { [elemId]: state[elemId].set('color', color) })
     case actions.DbElementActions.SET_DISPLAY_NAME:
       elemId = action.payload.id;
       let name = action.payload.name;
       return Object.assign({}, state,
-        {[elemId]: state[elemId].set('display_name',name)})
+        { [elemId]: state[elemId].set('display_name', name) })
     default:
       return state;
   }
+  /*if this is an update to an existing element, 
+    respect the local attributes by merging them in*/
+  function mergeWithDisplayAttrs(
+    elements: records.IDbElementRecords,
+    serverValues: records.IDbElementRecords): records.IDbElementRecords {
+
+    let x = Object.keys(serverValues)
+      .map(id => {
+        if (elements[id] === undefined)
+          return serverValues[id];
+        let e = elements[id];
+        return serverValues[id]
+          .set('display_name', e.display_name)
+          .set('color', e.color)
+      })
+      .reduce((acc:records.IDbElementRecords, element:records.IDbElementRecord) => {
+        acc[element.id] = element;
+        return acc;
+      }, {});
+    return x;
+  }
+
 }
 
 export function userReducer(

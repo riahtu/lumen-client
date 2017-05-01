@@ -83,7 +83,6 @@ export const DbElementFactory =
     plottable: true,
     display_type: '',
     path: '',
-    data: null,
     color: null,
     display_name: ''
   });
