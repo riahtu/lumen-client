@@ -84,6 +84,10 @@ span.data-loading{
     padding-right: 4px;
     color: #777;
 }
+img.plot-image{
+  width: 100%;
+}
+
 @media(max-width: 767px){
   :host(.main-plot) >>> plot{
     height: 400px;

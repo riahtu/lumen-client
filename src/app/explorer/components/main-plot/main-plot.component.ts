@@ -6,13 +6,14 @@ import {
   OnInit,
   OnDestroy,
   AfterViewInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Observable, Subscription, Subject } from 'rxjs';
 import { select } from '@angular-redux/store';
-import {
-  IRange
-} from '../../store';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
+import { IRange } from '../../store';
 import {
   IDataSet,
   IDbElement
@@ -34,6 +35,7 @@ declare var $: any;
 export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('plotArea') plotArea: ElementRef
+  @Output() savedImage: EventEmitter<string>;
 
   private subs: Subscription[];
   private plot: any;
@@ -42,7 +44,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   //saved by the time range listener if the plot
   //isn't drawn yet
   private storedPlotTimeRange: IRange;
-
+  
   constructor(
     private renderer: Renderer,
     private explorerSelectors: ExplorerSelectors,
@@ -52,6 +54,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.xBounds = new Subject();
     this.subs = [];
     this.storedPlotTimeRange = { min: null, max: null }
+    this.savedImage = new EventEmitter();
   }
 
   ngOnInit(
@@ -256,12 +259,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   saveImage() {
     html2canvas(this.plotArea.nativeElement).then(canvas => {
-      console.log('got it!')
-      let z = canvas.toDataURL("image/png");
+      
+      this.savedImage.next(canvas.toDataURL("image/png"));
+      /*
       let myWindow = window.open('', 'header', 'menubar=0');
       let note = "<p>Right click to save image. To increase resolution zoom out on the browser (view => zoom out)</p>" +
         "<p>Chrome: right click => 'open image in new tab', then save the image</p>"
-      myWindow.document.write(`${note}<br/><img src="${z}"/>`);
+      myWindow.document.write(`${note}<br/><img src="${z}"/>`);*/
     })
   };
 

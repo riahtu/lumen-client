@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   trigger, animate, style, transition } from '@angular/animations';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { IExplorer } from '../../store';
@@ -33,6 +34,8 @@ import {
 export class ExplorerPageComponent implements OnInit {
  
   public plotZValue$: Observable<number>;
+  public imageData: string;
+  @ViewChild('imageModal') public imageModal: ModalDirective;
 
   constructor(
     public explorerSelectors: ExplorerSelectors,
@@ -47,6 +50,11 @@ export class ExplorerPageComponent implements OnInit {
       })
   }
 
+  displayPlotImage(img: string){
+    this.imageData = img;
+    this.imageModal.show();
+
+  }
   ngOnInit() {
   }
 

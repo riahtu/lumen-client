@@ -36,7 +36,8 @@
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
         <!-- main plot (75% of view) -->
-        <app-main-plot class="main-plot" #plot></app-main-plot>
+        <app-main-plot class="main-plot" 
+          (savedImage)="displayPlotImage($event)" #plot></app-main-plot>
         <div class="date-bar" (click)="explorerService.showDateSelector()">
           {{explorerSelectors.plotTimeRange$ | async | duration}}
         </div>
@@ -60,6 +61,31 @@
           <i class="fa fa-line-chart fa-5x"></i>
           <p>Select Data to Plot</p>
         </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ====== save plot image modal ====== -->
+<div class="modal fade" bsModal #imageModal="bs-modal" 
+  [config]="{backdrop: 'static'}" 
+  tabindex="-1" role="dialog" 
+  aria-labelledby="downloadImageModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Right click on image to save</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="imageModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img class="plot-image" src="{{this.imageData}}" />
+        <span class="text-muted"> 
+          Note: zoom out on the browser to increase image resolution
+        </span>
       </div>
     </div>
   </div>
