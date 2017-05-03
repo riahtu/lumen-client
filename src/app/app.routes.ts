@@ -13,6 +13,7 @@ import {
 } from './pages';
 
 const routes: Routes = [
+
   {
     path: '',
     redirectTo: 'explorer',
@@ -42,7 +43,7 @@ const routes: Routes = [
   {
     path: 'session/reset_password',
     component: PasswordResetPageComponent
-  }
+  },
 ];
 
 export const appRoutes: ModuleWithProviders =

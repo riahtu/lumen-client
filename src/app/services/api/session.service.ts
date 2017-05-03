@@ -79,7 +79,7 @@ export class SessionService {
         passwordCurrent: null
       })
       .subscribe(
-      res => this.messageService.setNotice(res.toString()),
+      res => this.router.navigate(['/explorer']),
       error => this.messageService.setError(error));
   };
 

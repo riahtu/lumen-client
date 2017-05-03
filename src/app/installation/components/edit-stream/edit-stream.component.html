@@ -37,11 +37,8 @@
     </div>
 
     <div class="lead">
-      <a class="btn btn-default" (click)="toggleElements()">
-        <i *ngIf="showElements" class="fa fa-minus"></i>
-        <i *ngIf="!showElements" class="fa fa-plus"></i></a>
-      Element Properties</div>
-    <div [@elementsToggled]="showElements">
+      Element Properties
+    </div>
     <table class="table table-condensed" >
       <thead>
         <tr>
@@ -98,7 +95,6 @@
 
       </tbody>
     </table>
-    </div>
     <div class="form-group">
       <div class="pull-left">
         <button type="submit" class="btn btn-default"
