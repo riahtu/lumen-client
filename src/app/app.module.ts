@@ -28,7 +28,7 @@ import {
 import {
   HomePageComponent,
   SignInPageComponent,
-  InstallationsPageComponent,
+  PageNotFoundComponent,
   PasswordResetPageComponent
 } from './pages';
 
@@ -42,7 +42,7 @@ import { ToArrayPipe } from './to-array.pipe';
     ToArrayPipe,
     MessagesComponent,
     HomePageComponent,
-    InstallationsPageComponent,
+    PageNotFoundComponent,
     SignInPageComponent,
     SessionComponent,
     PasswordResetPageComponent,
