@@ -1,19 +1,19 @@
 <table class="table">
-  <thead>
+  <!--<thead>
     <tr>
       <th>status</th>
       <th>role</th>
       <th>name</th>
       <th></th>
     </tr>
-  </thead>
+  </thead>-->
 
   <!-- nilms with admin or owner privleges -->
   <tr *ngFor="let nilm of nilms$ | async">
     <!-- Installation status (nilm state) -->
     <td style="vertical-align: middle">
-      <i *ngIf="nilm.available" class="fa fa-circle available"></i>
-      <i *ngIf="!nilm.available" class="fa fa-circle offline"></i>
+      <i *ngIf="nilm.available" class="fa fa-circle available" tooltip="online"></i>
+      <i *ngIf="!nilm.available" class="fa fa-circle offline" tooltip="offline"></i>
     </td>
     <!-- admin icon -->
     <td style="vertical-align: middle">
@@ -27,9 +27,9 @@
     </td>
     <!-- Admin/Owner access -->
     <td>
-      <button *ngIf="nilm.role=='admin' || nilm.role=='owner'"
+      <button *ngIf="nilm.role=='admin' || nilm.role=='owner'" tooltip="manage installation"
         class="btn btn-default" [routerLink]="['/installations',nilm.id]">
-      <i class="fa fa-gear" tooltip="manage installation"></i></button>
+      <i class="fa fa-gear" ></i></button>
     </td>
   </tr>
 </table>

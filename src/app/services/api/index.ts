@@ -3,6 +3,7 @@ import { DbFolderService } from './db-folder.service';
 import { DbStreamService } from './db-stream.service';
 import { DbElementService } from './db-element.service';
 import { DataService } from './data.service';
+import { DataViewService } from './data-view.service';
 import { DbService } from './db.service';
 import { SessionService } from './session.service';
 import { PermissionService } from './permission.service';
@@ -17,6 +18,7 @@ export {
   DbStreamService,
   DbElementService,
   DataService,
+  DataViewService,
   SessionService,
   PermissionService,
   UserGroupService,

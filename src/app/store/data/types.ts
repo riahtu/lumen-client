@@ -1,5 +1,5 @@
 import { TypedRecord } from 'typed-immutable-record';
-
+import { IExplorer} from '../../explorer/store';
 
 // ---- Nilm ----
 export interface INilm {
@@ -181,4 +181,26 @@ export interface IDataRecord extends
 
 export interface IDataSet {
   [index: string]: IData; //indexed by DbElement ID
+}
+
+// ---- DataView ----
+export interface IDataView {
+  id: number;
+  name: string;
+  description: string;
+  image: string;
+  redux: IDataViewRedux;
+  owner: boolean;
+}
+export interface IDataViewRedux{
+  ui_explorer: IExplorer,
+  data_dbElements: IDbElementRecords
+}
+
+
+export interface IDataViewRecord extends
+  TypedRecord<IDataViewRecord>, IDataView { };
+
+export interface IDataViewRecords {
+  [index: string]: IDataViewRecord;
 }

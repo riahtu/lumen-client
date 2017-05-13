@@ -88,7 +88,7 @@ export class SessionService {
       .map(resp => resp.json())
       .subscribe(
       json => this.setUser(json.data),
-      error => this.messageService.setError("Log in before continuing"));
+      error => console.log("log in before continuing"));
   }
 
   // ----------private helper functions----------

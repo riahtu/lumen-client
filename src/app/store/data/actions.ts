@@ -18,7 +18,8 @@ export const DbStreamActions = {
 export const DbElementActions = {
   'RECEIVE': 'DB_ELEMENT_RECEIVE',
   'SET_COLOR': 'DB_ELEMENT_SET_COLOR',
-  'SET_DISPLAY_NAME': 'DB_ELEMENT_SET_DISPLAY_NAME'
+  'SET_DISPLAY_NAME': 'DB_ELEMENT_SET_DISPLAY_NAME',
+  'RESTORE': 'DB_ELEMENT_RESTORE'
 };
 export const UserActions = {
   'SET_CURRENT': 'USER_SET_CURRENT',
@@ -34,3 +35,7 @@ export const PermissionActions = {
   'RECEIVE': 'PERMISSION_RECEIVE',
   'REMOVE': 'PERMISSION_REMOVE'
 };
+export const DataViewActions = {
+  'RECEIVE': 'DATA_VIEW_RECEIVE',
+  'REMOVE': 'DATA_VIEW_REMOVE'
+}

@@ -11,13 +11,16 @@ import {
 import {
   IDbElement,
   IDbElementRecords,
-  IDataSet
+  IDataSet,
+  IDataViewRecords,
+  IDataView
 } from '../store/data';
 
 @Injectable()
 export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
+  @select(['data','dataViews']) dataViews$: Observable<IDataViewRecords>;
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
   @select(['ui', 'explorer', 'right_elements']) rightElementIDs$: Observable<number[]>;
@@ -44,6 +47,8 @@ export class ExplorerSelectors {
   //is either nav or data loading?
   public isDataLoading$: Observable<boolean>
 
+  public dataViewArray$: Observable<IDataView[]>
+
   constructor(
     private ngRedux: NgRedux<IAppState>
   ) {
@@ -67,5 +72,10 @@ export class ExplorerSelectors {
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
       .map(([nav,plot])=>nav&&plot )
+    
+    this.dataViewArray$ = this.dataViews$
+      .map(dataViews => {
+        return Object.keys(dataViews)
+          .map(id => dataViews[id])});
   }
 }

@@ -46,7 +46,7 @@ export class PermissionService {
     private userGroupService: UserGroupService
   ) {
     //keep track of NILM's we retrieve permissions for
-    this.nilmsWithPermissions = []; 
+    this.nilmsWithPermissions = [];
 
     this.targets$ = this.users$.combineLatest(this.userGroups$)
       .map(([users, userGroups]) => {
@@ -75,7 +75,7 @@ export class PermissionService {
 
   public loadPermissions(nilmId: number): void {
     //don't retrieve permissions if we already loaded them
-    if(this.nilmsWithPermissions.indexOf(nilmId)>-1){
+    if (this.nilmsWithPermissions.indexOf(nilmId) > -1) {
       return;
     }
     let params: URLSearchParams = new URLSearchParams();
@@ -127,7 +127,7 @@ export class PermissionService {
       })
       .map(resp => resp.json());
 
-      o.subscribe(
+    o.subscribe(
       json => {
         this.ngRedux.dispatch({
           type: PermissionActions.RECEIVE,
@@ -136,26 +136,53 @@ export class PermissionService {
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
-      return o;
+    );
+    return o;
   }
 
   public createUserWithPermission(
     nilmId: number,
     role: string,
     userParams: any
-  ){
+  ) {
     let o = this.tokenService
-      .put(`permissions/create_user.json`, 
-        Object.assign({},userParams,
+      .put(`permissions/create_user.json`,
+      Object.assign({}, userParams,
         {
+          nilm_id: nilmId,
+          role: role,
+        }))
+      .map(resp => resp.json());
+
+    o.subscribe(
+      json => {
+        let data = normalize(json.data, schema.permission)
+        this.ngRedux.dispatch({
+          type: PermissionActions.RECEIVE,
+          payload: data.entities.permissions
+        });
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+    );
+    return o;
+  }
+
+  public inviteUserWithPermission(
+    nilmId: number,
+    role: string,
+    email: string) {
+    let o = this.tokenService
+      .put(`permissions/invite_user.json`, {
+        email: email,
         nilm_id: nilmId,
         role: role,
-      }))
+        redirect_url: `${window.location.origin}/accept`
+      })
       .map(resp => resp.json());
 
       o.subscribe(
-        json => {
+      json => {
         let data = normalize(json.data, schema.permission)
         this.ngRedux.dispatch({
           type: PermissionActions.RECEIVE,

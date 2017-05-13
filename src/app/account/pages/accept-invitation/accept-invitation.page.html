@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-md-3 col-sm-4 bkgd">
+    <img src="assets/images/robot-wave-cropped.jpg">
+  </div>
+  <div class="col-md-offset-2 col-md-7 col-sm-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Welcome to Wattsworth!</h3>
+      </div>
+      <div class="panel-body">
+        <app-user-form (save)="acceptInvitation($event)"
+                       (cancel)="cancel()">
+        </app-user-form>
+      </div>
+    </div>
+  </div>
+</div>

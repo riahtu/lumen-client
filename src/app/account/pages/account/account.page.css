@@ -13,9 +13,14 @@
 }
 
 @media (min-width: 768px) {
-  .panel-body{
+  .full-column{
     max-height: calc(100vh - 180px);
     height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
+  .half-column{
+    max-height: calc(50vh - 120px);
+    height: calc(50vh - 120px);
     overflow-y: auto;
   }
 }

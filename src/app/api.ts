@@ -51,11 +51,11 @@ export const data = new schema.Entity('data', {},
           return d;
         })
       }
-      if(entity.start_time != null){
-        entity.start_time = Math.round(entity.start_time/1e3);
+      if (entity.start_time != null) {
+        entity.start_time = Math.round(entity.start_time / 1e3);
       }
-      if(entity.end_time != null){
-        entity.end_time = Math.round(entity.end_time/1e3);
+      if (entity.end_time != null) {
+        entity.end_time = Math.round(entity.end_time / 1e3);
       }
       return entity;
     }
@@ -69,7 +69,7 @@ export const nilms = new schema.Array(nilm);
 export const user = new schema.Entity('users')
 export const users = new schema.Array(user);
 
-export const permission = new schema.Entity('permissions')
+export const permission = new schema.Entity('permissions');
 export const permissions = new schema.Array(permission);
 
 export const userGroup = new schema.Entity('user_groups',
@@ -78,3 +78,17 @@ export const userGroup = new schema.Entity('user_groups',
     members: [user]
   });
 export const userGroups = new schema.Array(userGroup);
+
+export const dataView = new schema.Entity('data_views', {},
+  {
+    processStrategy: (entity) => {
+      if (entity.redux_json != null) {
+        entity.redux = JSON.parse(entity.redux_json);
+      } else {
+        entity.redux = {}
+      }
+      return entity;
+    }
+  });
+  
+export const dataViews = new schema.Array(dataView);

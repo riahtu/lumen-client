@@ -11,10 +11,13 @@ import {
   recordify
 } from '../../store/helpers';
 import {
+  ExplorerFactory,
   INITIAL_STATE
 } from './initial-state';
 import * as _ from 'lodash';
-import { IRange } from './types';
+import { 
+  IRange,
+  IExplorer } from './types';
 
 export function reducer(
   state: IExplorerRecord = INITIAL_STATE,
@@ -90,16 +93,16 @@ export function reducer(
     //
     case ExplorerActions.SHOW_DATE_SELECTOR:
       return state.set('show_date_selector', true);
-    
+
     //hide the plot date selector
     //
     case ExplorerActions.HIDE_DATE_SELECTOR:
       return state.set('show_date_selector', false);
-    
+
     //adding data: indicate a server request has been made
     //
     case ExplorerActions.ADDING_PLOT_DATA:
-      return state.set('adding_plot_data',true);
+      return state.set('adding_plot_data', true);
 
     //add data retrieved from server to the plot dataset
     //
@@ -114,7 +117,7 @@ export function reducer(
     //adding nav data: indicate a server request has been made
     //
     case ExplorerActions.ADDING_NAV_DATA:
-      return state.set('adding_nav_data',true);
+      return state.set('adding_nav_data', true);
 
     //add data retrieved from server to the nav dataset
     //
@@ -176,9 +179,16 @@ export function reducer(
       }
       return state;
 
+    //restore view from a saved redux object
+    //
+    case ExplorerActions.RESTORE_VIEW:
+      return ExplorerFactory(action.payload);
+
     default:
       return state;
   }
+
+
 
   function setTimeRange(range: IRange, data: IDataSet) {
     let autoRange = { min: range.min, max: range.max }

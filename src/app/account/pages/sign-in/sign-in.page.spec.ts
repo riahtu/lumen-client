@@ -6,7 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Angular2TokenService} from 'angular2-token';
 import { Http } from '@angular/http';
 
-import {SessionService } from '../../services';
+import {SessionService } from '../../../services';
 import { SignInPageComponent } from './sign-in.page';
 
 describe('SignInPageComponent', () => {

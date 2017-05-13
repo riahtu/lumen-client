@@ -1,0 +1,12 @@
+@media (max-width: 768px) { 
+  div.bkgd {
+    display: none;
+  }
+ }
+
+img {
+  height: calc(100vh - 80px);
+}
+div.panel{
+  margin-top: 25px;
+}

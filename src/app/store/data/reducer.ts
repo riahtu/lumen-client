@@ -114,6 +114,12 @@ export function dbElementReducer(
       let name = action.payload.name;
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('display_name', name) })
+    case actions.DbElementActions.RESTORE:
+      let data = <records.IDbElementRecords>action.payload;
+      return Object.keys(data).reduce((acc,id) => {
+        acc[id]= factories.DbElementFactory(data[id]);
+        return acc;},{});
+
     default:
       return state;
   }
@@ -213,6 +219,22 @@ export function permissionReducer(
         state,
         recordify(action.payload, factories.PermissionFactory));
     case actions.PermissionActions.REMOVE:
+      let new_state = removeByKey(state, action.payload)
+      return new_state;
+    default:
+      return state;
+  }
+}
+
+export function dataViewReducer(
+  state: records.IDataViewRecords = {},
+  action: IPayloadAction): records.IDataViewRecords {
+  switch (action.type) {
+    case actions.DataViewActions.RECEIVE:
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.DataViewFactory));
+    case actions.DataViewActions.REMOVE:
       let new_state = removeByKey(state, action.payload)
       return new_state;
     default:

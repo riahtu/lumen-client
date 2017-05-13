@@ -2,19 +2,25 @@
 <div class="row">
   <div class="col-md-3 col-sm-4">
     <tabset>
+      <!-- File Tree Tab -->
       <tab heading='Files'>
         <div id="file-tree">
           <app-file-tree></app-file-tree>
         </div>
       </tab>
+      <!-- Plot Tab -->
       <tab heading='Plot' [disabled]="explorerSelectors.isPlotEmpty$ | async">
         <app-plot-tab 
           [leftElements]="explorerSelectors.leftElements$ | async" 
           [rightElements]="explorerSelectors.rightElements$ | async">
         </app-plot-tab>
       </tab>
+      <!-- Tool Tab -->
       <tab heading='Tools' [disabled]="explorerSelectors.isPlotEmpty$ | async">
-        <app-tool-tab (savePlotImage)="plot.saveImage()"></app-tool-tab>
+        <app-tool-tab 
+          (savePlotImage)="showSavePlotImage()"
+          (saveDataView)="showSaveDataView()"
+          (loadDataView)="showLoadDataView()"></app-tool-tab>
       </tab>
     </tabset>
   </div>
@@ -36,8 +42,7 @@
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
         <!-- main plot (75% of view) -->
-        <app-main-plot class="main-plot" 
-          (savedImage)="displayPlotImage($event)" #plot></app-main-plot>
+        <app-main-plot class="main-plot" #plot></app-main-plot>
         <div class="date-bar" (click)="explorerService.showDateSelector()">
           {{explorerSelectors.plotTimeRange$ | async | duration}}
         </div>
@@ -59,7 +64,10 @@
         </ng-template>
         <ng-template #default>
           <i class="fa fa-line-chart fa-5x"></i>
-          <p>Select Data to Plot</p>
+          <br/>
+          <button class="btn btn-default btn-lg"
+            (click)="showLoadDataView()">
+            Open Saved View </button>
         </ng-template>
       </div>
     </div>
@@ -86,6 +94,74 @@
         <span class="text-muted"> 
           Note: zoom out on the browser to increase image resolution
         </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ====== save data view modal ====== -->
+<div class="modal fade" bsModal #saveDataViewModal="bs-modal" 
+     [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Save Current View</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="saveDataViewModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <img class="data-view-preview" src="{{this.imageData}}" />
+          <form [formGroup]="dataViewForm">
+              <div class="form-group"
+                [class.has-error]="!dataViewForm.get('name').valid && !dataViewForm.get('name').pristine">
+                <label>Name</label>
+                <input type="email" class="form-control" placeholder="Name" 
+                [formControl]="dataViewForm.get('name')">
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control" placeholder="Description" 
+                [formControl]="dataViewForm.get('description')">
+              </div>
+          </form>
+          <!-- Save and Cancel buttons -->
+          <div class="clearfix">
+            <!-- save -->
+            <button class="btn btn-primary pull-left" 
+                    [disabled]="!dataViewForm.valid"
+                    (click)="saveDataView()">Save</button>
+            <!-- cancel -->
+            <button class="btn btn-default pull-right"
+                    (click)="saveDataViewModal.hide()">
+                    Cancel</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== load data view modal ====== -->
+<div class="modal fade" bsModal #loadDataViewModal="bs-modal" 
+     [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Open View</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="loadDataViewModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-load-data-view
+          (loaded)="loadDataViewModal.hide()"></app-load-data-view>
       </div>
     </div>
   </div>

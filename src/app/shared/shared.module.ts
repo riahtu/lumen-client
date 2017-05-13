@@ -5,7 +5,8 @@ import {
   FormsModule
 } from '@angular/forms';
 
-import {COMPONENTS } from './components';
+import {COMPONENTS} from './components';
+import {PIPES} from './pipes';
 
 @NgModule({
   imports: [
@@ -13,10 +14,12 @@ import {COMPONENTS } from './components';
     ReactiveFormsModule
   ],
   declarations: [
-    COMPONENTS
+    COMPONENTS,
+    PIPES
   ],
   exports: [
-    COMPONENTS
+    COMPONENTS,
+    PIPES
   ]
 })
 export class SharedModule { }

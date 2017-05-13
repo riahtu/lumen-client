@@ -11,14 +11,22 @@ import {ExplorerSelectors} from '../../explorer.selectors';
 })
 export class ToolTabComponent implements OnInit {
   @Output() savePlotImage: EventEmitter<string>;
+  @Output() saveDataView: EventEmitter<string>;
+  @Output() loadDataView: EventEmitter<string>;
 
   constructor(
     public explorerService: ExplorerService,
     public explorerSelectors: ExplorerSelectors
   ) { 
     this.savePlotImage = new EventEmitter();
+    this.saveDataView = new EventEmitter();
+    this.loadDataView = new EventEmitter();
   }
 
   ngOnInit() {
+  }
+
+  showSaveDataView(){
+
   }
 }

@@ -14,9 +14,9 @@ export class DurationPipe implements PipeTransform {
   transform(range: IRange, args?: any): string {
 
     if (range == null)
-      return "Not Available";
+      return "";
     if (range.min == null || range.max == null)
-      return "Not Available";
+      return "";
     var min = new Date(range.min); var max = new Date(range.max);
     var matchLevel = '';
     if (min.getFullYear() == max.getFullYear()) {

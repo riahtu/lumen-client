@@ -1,0 +1,16 @@
+img.thumbnail {
+  height: 100px;
+  width: 200px;
+}
+
+i{
+  color: black;
+  margin: 5px;
+}
+
+i.fa-trash:hover{
+  cursor: pointer;
+}
+i.fa-edit:hover{
+  cursor: pointer;
+}

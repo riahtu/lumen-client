@@ -88,6 +88,12 @@ img.plot-image{
   width: 100%;
 }
 
+img.data-view-preview{
+    width: 400px;
+    height: 200px;
+    margin-left: calc(50% - 200px);
+}
+
 @media(max-width: 767px){
   :host(.main-plot) >>> plot{
     height: 400px;

@@ -9,6 +9,14 @@ import {
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
+/*https://github.com/yuyang041060120/ng2-validation*/
+import { CustomValidators } from 'ng2-validation';
 
 import {
   IUserGroup,
@@ -38,9 +46,13 @@ export class GroupComponent implements OnInit {
   public userType: string;
   public userOptions: any[];
 
+  public emailForm: FormGroup;
+  public emailField: AbstractControl;
+
   constructor(
     private userGroupService: UserGroupService,
-    private userService: UserService
+    private userService: UserService,
+    public fb: FormBuilder
   ) {
     this.userType='select';
     this.userOptions = [
@@ -67,6 +79,11 @@ export class GroupComponent implements OnInit {
   addMember(user: IUser) {
     this.userGroupService.addMember(this.group, user);
   }
+  inviteMember(email: string){
+    this.userGroupService.inviteMember(
+      this.group,
+      this.emailField.value);
+  }
   addMemberShown(){
     this.userService.loadUsers();
   }
@@ -90,6 +107,10 @@ export class GroupComponent implements OnInit {
         return { value: user, label: `${user.first_name} ${user.last_name}` }
       });
     });
+    this.emailForm = this.fb.group({
+      email: ['',[Validators.required,CustomValidators.email]],
+    });
+    this.emailField = this.emailForm.controls['email'];
   }
 }
 

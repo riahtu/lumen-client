@@ -5,7 +5,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">Account Details</h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body full-column">
         <form *ngIf="form!=null" [formGroup]="form">
           <div class="form-group" [class.has-error]="!form.controls.current_password.valid && !form.controls.current_password.pristine">
             <label class="control-label" for="current_password">Current Password</label>
@@ -39,13 +39,24 @@
       </div>
     </div>
   </div>
+  <!-- Middle Column -->
   <div class="col-sm-5 col-md-4">
+    <!-- Installations -->
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Installations</h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body half-column">
         <app-account-nilms></app-account-nilms>
+      </div>
+    </div>
+    <!-- Data Views -->
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Saved Views</h3>
+      </div>
+      <div class="panel-body half-column">
+        <app-data-views></app-data-views>
       </div>
     </div>
   </div>
@@ -54,7 +65,7 @@
       <div class="panel-heading">
         <h3 class="panel-title">Groups</h3>
       </div>
-      <div class="panel-body">
+      <div class="panel-body full-column">
         <app-account-groups [ownedGroups]="ownedGroups$ | async"
                             [memberGroups]="memberGroups$ | async">
         </app-account-groups>

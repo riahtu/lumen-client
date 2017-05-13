@@ -11,7 +11,7 @@ import { CustomValidators } from 'ng2-validation';
 
 import {
   SessionService
-} from '../../services';
+} from '../../../services';
 
 @Component({
   selector: 'app-password-reset',

@@ -107,6 +107,27 @@ export class UserGroupService {
       );
   }
 
+  public inviteMember(group: IUserGroup, email: string) {
+    this.tokenService
+      .put(`user_groups/${group.id}/invite_member.json`, { 
+        email: email, 
+        redirect_url: `${window.location.origin}/accept` })
+      .map(resp => resp.json())
+      .subscribe(
+      json => {
+        let data = normalize(json.data, schema.userGroup)
+        this.ngRedux.dispatch({
+          type: UserGroupActions.RECEIVE_GROUPS,
+          payload: data
+        })
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+      );
+  }
+
+
+
   public createMember(group: IUserGroup, userParams: any){
     let o = this.tokenService
       .put(`user_groups/${group.id}/create_member.json`, userParams)

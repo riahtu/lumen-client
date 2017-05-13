@@ -1,6 +1,14 @@
 import { Component, Input, OnInit, ViewChild, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
+/*https://github.com/yuyang041060120/ng2-validation*/
+import { CustomValidators } from 'ng2-validation';
 
 import {
   PermissionService,
@@ -33,9 +41,12 @@ export class EditPermissionsComponent implements OnInit {
   public userOptions: any[];
   public role: string;
   public roleOptions: any[];
+  public emailForm: FormGroup;
+  public emailField: AbstractControl;
 
   constructor(
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    public fb: FormBuilder
   ) {
     this.userType = 'select';
     this.userOptions = [
@@ -50,6 +61,7 @@ export class EditPermissionsComponent implements OnInit {
       { value: 'admin', label: 'an admin' }
     ];
     this.resetModal();
+    
   }
 
   resetModal() {
@@ -71,7 +83,10 @@ export class EditPermissionsComponent implements OnInit {
       this.role,
       selection.id,
       selection.type)
-      .subscribe(result => this.permissionModal.hide());
+      .subscribe(result => {
+        this.permissionModal.hide();
+        this.resetModal()
+      });
   }
   cancel() {
     this.permissionModal.hide();
@@ -81,9 +96,20 @@ export class EditPermissionsComponent implements OnInit {
       this.nilm.id,
       this.role,
       userParams)
-      .subscribe(
-      success => this.permissionModal.hide()
-      );
+      .subscribe(result => {
+        this.permissionModal.hide();
+        this.resetModal();
+      });
+  }
+  inviteUserWithPermission() {
+    this.permissionService.inviteUserWithPermission(
+      this.nilm.id,
+      this.role,
+      this.emailField.value)
+      .subscribe(result => {
+        this.permissionModal.hide();
+        this.resetModal();
+      });
   }
   ngOnInit() {
     this.selectEntries$ = this.permissionService.targets$.map(targets => {
@@ -91,6 +117,10 @@ export class EditPermissionsComponent implements OnInit {
         return { value: { id: t.id, type: t.type }, label: `${t.type}: ${t.name}` }
       })
     });
+    this.emailForm = this.fb.group({
+      email: ['',[Validators.required,CustomValidators.email]],
+    });
+    this.emailField = this.emailForm.controls['email'];
   }
 
 }

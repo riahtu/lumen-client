@@ -1,0 +1,21 @@
+<div *ngFor="let view of myDataViewArray$ | async" class="clearfix">
+  
+  <strong>{{view.name | ellipsis}}
+  <span *ngIf="view.description != null && view.description.length >0">:</span> 
+  </strong>
+  {{view.description | ellipsis:30}}
+  <span class="pull-right">
+    <i class="fa fa-fw fa-eye" [popover]="plotThumbnail"
+  triggers="mouseenter:mouseleave"></i>
+    
+    <i class="fa fa-fw fa-trash" 
+      (click)="dataViewService.deleteDataView(view)"
+      tooltip="delete"></i>
+  </span>
+  <template #plotThumbnail>
+    <img class="thumbnail" src="{{view.image}}">
+  </template>
+</div>
+<!-- ...or a message if the user doesn't own any groups -->
+<div class="alert alert-info" *ngIf="(myDataViewArray$ | async).length==0">
+  You do not have any saved views</div>

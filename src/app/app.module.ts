@@ -25,27 +25,13 @@ import {
   SessionComponent,
 } from './components';
 
-import {
-  HomePageComponent,
-  SignInPageComponent,
-  PageNotFoundComponent,
-  PasswordResetPageComponent
-} from './pages';
-
-
-import { ToArrayPipe } from './to-array.pipe';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ToArrayPipe,
     MessagesComponent,
-    HomePageComponent,
-    PageNotFoundComponent,
-    SignInPageComponent,
     SessionComponent,
-    PasswordResetPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,15 +2,15 @@ import { ModuleWithProviders } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router';
 import { Angular2TokenService } from 'angular2-token';
 
-import { AccountPageComponent } from './account/pages';
+import {  } from './account/pages';
 import { InstallationPageComponent } from './installation/pages';
 import { ExplorerPageComponent } from './explorer/pages';
 import {
-  PageNotFoundComponent,
-  HomePageComponent,
+  AccountPageComponent,
   SignInPageComponent,
+  AcceptInvitationPageComponent,
   PasswordResetPageComponent
-} from './pages';
+} from './account/pages';
 
 const routes: Routes = [
   
@@ -45,9 +45,12 @@ const routes: Routes = [
     component: PasswordResetPageComponent
   },
   {
+    path: 'accept',
+    component: AcceptInvitationPageComponent
+  },
+  {
     path: '**',
     redirectTo: 'explorer',
-    //component: PageNotFoundComponent
   },
 
 ];

@@ -21,7 +21,8 @@ export const reducer = combineReducers<IState>({
   dbElements: reducers.dbElementReducer,
   permissions: reducers.permissionReducer,
   users: reducers.userReducer,
-  userGroups: reducers.userGroupReducer
+  userGroups: reducers.userGroupReducer,
+  dataViews: reducers.dataViewReducer
 });
 export {DataFactory } from './initial-state';
 export * from './actions';

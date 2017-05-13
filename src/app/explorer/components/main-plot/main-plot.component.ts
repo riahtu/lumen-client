@@ -35,7 +35,6 @@ declare var $: any;
 export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('plotArea') plotArea: ElementRef
-  @Output() savedImage: EventEmitter<string>;
 
   private subs: Subscription[];
   private plot: any;
@@ -54,7 +53,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.xBounds = new Subject();
     this.subs = [];
     this.storedPlotTimeRange = { min: null, max: null }
-    this.savedImage = new EventEmitter();
   }
 
   ngOnInit(
@@ -257,16 +255,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  saveImage() {
-    html2canvas(this.plotArea.nativeElement).then(canvas => {
-      
-      this.savedImage.next(canvas.toDataURL("image/png"));
+  getCanvas(): Html2CanvasPromise<HTMLCanvasElement> {
+    return html2canvas(this.plotArea.nativeElement);
       /*
       let myWindow = window.open('', 'header', 'menubar=0');
       let note = "<p>Right click to save image. To increase resolution zoom out on the browser (view => zoom out)</p>" +
         "<p>Chrome: right click => 'open image in new tab', then save the image</p>"
       myWindow.document.write(`${note}<br/><img src="${z}"/>`);*/
-    })
   };
 
 };

@@ -1,9 +1,0 @@
-
-.thumbnail {
-	cursor: pointer;
-}
-.thumbnail:hover{
-	background: #F7F7F7;
-  border-color: grey;
-  border-width: 1px;
-}

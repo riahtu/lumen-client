@@ -136,3 +136,14 @@ export const PermissionFactory =
     nilm_id: null,
     removable: false
   });
+
+// --- DataView ----
+export const DataViewFactory = 
+  makeTypedFactory<data.IDataView, data.IDataViewRecord>({
+    id: null,
+    name: '',
+    description: '',
+    image: '',
+    redux: null,
+    owner: false
+  })

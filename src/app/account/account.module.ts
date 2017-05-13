@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { 
   BsDropdownModule,
   ModalModule,
-  TooltipModule
+  TooltipModule,
+  PopoverModule
 } from 'ngx-bootstrap'
 import { SelectModule } from 'ng-select';
 import {
@@ -13,9 +14,7 @@ import {
 } from '@angular/forms';
 
 import {SharedModule} from '../shared/shared.module';
-import {
-  AccountPageComponent
-} from './pages';
+import { PAGES } from './pages';
 import { COMPONENTS } from './components';
 
 @NgModule({
@@ -26,16 +25,17 @@ import { COMPONENTS } from './components';
     RouterModule,
     SelectModule,
     SharedModule,
+    PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     TooltipModule.forRoot()
   ],
   declarations: [
     COMPONENTS,
-    AccountPageComponent,
+    PAGES,
   ],
   exports: [
-    AccountPageComponent
+    PAGES
   ]
 })
 export class AccountModule { }

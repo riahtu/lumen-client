@@ -47,6 +47,11 @@
     </ul>
   </div>
 
-  <button class="btn btn-default btn-block">Save View</button>
-  <button class="btn btn-default btn-block">Open View</button>
+  <button class="btn btn-default btn-block"
+    (click)="saveDataView.emit('save')">Save View</button>
+  <button class="btn btn-default btn-block"
+    (click)="loadDataView.emit('load')">Open View</button>
 </div>
+
+
+
