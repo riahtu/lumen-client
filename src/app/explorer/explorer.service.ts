@@ -26,6 +26,8 @@ export class ExplorerService {
     private elementService: DbElementService
   ) { }
 
+  // add element to specified axis
+  //
   public plotElement(element, axis: string = 'either') {
     this.elementService.assignColor(element);
     this.ngRedux.dispatch({
@@ -33,6 +35,9 @@ export class ExplorerService {
       payload: element
     })
   }
+
+  // remove element from plot
+  //
   public hideElement(element) {
     this.elementService.removeColor(element);
     this.ngRedux.dispatch({
@@ -40,6 +45,16 @@ export class ExplorerService {
       payload: element
     })
   }
+
+  // remove all elements from the plot
+  public hideAllElements(){
+    let elementRecords = this.ngRedux.getState().data.dbElements;
+    Object.keys(elementRecords)
+      .map(id => {
+        this.hideElement(elementRecords[id]);
+      })
+  }
+
   public setElementAxis(element: IDbElement, axis: string) {
     //if the destination axis has elements plotted, this element
     //must have the same units, otherwise return false

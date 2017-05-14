@@ -9,6 +9,7 @@ import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
+import { DbElementService } from './db-element.service';
 import {
   IDbElementRecords,
   DbElementActions,
@@ -27,7 +28,8 @@ export class DataViewService {
   constructor(
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private elementService: DbElementService
   ) {
     this.dataViewsLoaded = false;
   }
@@ -52,13 +54,13 @@ export class DataViewService {
           payload: entities['data_views']
         })
       },
-       error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrors(parseAPIErrors(error))
       );
   }
 
   //remove a data view owned by the current user
   //
-  public deleteDataView(view: IDataView){
+  public deleteDataView(view: IDataView) {
     this.tokenService
       .delete(`data_views/${view.id}`)
       .map(resp => resp.json())
@@ -74,7 +76,7 @@ export class DataViewService {
       )
   }
 
-  
+
   //create a new data view
   //
   public create(name: string, description: string, image: string) {
@@ -101,11 +103,24 @@ export class DataViewService {
   // Restore:
   // Set redux state from data view
   //
-  public restoreDataView(view: IDataView){
+  public restoreDataView(view: IDataView) {
+    //first clear the plot
+    let elementRecords = this.ngRedux.getState().data.dbElements;
+    Object.keys(elementRecords)
+      .map(id => elementRecords[id])
+      .map(element =>{
+        this.elementService.removeColor(element);
+        this.ngRedux.dispatch({
+          type: explorer.ExplorerActions.HIDE_ELEMENT,
+          payload: element
+        })
+      })
+    //now load the data elements
     this.ngRedux.dispatch({
       type: DbElementActions.RESTORE,
       payload: view.redux.data_dbElements
     })
+    //finally restore the plot
     this.ngRedux.dispatch({
       type: explorer.ExplorerActions.RESTORE_VIEW,
       payload: view.redux.ui_explorer
