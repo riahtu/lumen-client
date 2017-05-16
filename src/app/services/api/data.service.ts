@@ -42,5 +42,7 @@ export class DataService {
         .map(json => normalize(json.data, schema.datas))
         .map(normalized => normalized.entities.data)
     }
+
+
 }
 

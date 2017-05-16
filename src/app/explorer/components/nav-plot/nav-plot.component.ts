@@ -94,8 +94,10 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .combineLatest(this.explorerSelectors.navData$)
       .subscribe(([elementsByAxis, data]) => {
         //build data structure
-        let leftAxis = this.buildDataset(elementsByAxis.left, data, 1);
-        let rightAxis = this.buildDataset(elementsByAxis.right, data, 2);
+        let leftAxis = this.explorerService
+          .buildDataset(elementsByAxis.left, data, 1);
+        let rightAxis = this.explorerService
+          .buildDataset(elementsByAxis.right, data, 2);
         let dataset = leftAxis.concat(rightAxis);
         if (dataset.length == 0) {
           return; //no data to plot
@@ -121,41 +123,4 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  buildDataset(elements: IDbElement[], data: IDataSet, axis: number) {
-    return elements.map(element => {
-      if (data[element.id] === undefined || data[element.id] == null)
-        return null;
-      let baseConfig = {
-        label: element.name,
-        yaxis: axis,
-        //bars: { show: false, barWidth: 2 },
-        //points: { show: false },
-        color: element.color,
-        data: data[element.id].data
-      }
-      switch (data[element.id].type) {
-        case 'raw':
-          return baseConfig;
-        case 'decimated':
-          return Object.assign({}, baseConfig,
-            {
-              fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
-            })
-        case 'interval':
-          return Object.assign({}, baseConfig,
-           {
-              yaxis: baseConfig.yaxis+2,
-              lines:{
-				        //lineWidth: 5,
-			        },
-              points: {
-                show: true
-              }
-            })
-        default:
-          console.log("unknown data type: ", data[element.id].type)
-      }
-      return
-    }).filter(data => data != null)
-  }
 }

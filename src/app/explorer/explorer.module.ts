@@ -17,6 +17,7 @@ import {
 
 import { SelectModule } from 'ng-select';
 
+import { SharedModule } from '../shared/shared.module';
 import { COMPONENTS } from './components';
 import { ExplorerPageComponent } from './pages/explorer/explorer.page';
 import { ExplorerService } from './explorer.service';
@@ -34,6 +35,7 @@ import { LoadDataViewComponent } from './components/load-data-view/load-data-vie
     BrowserAnimationsModule,
     ReactiveFormsModule,
     SelectModule,
+    SharedModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),
     TooltipModule.forRoot(),

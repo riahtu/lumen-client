@@ -5,6 +5,8 @@ import {
 } from 'typed-immutable-record';
 
 export const recordify = (obj_dict: any, factory: any) => {
+  if(obj_dict===undefined || obj_dict==null)
+    return {};
   return Object.keys(obj_dict)
     .reduce((acc, id: string) => {
       acc[id] = factory(obj_dict[id]);

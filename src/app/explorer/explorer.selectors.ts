@@ -73,9 +73,6 @@ export class ExplorerSelectors {
       .combineLatest(this.addingPlotData$)
       .map(([nav,plot])=>nav&&plot )
     
-    this.dataViewArray$ = this.dataViews$
-      .map(dataViews => {
-        return Object.keys(dataViews)
-          .map(id => dataViews[id])});
+    
   }
 }

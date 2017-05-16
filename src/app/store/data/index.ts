@@ -11,6 +11,7 @@ export interface IState {
   users: types.IUserStoreRecord;
   userGroups: types.IUserGroupStoreRecord;
   permissions: types.IPermissionRecords;
+  dataViews: types.IDataViewRecords;
 }
 
 export const reducer = combineReducers<IState>({

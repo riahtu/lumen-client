@@ -31,6 +31,13 @@ export class ColorService {
     }
     this.availableColors.push(color);
   }
+  public checkoutColor(color: string): void {
+    //remove color from available list 
+    let i = this.availableColors.indexOf(color);
+    if( i == -1)
+      return;
+    this.availableColors.splice(i,1);
+  }
   private randomColor(): string {
     //http://stackoverflow.com/questions/5092808
     return "#000000".replace(/0/g, function () { return (~~(Math.random() * 16)).toString(16); });

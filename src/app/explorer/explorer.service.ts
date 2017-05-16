@@ -209,8 +209,84 @@ export class ExplorerService {
   }
 
 
+  
   ///------ helpers ------------
 
+  //PUBLIC: 
+  buildDataset(
+    elements: IDbElement[], 
+    data: IDataSet, 
+    axis: number) {
+    return elements.map(element => {
+      if (data[element.id] === undefined || data[element.id] == null)
+        return null;
+      //use custom display_name if present
+      let label = element.name;
+      if (element.display_name != "")
+        label = element.display_name;
+
+      let baseConfig = {
+        label: label,
+        yaxis: axis,
+        //bars: { show: false, barWidth: 2 },
+        //points: { show: false },
+        lines: {show: false},
+        color: element.color,
+        data: data[element.id].data
+      }
+      switch (data[element.id].type) {
+        case 'raw':
+          switch (element.display_type) {
+            case 'continuous':
+              return Object.assign({}, baseConfig,
+                {
+                  lines: { show: true },
+                });
+            case 'discrete':
+              return Object.assign({}, baseConfig,
+                {
+                  points: { show: true, radius: 2},
+                });
+            case 'event':
+              return Object.assign({}, baseConfig,
+                {
+                  bars: { show: true, barWidth: 2 },
+                });
+          }
+        case 'decimated':
+          switch (element.display_type) {
+            case 'continuous':
+              return Object.assign({}, baseConfig,
+                {
+                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  lines: {show: true}
+                });
+            case 'discrete':
+              return Object.assign({}, baseConfig,
+                {
+                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  points: {show: true, radius: 1}
+                });
+          }
+        case 'interval':
+          return Object.assign({}, baseConfig,
+            {
+              yaxis: baseConfig.yaxis + 2,
+              lines: {
+                lineWidth: 5,
+              },
+              points: {
+                show: true
+              }
+            })
+        default:
+          console.log("unknown data type: ", data[element.id].type)
+      }
+      return
+    }).filter(data => data != null)
+  }
+
+  //PRIVATE
   private findNeededElements(
     elements: IDbElement[],
     existingData: IDataSet,

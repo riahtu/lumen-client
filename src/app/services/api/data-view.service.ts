@@ -10,6 +10,8 @@ import { MessageService } from '../message.service';
 import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
 import { DbElementService } from './db-element.service';
+import { ColorService } from './color.service';
+
 import {
   IDbElementRecords,
   DbElementActions,
@@ -29,7 +31,8 @@ export class DataViewService {
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
-    private elementService: DbElementService
+    private elementService: DbElementService,
+    private colorService: ColorService
   ) {
     this.dataViewsLoaded = false;
   }
@@ -91,11 +94,19 @@ export class DataViewService {
     }
     let o = this.tokenService
       .post('data_views.json', JSON.stringify(params))
-      .map(resp => resp.json());
+      .map(resp => resp.json())
+      .do(json => this.messageService.setMessages(json.messages))
+      .map(json => normalize(json.data, schema.dataView).entities)
+    
     o.subscribe(
-      json => this.messageService.setMessages(json.messages),
+      entities => {
+        this.ngRedux.dispatch({
+          type: DataViewActions.RECEIVE,
+          payload: entities['data_views']
+        })
+      },
       error => this.messageService.setErrors(parseAPIErrors(error))
-    );
+      );
     return o;
   }
 
@@ -108,7 +119,7 @@ export class DataViewService {
     let elementRecords = this.ngRedux.getState().data.dbElements;
     Object.keys(elementRecords)
       .map(id => elementRecords[id])
-      .map(element =>{
+      .map(element => {
         this.elementService.removeColor(element);
         this.ngRedux.dispatch({
           type: explorer.ExplorerActions.HIDE_ELEMENT,
@@ -120,6 +131,13 @@ export class DataViewService {
       type: DbElementActions.RESTORE,
       payload: view.redux.data_dbElements
     })
+    //register colors with color service
+    elementRecords = this.ngRedux.getState().data.dbElements;
+    Object.keys(elementRecords)
+      .map(id => elementRecords[id])
+      .map(element => {
+        this.colorService.checkoutColor(element.color);
+      })
     //finally restore the plot
     this.ngRedux.dispatch({
       type: explorer.ExplorerActions.RESTORE_VIEW,

@@ -3,6 +3,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { IDataView } from '../../../store/data';
 import { DataViewService } from '../../../services';
 import {ExplorerSelectors} from '../../explorer.selectors';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-load-data-view',
@@ -12,6 +13,7 @@ import {ExplorerSelectors} from '../../explorer.selectors';
 export class LoadDataViewComponent implements OnInit {
 
   @Output() loaded: EventEmitter<string>;
+  public hasViews$: Observable<boolean>;
 
   constructor(
     public explorerSelectors: ExplorerSelectors,
@@ -21,7 +23,11 @@ export class LoadDataViewComponent implements OnInit {
    }
 
   ngOnInit() {
-    
+
+    this.hasViews$ = 
+      this.explorerSelectors.dataViews$
+        .map(records => Object.keys(records))
+        .map(ids => ids.length!=0)
   }
 
   loadDataView(view: IDataView){

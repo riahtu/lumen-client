@@ -160,8 +160,8 @@
         </button>
       </div>
       <div class="modal-body">
-          <app-load-data-view
-          (loaded)="loadDataViewModal.hide()"></app-load-data-view>
+          <app-load-data-view (loaded)="loadDataViewModal.hide()"></app-load-data-view>
+          <template #empty>No data views</template>
       </div>
     </div>
   </div>
