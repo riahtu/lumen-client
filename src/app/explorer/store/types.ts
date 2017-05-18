@@ -21,6 +21,7 @@ export interface IExplorer {
   plot_data?: IDataSet;
   adding_plot_data?: boolean;
   data_cursor?: boolean;
+  live_update?: boolean;
 }
 
 export interface IExplorerRecord extends

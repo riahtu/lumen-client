@@ -31,7 +31,8 @@
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox"> Live Update
+      <input type="checkbox" [checked]="explorerSelectors.liveUpdate$ | async"
+        (change)="explorerService.toggleLiveUpdate()"> Live Update
     </label>
   </div>
   <hr/>

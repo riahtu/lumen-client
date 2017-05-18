@@ -232,8 +232,11 @@ export class ExplorerService {
         //points: { show: false },
         lines: {show: false},
         color: element.color,
-        data: data[element.id].data
+        data: data[element.id].data,
+        default_min: element.default_min,
+        default_max: element.default_max
       }
+
       switch (data[element.id].type) {
         case 'raw':
           switch (element.display_type) {

@@ -21,6 +21,8 @@ export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data','dataViews']) dataViews$: Observable<IDataViewRecords>;
+  @select(['data','liveUpdate']) liveUpdate$: Observable<IDataViewRecords>;
+
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
   @select(['ui', 'explorer', 'right_elements']) rightElementIDs$: Observable<number[]>;
