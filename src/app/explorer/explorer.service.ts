@@ -160,9 +160,25 @@ export class ExplorerService {
       type: ExplorerActions.DISABLE_DATA_CURSOR
     });
   }
+  public toggleLiveUpdate(){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.TOGGLE_LIVE_UPDATE
+    });
+  }
+  public disableLiveUpdate(){
+    this.ngRedux.dispatch({
+        type: ExplorerActions.DISABLE_LIVE_UPDATE
+      });
+  }
   public setPlotTimeRange(range: IRange) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,
+      payload: range
+    })
+  }
+  public setNavTimeRange(range: IRange){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_NAV_TIME_RANGE,
       payload: range
     })
   }

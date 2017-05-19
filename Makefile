@@ -1,0 +1,1 @@
+rsync -r -e 'ssh -p 2222' dist/* beta.wattsworth.net:/opt/angular/lumen

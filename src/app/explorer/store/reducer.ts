@@ -135,6 +135,12 @@ export function reducer(
       return state
         .set('plot_time', action.payload);
 
+    //set nav time range
+    //
+    case ExplorerActions.SET_NAV_TIME_RANGE:
+      return state 
+        .set('nav_time', action.payload);
+        
     //set nav range to the plot range
     //
     case ExplorerActions.SET_NAV_RANGE_TO_PLOT_RANGE:
@@ -164,6 +170,18 @@ export function reducer(
     case ExplorerActions.DISABLE_DATA_CURSOR:
       return state
         .set('data_cursor', false)
+
+    //toggle whether the view is live updating
+    //
+    case ExplorerActions.TOGGLE_LIVE_UPDATE:
+      return state
+        .set('live_update',!state.live_update)
+
+    //disable the live update
+    //
+    case ExplorerActions.TOGGLE_LIVE_UPDATE:
+      return state
+        .set('live_update', false)
 
     //auto scale specified axis to include
     // all available data

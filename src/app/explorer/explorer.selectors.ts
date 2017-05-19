@@ -21,7 +21,6 @@ export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data','dataViews']) dataViews$: Observable<IDataViewRecords>;
-  @select(['data','liveUpdate']) liveUpdate$: Observable<IDataViewRecords>;
 
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
@@ -38,6 +37,8 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_y1']) plotY1$: Observable<IRange>;
   @select(['ui', 'explorer', 'plot_y2']) plotY2$: Observable<IRange>;
+  @select(['ui', 'explorer', 'live_update']) liveUpdate$: Observable<IDataViewRecords>;
+
 
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>

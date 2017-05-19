@@ -30,22 +30,30 @@
       <!-- navigation plot (25% of view) -->
       <div class="plot-container" 
         [ngStyle]="{ 'z-index': plotZValue$ | async }">
-        <!-- loading spinner -->
+        <!-- nav loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="explorerSelectors.addingNavData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
         <app-nav-plot class="nav-plot"></app-nav-plot>
-        <!-- loading spinner -->
+        <!-- plot loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="explorerSelectors.addingPlotData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
+        
         <!-- main plot (75% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
-        <div class="date-bar" (click)="explorerService.showDateSelector()">
+        <!-- date selector -->
+        <button class="date-bar" (click)="explorerService.showDateSelector()" 
+          [disabled]="explorerSelectors.liveUpdate$ | async">
           {{explorerSelectors.plotTimeRange$ | async | duration}}
-        </div>
+          <!-- live update notification -->
+          <span class="live-update" [@fadeInOut]
+            *ngIf="explorerSelectors.liveUpdate$ | async">
+            <i class="fa fa-heartbeat"></i> Live Update
+          </span>
+        </button>
       </div>
       <!--modal overlay to pick date -->
       <app-date-picker class="plot overlay" 
@@ -90,7 +98,10 @@
         </button>
       </div>
       <div class="modal-body">
-        <img class="plot-image" src="{{this.imageData}}" />
+        <div class="plot-image-container">
+          <div class="live-overlay"></div>
+          <img class="plot-image" src="{{this.imageData}}" />
+        </div>
         <span class="text-muted"> 
           Note: zoom out on the browser to increase image resolution
         </span>
@@ -115,7 +126,11 @@
         </button>
       </div>
       <div class="modal-body">
-          <img class="data-view-preview" src="{{this.imageData}}" />
+          <app-plot-thumbnail 
+            [view]="{image: this.imageData, 
+                     name: dataViewForm.get('name').value, 
+                     description: dataViewForm.get('description').value,
+                     live: explorerSelectors.liveUpdate$ | async}"></app-plot-thumbnail>
           <form [formGroup]="dataViewForm">
               <div class="form-group"
                 [class.has-error]="!dataViewForm.get('name').valid && !dataViewForm.get('name').pristine">

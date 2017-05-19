@@ -99,26 +99,39 @@ export function dbElementReducer(
   action: IPayloadAction): records.IDbElementRecords {
   let elemId: number;
   switch (action.type) {
+    
+    //Receive new elements from server
+    //
     case actions.DbElementActions.RECEIVE:
       return Object.assign({},
         state,
         mergeWithDisplayAttrs(
           state, recordify(action.payload, factories.DbElementFactory)));
+    
+    //Set element color
+    //
     case actions.DbElementActions.SET_COLOR:
       elemId = action.payload.id;
       let color = action.payload.color;
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('color', color) })
+    
+    //Set element display name
+    //
     case actions.DbElementActions.SET_DISPLAY_NAME:
       elemId = action.payload.id;
       let name = action.payload.name;
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('display_name', name) })
+    
+    //Restore elements from a data view
+    //
     case actions.DbElementActions.RESTORE:
       let data = <records.IDbElementRecords>action.payload;
-      return Object.keys(data).reduce((acc,id) => {
+      let elements = Object.keys(data).reduce((acc,id) => {
         acc[id]= factories.DbElementFactory(data[id]);
         return acc;},{});
+      return Object.assign({}, state, elements);
 
     default:
       return state;

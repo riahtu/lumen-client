@@ -1,19 +1,10 @@
 
 <div class="tt-container">
-  <p class="lead">Navigation Plot</p>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" [checked]="explorerSelectors.navZoomLock$ | async" 
-        (change)="explorerService.toggleNavZoomLock()"> Lock Selection Width
-    </label>
-  </div>
+  
   <button class="btn btn-default btn-block"
     (click)="explorerService.setNavRangeToPlotRange()">
-    Sync To Main Plot <i class="fa fa-exchange fa-rotate-90"></i> </button>
+    Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i> </button>
 
-
-  <p class="lead">Main Plot</p>
-  <p>Auto Scale to Fit</p>
   <div class="btn-group btn-block" role="group">
     <button class="btn btn-default autoscale"
       (click)="explorerService.autoScaleAxis('left')">Left</button>
@@ -26,13 +17,19 @@
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="explorerSelectors.dataCursor$ | async" 
-        (change)="explorerService.toggleDataCursor()"> Show Data Cursor
+        (change)="explorerService.toggleDataCursor()"><i class="fa fa-fw fa-crosshairs"></i> Show Data Cursor
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="explorerSelectors.liveUpdate$ | async"
-        (change)="explorerService.toggleLiveUpdate()"> Live Update
+        (change)="explorerService.toggleLiveUpdate()"><i class="fa fa-fw fa-heartbeat"></i> Live Update
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" [checked]="explorerSelectors.navZoomLock$ | async" 
+        (change)="explorerService.toggleNavZoomLock()"><i class="fa fa-fw fa-lock"></i> Lock Selection Width
     </label>
   </div>
   <hr/>

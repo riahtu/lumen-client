@@ -1,19 +1,14 @@
 <!-- list of data view thumbnails -->
 <div class="data-view-list" *ngIf="hasViews$ | async; else empty">
   <div *ngFor="let view of explorerSelectors.dataViews$ | async | toArray">
-    <div class="thumbnail-container" (click)="loadDataView(view)">
-      <span class="title">
-      <span class="name"> {{view.name}} </span><br/>
-      <span class="description">{{view.description}}</span>
-      </span>
-      <img class="plot-thumbnail" src="{{view.image}}">
-    </div>
-    <hr class="seperator" />
+    <app-plot-thumbnail class="thumbnail" 
+      [view]="view" (click)="loadDataView(view)">
+    </app-plot-thumbnail>
   </div>
 </div>
 <!-- ...or a message if there aren't any -->
 <template #empty class="alert alert-info">
- <div class="alert alert-info">
+  <div class="alert alert-info">
     No Saved Views
   </div>
 </template>

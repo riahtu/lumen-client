@@ -27,7 +27,8 @@ export const ExplorerFactory =
     plot_time: {min: null, max: null},
     plot_data: {},
     adding_plot_data: false,
-    data_cursor: false
+    data_cursor: false,
+    live_update: false,
   });
 
 

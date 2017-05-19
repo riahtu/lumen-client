@@ -5,8 +5,8 @@ export const FLOT_OPTIONS = {
 		xaxis:{
 			mode:"time",
 			timezone: "browser",
-			//min: 0,
-			//max: 10
+			min: 0,
+			max: 0
 		},
 		yaxis:{
 			//min: 0,

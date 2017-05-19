@@ -191,6 +191,7 @@ export interface IDataView {
   image: string;
   redux: IDataViewRedux;
   owner: boolean;
+  live: boolean;
 }
 export interface IDataViewRedux{
   ui_explorer: IExplorer,

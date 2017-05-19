@@ -35,6 +35,9 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private plot: any;
 
   private xBounds: Subject<IRange>
+  //saved by the time range listener if the plot
+  //isn't drawn yet
+  private storedPlotTimeRange: IRange;
 
   constructor(
     private renderer: Renderer,
@@ -44,6 +47,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.plot = null;
     this.xBounds = new Subject();
     this.subs = [];
+    this.storedPlotTimeRange = { min: null, max: null }
   }
 
   ngOnInit(
@@ -54,7 +58,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .combineLatest(this.explorerSelectors.plottedElements$)
       .subscribe(([timeRange, elements]) => {
         this.explorerService.loadNavData(elements, timeRange);
-        if(this.plot!=null)
+        if (this.plot != null)
           this.plot.clearSelection(true);
       }));
     /* set the plot time range based on changes to selected range */
@@ -73,13 +77,27 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           { xaxis: { from: timeRange.min, to: timeRange.max } },
           true); //do not fire the plot selected event
       }));
-      /* toggle the zoom lock feature based on the state */
-      this.subs.push(this.explorerSelectors.navZoomLock$
-        .distinctUntilChanged()
-        .subscribe(val => {
-          if(this.plot!=null)
-            this.plot.lockZoom(val);
-        }));
+    /* toggle the zoom lock feature based on the state */
+    this.subs.push(this.explorerSelectors.navZoomLock$
+      .distinctUntilChanged()
+      .subscribe(val => {
+        if (this.plot != null)
+          this.plot.lockZoom(val);
+      }));
+    /* set nav plot axes based on changes to navTimeRange */
+    this.subs.push(this.explorerSelectors.navTimeRange$
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .subscribe(timeRange => {
+        if (this.plot == null) {
+          this.storedPlotTimeRange = timeRange;
+          return;
+        }
+        let xaxis = this.plot.getAxes().xaxis;
+        xaxis.options.min = timeRange.min;
+        xaxis.options.max = timeRange.max;
+        this.plot.setupGrid();
+        this.plot.draw();
+      }));
   }
   ngOnDestroy() {
     while (this.subs.length > 0)
@@ -103,6 +121,8 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           return; //no data to plot
         }
         if (this.plot == null) {
+          FLOT_OPTIONS.xaxis.min = this.storedPlotTimeRange.min;
+          FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
           this.explorerService.disableNavZoomLock();

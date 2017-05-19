@@ -84,6 +84,7 @@ export const dataView = new schema.Entity('data_views', {},
     processStrategy: (entity) => {
       if (entity.redux_json != null) {
         entity.redux = JSON.parse(entity.redux_json);
+        entity.live = entity.redux.ui_explorer.live_update;
       } else {
         entity.redux = {}
       }

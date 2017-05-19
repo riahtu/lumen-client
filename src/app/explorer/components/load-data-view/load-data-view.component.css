@@ -3,54 +3,14 @@ div.data-view-list {
    height: 75vh;
    overflow-y: auto;
 }
-div.thumbnail-container {
-  position: relative;
-  border-width: 2px;
-  border-color: white;
-  border-radius: 4px;
-  border-style: solid;
-  width: 404px;
-    height: 204px;
-    margin-left: calc(50% - 202px);
-}
-div.thumbnail-container:hover{
-  border-color: #265986;
-  border-style: solid;
+.thumbnail:hover{
+  border-color: #adadad;
   cursor: pointer;
+  background: grey;
+  background-color: #e6e6e6;
 }
-
-img.plot-thumbnail{
-    height: 200px;
-    width: 400px;
-    
-}
-
-hr.seperator{
-  margin: 0px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  border-width: 2px;
-}
-
-span.title{
-    z-index: 9999;
-    display: block;
-    position: absolute;
-    margin-top: 10px;
-    background: rgba(221, 221, 238, 0.33);
-    border-radius: 4px;
-    padding-left: 4px;
-    padding-right: 4px;
-    color: #777;
-    text-align: center;
-    left: 50%;
-    transform: translateX(-50%);
-}
-span.name{
-  font-size: 18px;
-}
-span.description {
-  font-weight: 200;
+.thumbnail{
+  border-style: solid;
+  border-color: #ccc;
+  background-color: white;
 }

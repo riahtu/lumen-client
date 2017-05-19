@@ -1,0 +1,46 @@
+div.thumbnail-container {
+  position: relative;
+  width: 404px;
+  height: 204px;
+  margin-left: calc(50% - 202px);
+}
+
+div.title{
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    margin-top: 10px;
+    background: rgba(221, 221, 238, 0.33);
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    color: #777;
+    text-align: center;
+    left: 50%;
+    transform: translateX(-50%);
+}
+span.name{
+  font-size: 18px;
+}
+span.description {
+  font-weight: 200;
+}
+
+
+div.plot-image-container{
+  position: relative;
+}
+div.live-overlay{
+  transform: translate(-50%);
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  text-align: center;
+  color: #3c763d;
+  background-color: rgba(223, 240, 216, 0.72);
+  padding: 20px;
+}
+img.plot-thumbnail{
+    height: 200px;
+    width: 400px;    
+}
