@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
+import * as _ from 'lodash';
 
 import {IAppState} from '../app.store';
 import { 
@@ -11,6 +12,8 @@ import {
 import {
   IDbElement,
   IDbElementRecords,
+  IDbStream,
+  IDbStreamRecords,
   IDataSet,
   IDataViewRecords,
   IDataView
@@ -20,6 +23,8 @@ import {
 export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
+  @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
+
   @select(['data','dataViews']) dataViews$: Observable<IDataViewRecords>;
 
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
@@ -47,6 +52,9 @@ export class ExplorerSelectors {
   public plottedElements$: Observable<IDbElement[]>
   public isPlotEmpty$: Observable<boolean>
 
+  //streams containing the plotted elements
+  public plottedStreams$: Observable<IDbStream[]>
+
   //is either nav or data loading?
   public isDataLoading$: Observable<boolean>
 
@@ -60,15 +68,26 @@ export class ExplorerSelectors {
       .map(([elements, ids]) => {
         return ids.map(id => elements[id]);
       });
+
     this.rightElements$ = this.elements$
       .combineLatest(this.rightElementIDs$)
       .map(([elements, ids]) => {
         return ids.map(id => elements[id])
       });
+
     this.plottedElements$ = this.leftElements$
       .combineLatest(this.rightElements$)
       .map(([left,right]) => left.concat(right))
+    
+    this.plottedStreams$ = this.plottedElements$
+      .combineLatest(this.streams$)
+      .map(([elements,streams])=>{
+        return _.uniq(elements.map(e => e.db_stream_id))
+        .map(id => streams[id])
+        .filter(stream => stream!==undefined)
+      })
       
+
     this.isPlotEmpty$ = this.plottedElements$
       .map(elements => elements.length==0)
     

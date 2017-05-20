@@ -1,0 +1,9 @@
+<div *ngFor="let stream of explorerSelectors.plottedStreams$ | async">
+  <button class="btn btn-link stream-name"
+    (click)="download(stream)">
+    <i class="fa fa-database"></i>
+     {{stream.name}}
+  </button>
+</div>
+<!-- invisible link to trigger download -->
+<a #link></a>

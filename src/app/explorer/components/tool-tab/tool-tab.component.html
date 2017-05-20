@@ -41,7 +41,7 @@
       <!-- add a new member -->
       <li class="menu" class="dropdown-item" role="menuitem" (click)="savePlotImage.emit('save')"><a>Image</a></li>
       <!-- edit the group -->
-      <li class="menu" class="dropdown-item" role="menuitem"><a>Data</a></li>
+      <li class="menu" class="dropdown-item" role="menuitem" (click)="downloadDataModal.show()"><a>Data</a></li>
     </ul>
   </div>
 
@@ -51,5 +51,24 @@
     (click)="loadDataView.emit('load')">Open View</button>
 </div>
 
-
+<!-- ====== load data view modal ====== -->
+<div class="modal fade" bsModal #downloadDataModal="bs-modal" 
+     [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Download Data from {{explorerSelectors.plotTimeRange$ | async | duration}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="downloadDataModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-download-data [range]="explorerSelectors.plotTimeRange$ | async"></app-download-data>
+      </div>
+    </div>
+  </div>
+</div>
 

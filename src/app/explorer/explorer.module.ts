@@ -25,6 +25,7 @@ import { ExplorerSelectors } from './explorer.selectors';
 import { TreeModule } from 'angular-tree-component';
 import { DurationPipe } from './duration.pipe';
 import { LoadDataViewComponent } from './components/load-data-view/load-data-view.component';
+import { DownloadDataComponent } from './components/download-data/download-data.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { LoadDataViewComponent } from './components/load-data-view/load-data-vie
     COMPONENTS,
     ExplorerPageComponent,
     DurationPipe,
-    LoadDataViewComponent
+    LoadDataViewComponent,
+    DownloadDataComponent
   ],
   providers: [
     ExplorerService,

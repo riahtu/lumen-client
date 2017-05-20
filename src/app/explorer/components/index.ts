@@ -6,9 +6,10 @@ import { ToolTabComponent } from './tool-tab/tool-tab.component';
 import { NavPlotComponent } from './nav-plot/nav-plot.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { LoadDataViewComponent } from './load-data-view/load-data-view.component';
+import { DownloadDataComponent } from './download-data/download-data.component';
 
 export const COMPONENTS = [
   MainPlotComponent, FileTreeComponent, LoadDataViewComponent,
-  PlottedElementsComponent, PlotTabComponent,
+  PlottedElementsComponent, PlotTabComponent, DownloadDataComponent,
   NavPlotComponent, ToolTabComponent, DatePickerComponent
 ];
