@@ -46,12 +46,13 @@ export class DataService {
     startTime: number, //values in milliseconds!
     endTime: number,
     stream: IDbStream): Observable<any> {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('start_time', (startTime * 1e3).toString());
-    params.set('end_time', (endTime * 1e3).toString());
+    
     return this.tokenService
       .post(`db_streams/${stream.id}/data.csv`,
-      { search: params })
+      {
+        start_time: (startTime * 1e3).toString(),
+        end_time: (endTime * 1e3).toString()
+      })
       .map( data => new Blob([data['_body']], { type: 'text/csv' }))
       .map( blob => window.URL.createObjectURL(blob))
       

@@ -36,14 +36,6 @@ export class DownloadDataComponent implements OnInit {
         this.link.nativeElement.download = 'coolname.txt';
         this.link.nativeElement.href = file;
         this.link.nativeElement.click();
-        /*let blob = );
-        let a = document.createElement('a');
-        a.href =  // xhr.response is a blob
-        a.download = 'coolname.txt'; // Set the file name.
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        //delete a;*/
       },
       error => this.messageService.setErrors(["error downloading data"]));
   }
