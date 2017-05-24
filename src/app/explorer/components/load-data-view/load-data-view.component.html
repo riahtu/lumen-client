@@ -1,14 +1,42 @@
-<!-- list of data view thumbnails -->
+<!-- search and filter bar -->
+<div class="row search-bar">
+  <div class="col-sm-8">
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1"><i class="fa fa-search"></i></span>
+      <input type="text"  class="form-control" 
+        placeholder="search by name or description" 
+        aria-describedby="basic-addon1"
+        [ngModel]="explorerSelectors.dataViewFilterText$ | async"
+         (ngModelChange)="setDataViewFilterText($event)">
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" 
+          (change)="setShowPublicDataViews($event.target.checked)"
+          [checked]="explorerSelectors.showPublicDataViews$ | async" > include public views?
+      </label>
+    </div>
+  </div>
+</div>
+<!-- data view thumbnails -->
 <div class="data-view-list" *ngIf="hasViews$ | async; else empty">
-  <div *ngFor="let view of explorerSelectors.dataViews$ | async | toArray">
+  <!-- list of thumbnails that match search criteria -->
+  <div *ngFor="let view of explorerSelectors.filteredDataViews$ | async">
     <app-plot-thumbnail class="thumbnail" 
       [view]="view" (click)="loadDataView(view)">
     </app-plot-thumbnail>
   </div>
+  <!-- show message if no views match the search criteria -->
+  <div class="alert alert-info" *ngIf="(hasFilteredViews$ | async)==false">
+    No views match your search criteria
+  </div>
 </div>
-<!-- ...or a message if there aren't any -->
+
+<!-- show a message if there aren't saved data views -->
 <template #empty class="alert alert-info">
   <div class="alert alert-info">
-    No Saved Views
+    No saved views
   </div>
 </template>

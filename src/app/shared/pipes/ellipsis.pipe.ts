@@ -11,7 +11,7 @@ export class EllipsisPipe implements PipeTransform {
     }
     if (value == null)
       return value;
-      
+   
     if (value.length > maxLength) {
       return value.substring(0, maxLength) + '...';
     } else {

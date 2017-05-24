@@ -22,6 +22,8 @@ export interface IExplorer {
   adding_plot_data?: boolean;
   data_cursor?: boolean;
   live_update?: boolean;
+  data_view_filter_text?: string;
+  show_public_data_views?: boolean;
 }
 
 export interface IExplorerRecord extends

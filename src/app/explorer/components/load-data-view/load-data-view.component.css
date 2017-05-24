@@ -1,16 +1,27 @@
 div.data-view-list {
-   max-height: 75vh;
-   height: 75vh;
+   max-height: 70vh;
+   height: 70vh;
    overflow-y: auto;
 }
 .thumbnail:hover{
   border-color: #adadad;
   cursor: pointer;
   background: grey;
-  background-color: #e6e6e6;
+  background-color: #dee6f1;
 }
 .thumbnail{
   border-style: solid;
   border-color: #ccc;
   background-color: white;
+}
+div.search-bar{
+    margin-top: -15px;
+    background: #ddd;
+    padding-top: 4px;
+    margin-bottom: 8px;
+    border-style: solid;
+    border-left: inherit;
+    border-right: inherit;
+    border-width: 1px;
+    border-color: grey;
 }

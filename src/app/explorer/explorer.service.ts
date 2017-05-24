@@ -224,6 +224,19 @@ export class ExplorerService {
       })
   }
 
+  public setDataViewFilterText(text: string){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_DATA_VIEW_FILTER_TEXT,
+      payload: text
+    })
+  }
+  public setShowPublicDataViews(show: boolean){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS,
+      payload: show
+    })
+  }
+
 
   
   ///------ helpers ------------

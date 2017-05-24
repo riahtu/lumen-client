@@ -88,6 +88,7 @@ export const dataView = new schema.Entity('data_views', {},
       } else {
         entity.redux = {}
       }
+      entity.private = (entity.visibility!='public')
       return entity;
     }
   });

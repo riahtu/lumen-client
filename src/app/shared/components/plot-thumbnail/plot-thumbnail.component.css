@@ -44,3 +44,8 @@ img.plot-thumbnail{
     height: 200px;
     width: 400px;    
 }
+
+i.fa-globe{
+  font-size: 18px;
+  margin-left: 10px;
+}

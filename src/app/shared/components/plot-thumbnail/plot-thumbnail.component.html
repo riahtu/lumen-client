@@ -1,6 +1,6 @@
 <div class="thumbnail-container">
   <div class="title">
-    <span class="name">{{view.name}}</span>
+    <span class="name">{{view.name}}</span><i *ngIf="view.owner==false" class="fa fa-globe"></i>
     <br/>
     <span class="description">{{view.description}}</span>
   </div>

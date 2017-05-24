@@ -25,6 +25,6 @@ export const reducer = combineReducers<IState>({
   userGroups: reducers.userGroupReducer,
   dataViews: reducers.dataViewReducer
 });
-export {DataFactory } from './initial-state';
+export {DataFactory, DataViewFactory } from './initial-state';
 export * from './actions';
 export * from './types';

@@ -4,10 +4,10 @@ import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
-import {IAppState} from '../app.store';
-import { 
+import { IAppState } from '../app.store';
+import {
   IExplorer,
-  IRange 
+  IRange
 } from './store';
 import {
   IDbElement,
@@ -25,7 +25,7 @@ export class ExplorerSelectors {
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
 
-  @select(['data','dataViews']) dataViews$: Observable<IDataViewRecords>;
+  @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 
   //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
@@ -42,12 +42,14 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
   @select(['ui', 'explorer', 'plot_y1']) plotY1$: Observable<IRange>;
   @select(['ui', 'explorer', 'plot_y2']) plotY2$: Observable<IRange>;
-  @select(['ui', 'explorer', 'live_update']) liveUpdate$: Observable<IDataViewRecords>;
+  @select(['ui', 'explorer', 'live_update']) liveUpdate$: Observable<boolean>;
+  @select(['ui', 'explorer', 'data_view_filter_text']) dataViewFilterText$: Observable<string>;
+  @select(['ui', 'explorer', 'show_public_data_views']) showPublicDataViews$: Observable<boolean>;
 
 
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>
-  
+
   //both left and right elements
   public plottedElements$: Observable<IDbElement[]>
   public isPlotEmpty$: Observable<boolean>
@@ -58,7 +60,8 @@ export class ExplorerSelectors {
   //is either nav or data loading?
   public isDataLoading$: Observable<boolean>
 
-  public dataViewArray$: Observable<IDataView[]>
+  public filteredDataViews$: Observable<IDataView[]>
+
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -77,24 +80,48 @@ export class ExplorerSelectors {
 
     this.plottedElements$ = this.leftElements$
       .combineLatest(this.rightElements$)
-      .map(([left,right]) => left.concat(right))
-    
+      .map(([left, right]) => left.concat(right))
+
     this.plottedStreams$ = this.plottedElements$
       .combineLatest(this.streams$)
-      .map(([elements,streams])=>{
+      .map(([elements, streams]) => {
         return _.uniq(elements.map(e => e.db_stream_id))
-        .map(id => streams[id])
-        .filter(stream => stream!==undefined)
+          .map(id => streams[id])
+          .filter(stream => stream !== undefined)
       })
-      
+
 
     this.isPlotEmpty$ = this.plottedElements$
-      .map(elements => elements.length==0)
-    
+      .map(elements => elements.length == 0)
+
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
-      .map(([nav,plot])=>nav&&plot )
-    
-    
+      .map(([nav, plot]) => nav && plot)
+
+    this.filteredDataViews$ = this.dataViews$
+      .map(views => { //convert views to an array
+        return Object.keys(views)
+          .reduce((acc, id) => {
+            acc.push(views[id]);
+            return acc;
+          }, [])
+      })
+      //mix in the filter observables
+      .combineLatest(this.dataViewFilterText$, this.showPublicDataViews$)
+      .map(([views, filterText, includePublic]) => {
+        return views
+          //include public views only if includePublic is true
+          .filter(view => view.owner || includePublic)
+          //show views where filterText is in the name or description
+          .filter(view => {
+            let searchableText=view.name;
+            //ignore case
+            let searchText = filterText.toLowerCase();
+            //only include the description if it is not null
+            if(view.description!=null)
+              searchableText+=view.description;
+            return searchableText.toLowerCase().indexOf(searchText)>=0
+          })
+      })
   }
 }

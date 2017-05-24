@@ -23,13 +23,13 @@
     </td>
     <!-- Installation name -->
     <td style="vertical-align: middle"> 
-      <span [tooltip]="nilm.description">{{nilm.name}}</span>
+      <span [tooltip]="nilm.description">{{nilm.name | ellipsis:18}}</span>
     </td>
     <!-- Admin/Owner access -->
     <td>
-      <button *ngIf="nilm.role=='admin' || nilm.role=='owner'" tooltip="manage installation"
-        class="btn btn-default" [routerLink]="['/installations',nilm.id]">
-      <i class="fa fa-gear" ></i></button>
+      <i class="fa fa-gear" *ngIf="nilm.role=='admin' || nilm.role=='owner'"
+         [routerLink]="['/installations',nilm.id]">
+      </i>
     </td>
   </tr>
 </table>

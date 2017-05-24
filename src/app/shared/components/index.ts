@@ -1,3 +1,6 @@
 import {UserFormComponent } from './user-form/user-form.component';
 import {PlotThumbnailComponent} from './plot-thumbnail/plot-thumbnail.component';
-export const COMPONENTS = [UserFormComponent, PlotThumbnailComponent];
+import {DataViewFormComponent} from './data-view-form/data-view-form.component';
+
+export const COMPONENTS = [UserFormComponent, PlotThumbnailComponent,
+  DataViewFormComponent];

@@ -4,13 +4,17 @@ img.thumbnail {
 }
 
 i{
-  color: black;
+  color: grey;
   margin: 5px;
 }
 
-i.fa-trash:hover{
+
+i.fa-close:hover{
+  color: firebrick;
   cursor: pointer;
 }
+
 i.fa-edit:hover{
   cursor: pointer;
+  color: #5d81a0;
 }

@@ -25,7 +25,6 @@ export function reducer(
   let element: IDbElement;
   let data: IDataSet;
   switch (action.type) {
-
     // plot an element, auto select the appropriate axis
     //
     case ExplorerActions.PLOT_ELEMENT:
@@ -179,9 +178,21 @@ export function reducer(
 
     //disable the live update
     //
-    case ExplorerActions.TOGGLE_LIVE_UPDATE:
+    case ExplorerActions.DISABLE_LIVE_UPDATE:
       return state
         .set('live_update', false)
+    
+    //toggle whether public data views are displayed
+    //
+    case ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS:
+      return state
+        .set('show_public_data_views',action.payload)
+
+    //set filter text for data view search bar
+    //
+    case ExplorerActions.SET_DATA_VIEW_FILTER_TEXT:
+      return state
+        .set('data_view_filter_text',action.payload)
 
     //auto scale specified axis to include
     // all available data

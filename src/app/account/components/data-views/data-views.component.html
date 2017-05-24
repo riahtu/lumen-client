@@ -1,21 +1,42 @@
 <div *ngFor="let view of myDataViewArray$ | async" class="clearfix">
-  
-  <strong>{{view.name | ellipsis}}
-  <span *ngIf="view.description != null && view.description.length >0">:</span> 
-  </strong>
-  {{view.description | ellipsis:30}}
+  <span [innerHTML]="formatTitle(view) | ellipsis:70"></span>
   <span class="pull-right">
-    <i class="fa fa-fw fa-eye" [popover]="plotThumbnail"
-  triggers="mouseenter:mouseleave"></i>
+    <i class="fa fa-edit"
+      (click)="editDataView(view)"></i>
     
-    <i class="fa fa-fw fa-trash" 
-      (click)="dataViewService.deleteDataView(view)"
-      tooltip="delete"></i>
+    <i class="fa fa-close" 
+      (click)="dataViewService.deleteDataView(view)">
+    </i>
   </span>
-  <template #plotThumbnail>
-    <img class="thumbnail" src="{{view.image}}">
-  </template>
+  
 </div>
 <!-- ...or a message if the user doesn't own any groups -->
 <div class="alert alert-info" *ngIf="(myDataViewArray$ | async).length==0">
   You do not have any saved views</div>
+
+<!-- ====== update data view modal ====== -->
+<div class="modal fade" bsModal #editDataViewModal="bs-modal" 
+     [config]="{backdrop: 'static'}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true"
+     >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">Edit Saved View</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="editDataViewModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-data-view-form #dataViewForm
+            *ngIf="activeView!==undefined"
+            [view]="activeView" 
+            (save)="updateDataView($event)" 
+            (cancel)="editDataViewModal.hide()"></app-data-view-form>
+          
+      </div>
+    </div>
+  </div>
+</div>

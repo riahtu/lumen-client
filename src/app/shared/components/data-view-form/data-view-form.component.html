@@ -1,0 +1,33 @@
+<div>
+  <app-plot-thumbnail [view]="{image: view.image,
+  live: view.live,
+  name: myForm.get('name').value,
+  description: myForm.get('description').value}"></app-plot-thumbnail>
+  <form [formGroup]="myForm">
+    <div class="form-group" 
+      [class.has-error]="!myForm.get('name').valid && !myForm.get('name').pristine">
+      <label>Name</label>
+      <input type="email" class="form-control" placeholder="Name" 
+        [formControl]="myForm.get('name')">
+    </div>
+    <div class="form-group">
+      <label>Description</label>
+      <input type="text" class="form-control" placeholder="Description" 
+        [formControl]="myForm.get('description')">
+    </div>
+    <div class="checkbox">
+    <label>
+      <input type="checkbox" [formControl]="myForm.get('private')"><b> Private? </b>
+    </label>
+  </div>
+  </form>
+  <!-- Save and Cancel buttons -->
+  <div class="clearfix">
+    <!-- save -->
+    <button class="btn btn-primary pull-left" 
+      [disabled]="!myForm.valid" (click)="onSave(myForm.value)">Save</button>
+    <!-- cancel -->
+    <button class="btn btn-default pull-right" (click)="onCancel()">
+                      Cancel</button>
+  </div>
+</div>

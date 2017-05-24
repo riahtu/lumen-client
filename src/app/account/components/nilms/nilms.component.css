@@ -7,3 +7,13 @@ i.offline{
     color: firebrick;
     font-size: 1.5em;
 }
+
+i.fa-gear{
+  color: grey;
+  margin: 5px;
+}
+
+i.fa-gear:hover{
+  cursor: pointer;
+  color: #5d81a0;
+}

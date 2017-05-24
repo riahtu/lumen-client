@@ -82,13 +82,15 @@ export class DataViewService {
 
   //create a new data view
   //
-  public create(name: string, description: string, image: string) {
+  public create(name: string, description: string, isPrivate: boolean, image: string) {
 
     let state = this.getDataViewState(true);
+    let visibility = isPrivate? 'private' : 'public'
     let params = {
       name: name,
       description: description,
       image: image,
+      visibility: visibility,
       stream_ids: state.stream_ids,
       redux_json: JSON.stringify(state.redux)
     }
@@ -97,7 +99,7 @@ export class DataViewService {
       .map(resp => resp.json())
       .do(json => this.messageService.setMessages(json.messages))
       .map(json => normalize(json.data, schema.dataView).entities)
-    
+
     o.subscribe(
       entities => {
         this.ngRedux.dispatch({
@@ -106,7 +108,33 @@ export class DataViewService {
         })
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
+    );
+    return o;
+  }
+
+  //update an existing data view
+  //
+  public update(view: IDataView) {
+    let state = this.getDataViewState(true);
+    let o = this.tokenService
+      .put(`data_views/${view.id}.json`, {
+        name: view.name,
+        description: view.description,
+        visibility: view.private ? 'private':'public'
+      })
+      .map(resp => resp.json())
+      .do(json => this.messageService.setMessages(json.messages))
+      .map(json => normalize(json.data, schema.dataView).entities)
+
+    o.subscribe(
+      entities => {
+        this.ngRedux.dispatch({
+          type: DataViewActions.RECEIVE,
+          payload: entities['data_views']
+        })
+      },
+      error => this.messageService.setErrors(parseAPIErrors(error))
+    );
     return o;
   }
 

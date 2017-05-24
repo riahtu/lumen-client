@@ -146,5 +146,6 @@ export const DataViewFactory =
     image: '',
     redux: null,
     owner: false,
-    live: false
+    live: false,
+    private: false
   })

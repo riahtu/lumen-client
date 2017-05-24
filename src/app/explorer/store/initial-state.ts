@@ -29,6 +29,8 @@ export const ExplorerFactory =
     adding_plot_data: false,
     data_cursor: false,
     live_update: false,
+    show_public_data_views: true,
+    data_view_filter_text: ''
   });
 
 

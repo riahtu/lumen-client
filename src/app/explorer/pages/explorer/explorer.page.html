@@ -114,6 +114,7 @@
 <!-- ====== save data view modal ====== -->
 <div class="modal fade" bsModal #saveDataViewModal="bs-modal" 
      [config]="{backdrop: 'static'}"
+     (onShown)="dataViewForm.reset()"
      tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -126,35 +127,16 @@
         </button>
       </div>
       <div class="modal-body">
-          <app-plot-thumbnail 
-            [view]="{image: this.imageData, 
-                     name: dataViewForm.get('name').value, 
-                     description: dataViewForm.get('description').value,
-                     live: explorerSelectors.liveUpdate$ | async}"></app-plot-thumbnail>
-          <form [formGroup]="dataViewForm">
-              <div class="form-group"
-                [class.has-error]="!dataViewForm.get('name').valid && !dataViewForm.get('name').pristine">
-                <label>Name</label>
-                <input type="email" class="form-control" placeholder="Name" 
-                [formControl]="dataViewForm.get('name')">
-              </div>
-              <div class="form-group">
-                <label>Description</label>
-                <input type="text" class="form-control" placeholder="Description" 
-                [formControl]="dataViewForm.get('description')">
-              </div>
-          </form>
-          <!-- Save and Cancel buttons -->
-          <div class="clearfix">
-            <!-- save -->
-            <button class="btn btn-primary pull-left" 
-                    [disabled]="!dataViewForm.valid"
-                    (click)="saveDataView()">Save</button>
-            <!-- cancel -->
-            <button class="btn btn-default pull-right"
-                    (click)="saveDataViewModal.hide()">
-                    Cancel</button>
-          </div>
+          <app-data-view-form #dataViewForm
+            [view]="{
+          image: imageData,
+          name: '',
+          description: '',
+          private: false,
+          live: this.explorerSelectors.liveUpdate$ | async}" 
+            (save)="createDataView($event)" 
+            (cancel)="saveDataViewModal.hide()"></app-data-view-form>
+          
       </div>
     </div>
   </div>

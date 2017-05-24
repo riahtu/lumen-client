@@ -15,7 +15,7 @@ import {PIPES} from './pipes';
   ],
   declarations: [
     COMPONENTS,
-    PIPES
+    PIPES,
   ],
   exports: [
     COMPONENTS,
