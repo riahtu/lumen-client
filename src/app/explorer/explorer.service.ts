@@ -112,7 +112,7 @@ export class ExplorerService {
     this.ngRedux.dispatch({
       type: ExplorerActions.ADDING_PLOT_DATA
     });
-    this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
+    this.dataService.loadData(timeRange.min, timeRange.max, neededElements, true)
       .subscribe(data => {
         this.ngRedux.dispatch({
           type: ExplorerActions.ADD_PLOT_DATA,

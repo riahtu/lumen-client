@@ -11,7 +11,7 @@ import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
 import { DbElementService } from './db-element.service';
 import { ColorService } from './color.service';
-
+import { DataViewFactory } from '../../store/data';
 import {
   IDbElementRecords,
   DbElementActions,
@@ -19,6 +19,7 @@ import {
   IDataViewRedux,
   DataViewActions
 } from '../../store/data';
+
 import * as explorer from '../../explorer/store';
 
 @Injectable()
@@ -85,7 +86,7 @@ export class DataViewService {
   public create(name: string, description: string, isPrivate: boolean, image: string) {
 
     let state = this.getDataViewState(true);
-    let visibility = isPrivate? 'private' : 'public'
+    let visibility = isPrivate ? 'private' : 'public'
     let params = {
       name: name,
       description: description,
@@ -120,7 +121,7 @@ export class DataViewService {
       .put(`data_views/${view.id}.json`, {
         name: view.name,
         description: view.description,
-        visibility: view.private ? 'private':'public'
+        visibility: view.private ? 'private' : 'public'
       })
       .map(resp => resp.json())
       .do(json => this.messageService.setMessages(json.messages))
@@ -136,6 +137,21 @@ export class DataViewService {
       error => this.messageService.setErrors(parseAPIErrors(error))
     );
     return o;
+  }
+
+  //load and restore a user's home view
+  //
+  public restoreHomeDataView() {
+    this.tokenService
+      .get('data_views/home.json', {})
+      .map(resp => resp.json())
+      .map(json => normalize(json,schema.dataView))
+      .map(json => json.entities.data_views[json.result])
+      .map(json => DataViewFactory(json))
+      .subscribe(
+      view => this.restoreDataView(view),
+      error => console.log("unable to load home data view")
+      );
   }
 
   //------------------ Local Functions -----------------------

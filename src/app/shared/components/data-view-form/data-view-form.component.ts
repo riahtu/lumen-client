@@ -34,7 +34,6 @@ export class DataViewFormComponent implements OnInit, OnChanges {
     this.buildForm();
   }
   ngOnChanges(changes: SimpleChanges) {
-    console.log('here', changes)
     this.buildForm();
   }
   buildForm() {

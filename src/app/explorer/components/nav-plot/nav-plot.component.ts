@@ -55,7 +55,9 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     /* load data based on changes to navTimeRange */
     this.subs.push(this.explorerSelectors.navTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .combineLatest(this.explorerSelectors.plottedElements$)
+      .combineLatest(this.explorerSelectors.plottedElements$
+        .distinctUntilChanged((x,y) => _.isEqual(x,y))
+        .filter(x => x.length!=0))
       .subscribe(([timeRange, elements]) => {
         this.explorerService.loadNavData(elements, timeRange);
         if (this.plot != null)

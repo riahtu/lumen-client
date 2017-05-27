@@ -60,8 +60,11 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     /* load data based on changes to the plotTimeRange */
     this.subs.push(this.explorerSelectors.plotTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .combineLatest(this.explorerSelectors.plottedElements$)
+      .combineLatest(this.explorerSelectors.plottedElements$
+        .distinctUntilChanged((x,y) => _.isEqual(x,y))
+        .filter(x => x.length!=0))
       .subscribe(([timeRange, elements]) => {
+        console.log("loading plot data!",timeRange,elements)
         this.explorerService.loadPlotData(elements, timeRange)
       }));
     /* set the plotTimeRange based on changes to xbounds */
