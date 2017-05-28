@@ -41,9 +41,11 @@ export class DataService {
       //parameter: current view redux json
       params['redux_json'] = JSON.stringify(viewState);
     }
-
+    //convert params to URL search format
+    let urlParams = new URLSearchParams;
+    Object.keys(params).map(key => {urlParams.set(key,params[key])})
     //use POST when sending a new redux view state with the request   
-    return this.tokenService.post('db_elements/data.json', params)
+    return this.tokenService.get('db_elements/data.json', {search: urlParams})
       .map(resp => resp.json())
       .map(json => normalize(json.data, schema.datas))
       .map(normalized => normalized.entities.data)

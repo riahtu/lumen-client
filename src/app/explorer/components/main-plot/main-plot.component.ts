@@ -62,9 +62,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$
         .distinctUntilChanged((x,y) => _.isEqual(x,y))
-        .filter(x => x.length!=0))
-      .subscribe(([timeRange, elements]) => {
-        console.log("loading plot data!",timeRange,elements)
+        .filter(x => x.length!=0),
+        this.explorerSelectors.addingPlotData$)
+      .filter(([timeRange, elements, busy]) => !busy)
+      .subscribe(([timeRange, elements, busy]) => {
         this.explorerService.loadPlotData(elements, timeRange)
       }));
     /* set the plotTimeRange based on changes to xbounds */

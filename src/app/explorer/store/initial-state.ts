@@ -20,7 +20,7 @@ export const ExplorerFactory =
     nav_y2: {min: null, max: null},
     nav_time: {min: null, max: null},
     nav_data: {},
-    adding_nav_data: true,
+    adding_nav_data: false,
     nav_zoom_lock: false,
     plot_y1: {min: null, max: null},
     plot_y2: {min: null, max: null},
