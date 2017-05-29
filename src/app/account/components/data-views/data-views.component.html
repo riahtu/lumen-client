@@ -1,5 +1,9 @@
 <div *ngFor="let view of myDataViewArray$ | async" class="clearfix">
+  <!-- add icon to indicate the home view -->
+  <i class="fa fa-home" *ngIf="view.home"></i>
+  <!-- view title -->
   <span [innerHTML]="formatTitle(view) | ellipsis:70"></span>
+  <!-- view edit / delete buttons -->
   <span class="pull-right">
     <i class="fa fa-edit"
       (click)="editDataView(view)"></i>

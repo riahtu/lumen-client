@@ -193,6 +193,7 @@ export interface IDataView {
   owner: boolean;
   live: boolean;
   private: boolean;
+  home: boolean;
 }
 export interface IDataViewRedux{
   ui_explorer: IExplorer,

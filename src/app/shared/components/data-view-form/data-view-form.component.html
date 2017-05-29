@@ -16,10 +16,15 @@
         [formControl]="myForm.get('description')">
     </div>
     <div class="checkbox">
-    <label>
-      <input type="checkbox" [formControl]="myForm.get('private')"><b> Private? </b>
-    </label>
-  </div>
+      <label>
+        <input type="checkbox" [formControl]="myForm.get('home')"><b> Set as Home View? </b>
+      </label>
+    </div>
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" [formControl]="myForm.get('private')"><b> Private? </b>
+      </label>
+    </div>
   </form>
   <!-- Save and Cancel buttons -->
   <div class="clearfix">

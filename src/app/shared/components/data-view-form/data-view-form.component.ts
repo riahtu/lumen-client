@@ -40,7 +40,8 @@ export class DataViewFormComponent implements OnInit, OnChanges {
     this.myForm = this.fb.group({
       name: [this.view.name, [Validators.required]],
       description: [this.view.description],
-      private: [this.view.private]
+      private: [this.view.private],
+      home: [this.view.home]
     });
   }
   reset(){
@@ -53,7 +54,8 @@ export class DataViewFormComponent implements OnInit, OnChanges {
     this.save.emit( Object.assign({}, this.view, {
       name: formValues.name,
       description: formValues.description,
-      private: formValues.private
+      private: formValues.private,
+      home: formValues.home
     }));
   }
 }

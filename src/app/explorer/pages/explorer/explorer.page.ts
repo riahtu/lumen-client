@@ -72,7 +72,12 @@ export class ExplorerPageComponent implements OnInit {
   }
 
   createDataView(view: IDataView) {
-    this.dataViewService.create(view.name, view.description, view.private, view.image);
+    this.dataViewService.create(
+      view.name, 
+      view.description, 
+      view.private, 
+      view.home, 
+      view.image);
     this.saveDataViewModal.hide();
   }
   showSavePlotImage() {
@@ -87,7 +92,7 @@ export class ExplorerPageComponent implements OnInit {
   }
   ngOnInit() {
     console.log("restoring home view...")
-    //this.dataViewService.restoreHomeDataView();
+    this.dataViewService.restoreHomeDataView();
   }
 
 

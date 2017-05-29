@@ -133,6 +133,7 @@
           name: '',
           description: '',
           private: false,
+          home: false,
           live: this.explorerSelectors.liveUpdate$ | async}" 
             (save)="createDataView($event)" 
             (cancel)="saveDataViewModal.hide()"></app-data-view-form>

@@ -83,7 +83,7 @@ export class DataViewService {
 
   //create a new data view
   //
-  public create(name: string, description: string, isPrivate: boolean, image: string) {
+  public create(name: string, description: string, isPrivate: boolean, isHome: boolean, image: string) {
 
     let state = this.getDataViewState(true);
     let visibility = isPrivate ? 'private' : 'public'
@@ -93,6 +93,7 @@ export class DataViewService {
       image: image,
       visibility: visibility,
       stream_ids: state.stream_ids,
+      home: isHome,
       redux_json: JSON.stringify(state.redux)
     }
     let o = this.tokenService
@@ -116,12 +117,12 @@ export class DataViewService {
   //update an existing data view
   //
   public update(view: IDataView) {
-    let state = this.getDataViewState(true);
     let o = this.tokenService
       .put(`data_views/${view.id}.json`, {
         name: view.name,
         description: view.description,
-        visibility: view.private ? 'private' : 'public'
+        visibility: view.private ? 'private' : 'public',
+        home: view.home
       })
       .map(resp => resp.json())
       .do(json => this.messageService.setMessages(json.messages))

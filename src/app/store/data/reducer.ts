@@ -99,7 +99,7 @@ export function dbElementReducer(
   action: IPayloadAction): records.IDbElementRecords {
   let elemId: number;
   switch (action.type) {
-    
+
     //Receive new elements from server
     //
     case actions.DbElementActions.RECEIVE:
@@ -107,7 +107,7 @@ export function dbElementReducer(
         state,
         mergeWithDisplayAttrs(
           state, recordify(action.payload, factories.DbElementFactory)));
-    
+
     //Set element color
     //
     case actions.DbElementActions.SET_COLOR:
@@ -115,7 +115,7 @@ export function dbElementReducer(
       let color = action.payload.color;
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('color', color) })
-    
+
     //Set element display name
     //
     case actions.DbElementActions.SET_DISPLAY_NAME:
@@ -123,14 +123,15 @@ export function dbElementReducer(
       let name = action.payload.name;
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('display_name', name) })
-    
+
     //Restore elements from a data view
     //
     case actions.DbElementActions.RESTORE:
       let data = <records.IDbElementRecords>action.payload;
-      let elements = Object.keys(data).reduce((acc,id) => {
-        acc[id]= factories.DbElementFactory(data[id]);
-        return acc;},{});
+      let elements = Object.keys(data).reduce((acc, id) => {
+        acc[id] = factories.DbElementFactory(data[id]);
+        return acc;
+      }, {});
       return Object.assign({}, state, elements);
 
     default:
@@ -151,7 +152,7 @@ export function dbElementReducer(
           .set('display_name', e.display_name)
           .set('color', e.color)
       })
-      .reduce((acc:records.IDbElementRecords, element:records.IDbElementRecord) => {
+      .reduce((acc: records.IDbElementRecords, element: records.IDbElementRecord) => {
         acc[element.id] = element;
         return acc;
       }, {});
@@ -244,9 +245,28 @@ export function dataViewReducer(
   action: IPayloadAction): records.IDataViewRecords {
   switch (action.type) {
     case actions.DataViewActions.RECEIVE:
-      return Object.assign({},
-        state,
-        recordify(action.payload, factories.DataViewFactory));
+      //convert the json data into records
+      let newViews =
+        recordify(action.payload, factories.DataViewFactory);
+      //check if any of the new records is a home view
+      let newHomeView = Object
+        .keys(newViews)
+        .map(id => newViews[id])
+        .reduce((isSet, view) => isSet || view.home, false)
+      if (newHomeView) {
+        //the home view changed, clear flag from existing records
+        let newState = Object.keys(state)
+          .map(id => state[id])
+          .map(view => view.set('home', false))
+          .reduce((s, view) => {
+            s[view.id] = view;
+            return s;
+          }, <records.IDataViewRecords>{})
+        return Object.assign({}, newState, newViews);
+      } else {
+        //home view not set or unchanged, just add newViews
+        return Object.assign({}, state, newViews);
+      }
     case actions.DataViewActions.REMOVE:
       let new_state = removeByKey(state, action.payload)
       return new_state;
