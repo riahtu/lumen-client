@@ -156,8 +156,10 @@ export class FileTreeComponent implements OnInit {
     ui: IExplorer
   ): DbTreeNode {
     let children = stream.elements
-      .filter(id => elements[id] !== undefined)
-      .map(id => this.mapElement(elements[id], ui))
+      .map(id => elements[id])
+      .filter(element => element !== undefined)
+      .filter(element => element.plottable)
+      .map(element => this.mapElement(element, ui))
     //create the DbNode and return it
     return {
       id: 's' + stream.id,
