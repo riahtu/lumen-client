@@ -60,7 +60,11 @@ export class ExplorerSelectors {
   //is either nav or data loading?
   public isDataLoading$: Observable<boolean>
 
+  //data views that match current filter settings
   public filteredDataViews$: Observable<IDataView[]>
+
+  //is any of the data displayed as intervals?
+  public isIntervalDataDisplayed$: Observable<boolean>
 
 
   constructor(
@@ -114,14 +118,27 @@ export class ExplorerSelectors {
           .filter(view => view.owner || includePublic)
           //show views where filterText is in the name or description
           .filter(view => {
-            let searchableText=view.name;
+            let searchableText = view.name;
             //ignore case
             let searchText = filterText.toLowerCase();
             //only include the description if it is not null
-            if(view.description!=null)
-              searchableText+=view.description;
-            return searchableText.toLowerCase().indexOf(searchText)>=0
+            if (view.description != null)
+              searchableText += view.description;
+            return searchableText.toLowerCase().indexOf(searchText) >= 0
           })
+      })
+
+    this.isIntervalDataDisplayed$ = this.plottedElements$
+      .combineLatest(this.plotData$)
+      .map(([elements, data]) => elements
+        .map(e => data[e.id])
+        .filter(data => data !== undefined))
+      .do(x => console.log(x))
+      .map(datas => {
+        return datas.reduce((isInterval, data) => {
+          console.log(data.type, isInterval);
+          return isInterval || data.type == 'interval'
+        }, false)
       })
   }
 }

@@ -15,9 +15,10 @@ import {
   INITIAL_STATE
 } from './initial-state';
 import * as _ from 'lodash';
-import { 
+import {
   IRange,
-  IExplorer } from './types';
+  IExplorer
+} from './types';
 
 export function reducer(
   state: IExplorerRecord = INITIAL_STATE,
@@ -137,9 +138,9 @@ export function reducer(
     //set nav time range
     //
     case ExplorerActions.SET_NAV_TIME_RANGE:
-      return state 
+      return state
         .set('nav_time', action.payload);
-        
+
     //set nav range to the plot range
     //
     case ExplorerActions.SET_NAV_RANGE_TO_PLOT_RANGE:
@@ -174,25 +175,25 @@ export function reducer(
     //
     case ExplorerActions.TOGGLE_LIVE_UPDATE:
       return state
-        .set('live_update',!state.live_update)
+        .set('live_update', !state.live_update)
 
     //disable the live update
     //
     case ExplorerActions.DISABLE_LIVE_UPDATE:
       return state
         .set('live_update', false)
-    
+
     //toggle whether public data views are displayed
     //
     case ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS:
       return state
-        .set('show_public_data_views',action.payload)
+        .set('show_public_data_views', action.payload)
 
     //set filter text for data view search bar
     //
     case ExplorerActions.SET_DATA_VIEW_FILTER_TEXT:
       return state
-        .set('data_view_filter_text',action.payload)
+        .set('data_view_filter_text', action.payload)
 
     //auto scale specified axis to include
     // all available data
@@ -211,8 +212,12 @@ export function reducer(
     //restore view from a saved redux object
     //
     case ExplorerActions.RESTORE_VIEW:
-      return ExplorerFactory(action.payload);
-
+      return ExplorerFactory(
+        Object.assign({}, action.payload,
+          {  //convert plot and nav data to records
+            nav_data: recordify(action.payload.nav_data, DataFactory),
+            plot_data: recordify(action.payload.plot_data, DataFactory)
+          }));
     default:
       return state;
   }

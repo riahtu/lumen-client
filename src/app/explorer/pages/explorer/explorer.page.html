@@ -41,6 +41,11 @@
           *ngIf="explorerSelectors.addingPlotData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
+        <!-- warning if interval data is displayed -->
+        <span class="interval-warning" [@fadeInOut]
+          *ngIf="explorerSelectors.isIntervalDataDisplayed$ | async">
+          <i class="fa fa-exclamation-triangle"></i> some data cannot be displayed at this resolution
+        </span>
         
         <!-- main plot (75% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
