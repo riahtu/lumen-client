@@ -56,10 +56,9 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.navTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y))
-        .filter(x => x.length!=0),
+        .distinctUntilChanged((x,y) => _.isEqual(x,y)),
         this.explorerSelectors.addingNavData$)
-      .filter(([timeRange, elements, busy]) => !busy)
+      .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
       .subscribe(([timeRange, elements, busy]) => {
         this.explorerService.loadNavData(elements, timeRange);
         if (this.plot != null)

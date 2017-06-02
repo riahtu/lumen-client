@@ -129,6 +129,13 @@ export function reducer(
         .set('nav_time', setTimeRange(state.nav_time, data))
         .set('adding_nav_data', false);
 
+    //reset the plot time ranges
+    //
+    case ExplorerActions.RESET_TIME_RANGES:
+      return state
+        .set('plot_time', {min: null, max: null})
+        .set('nav_time', {min: null, max: null})
+
     //set plot time range
     //
     case ExplorerActions.SET_PLOT_TIME_RANGE:

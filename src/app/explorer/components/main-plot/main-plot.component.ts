@@ -61,10 +61,9 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.plotTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .combineLatest(this.explorerSelectors.plottedElements$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y))
-        .filter(x => x.length!=0),
+        .distinctUntilChanged((x,y) => _.isEqual(x,y)),
         this.explorerSelectors.addingPlotData$)
-      .filter(([timeRange, elements, busy]) => !busy)
+      .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
       .subscribe(([timeRange, elements, busy]) => {
         this.explorerService.loadPlotData(elements, timeRange)
       }));
@@ -116,6 +115,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.draw();
         }
       }));
+    /* remove time bounds when plot is empty (so new elements auto scale)*/
+    this.subs.push(this.explorerSelectors.isPlotEmpty$
+      .distinctUntilChanged()
+      .filter(isEmpty => isEmpty==true)
+      .subscribe(_ => {
+        this.explorerService.resetTimeRanges();
+      }));
     // ---------
     //auto scale the axes to match the data when elements
     //are added to an empty axis
@@ -127,7 +133,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(x => {
         if (this.plot == null)
           return;
-        this.explorerService.autoScaleAxis('right');
+        this.explorerService.autoScaleAxis('left');
       }));
     this.subs.push(this.explorerSelectors.rightElementIDs$
       .map(ids => ids.length == 0)
@@ -138,7 +144,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           return;
         this.explorerService.autoScaleAxis('right');
       }));
-
+    //
 
   }
   ngOnDestroy() {

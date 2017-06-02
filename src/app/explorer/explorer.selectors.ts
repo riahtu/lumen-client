@@ -95,8 +95,9 @@ export class ExplorerSelectors {
       })
 
 
-    this.isPlotEmpty$ = this.plottedElements$
-      .map(elements => elements.length == 0)
+    this.isPlotEmpty$ = this.leftElementIDs$
+      .combineLatest(this.rightElementIDs$)
+      .map(([left,right])=> left.length==0 && right.length==0)
 
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
@@ -133,10 +134,8 @@ export class ExplorerSelectors {
       .map(([elements, data]) => elements
         .map(e => data[e.id])
         .filter(data => data !== undefined))
-      .do(x => console.log(x))
       .map(datas => {
         return datas.reduce((isInterval, data) => {
-          console.log(data.type, isInterval);
           return isInterval || data.type == 'interval'
         }, false)
       })

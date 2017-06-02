@@ -5,7 +5,7 @@ import { ExplorerService } from '../../explorer.service';
 import { ExplorerSelectors } from '../../explorer.selectors';
 
 export const LIVE_PLOT_UPDATE_INTERVAL = 5000; //5 seconds
-export const LIVE_NAV_UPDATE_INTERVAL = 60*1000; //1 minute
+export const LIVE_NAV_UPDATE_INTERVAL = 60 * 1000; //1 minute
 
 export const NAV_LIVE_INTERVAL = 60 * 60 * 1000; //1 hour
 export const PLOT_LIVE_INTERVAL = 20 * 60 * 1000; //20 minutes
@@ -27,6 +27,8 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   public livePlotTimerSubscription: Subscription;
   public liveNavTimerSubscription: Subscription;
 
+  private subs: Subscription[];
+
   constructor(
     public explorerService: ExplorerService,
     public explorerSelectors: ExplorerSelectors
@@ -39,6 +41,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
 
     this.livePlotTimerSubscription = null;
     this.liveNavTimerSubscription = null;
+    this.subs = [];
   }
 
   ngOnInit() {
@@ -49,9 +52,18 @@ export class ToolTabComponent implements OnInit, OnDestroy {
         else
           this.deactivateLiveUpdate();
       })
+    /* remove time bounds when plot is empty (so new elements auto scale)*/
+    this.subs.push(this.explorerSelectors.isPlotEmpty$
+      .distinctUntilChanged()
+      .filter(isEmpty => isEmpty == true)
+      .subscribe(_ => {
+        this.explorerService.disableLiveUpdate();
+      }));
   }
   ngOnDestroy() {
     this.deactivateLiveUpdate();
+    while (this.subs.length > 0)
+      this.subs.pop().unsubscribe()
   }
 
   activateLiveUpdate() {

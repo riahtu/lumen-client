@@ -91,7 +91,6 @@ export class ExplorerPageComponent implements OnInit {
     this.loadDataViewModal.show();
   }
   ngOnInit() {
-    console.log("restoring home view...")
     this.dataViewService.restoreHomeDataView();
   }
 

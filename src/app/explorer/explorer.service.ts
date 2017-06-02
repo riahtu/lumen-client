@@ -39,11 +39,11 @@ export class ExplorerService {
   // remove element from plot
   //
   public hideElement(element) {
-    this.elementService.removeColor(element);
     this.ngRedux.dispatch({
       type: ExplorerActions.HIDE_ELEMENT,
       payload: element
     })
+    this.elementService.removeColor(element);
   }
 
   // remove all elements from the plot
@@ -191,6 +191,13 @@ export class ExplorerService {
     this.ngRedux.dispatch({
       type: ExplorerActions.AUTO_SCALE_AXIS,
       payload: axis
+    })
+  }
+
+  public resetTimeRanges(){
+    //remove main plot time range
+    this.ngRedux.dispatch({
+      type: ExplorerActions.RESET_TIME_RANGES
     })
   }
 
