@@ -235,7 +235,9 @@ export function reducer(
         Object.assign({}, action.payload,
           {  //convert plot and nav data to records
             nav_data: recordify(action.payload.nav_data, DataFactory),
-            plot_data: recordify(action.payload.plot_data, DataFactory)
+            plot_data: recordify(action.payload.plot_data, DataFactory),
+            //override data retrieval view states
+            nilms_loaded: state.nilms_loaded
           }));
     
     //set flag to indicate nilms are loaded
