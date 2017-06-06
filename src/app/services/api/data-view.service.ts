@@ -27,6 +27,7 @@ export class DataViewService {
 
 
   private dataViewsLoaded: boolean;
+  private homeViewRestored: boolean; //only load the home view once
 
   constructor(
     private tokenService: Angular2TokenService,
@@ -143,6 +144,9 @@ export class DataViewService {
   //load and restore a user's home view
   //
   public restoreHomeDataView() {
+    if(this.homeViewRestored)
+      return;
+    this.homeViewRestored = true;
     this.tokenService
       .get('data_views/home.json', {})
       .map(resp => resp.json())

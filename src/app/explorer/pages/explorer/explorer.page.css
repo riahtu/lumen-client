@@ -16,7 +16,7 @@
   max-height: calc(100vh - 171px);
   height: calc(100vh - 171px);
   overflow-y: auto;
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .tab-pane{
     border-style: solid;

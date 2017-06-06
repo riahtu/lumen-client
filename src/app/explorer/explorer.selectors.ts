@@ -47,6 +47,7 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'show_public_data_views']) showPublicDataViews$: Observable<boolean>;
   @select(['ui', 'explorer', 'left_units']) leftElementUnits$: Observable<string>;
   @select(['ui', 'explorer', 'right_units']) rightElementUnits$: Observable<string>;
+  @select(['ui', 'explorer', 'nilms_loaded']) nilmsLoaded$: Observable<boolean>;
 
 
   public leftElements$: Observable<IDbElement[]>

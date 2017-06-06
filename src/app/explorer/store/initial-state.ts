@@ -30,7 +30,9 @@ export const ExplorerFactory =
     data_cursor: false,
     live_update: false,
     show_public_data_views: true,
-    data_view_filter_text: ''
+    data_view_filter_text: '',
+    //
+    nilms_loaded: false
   });
 
 

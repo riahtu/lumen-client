@@ -237,6 +237,12 @@ export function reducer(
             nav_data: recordify(action.payload.nav_data, DataFactory),
             plot_data: recordify(action.payload.plot_data, DataFactory)
           }));
+    
+    //set flag to indicate nilms are loaded
+    case ExplorerActions.SET_NILMS_LOADED:
+      return state
+        .set('nilms_loaded',true);
+
     default:
       return state;
   }

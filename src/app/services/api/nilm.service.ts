@@ -36,15 +36,16 @@ export class NilmService {
     this.nilmsLoaded = false;
   }
 
-  public loadNilms(): void {
+  public loadNilms(): Observable<any> {
     if (this.nilmsLoaded) {
-      return;
+      return Observable.empty<any>();
     }
 
-    this.tokenService
+    let o = this.tokenService
       .get('nilms.json', {})
       .map(resp => resp.json())
-      .subscribe(
+
+    o.subscribe(
       json => {
         this.nilmsLoaded = true;
         this.ngRedux.dispatch({
@@ -61,7 +62,8 @@ export class NilmService {
         });
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
+    );
+    return o; //for other subscribers
   }
 
   public createNilm(
@@ -119,7 +121,7 @@ export class NilmService {
       .put(`nilms/${nilm.id}/refresh.json`, {})
       .map(resp => resp.json())
 
-      o.subscribe(
+    o.subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
         this.ngRedux.dispatch({
@@ -130,8 +132,8 @@ export class NilmService {
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
-      return o;
+    );
+    return o;
   }
 
   public removeNilm(nilm: INilm) {
@@ -139,7 +141,7 @@ export class NilmService {
       .delete(`nilms/${nilm.id}.json`)
       .map(resp => resp.json());
 
-      o.subscribe(
+    o.subscribe(
       json => {
         this.ngRedux.dispatch({
           type: NilmActions.REMOVE_NILM,
@@ -148,8 +150,8 @@ export class NilmService {
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
-      return o;
+    );
+    return o;
   }
 
   // -------- private helper functions --------

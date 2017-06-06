@@ -23,7 +23,7 @@ export const reducer = combineReducers<IState>({
   permissions: reducers.permissionReducer,
   users: reducers.userReducer,
   userGroups: reducers.userGroupReducer,
-  dataViews: reducers.dataViewReducer
+  dataViews: reducers.dataViewReducer,
 });
 export {DataFactory, DataViewFactory } from './initial-state';
 export * from './actions';

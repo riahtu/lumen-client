@@ -21,6 +21,7 @@ import {
 } from '../../../store/data';
 import * as _ from 'lodash';
 import { ExplorerService } from '../../explorer.service';
+import { ExplorerSelectors } from '../../explorer.selectors';
 import { IExplorer } from '../../store';
 
 @Component({
@@ -32,7 +33,6 @@ import { IExplorer } from '../../store';
 export class FileTreeComponent implements OnInit {
   @select(['data']) data$: Observable<IState>;
   @select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
-
   public dbNodes$: Observable<DbTreeNode[]>;
 
   public treeOptions = {};
@@ -42,7 +42,8 @@ export class FileTreeComponent implements OnInit {
     private nilmService: NilmService,
     private dbService: DbService,
     private dbFolderService: DbFolderService,
-    private explorerService: ExplorerService
+    private explorerService: ExplorerService,
+    public explorerSelectors: ExplorerSelectors
   ) {
     this.treeOptions = {
       getChildren: this.getChildren.bind(this)
@@ -50,7 +51,10 @@ export class FileTreeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.nilmService.loadNilms();
+    this.nilmService.loadNilms()
+      .subscribe(() => {},
+      () => {},
+      () => this.explorerService.setNilmsLoaded());
 
     this.dbNodes$ = this.data$
       .combineLatest(this.uiState$)

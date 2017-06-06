@@ -1,4 +1,12 @@
 
+div.nilms-loading{
+  color: gray;
+  position: absolute;
+  top: 30%;
+  transform: translateX(-50%);
+  left: 50%;
+}
+
 .folder{
   color: tan;
 }

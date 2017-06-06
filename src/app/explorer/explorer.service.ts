@@ -282,6 +282,13 @@ export class ExplorerService {
     })
   }
 
+  //set flag to indicate nilms have been loaded
+  //
+  public setNilmsLoaded(){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_NILMS_LOADED
+    })
+  }
 
 
   ///------ helpers ------------

@@ -24,6 +24,8 @@ export interface IExplorer {
   live_update?: boolean;
   data_view_filter_text?: string;
   show_public_data_views?: boolean;
+  //flags to indicate whether data has been retrieved
+  nilms_loaded?: boolean;
 }
 
 export interface IExplorerRecord extends

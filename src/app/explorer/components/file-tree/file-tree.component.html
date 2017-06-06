@@ -1,4 +1,10 @@
-<tree-root [nodes]="dbNodes$ | async" 
+<div *ngIf="!(explorerSelectors.nilmsLoaded$ | async)" class="nilms-loading">
+<i class="fa fa-spinner fa-spin fa-5x"></i>
+<p class="lead">loading...</p>
+</div>
+<tree-root 
+  *ngIf="explorerSelectors.nilmsLoaded$ | async"
+  [nodes]="dbNodes$ | async" 
   [options]="treeOptions">
 
   <template #treeNodeTemplate let-node="node">
@@ -30,11 +36,14 @@
           *ngIf="node.data.plotted==true"
           (click)="explorerService.hideElement(node.data.element)">
           <i class="fa fa-line-chart"></i> hide </span>
+        <!-- element cannot be plotted -->
         <a class="tree-button noplot"
           *ngIf="node.data.plottable==false"
           [tooltip]="node.data.tooltip">
           <i class="fa fa-line-chart"></i> add </a>
+        <!-- element name -->
         {{ node.data.name }}
+        <!-- plotting color -->
         <span class="element-color" *ngIf="node.data.plotted==true" [style.background]="node.data.color">
         </span>
       </span>
