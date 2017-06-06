@@ -27,8 +27,8 @@ export class DataService {
   public loadData(
     startTime: number, //values in milliseconds!
     endTime: number,
-    elements: IDbElement[],
-    includeView = false): Observable<any> {
+    elements: IDbElement[]
+  ): Observable<any> {
 
     let params = {
       elements: JSON.stringify(elements.map(e => e.id)),
@@ -36,19 +36,18 @@ export class DataService {
       end_time: endTime != null ? (endTime * 1e3).toString() : null,
     }
 
-    if (includeView) {
-      let viewState = this.dataViewService.getDataViewState(false).redux;
-      //parameter: current view redux json
-      params['redux_json'] = JSON.stringify(viewState);
-    }
     //convert params to URL search format
     let urlParams = new URLSearchParams;
     Object.keys(params).map(key => {urlParams.set(key,params[key])})
-    //use POST when sending a new redux view state with the request   
-    return this.tokenService.get('db_elements/data.json', {search: urlParams})
+    let o = this.tokenService.get('db_elements/data.json', {search: urlParams})
       .map(resp => resp.json())
       .map(json => normalize(json.data, schema.datas))
       .map(normalized => normalized.entities.data)
+    o.subscribe(_ => {}, 
+    error => {
+      this.messageService.setErrors(parseAPIErrors(error))
+    });
+    return o;
   }
 
   public downloadStream(

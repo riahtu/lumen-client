@@ -41,6 +41,11 @@
           *ngIf="explorerSelectors.addingPlotData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
+        <!-- warning if some plot data has errors -->
+        <span class="data-errors" [@fadeInOut]
+          *ngIf="!(explorerSelectors.isPlotDataValid$ | async)&&!(explorerSelectors.addingPlotData$ | async)">
+          <i class="fa fa-exclamation-circle"></i> some data could not be retrieved
+        </span>
         <!-- warning if interval data is displayed -->
         <span class="interval-warning" [@fadeInOut]
           *ngIf="explorerSelectors.isIntervalDataDisplayed$ | async">

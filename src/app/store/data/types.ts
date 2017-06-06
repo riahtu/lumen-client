@@ -174,6 +174,7 @@ export interface IData {
   end_time: number;
   data: any[];
   type: string;
+  valid: boolean;
 }
 
 export interface IDataRecord extends

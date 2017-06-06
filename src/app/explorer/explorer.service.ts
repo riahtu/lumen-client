@@ -16,6 +16,7 @@ import {
   DbElementService,
 } from '../services';
 
+
 @Injectable()
 export class ExplorerService {
 
@@ -47,7 +48,7 @@ export class ExplorerService {
   }
 
   // remove all elements from the plot
-  public hideAllElements(){
+  public hideAllElements() {
     let elementRecords = this.ngRedux.getState().data.dbElements;
     Object.keys(elementRecords)
       .map(id => {
@@ -84,12 +85,12 @@ export class ExplorerService {
         type: ExplorerActions.SHOW_PLOT
       })
   }
-  public showDateSelector(){
+  public showDateSelector() {
     this.ngRedux.dispatch({
       type: ExplorerActions.SHOW_DATE_SELECTOR
     })
   }
-  public hideDateSelector(){
+  public hideDateSelector() {
     this.ngRedux.dispatch({
       type: ExplorerActions.HIDE_DATE_SELECTOR
     })
@@ -118,6 +119,21 @@ export class ExplorerService {
           type: ExplorerActions.ADD_PLOT_DATA,
           payload: data
         })
+      },
+      error => {
+        this.ngRedux.dispatch({
+          type: ExplorerActions.ADD_PLOT_DATA,
+          payload: neededElements.reduce((acc,e) => {
+            acc[e.id] = {
+              'element_id': e.id,
+              'type': 'error',
+              'data': [],
+              'start_time': timeRange.min==null?0:timeRange.min,
+              'end_time': timeRange.max==null?0:timeRange.max
+            }
+            return acc
+          },{}) //nothing came back so create dummy error entries
+        })
       })
   }
   public loadNavData(
@@ -130,12 +146,27 @@ export class ExplorerService {
       return; //nothing to do
     this.ngRedux.dispatch({
       type: ExplorerActions.ADDING_NAV_DATA
-    });  
+    });
     this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
       .subscribe(data => {
         this.ngRedux.dispatch({
           type: ExplorerActions.ADD_NAV_DATA,
           payload: data
+        })
+      },
+      error => {
+        this.ngRedux.dispatch({
+          type: ExplorerActions.ADD_NAV_DATA,
+          payload: neededElements.reduce((acc,e) => {
+            acc[e.id] = {
+              'element_id': e.id,
+              'type': 'error',
+              'data': [],
+              'start_time': timeRange.min==null?0:timeRange.min,
+              'end_time': timeRange.max==null?0:timeRange.max
+            }
+            return acc
+          },{}) //nothing came back so create dummy error entries
         })
       })
   }
@@ -160,15 +191,15 @@ export class ExplorerService {
       type: ExplorerActions.DISABLE_DATA_CURSOR
     });
   }
-  public toggleLiveUpdate(){
+  public toggleLiveUpdate() {
     this.ngRedux.dispatch({
       type: ExplorerActions.TOGGLE_LIVE_UPDATE
     });
   }
-  public disableLiveUpdate(){
+  public disableLiveUpdate() {
     this.ngRedux.dispatch({
-        type: ExplorerActions.DISABLE_LIVE_UPDATE
-      });
+      type: ExplorerActions.DISABLE_LIVE_UPDATE
+    });
   }
   public setPlotTimeRange(range: IRange) {
     this.ngRedux.dispatch({
@@ -176,7 +207,7 @@ export class ExplorerService {
       payload: range
     })
   }
-  public setNavTimeRange(range: IRange){
+  public setNavTimeRange(range: IRange) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_NAV_TIME_RANGE,
       payload: range
@@ -194,7 +225,7 @@ export class ExplorerService {
     })
   }
 
-  public resetTimeRanges(){
+  public resetTimeRanges() {
     //remove main plot time range
     this.ngRedux.dispatch({
       type: ExplorerActions.RESET_TIME_RANGES
@@ -213,8 +244,8 @@ export class ExplorerService {
       .map(stream => {
         return {
           //stream timestamps are in us, we want ms
-          min: Math.round(stream.start_time/1e3),
-          max: Math.round(stream.end_time/1e3)
+          min: Math.round(stream.start_time / 1e3),
+          max: Math.round(stream.end_time / 1e3)
         }
       })
       .reduce((bounds, range) => {
@@ -225,19 +256,19 @@ export class ExplorerService {
         min: Number.POSITIVE_INFINITY,
         max: Number.NEGATIVE_INFINITY
       });
-      this.ngRedux.dispatch({
-        type: ExplorerActions.SET_PLOT_TIME_RANGE,
-        payload: bounds
-      })
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_PLOT_TIME_RANGE,
+      payload: bounds
+    })
   }
 
-  public setDataViewFilterText(text: string){
+  public setDataViewFilterText(text: string) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_DATA_VIEW_FILTER_TEXT,
       payload: text
     })
   }
-  public setShowPublicDataViews(show: boolean){
+  public setShowPublicDataViews(show: boolean) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS,
       payload: show
@@ -245,13 +276,13 @@ export class ExplorerService {
   }
 
 
-  
+
   ///------ helpers ------------
 
   //PUBLIC: 
   buildDataset(
-    elements: IDbElement[], 
-    data: IDataSet, 
+    elements: IDbElement[],
+    data: IDataSet,
     axis: number) {
     return elements.map(element => {
       if (data[element.id] === undefined || data[element.id] == null)
@@ -260,13 +291,16 @@ export class ExplorerService {
       let label = element.name;
       if (element.display_name != "")
         label = element.display_name;
-
+      //if the data is corrupt add a warning icon
+      if (data[element.id].valid == false) {
+        label += " <i class='fa fa-exclamation-circle'></i>"
+      }
       let baseConfig = {
         label: label,
         yaxis: axis,
         //bars: { show: false, barWidth: 2 },
         //points: { show: false },
-        lines: {show: false},
+        lines: { show: false },
         color: element.color,
         data: data[element.id].data,
         default_min: element.default_min,
@@ -284,7 +318,7 @@ export class ExplorerService {
             case 'discrete':
               return Object.assign({}, baseConfig,
                 {
-                  points: { show: true, radius: 2},
+                  points: { show: true, radius: 2 },
                 });
             case 'event':
               return Object.assign({}, baseConfig,
@@ -298,13 +332,13 @@ export class ExplorerService {
               return Object.assign({}, baseConfig,
                 {
                   fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
-                  lines: {show: true}
+                  lines: { show: true }
                 });
             case 'discrete':
               return Object.assign({}, baseConfig,
                 {
                   fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
-                  points: {show: true, radius: 1}
+                  points: { show: true, radius: 1 }
                 });
           }
         case 'interval':

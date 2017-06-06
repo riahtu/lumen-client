@@ -5,6 +5,7 @@ import {
   IDbElement,
   IDataSet,
   IData,
+  IDataRecord,
   DataFactory
 } from '../../store/data'
 import {
@@ -107,7 +108,13 @@ export function reducer(
     //add data retrieved from server to the plot dataset
     //
     case ExplorerActions.ADD_PLOT_DATA:
-      data = recordify(action.payload, DataFactory);
+      data =
+        handleMissingData(
+          state.plot_data,
+          <IDataSet>action.payload,
+          state.plot_time.min,
+          state.plot_time.max)
+
       //set plot time range if bounds are null
       return state
         .set('plot_data', Object.assign({}, state.plot_data, data))
@@ -122,7 +129,12 @@ export function reducer(
     //add data retrieved from server to the nav dataset
     //
     case ExplorerActions.ADD_NAV_DATA:
-      data = recordify(action.payload, DataFactory);
+      data =
+        handleMissingData(
+          state.nav_data,
+          <IDataSet>action.payload,
+          state.nav_time.min,
+          state.nav_time.max)
       //set plot time range if bounds are null
       return state
         .set('nav_data', Object.assign({}, state.nav_data, data))
@@ -133,8 +145,8 @@ export function reducer(
     //
     case ExplorerActions.RESET_TIME_RANGES:
       return state
-        .set('plot_time', {min: null, max: null})
-        .set('nav_time', {min: null, max: null})
+        .set('plot_time', { min: null, max: null })
+        .set('nav_time', { min: null, max: null })
 
     //set plot time range
     //
@@ -236,15 +248,57 @@ export function reducer(
     if (data == {})
       return range;
     if (range.min == null && data != {}) {
-      autoRange.min = Object.keys(data)
+      let possibleMinTimes = Object.keys(data)
         .map(id => data[id].start_time)
-        .sort((a, b) => a - b)[0]
+        .filter(time => time!=null)
+        .sort((a, b) => a - b)
+      if(possibleMinTimes.length>0) 
+        autoRange.min = possibleMinTimes[0]
     }
     if (range.max == null && data != {}) {
-      autoRange.max = Object.keys(data)
+      let possibleMaxTimes = Object.keys(data)
         .map(id => data[id].end_time)
-        .sort((a, b) => b - a)[0]
+        .filter(time => time!=null)
+        .sort((a, b) => b - a)
+      if(possibleMaxTimes.length>0) 
+        autoRange.max = possibleMaxTimes[0]
     }
     return autoRange;
+  }
+
+  //fill in missing data by updating existing data with the requested time bounds
+  //or creating new entries with no data using the requested time bounds
+  function handleMissingData(
+    currentData: IDataSet,
+    newData: IDataSet,
+    startTime: number,
+    endTime: number): IDataSet {
+    return Object.assign({}, currentData, Object.keys(newData)
+      .reduce((acc: IDataSet, id: string): IDataSet => {
+        //OK: pass valid data through
+        if (newData[id].type != 'error') {
+          acc[id] = DataFactory(newData[id]);
+          return acc;
+        }
+        //ERROR: data could not be retrieved! 
+        //if valid data exsists, update it with the requested time bounds
+        if (currentData[id] !== undefined) {
+          acc[id] = (<IDataRecord>currentData[id])
+          .set('start_time',startTime)
+          .set('end_time',endTime)
+          .set('valid',false)
+          return acc;
+        } else {
+          //there is no valid data for this element, create an empty record
+          acc[id] = DataFactory({
+            start_time: startTime,
+            end_time: endTime,
+            data: [],
+            type: 'raw',
+            valid: false
+          })
+          return acc;
+        }
+      }, <IDataSet>{}));
   }
 }

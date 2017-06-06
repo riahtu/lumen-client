@@ -66,6 +66,8 @@ export class ExplorerSelectors {
   //is any of the data displayed as intervals?
   public isIntervalDataDisplayed$: Observable<boolean>
 
+  //are the errors (invalid elements) in the data?
+  public isPlotDataValid$: Observable<boolean>;
 
   constructor(
     private ngRedux: NgRedux<IAppState>
@@ -97,7 +99,7 @@ export class ExplorerSelectors {
 
     this.isPlotEmpty$ = this.leftElementIDs$
       .combineLatest(this.rightElementIDs$)
-      .map(([left,right])=> left.length==0 && right.length==0)
+      .map(([left, right]) => left.length == 0 && right.length == 0)
 
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
@@ -134,10 +136,21 @@ export class ExplorerSelectors {
       .map(([elements, data]) => elements
         .map(e => data[e.id])
         .filter(data => data !== undefined))
-      .map(datas => {
-        return datas.reduce((isInterval, data) => {
+      .map(dataset => {
+        return dataset.reduce((isInterval, data) => {
           return isInterval || data.type == 'interval'
         }, false)
+      })
+
+    this.isPlotDataValid$  = this.plottedElements$
+      .combineLatest(this.plotData$)
+      .map(([elements, data]) => elements
+        .map(e => data[e.id])
+        .filter(data => data !== undefined))
+      .map(dataset => {
+        return Object
+          .keys(dataset)
+          .reduce((isValid, id) => isValid && dataset[id].valid, true)
       })
   }
 }

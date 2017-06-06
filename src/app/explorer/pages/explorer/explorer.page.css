@@ -81,12 +81,29 @@ span.data-loading{
     display: block;
     position: absolute;
     margin-top: 10px;
-    margin-left: calc(50% - 10px);
+    left: 50%;
+    transform: translateX(-50%);
     background: #ddd;
     border-radius: 4px;
     padding-left: 4px;
     padding-right: 4px;
     color: #777;
+}
+span.data-errors{
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    margin-top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    border-radius: 4px;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-style: solid;
+    border-width: 1px;
 }
 span.interval-warning{
     z-index: 9999;

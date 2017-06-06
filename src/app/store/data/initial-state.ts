@@ -93,7 +93,8 @@ export const DataFactory =
   start_time: null,
   end_time: null,
   data: [],
-  type: 'unknown'
+  type: 'unknown',
+  valid: true
 });
 
 // ---- User ----
