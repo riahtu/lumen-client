@@ -45,6 +45,8 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'live_update']) liveUpdate$: Observable<boolean>;
   @select(['ui', 'explorer', 'data_view_filter_text']) dataViewFilterText$: Observable<string>;
   @select(['ui', 'explorer', 'show_public_data_views']) showPublicDataViews$: Observable<boolean>;
+  @select(['ui', 'explorer', 'left_units']) leftElementUnits$: Observable<string>;
+  @select(['ui', 'explorer', 'right_units']) rightElementUnits$: Observable<string>;
 
 
   public leftElements$: Observable<IDbElement[]>

@@ -3,7 +3,9 @@
   <p class="lead empty-plot"> no elements plotted</p>
 </div>
 
-<p *ngIf="leftElements.length>0" class="axis-title lead">Left Axis:</p>
+<div *ngIf="leftElements.length>0" class="axis-title lead">Left Axis:
+  <span class="pull-right units">{{explorerSelectors.leftElementUnits$ | async}}</span>
+</div>
 <app-plotted-elements
   class="plotted-element odd"
   *ngFor="let element of leftElements; let isOdd=odd"
@@ -13,7 +15,9 @@
 </app-plotted-elements>
 
 
-<p *ngIf="rightElements.length>0" class="axis-title lead">Right Axis:</p>
+<div *ngIf="rightElements.length>0" class="axis-title lead">Right Axis:
+  <span class="pull-right units">{{explorerSelectors.rightElementUnits$ | async}}</span>
+</div>
 <app-plotted-elements 
   class="plotted-element"
   *ngFor="let element of rightElements"

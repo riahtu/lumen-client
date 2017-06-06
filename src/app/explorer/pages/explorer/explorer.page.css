@@ -76,6 +76,18 @@ div.overlay > div.message {
   font-weight: 300;
   font-size: 2em;
 }
+span.nav-date-range{
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    top: calc(25% - 50px);
+    border-width: 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translateX(-50%);
+    left: 50%;
+}
 span.data-loading{
     z-index: 9999;
     display: block;

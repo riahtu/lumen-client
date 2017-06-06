@@ -121,6 +121,7 @@ export class ExplorerService {
         })
       },
       error => {
+        //nothing came back so create dummy error entries
         this.ngRedux.dispatch({
           type: ExplorerActions.ADD_PLOT_DATA,
           payload: neededElements.reduce((acc,e) => {
@@ -132,7 +133,7 @@ export class ExplorerService {
               'end_time': timeRange.max==null?0:timeRange.max
             }
             return acc
-          },{}) //nothing came back so create dummy error entries
+          },{}) 
         })
       })
   }
@@ -233,6 +234,7 @@ export class ExplorerService {
   }
 
   public autoScaleTime() {
+    /*
     //figure out the bounds of the displayed elements
     //set the xaxis range to the min/max time limits
     let state = this.ngRedux.getState();
@@ -259,6 +261,11 @@ export class ExplorerService {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,
       payload: bounds
+    })
+    */
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_PLOT_TIME_RANGE,
+      payload: {min: null, max: null}
     })
   }
 
@@ -350,7 +357,9 @@ export class ExplorerService {
               },
               points: {
                 show: true
-              }
+              },
+              default_min: null,
+              default_max: null
             })
         default:
           console.log("unknown data type: ", data[element.id].type)

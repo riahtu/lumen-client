@@ -273,7 +273,7 @@ export function reducer(
     newData: IDataSet,
     startTime: number,
     endTime: number): IDataSet {
-    return Object.assign({}, currentData, Object.keys(newData)
+    return Object.keys(newData)
       .reduce((acc: IDataSet, id: string): IDataSet => {
         //OK: pass valid data through
         if (newData[id].type != 'error') {
@@ -299,6 +299,6 @@ export function reducer(
           })
           return acc;
         }
-      }, <IDataSet>{}));
+      }, <IDataSet>{});
   }
 }

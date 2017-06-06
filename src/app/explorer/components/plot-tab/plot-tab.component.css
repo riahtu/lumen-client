@@ -4,6 +4,10 @@
   padding-bottom: 2px;
   margin-bottom: 0px;
 }
+span.units{
+    font-weight: 400;
+    margin-right: 10px;
+}
 
 .empty-plot{
     text-align: center;

@@ -27,15 +27,20 @@
   <div class="col-md-9 col-sm-8">
     <div class="parent">
       
-      <!-- navigation plot (25% of view) -->
       <div class="plot-container" 
         [ngStyle]="{ 'z-index': plotZValue$ | async }">
+        <!-- ==== NAV PLOT ==== -->
         <!-- nav loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="explorerSelectors.addingNavData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
+        <span class="nav-date-range">
+          {{explorerSelectors.navTimeRange$ | async | duration}}
+        </span>
+        <!-- navigation plot (25% of view) -->
         <app-nav-plot class="nav-plot"></app-nav-plot>
+        <!-- ===== MAIN PLOT ==== -->
         <!-- plot loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="explorerSelectors.addingPlotData$ | async">
