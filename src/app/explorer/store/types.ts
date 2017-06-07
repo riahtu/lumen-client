@@ -26,6 +26,7 @@ export interface IExplorer {
   show_public_data_views?: boolean;
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
+  data_views_loaded?: boolean;
 }
 
 export interface IExplorerRecord extends

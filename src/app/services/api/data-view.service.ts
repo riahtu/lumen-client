@@ -45,13 +45,15 @@ export class DataViewService {
   //
   public loadDataViews() {
     if (this.dataViewsLoaded) {
-      return;
+      return Observable.empty<any>();
     }
-    this.tokenService
+
+    let o = this.tokenService
       .get('data_views.json', {})
       .map(resp => resp.json())
       .map(json => normalize(json, schema.dataViews).entities)
-      .subscribe(
+      
+      o.subscribe(
       entities => {
         this.dataViewsLoaded = true;
         this.ngRedux.dispatch({
@@ -61,6 +63,7 @@ export class DataViewService {
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
+      return o; //for other subscribers
   }
 
   //remove a data view owned by the current user

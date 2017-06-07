@@ -21,22 +21,33 @@
   </div>
 </div>
 <!-- data view thumbnails -->
-<div class="data-view-list" *ngIf="hasViews$ | async; else empty">
-  <!-- list of thumbnails that match search criteria -->
-  <div *ngFor="let view of explorerSelectors.filteredDataViews$ | async">
-    <app-plot-thumbnail class="thumbnail" 
-      [view]="view" (click)="loadDataView(view)">
-    </app-plot-thumbnail>
+<div *ngIf="explorerSelectors.dataViewsLoaded$ | async; else loading">
+  <div class="data-view-list" *ngIf="hasViews$ | async; else empty">
+    <!-- list of thumbnails that match search criteria -->
+    <div *ngFor="let view of explorerSelectors.filteredDataViews$ | async">
+      <app-plot-thumbnail class="thumbnail" 
+        [view]="view" (click)="loadDataView(view)">
+      </app-plot-thumbnail>
+    </div>
+    <!-- show message if no views match the search criteria -->
+    <div class="alert alert-info" *ngIf="(hasFilteredViews$ | async)==false">
+      No views match your search criteria
+    </div>
   </div>
-  <!-- show message if no views match the search criteria -->
-  <div class="alert alert-info" *ngIf="(hasFilteredViews$ | async)==false">
-    No views match your search criteria
-  </div>
-</div>
 
-<!-- show a message if there aren't saved data views -->
-<template #empty class="alert alert-info">
-  <div class="alert alert-info">
-    No saved views
+  <!-- show a message if there aren't saved data views -->
+  <template #empty class="alert alert-info">
+    <div class="alert alert-info">
+      No saved views
+    </div>
+  </template>
+</div>
+<!--show spinner if we are waiting on dataviews -->
+<template #loading>
+  <div class="loading-container">
+    <div class="loading">
+      <i class="fa fa-spinner fa-spin fa-4x"></i>
+      <p class="lead"> Loading... </p>
+    </div>
   </div>
 </template>

@@ -289,6 +289,13 @@ export class ExplorerService {
       type: ExplorerActions.SET_NILMS_LOADED
     })
   }
+  //set flag to indicate data views have been loaded
+  //
+  public setDataViewsLoaded(){
+    this.ngRedux.dispatch({
+      type: ExplorerActions.SET_DATA_VIEWS_LOADED
+    })
+  }
 
 
   ///------ helpers ------------

@@ -237,13 +237,21 @@ export function reducer(
             nav_data: recordify(action.payload.nav_data, DataFactory),
             plot_data: recordify(action.payload.plot_data, DataFactory),
             //override data retrieval view states
-            nilms_loaded: state.nilms_loaded
+            nilms_loaded: state.nilms_loaded,
+            data_views_loaded: state.data_views_loaded
           }));
     
     //set flag to indicate nilms are loaded
+    //
     case ExplorerActions.SET_NILMS_LOADED:
       return state
         .set('nilms_loaded',true);
+
+    //set flag to indicate data views are loaded
+    //
+    case ExplorerActions.SET_DATA_VIEWS_LOADED:
+      return state
+        .set('data_views_loaded',true);
 
     default:
       return state;

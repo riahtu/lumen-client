@@ -25,3 +25,17 @@ div.search-bar{
     border-width: 1px;
     border-color: grey;
 }
+
+div.loading-container{
+  position: relative;
+  height: 130px;
+}
+
+div.loading{
+  color: gray;
+  position: absolute;
+  top: 40px;
+  transform: translateX(-50%);
+  left: 50%;
+  text-align: center;
+}

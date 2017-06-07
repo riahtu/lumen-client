@@ -73,10 +73,10 @@ export class ExplorerPageComponent implements OnInit {
 
   createDataView(view: IDataView) {
     this.dataViewService.create(
-      view.name, 
-      view.description, 
-      view.private, 
-      view.home, 
+      view.name,
+      view.description,
+      view.private,
+      view.home,
       view.image);
     this.saveDataViewModal.hide();
   }
@@ -87,7 +87,13 @@ export class ExplorerPageComponent implements OnInit {
     });
   }
   showLoadDataView() {
-    this.dataViewService.loadDataViews();
+    this.dataViewService
+      .loadDataViews()
+      .subscribe(
+      () => { },
+      () => { },
+      () => this.explorerService.setDataViewsLoaded())
+
     this.loadDataViewModal.show();
   }
   ngOnInit() {
