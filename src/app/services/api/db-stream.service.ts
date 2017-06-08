@@ -6,7 +6,6 @@ import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 import{ MessageService } from '../message.service';
-import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
 import {
   IDbStream,
@@ -36,7 +35,7 @@ export class DbStreamService {
           this._dispatch(json.data);
           this.messageService.setMessages(json.messages);
         },
-        error => this.messageService.setErrors(parseAPIErrors(error)));  }
+        error => this.messageService.setErrorsFromAPICall(error));  }
 
   // -------- private helper functions --------
   private _dispatch(json) {

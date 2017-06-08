@@ -7,7 +7,6 @@ import { normalize } from 'normalizr';
 
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
-import { parseAPIErrors } from './helpers';
 import {
   IAppState
 } from '../../app.store';
@@ -34,7 +33,7 @@ export class DbService {
       .map(resp => resp.json())
       .subscribe(
       json => this._dispatch(json),
-      error => this.messageService.setErrors(parseAPIErrors(error)));
+      error => this.messageService.setErrorsFromAPICall(error));
   }
 
   public updateDb(db: IDb): void {
@@ -46,7 +45,7 @@ export class DbService {
         this._dispatch(json.data);
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error)));
+      error => this.messageService.setErrorsFromAPICall(error));
   }
 
   // -------- private helper functions --------

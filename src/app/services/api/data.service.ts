@@ -7,7 +7,6 @@ import { normalize } from 'normalizr';
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { DataViewService } from './data-view.service';
-import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
 import {
   IDbElement,
@@ -45,7 +44,7 @@ export class DataService {
       .map(normalized => normalized.entities.data)
     o.subscribe(_ => {}, 
     error => {
-      this.messageService.setErrors(parseAPIErrors(error))
+      this.messageService.setErrorsFromAPICall(error)
     });
     return o;
   }

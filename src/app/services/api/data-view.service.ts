@@ -7,7 +7,6 @@ import { normalize } from 'normalizr';
 import * as _ from 'lodash';
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
-import { parseAPIErrors } from './helpers';
 import { IAppState } from '../../app.store';
 import { DbElementService } from './db-element.service';
 import { ColorService } from './color.service';
@@ -61,7 +60,7 @@ export class DataViewService {
           payload: entities['data_views']
         })
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
       return o; //for other subscribers
   }
@@ -80,7 +79,7 @@ export class DataViewService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       )
   }
 
@@ -113,7 +112,7 @@ export class DataViewService {
           payload: entities['data_views']
         })
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
@@ -139,7 +138,7 @@ export class DataViewService {
           payload: entities['data_views']
         })
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }

@@ -40,10 +40,10 @@ export class SessionService {
   }
 
 
-  public logout(email: string, password: string): void {
+  public logout(): void {
     this.tokenService.signOut()
       .subscribe(
-      res => this.messageService.setNotice("logged out"),
+      res => this.messageService.setNotice("logging out..."),
       error => this.messageService.setError("error logging out"));
   }
 
@@ -94,7 +94,6 @@ export class SessionService {
   // ----------private helper functions----------
 
   private setUser(json) {
-    console.log('here!!')
     this.ngRedux.dispatch({
       type: UserActions.SET_CURRENT,
       payload: json

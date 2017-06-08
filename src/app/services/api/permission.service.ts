@@ -23,9 +23,7 @@ import { UserGroupService } from './user-group.service';
 import {
   MessageService
 } from '../message.service';
-import {
-  parseAPIErrors
-} from './helpers';
+
 
 @Injectable()
 export class PermissionService {
@@ -91,7 +89,7 @@ export class PermissionService {
           payload: normalize(json, schema.permissions).entities.permissions
         });
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -109,7 +107,7 @@ export class PermissionService {
         });
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -135,7 +133,7 @@ export class PermissionService {
         });
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
@@ -163,7 +161,7 @@ export class PermissionService {
         });
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
@@ -190,7 +188,7 @@ export class PermissionService {
         });
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
       return o;
   }

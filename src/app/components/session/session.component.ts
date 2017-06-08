@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Angular2TokenService } from 'angular2-token';
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { IUserRecord } from '../../store/data';
 import {IAppState} from '../../app.store';
+import {SessionService} from '../../services';
 
 @Component({
   selector: 'app-session',
@@ -15,7 +15,7 @@ export class SessionComponent implements OnInit {
   @select(['data', 'users', 'current']) userId$: Observable<number>;
 
   constructor(
-    private tokenService: Angular2TokenService
+    private sessionService: SessionService
   ) { }
 
   ngOnInit() {
@@ -23,6 +23,6 @@ export class SessionComponent implements OnInit {
 
 
   public logout(){
-    this.tokenService.signOut();
+    this.sessionService.logout();
   }
 }

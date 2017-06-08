@@ -14,9 +14,7 @@ import {
 import {
   MessageService
 } from '../message.service';
-import {
-  parseAPIErrors
-} from './helpers';
+
 
 @Injectable()
 export class UserService {
@@ -51,7 +49,7 @@ export class UserService {
         });
         this.usersLoaded = true;
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -66,7 +64,7 @@ export class UserService {
         this.router.navigate(['/']);
         this.messageService.setNotice('Welcome to Wattsworth, please log in');
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 }

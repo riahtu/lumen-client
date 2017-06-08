@@ -16,9 +16,6 @@ import {
 import {
   MessageService
 } from '../message.service';
-import {
-  parseAPIErrors
-} from './helpers';
 
 @Injectable()
 export class UserGroupService {
@@ -70,7 +67,7 @@ export class UserGroupService {
           payload: normalize(json.other, schema.userGroups)
         });
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
     return o;
   }
@@ -88,7 +85,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -105,7 +102,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -125,7 +122,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -151,7 +148,7 @@ export class UserGroupService {
         }
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
@@ -173,7 +170,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     )
     return o; //for other subscribers
   }
@@ -196,7 +193,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     )
     return o; //for other subscribers
   }
@@ -213,7 +210,7 @@ export class UserGroupService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       )
   }
 

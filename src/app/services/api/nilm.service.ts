@@ -18,9 +18,7 @@ import {
 import {
   MessageService
 } from '../message.service';
-import {
-  parseAPIErrors
-} from './helpers';
+
 
 @Injectable()
 export class NilmService {
@@ -61,7 +59,7 @@ export class NilmService {
           payload: normalize(json.viewer, schema.nilms)
         });
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o; //for other subscribers
   }
@@ -87,7 +85,7 @@ export class NilmService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     )
     return o; //for other subscribers
   }
@@ -112,7 +110,7 @@ export class NilmService {
         })
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
       );
   }
 
@@ -131,7 +129,7 @@ export class NilmService {
         this.processDb(data.entities);
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
@@ -149,7 +147,7 @@ export class NilmService {
         });
         this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrors(parseAPIErrors(error))
+      error => this.messageService.setErrorsFromAPICall(error)
     );
     return o;
   }
