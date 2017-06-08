@@ -46,7 +46,6 @@ export class DataViewsComponent implements OnInit {
       _ => console.log('error updating view'))
   }
   ngOnInit() {
-    this.dataViewService.loadDataViews();
      this.myDataViewArray$ = this.dataViews$
       .map(dataViews => {
         return Object.keys(dataViews)

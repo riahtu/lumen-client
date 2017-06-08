@@ -34,16 +34,17 @@ export class UserGroupService {
     this.groupsLoaded = false;
   }
 
-  public loadUserGroups(): void {
+  public loadUserGroups(): Observable<any> {
     //only execute request once
     if (this.groupsLoaded) {
-      return;
+      return Observable.empty<any>();
     }
 
-    this.tokenService
+    let o = this.tokenService
       .get('user_groups.json', {})
-      .map(resp => resp.json())
-      .subscribe(
+      .map(resp => resp.json());
+      
+    o.subscribe(
       json => {
         this.groupsLoaded = true;
         //load owned groups (contains user data)
@@ -71,6 +72,7 @@ export class UserGroupService {
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
       );
+    return o;
   }
 
   public removeMember(group: IUserGroup, member: IUser) {
@@ -109,9 +111,10 @@ export class UserGroupService {
 
   public inviteMember(group: IUserGroup, email: string) {
     this.tokenService
-      .put(`user_groups/${group.id}/invite_member.json`, { 
-        email: email, 
-        redirect_url: `${window.location.origin}/accept` })
+      .put(`user_groups/${group.id}/invite_member.json`, {
+        email: email,
+        redirect_url: `${window.location.origin}/accept`
+      })
       .map(resp => resp.json())
       .subscribe(
       json => {
@@ -128,13 +131,13 @@ export class UserGroupService {
 
 
 
-  public createMember(group: IUserGroup, userParams: any){
+  public createMember(group: IUserGroup, userParams: any) {
     let o = this.tokenService
       .put(`user_groups/${group.id}/create_member.json`, userParams)
       .map(resp => resp.json());
 
-      o.subscribe(
-        json => {
+    o.subscribe(
+      json => {
         let data = normalize(json.data, schema.userGroup)
         this.ngRedux.dispatch({
           type: UserGroupActions.RECEIVE_GROUPS,
@@ -149,8 +152,8 @@ export class UserGroupService {
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrors(parseAPIErrors(error))
-      );
-      return o;
+    );
+    return o;
   }
 
   public createGroup(name: string, description: string): Observable<any> {

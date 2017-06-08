@@ -11,7 +11,17 @@
     border-color: #265986;
     background: #5d81a0;
 }
-
+div.loading-container{
+  position: relative;
+  text-align: center;
+}
+div.loading{
+  color: gray;
+  position: absolute;
+  top: 30%;
+  transform: translateX(-50%);
+  left: 50%;
+}
 @media (min-width: 768px) {
   .full-column{
     max-height: calc(100vh - 180px);

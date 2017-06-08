@@ -16,6 +16,8 @@ import {
   INilm
 } from '../../../store/data';
 
+import {AccountService} from '../../account.service';
+
 @Component({
   selector: 'app-account-nilms',
   templateUrl: './nilms.component.html',
@@ -27,11 +29,12 @@ export class NilmsComponent implements OnInit {
   public nilms$: Observable<INilmWithRole[]>
 
   constructor(
-    private nilmService: NilmService
+    private nilmService: NilmService,
+    private accountService: AccountService
   ) { }
 
   ngOnInit() {
-    this.nilmService.loadNilms();
+    
 
     //combine all nilms into a flat array of INilmWithRole objects
     this.nilms$ = this.nilmStore$.map(store =>{

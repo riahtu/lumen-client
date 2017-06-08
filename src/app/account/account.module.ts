@@ -12,6 +12,8 @@ import {
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms';
+import {AccountSelectors} from './account.selectors';
+import {AccountService} from './account.service';
 
 import {SharedModule} from '../shared/shared.module';
 import { PAGES } from './pages';
@@ -33,6 +35,10 @@ import { COMPONENTS } from './components';
   declarations: [
     COMPONENTS,
     PAGES,
+  ],
+  providers: [
+    AccountService,
+    AccountSelectors
   ],
   exports: [
     PAGES

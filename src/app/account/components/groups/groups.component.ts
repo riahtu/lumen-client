@@ -1,8 +1,8 @@
-import { 
-  Component, 
-  Input, 
-  ViewChild, 
-  OnInit 
+import {
+  Component,
+  Input,
+  ViewChild,
+  OnInit
 } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -10,9 +10,10 @@ import {
   UserGroupService
 } from '../../../services';
 
-import{
+import {
   IUserGroupRecord,
 } from '../../../store/data';
+import {AccountSelectors} from '../../account.selectors';
 
 @Component({
   selector: 'app-account-groups',
@@ -21,20 +22,18 @@ import{
 })
 export class GroupsComponent implements OnInit {
   @ViewChild('newGroupModal') public newGroupModal: ModalDirective;
-  @Input() ownedGroups: IUserGroupRecord[];
-  @Input() memberGroups: IUserGroupRecord[];
-  
 
   constructor(
-    private userGroupService: UserGroupService
+    private userGroupService: UserGroupService,
+    public accountSelectors: AccountSelectors
   ) {
-    
-   }
+
+  }
 
   ngOnInit() {
   }
 
-  createGroup(values: any){
+  createGroup(values: any) {
     this.userGroupService
       .createGroup(values.name, values.description)
       .subscribe(result => this.newGroupModal.hide());
