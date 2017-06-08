@@ -94,6 +94,7 @@ export class SessionService {
   // ----------private helper functions----------
 
   private setUser(json) {
+    console.log('here!!')
     this.ngRedux.dispatch({
       type: UserActions.SET_CURRENT,
       payload: json

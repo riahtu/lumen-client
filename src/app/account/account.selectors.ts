@@ -20,6 +20,7 @@ export class AccountSelectors {
   @select(['ui', 'account', 'user_groups_loaded']) userGroupsLoaded$: Observable<boolean>;
 
   @select(['data', 'userGroups']) userGroups$: Observable<IUserGroupStore>
+  @select(['data','users']) users$: Observable<IUserStoreRecord>
 
   public ownedGroups$: Observable<IUserGroupRecord[]>;
   public memberGroups$: Observable<IUserGroupRecord[]>;

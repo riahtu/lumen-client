@@ -35,6 +35,7 @@ export class UserService {
 
   public loadUsers(): void {
     //only execute request once
+    console.log('here')
     if (this.usersLoaded)
       return;
 
