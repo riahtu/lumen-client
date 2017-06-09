@@ -104,7 +104,8 @@ export class ExplorerService {
   }
   public loadPlotData(
     elements: IDbElement[],
-    timeRange: IRange
+    timeRange: IRange,
+    resolution: number
   ) {
     let existingData = this.ngRedux.getState().ui.explorer.plot_data;
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
@@ -113,7 +114,10 @@ export class ExplorerService {
     this.ngRedux.dispatch({
       type: ExplorerActions.ADDING_PLOT_DATA
     });
-    this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
+    //add padding to plot data if ranges are not null
+    this.dataService.loadData(
+      timeRange.min, timeRange.max, 
+      neededElements, resolution, 0.25)
       .subscribe(data => {
         this.ngRedux.dispatch({
           type: ExplorerActions.ADD_PLOT_DATA,
@@ -139,7 +143,8 @@ export class ExplorerService {
   }
   public loadNavData(
     elements: IDbElement[],
-    timeRange: IRange
+    timeRange: IRange,
+    resolution
   ) {
     let existingData = this.ngRedux.getState().ui.explorer.nav_data;
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
@@ -148,7 +153,8 @@ export class ExplorerService {
     this.ngRedux.dispatch({
       type: ExplorerActions.ADDING_NAV_DATA
     });
-    this.dataService.loadData(timeRange.min, timeRange.max, neededElements)
+    this.dataService.loadData(
+      timeRange.min, timeRange.max, neededElements, resolution)
       .subscribe(data => {
         this.ngRedux.dispatch({
           type: ExplorerActions.ADD_NAV_DATA,

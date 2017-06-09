@@ -65,7 +65,8 @@ export const DbStreamFactory =
     delete_locked: true,
     hidden: false,
     elements: null,
-    size_on_disk: 0
+    size_on_disk: 0,
+    nilm_id: null
   });
 
 // ---- DbElement ----

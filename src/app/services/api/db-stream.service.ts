@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
-import{ MessageService } from '../message.service';
+import { MessageService } from '../message.service';
 import { IAppState } from '../../app.store';
 import {
   IDbStream,
@@ -25,21 +25,37 @@ export class DbStreamService {
   ) { }
 
 
-  public updateStream(stream): void {
+  public loadStreams(streamIDs: number[]): void {
+    let urlParams = new URLSearchParams;
+    urlParams.set('streams',JSON.stringify(streamIDs))
+
     this.tokenService
-      .put(`db_streams/${stream.id}.json`, 
-        JSON.stringify(stream))
+      .get(`db_streams.json`, {search: urlParams})
       .map(resp => resp.json())
       .subscribe(
-        json => {
-          this._dispatch(json.data);
-          this.messageService.setMessages(json.messages);
-        },
-        error => this.messageService.setErrorsFromAPICall(error));  }
+      json => {
+        let entities = normalize(json, schema.dbStreams).entities;
+        this._dispatch(entities);
+        error => this.messageService.setErrorsFromAPICall(error)
+      });
+  }
+
+  public updateStream(stream): void {
+    this.tokenService
+      .put(`db_streams/${stream.id}.json`,
+      JSON.stringify(stream))
+      .map(resp => resp.json())
+      .subscribe(
+      json => {
+        let entities = normalize(json, schema.dbStream).entities;
+        this._dispatch(entities);
+        this.messageService.setMessages(json.messages);
+      },
+      error => this.messageService.setErrorsFromAPICall(error));
+  }
 
   // -------- private helper functions --------
-  private _dispatch(json) {
-    let entities = normalize(json, schema.dbStream).entities;
+  private _dispatch(entities) {
     this._receive(DbStreamActions, entities['dbStreams']);
     this._receive(DbElementActions, entities['dbElements']);
   }

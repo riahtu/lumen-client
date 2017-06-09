@@ -1,10 +1,10 @@
-import { 
-  Component, 
-  Input, 
-  ViewChild, 
-  OnInit, 
+import {
+  Component,
+  Input,
+  ViewChild,
+  OnInit,
   OnChanges,
-  ElementRef, 
+  ElementRef,
   AfterViewInit,
   SimpleChanges
 } from '@angular/core';
@@ -15,6 +15,8 @@ import { IExplorer } from '../../store';
 import { DbElementService } from '../../../services';
 import { IDbElement } from '../../../store/data';
 import { ExplorerService } from '../../explorer.service';
+import { ExplorerSelectors } from '../../explorer.selectors';
+
 declare var $: any;
 
 @Component({
@@ -22,7 +24,7 @@ declare var $: any;
   templateUrl: './plotted-elements.component.html',
   styleUrls: ['./plotted-elements.component.css']
 })
-export class PlottedElementsComponent 
+export class PlottedElementsComponent
   implements OnInit, OnChanges, AfterViewInit {
   @Input() element: IDbElement;
   @Input() axis: string;
@@ -31,6 +33,8 @@ export class PlottedElementsComponent
   @ViewChild('colorPicker') colorPicker: ElementRef
 
   public displayName: string;
+  public toolTipText$: Observable<string>;
+  public elementInfo$: Observable<IElementInfo>;
 
   //--state for customization modal--
   public newColor: string;
@@ -44,16 +48,52 @@ export class PlottedElementsComponent
 
   constructor(
     private explorerService: ExplorerService,
-    private dbElementService: DbElementService
+    private dbElementService: DbElementService,
+    private explorerSelectors: ExplorerSelectors
   ) {
     this.newColor = "";
   }
 
   ngOnInit() {
     this.newColor = this.element.color;
+
+    //create tooltip text as [stream_name] @ [installation_name]
+    //
+    this.toolTipText$ = this.explorerSelectors.streams$
+      .combineLatest(this.explorerSelectors.nilms$)
+      .map(([streams, nilms]) => {
+        if (streams[this.element.db_stream_id] === undefined)
+          return '<unknown>'
+        let myStream = streams[this.element.db_stream_id]
+        if (nilms[myStream.nilm_id] === undefined)
+          return null;
+        let myNilm = nilms[myStream.nilm_id]
+        return `${myStream.name} @ ${myNilm.name}`
+      })
+
+    //element info 
+    //
+    this.elementInfo$ = this.explorerSelectors.streams$
+      .combineLatest(this.explorerSelectors.nilms$)
+      .map(([streams, nilms]) => {
+        if (streams[this.element.db_stream_id] === undefined)
+          return {};
+        let myStream = streams[this.element.db_stream_id]
+        if (nilms[myStream.nilm_id] === undefined)
+          return {};
+        let myNilm = nilms[myStream.nilm_id]
+        return {
+          stream_name: myStream.name,
+          installation_name: myNilm.name,
+          path: myStream.path,
+          installation_url: myNilm.url
+        }
+      })
+      .filter(info => info!=null)
+
   }
-  ngOnChanges(changes: SimpleChanges){
-    if(this.element.display_name!=""){
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.element.display_name != "") {
       this.displayName = this.element.display_name;
     } else {
       this.displayName = this.element.name;
@@ -79,7 +119,7 @@ export class PlottedElementsComponent
     //reset modal properties
     this.newColor = this.element.color;
     $(this.colorPicker.nativeElement).minicolors('value',
-      {color: this.element.color, opacity: 1.0})
+      { color: this.element.color, opacity: 1.0 })
     this.newName = this.element.display_name;
     this.newAxis = this.axis;
     this.axisMessage = "";
@@ -105,4 +145,11 @@ export class PlottedElementsComponent
     //changes succesfully processed, close the modal
     this.elementModal.hide();
   }
+}
+
+export interface IElementInfo {
+  stream_name: string,
+  installation_name: string,
+  path: string,
+  installation_url: string
 }

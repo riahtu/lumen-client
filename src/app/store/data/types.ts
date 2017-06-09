@@ -80,6 +80,7 @@ export interface IDbStream {
   delete_locked: boolean;
   hidden: boolean;
   elements: Array<number>;
+  nilm_id: number;
 }
 export interface IDbStreamRecord extends
   TypedRecord<IDbStreamRecord>, IDbStream { };

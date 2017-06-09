@@ -15,6 +15,7 @@ export const dbElement = new schema.Entity('dbElements',
 
 export const dbStream = new schema.Entity('dbStreams',
   { elements: [dbElement] });
+export const dbStreams = new schema.Array(dbStream)
 
 export const dbFolder = new schema.Entity('dbFolders',
   {}, {

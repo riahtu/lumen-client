@@ -4,9 +4,11 @@
   <span class="fa-stack fa-lg">
         <i class="fa fa-square fa-stack-1x fa-lg"></i>
        <i class="fa fa-square fa-stack-1x" [style.color]="element.color"></i>
-      </span> {{displayName}}
+      </span> <span [tooltip]="tipTemplate" placement='right'> {{displayName}} </span>
   <i class="fa fa-close pull-right icon-button"
     (click)="hideElement()"></i>
+
+  <template #tipTemplate><i class="fa fa-database"></i> {{toolTipText$ | async}}</template>
 </div>
 
 
@@ -25,38 +27,57 @@
         </button>
       </div>
       <div class="modal-body">
-     
-          <!-- customize plot display name -->
-          <div class="form-group">
-              <label class="form-label" for="element-name">Display Name</label>
-              <input type="text" id="element-name" class="form-control" placeholder="{{element.name}}"
-                [(ngModel)]="newName">
+        <div class="row">
+          <div class="col-md-4">
+            <!-- customize plot display name -->
+            <div class="form-group">
+                <label class="form-label" for="element-name">Display Name</label>
+                <input type="text" id="element-name" class="form-control" placeholder="{{element.name}}"
+                  [(ngModel)]="newName">
+            </div>
+            <!-- select plot color -->
+            <div class="form-group">
+                <label class="form-label" for="element-color">Color</label>
+                <input type="text" id="element-color" class="form-control" #colorPicker value="{{element.color}}">
+            </div>
+            <!-- set plot axis -->
+            <div class="form-group" [ngClass]="{'has-error': axisMessage!=''}">
+              <label class="control-label" for="element-axis">Axis</label>
+              <ng-select [(ngModel)]="newAxis"
+                  class="selection-options"
+                  [options]="axisOptions"
+                  placeholder = "select one">
+              </ng-select>
+              <span class="help-block">{{axisMessage}}</span>
+            </div>      
+            
           </div>
-          <!-- select plot color -->
-          <div class="form-group">
-              <label class="form-label" for="element-color">Color</label>
-              <input type="text" id="element-color" class="form-control" #colorPicker value="{{element.color}}">
+          <!-- element information -->
+          <div class="col-md-8">
+            <div class="well">
+              <h4 class="text-muted">Element Information</h4>
+              
+              <table class="table table-condensed">
+                <tbody *ngFor="let info of [elementInfo$ | async]">
+                <tr><td><b>Stream:</b></td><td>{{info.stream_name}}</td></tr>
+                <tr><td><b>Source:</b></td><td>{{info.installation_name}}</td></tr>
+                <tr><td><b>Path:</b></td><td> {{info.path}} </td></tr>
+                <tr><td><b>URL:</b></td><td> {{info.installation_url}}</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <!-- set plot axis -->
-          <div class="form-group" [ngClass]="{'has-error': axisMessage!=''}">
-            <label class="control-label" for="element-axis">Axis</label>
-            <ng-select [(ngModel)]="newAxis"
-                class="selection-options"
-                [options]="axisOptions"
-                placeholder = "select one">
-            </ng-select>
-            <span class="help-block">{{axisMessage}}</span>
-          </div>      
-          <!-- Save and Cancel buttons -->
-          <div class="clearfix">
-            <!-- save -->
-            <button class="btn btn-primary pull-left" 
-                    (click)="onSave()">Save</button>
-            <!-- cancel -->
-            <button class="btn btn-default pull-right"
-                    (click)="elementModal.hide()">
-                    Cancel</button>
-          </div>
+        </div>
+        <!-- Save and Cancel buttons -->
+        <div class="clearfix">
+          <!-- save -->
+          <button class="btn btn-primary pull-left" 
+                  (click)="onSave()">Save</button>
+          <!-- cancel -->
+          <button class="btn btn-default pull-right"
+                  (click)="elementModal.hide()">
+                  Cancel</button>
+        </div>
       </div>
     </div>
   </div>

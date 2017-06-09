@@ -121,7 +121,7 @@ span.interval-warning{
     z-index: 9999;
     display: block;
     position: absolute;
-    bottom: 12%;
+    bottom: calc(5% + 30px);
     border-radius: 4px;
     border-style: solid;
     border-width: 1px;
@@ -133,13 +133,20 @@ span.interval-warning{
     transform: translateX(-50%);
     left: 50%;
 }
-span.live-update{
+div.live-update{
   background: #dff0d8;
   color: #3c763d;
   padding-left: 5px;
   padding-right: 5px;
   border-width: 1px;
   margin-left: 15px;
+  border-style: solid;
+  border-radius: 4px;
+  padding: 5px; 
+  position: absolute;
+  bottom: 5%;
+  right: 10px;
+  transform: translateY(100%);
 }
 img.plot-image{
   width: 100%;
@@ -149,6 +156,15 @@ img.data-view-preview{
     width: 400px;
     height: 200px;
     margin-left: calc(50% - 200px);
+}
+
+i.fa-close {
+  color: gray;
+  margin-left: 10px;
+}
+i.fa-close:hover{
+  cursor: pointer;
+  color: black;
 }
 
 @media(max-width: 767px){

@@ -26,19 +26,24 @@ export class DataService {
   public loadData(
     startTime: number, //values in milliseconds!
     endTime: number,
-    elements: IDbElement[]
+    elements: IDbElement[],
+    resolution: number,
+    padding: number = 0
   ): Observable<any> {
 
     let params = {
       elements: JSON.stringify(elements.map(e => e.id)),
       start_time: startTime != null ? (startTime * 1e3).toString() : null,
       end_time: endTime != null ? (endTime * 1e3).toString() : null,
+      resolution: resolution,
+      padding: padding
     }
 
     //convert params to URL search format
     let urlParams = new URLSearchParams;
     Object.keys(params).map(key => {urlParams.set(key,params[key])})
     let o = this.tokenService.get('db_elements/data.json', {search: urlParams})
+      .timeout(7000) //wait a maximum of 7 seconds
       .map(resp => resp.json())
       .map(json => normalize(json.data, schema.datas))
       .map(normalized => normalized.entities.data)

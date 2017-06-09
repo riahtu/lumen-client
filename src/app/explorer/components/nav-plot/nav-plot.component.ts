@@ -60,7 +60,8 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         this.explorerSelectors.addingNavData$)
       .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
       .subscribe(([timeRange, elements, busy]) => {
-        this.explorerService.loadNavData(elements, timeRange);
+        let resolution = $(this.plotArea.nativeElement).width()
+        this.explorerService.loadNavData(elements, timeRange, resolution);
         if (this.plot != null)
           this.plot.clearSelection(true);
       }));

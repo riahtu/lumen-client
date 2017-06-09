@@ -5,18 +5,22 @@ import {
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
+import * as _ from 'lodash';
 
-
-import { DataViewService } from '../../../services';
-import { DataViewFactory } from '../../../store/data';
 import { IExplorer } from '../../store';
 import { ExplorerSelectors } from '../../explorer.selectors';
 import { ExplorerService } from '../../explorer.service';
+import { 
+  DataViewService, 
+  DbStreamService 
+} from '../../../services';
 import {
   IDbElement,
   IDataView,
-  IDbElementRecords
+  IDbElementRecords,
+  DataViewFactory
 } from '../../../store/data';
+
 import { MainPlotComponent } from '../../components/main-plot/main-plot.component';
 
 @Component({
@@ -54,6 +58,7 @@ export class ExplorerPageComponent implements OnInit {
     public explorerSelectors: ExplorerSelectors,
     public explorerService: ExplorerService,
     public dataViewService: DataViewService,
+    public dbStreamService: DbStreamService
   ) {
     this.plotZValue$ = this.explorerSelectors.showDateSelector$
       .map(show => {
@@ -62,6 +67,19 @@ export class ExplorerPageComponent implements OnInit {
         else
           return 0;
       })
+    //retrieve any streams that are missing for displayed elements
+    this.explorerSelectors.plottedElements$
+      .combineLatest(this.explorerSelectors.streams$)
+      .map(([elements, streams]) => {
+        return _.uniq(elements
+          .map(e => e.db_stream_id)
+          .filter(id => streams[id] === undefined))
+      })
+      .filter(missingIDs => missingIDs.length>0)
+      .distinctUntilChanged((x,y) => _.isEqual(x,y))
+      .subscribe(
+      ids => this.dbStreamService.loadStreams(ids)
+      )
   }
 
   showSaveDataView() {

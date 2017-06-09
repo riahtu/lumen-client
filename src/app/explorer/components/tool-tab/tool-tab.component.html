@@ -1,16 +1,24 @@
 
 <div class="tt-container">
+
+  <button class="btn btn-default btn-block"
+    (click)="loadDataView.emit('load')">Open View</button>
   
   <button class="btn btn-default btn-block"
+    (click)="saveDataView.emit('save')">Save View</button>
+
+  <hr/>
+
+  <button class="btn btn-primary btn-block"
     (click)="explorerService.setNavRangeToPlotRange()">
     Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i> </button>
 
   <div class="btn-group btn-block" role="group">
-    <button class="btn btn-default autoscale"
+    <button class="btn btn-primary autoscale"
       (click)="explorerService.autoScaleAxis('left')">Left</button>
-    <button class="btn btn-default autoscale"
+    <button class="btn btn-primary autoscale"
       (click)="explorerService.autoScaleTime()">Time</button>
-    <button class="btn btn-default autoscale"
+    <button class="btn btn-primary autoscale"
       (click)="explorerService.autoScaleAxis('right')">Right</button>
   </div>
   
@@ -33,25 +41,20 @@
     </label>
   </div>
   <hr/>
-  <div class="btn-group btn-block" dropdown>
-    <button id="menu-button" class="btn btn-block btn-default dropdown-toggle" dropdownToggle>
-      <i class="fa fa-download"></i> Download <span class="caret"></span>
-    </button>
-    <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="menu-button">
-      <!-- add a new member -->
-      <li class="menu" class="dropdown-item" role="menuitem" (click)="savePlotImage.emit('save')"><a>Image</a></li>
-      <!-- edit the group -->
-      <li class="menu" class="dropdown-item" role="menuitem" (click)="downloadDataModal.show()"><a>Data</a></li>
-    </ul>
-  </div>
 
+  
+
+  
   <button class="btn btn-default btn-block"
-    (click)="saveDataView.emit('save')">Save View</button>
+    (click)="downloadDataModal.show()">
+      <i class="fa fa-download"></i> Plot Data
+  </button>
   <button class="btn btn-default btn-block"
-    (click)="loadDataView.emit('load')">Open View</button>
+    (click)="savePlotImage.emit('save')">
+      <i class="fa fa-download"></i> Plot Image</button>
 </div>
 
-<!-- ====== load data view modal ====== -->
+<!-- ====== download data modal ====== -->
 <div class="modal fade" bsModal #downloadDataModal="bs-modal" 
      [config]="{backdrop: 'static'}"
      tabindex="-1" role="dialog"
@@ -60,7 +63,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Download Data from {{explorerSelectors.plotTimeRange$ | async | duration}}</h4>
+        <h4 class="modal-title pull-left">Data from {{explorerSelectors.plotTimeRange$ | async | duration}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="downloadDataModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>

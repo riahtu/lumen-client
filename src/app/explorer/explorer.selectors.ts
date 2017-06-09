@@ -10,6 +10,7 @@ import {
   IRange
 } from './store';
 import {
+  INilmRecords,
   IDbElement,
   IDbElementRecords,
   IDbStream,
@@ -24,6 +25,7 @@ export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
+  @select(['data', 'nilms','entities']) nilms$: Observable<INilmRecords>;
 
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 

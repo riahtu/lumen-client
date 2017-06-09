@@ -1,6 +1,15 @@
-.stream-name{
-  font-size: 21px;
+dl.dl-horizontal{
+  margin:0px;
 }
+dt.dt-left{
+  width: inherit;
+}
+dd.dd-small{
+  margin-left: 50px;
+  font-family: monospace;
+  color: gray;
+}
+
 a {
   display: none;
 }

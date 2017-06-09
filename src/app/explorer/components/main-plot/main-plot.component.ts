@@ -65,7 +65,9 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         this.explorerSelectors.addingPlotData$)
       .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
       .subscribe(([timeRange, elements, busy]) => {
-        this.explorerService.loadPlotData(elements, timeRange)
+        //retrieve current width of plot to determine the appropriate resolution
+        let resolution = $(this.plotArea.nativeElement).width();
+        this.explorerService.loadPlotData(elements, timeRange, resolution*2)
       }));
     /* set the plotTimeRange based on changes to xbounds */
     this.subs.push(this.xBounds

@@ -57,18 +57,20 @@
           <i class="fa fa-exclamation-triangle"></i> some data cannot be displayed at this resolution
         </span>
         
-        <!-- main plot (75% of view) -->
+        <!-- main plot (70% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
-        <!-- date selector -->
+
+        <!-- date bar (5% of view) -->
         <button class="date-bar" (click)="explorerService.showDateSelector()" 
           [disabled]="explorerSelectors.liveUpdate$ | async">
           {{explorerSelectors.plotTimeRange$ | async | duration}}
-          <!-- live update notification -->
-          <span class="live-update" [@fadeInOut]
+        </button>
+        <!-- live update notification -->
+          <div class="live-update pull-right" [@fadeInOut]
             *ngIf="explorerSelectors.liveUpdate$ | async">
             <i class="fa fa-heartbeat"></i> Live Update
-          </span>
-        </button>
+            <i class="fa fa-close" (click)="explorerService.disableLiveUpdate()"></i>
+          </div>
       </div>
       <!--modal overlay to pick date -->
       <app-date-picker class="plot overlay" 

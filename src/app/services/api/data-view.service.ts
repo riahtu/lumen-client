@@ -33,7 +33,7 @@ export class DataViewService {
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
     private elementService: DbElementService,
-    private colorService: ColorService
+    private colorService: ColorService,
   ) {
     this.dataViewsLoaded = false;
   }
@@ -189,7 +189,7 @@ export class DataViewService {
       .map(element => {
         this.colorService.checkoutColor(element.color);
       })
-    //finally restore the plot
+    //restore the plot
     this.ngRedux.dispatch({
       type: explorer.ExplorerActions.RESTORE_VIEW,
       payload: view.redux.ui_explorer
