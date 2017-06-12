@@ -61,6 +61,11 @@ export function reducer(
         .set('right_elements', state.right_elements
           .filter(id => id != element.id))
 
+    //hide all elements (clear left_elements and right_elements)
+    //
+    case ExplorerActions.HIDE_ALL_ELEMENTS:
+      return state.remove('left_elements').remove('right_elements')
+      
     //change a plotted element's axis
     //
     case ExplorerActions.SET_ELEMENT_AXIS:

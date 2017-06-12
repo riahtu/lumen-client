@@ -10,8 +10,7 @@ import { ExplorerSelectors } from '../../explorer.selectors';
 })
 export class PlotTabComponent implements OnInit {
 
-  @Input() leftElements: IDbElement[];
-  @Input() rightElements: IDbElement[];
+  
 
   constructor(
     public explorerSelectors: ExplorerSelectors

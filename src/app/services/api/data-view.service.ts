@@ -9,6 +9,7 @@ import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { IAppState } from '../../app.store';
 import { DbElementService } from './db-element.service';
+import { DbStreamService } from './db-stream.service'
 import { ColorService } from './color.service';
 import { DataViewFactory } from '../../store/data';
 import {
@@ -33,6 +34,7 @@ export class DataViewService {
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
     private elementService: DbElementService,
+    private streamService: DbStreamService,
     private colorService: ColorService,
   ) {
     this.dataViewsLoaded = false;
@@ -51,8 +53,8 @@ export class DataViewService {
       .get('data_views.json', {})
       .map(resp => resp.json())
       .map(json => normalize(json, schema.dataViews).entities)
-      
-      o.subscribe(
+
+    o.subscribe(
       entities => {
         this.dataViewsLoaded = true;
         this.ngRedux.dispatch({
@@ -61,8 +63,8 @@ export class DataViewService {
         })
       },
       error => this.messageService.setErrorsFromAPICall(error)
-      );
-      return o; //for other subscribers
+    );
+    return o; //for other subscribers
   }
 
   //remove a data view owned by the current user
@@ -146,13 +148,13 @@ export class DataViewService {
   //load and restore a user's home view
   //
   public restoreHomeDataView() {
-    if(this.homeViewRestored)
+    if (this.homeViewRestored)
       return;
     this.homeViewRestored = true;
     this.tokenService
       .get('data_views/home.json', {})
       .map(resp => resp.json())
-      .map(json => normalize(json,schema.dataView))
+      .map(json => normalize(json, schema.dataView))
       .map(json => json.entities.data_views[json.result])
       .map(json => DataViewFactory(json))
       .subscribe(
@@ -167,25 +169,27 @@ export class DataViewService {
   //
   public restoreDataView(view: IDataView) {
     //first clear the plot
-    let elementRecords = this.ngRedux.getState().data.dbElements;
-    Object.keys(elementRecords)
-      .map(id => elementRecords[id])
-      .map(element => {
-        this.elementService.removeColor(element);
-        this.ngRedux.dispatch({
-          type: explorer.ExplorerActions.HIDE_ELEMENT,
-          payload: element
-        })
-      })
-    //now load the data elements
+    this.elementService.resetElements();
     this.ngRedux.dispatch({
-      type: DbElementActions.RESTORE,
-      payload: view.redux.data_dbElements
+      type: explorer.ExplorerActions.HIDE_ALL_ELEMENTS,
     })
+    //now set the plot & nav time ranges so we don't reload the data 
+    //(they are null after HIDE_ALL_ELEMENTS)
+    this.ngRedux.dispatch({
+      type: explorer.ExplorerActions.SET_PLOT_TIME_RANGE,
+      payload: view.redux.ui_explorer.plot_time
+    })
+     this.ngRedux.dispatch({
+      type: explorer.ExplorerActions.SET_NAV_TIME_RANGE,
+      payload: view.redux.ui_explorer.nav_time
+    })
+    //now load the data elements
+    this.elementService.restoreElements(view.redux.data_dbElements)
+
     //register colors with color service
-    elementRecords = this.ngRedux.getState().data.dbElements;
-    Object.keys(elementRecords)
-      .map(id => elementRecords[id])
+    let newElements = view.redux.data_dbElements;
+    Object.keys(newElements)
+      .map(id => newElements[id])
       .map(element => {
         this.colorService.checkoutColor(element.color);
       })
@@ -194,6 +198,17 @@ export class DataViewService {
       type: explorer.ExplorerActions.RESTORE_VIEW,
       payload: view.redux.ui_explorer
     });
+    //load the associated streams if they haven't been retrieved already
+    this.ngRedux.getState().data.dbStreams
+    let viewStreamIds = _.uniq(_.keys(newElements)
+      .map(id => newElements[id])
+      .map(elem => elem.db_stream_id))
+    let existingStreamIds = _.keys(this.ngRedux.getState().data.dbStreams)
+      .map(id => parseInt(id))
+    let newStreamIds = _.difference(viewStreamIds,existingStreamIds)
+    if(newStreamIds.length>0)
+      this.streamService.loadStreams(newStreamIds)
+
   }
 
   // GetDataViewState:

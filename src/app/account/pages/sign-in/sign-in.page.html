@@ -1,5 +1,17 @@
-<div class="col-md-9 col-sm-6 bkgd">
-    <img src="assets/images/robot-wave.jpg">
+<div class="col-md-9 col-sm-6">
+  
+  
+  <div class="carousel-box">
+    <carousel [noPause]="false" [interval]="false">
+      <slide *ngFor="let slide of slides">
+        <img src="{{slide.url}}" alt="First slide">
+        <div class="carousel-caption">
+          <h3>{{slide.name}}</h3>
+          <p>{{slide.description}}</p>
+        </div>
+      </slide>
+    </carousel>
+  </div>
 </div>
 <div class="col-md-3 col-sm-6 col-xs-12">
 

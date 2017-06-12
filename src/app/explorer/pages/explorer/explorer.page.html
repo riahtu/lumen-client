@@ -9,11 +9,8 @@
         </div>
       </tab>
       <!-- Plot Tab -->
-      <tab heading='Plot' [disabled]="explorerSelectors.isPlotEmpty$ | async">
-        <app-plot-tab 
-          [leftElements]="explorerSelectors.leftElements$ | async" 
-          [rightElements]="explorerSelectors.rightElements$ | async">
-        </app-plot-tab>
+      <tab heading='Plot'  [disabled]="explorerSelectors.isPlotEmpty$ | async">
+        <app-plot-tab> </app-plot-tab>
       </tab>
       <!-- Tool Tab -->
       <tab heading='Tools' [disabled]="explorerSelectors.isPlotEmpty$ | async">
@@ -149,7 +146,7 @@
           image: imageData,
           name: '',
           description: '',
-          private: false,
+          private: true,
           home: false,
           live: this.explorerSelectors.liveUpdate$ | async}" 
             (save)="createDataView($event)" 
@@ -181,3 +178,4 @@
     </div>
   </div>
 </div>
+

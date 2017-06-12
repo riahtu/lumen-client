@@ -7,6 +7,7 @@ import{ ColorService } from './color.service';
 import {
   DbElementActions,
   IDbElement,
+  IDbElementRecords
 } from '../../store/data';
 
 @Injectable()
@@ -63,6 +64,18 @@ export class DbElementService {
         id: element.id,
         color: null
       }
+    })
+  }
+
+  public restoreElements(elements: IDbElementRecords){
+    this.ngRedux.dispatch({
+      type: DbElementActions.RESTORE,
+      payload: elements
+    })
+  }
+  public resetElements(){
+    this.ngRedux.dispatch({
+      type: DbElementActions.RESET
     })
   }
 }

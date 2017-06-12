@@ -124,15 +124,27 @@ export function dbElementReducer(
       return Object.assign({}, state,
         { [elemId]: state[elemId].set('display_name', name) })
 
-    //Restore elements from a data view
+    //Restore elements from a data view (do not merge with display attrs)
     //
     case actions.DbElementActions.RESTORE:
       let data = <records.IDbElementRecords>action.payload;
       let elements = Object.keys(data).reduce((acc, id) => {
+        //make sure element JSON corresponds to valid element attributes
+        //ensures data views do not corrupt the store if attributes change
+        //in future versions
         acc[id] = factories.DbElementFactory(data[id]);
         return acc;
       }, {});
       return Object.assign({}, state, elements);
+
+    //Remove all display attribute settings from elements
+    // (color and display name)
+    //
+    case actions.DbElementActions.RESET:
+      return Object.keys(state).reduce((acc, id) => {
+        acc[id] = state[id].remove('color').remove('display_name')
+        return acc
+      }, {})
 
     default:
       return state;

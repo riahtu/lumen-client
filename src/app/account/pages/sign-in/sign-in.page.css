@@ -1,5 +1,40 @@
-@media (max-width: 768px) { 
-  div.bkgd {
+div.carousel-box{
+  max-width: 900px;
+  width: 73vw;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 30px;
+  border-width: 5px;
+  border-color: #337ab7;
+  border-style: double;
+  border-radius: 5px;
+}
+div.carousel-caption{
+  background: hsla(210, 50%, 70%, 0.91);
+  border-radius: 15px;
+  right: 30% !important;
+  left: 30% !important;
+  padding-top: 0px !important;
+}
+@media (max-width: 992px) { 
+  div.carousel-box {
     display: none;
   }
  }
+
+/* override styling on carousel, the left/right nav shading is distracting*/
+:host>>>.carousel-control.left {
+  background-image: none;
+}
+:host>>>.carousel-control.right {
+  background-image: none;
+}
+:host>>>.carousel-control.left:hover {
+  opacity: 0.5;
+  background-image: linear-gradient(to right,rgba(0,0,0,.5) 0,rgba(0,0,0,.0001) 100%)
+}
+:host>>>.carousel-control.right:hover {
+  opacity: 0.5;
+  background-image: linear-gradient(to right,rgba(0,0,0,.0001) 0,rgba(0,0,0,.5) 100%)
+}

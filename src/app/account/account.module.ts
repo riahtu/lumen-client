@@ -5,7 +5,8 @@ import {
   BsDropdownModule,
   ModalModule,
   TooltipModule,
-  PopoverModule
+  PopoverModule,
+  CarouselModule
 } from 'ngx-bootstrap'
 import { SelectModule } from 'ng-select';
 import {
@@ -30,7 +31,8 @@ import { COMPONENTS } from './components';
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    TooltipModule.forRoot()
+    TooltipModule.forRoot(),
+    CarouselModule.forRoot()
   ],
   declarations: [
     COMPONENTS,

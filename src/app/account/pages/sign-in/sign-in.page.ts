@@ -19,11 +19,45 @@ import {
 export class SignInPageComponent implements OnInit {
 
   public form: FormGroup;
+  public slides: ISlide[];
 
   constructor(
     private fb: FormBuilder,
     private sessionService: SessionService
-  ) { }
+  ) {
+    this.slides = [
+      {
+        url: "assets/images/slides/Slide1.png",
+        name: 'Visualize',
+        description: 'view data from decades to microseconds'
+      },
+      {
+        url: "assets/images/slides/Slide3.png",
+        name: 'Analyze',
+        description: 'export data directly to MATLAB or Excel'
+      },
+      {
+        url: "assets/images/slides/Slide2.png",
+        name: 'Collaborate',
+        description: 'share data on your terms'
+      },
+      {
+        url: "assets/images/slides/Slide4.png",
+        name: 'Visualize',
+        description: 'stream realtime sensor data'
+      },
+      {
+        url: "assets/images/slides/Slide5.png",
+        name: 'Analyze',
+        description: 'quickly identify trends and anamolies'
+      },
+      {
+        url: "assets/images/slides/Slide6.png",
+        name: 'Organize',
+        description: 'navigate terabytes of data in your browser'
+      },
+    ]
+  }
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -31,12 +65,18 @@ export class SignInPageComponent implements OnInit {
       password: ['']
     });
   }
-  onSubmit(formValues: any){
+  onSubmit(formValues: any) {
     this.sessionService.login(formValues.email, formValues.password)
   }
 
 
-  resetPassword(email: string){
+  resetPassword(email: string) {
     this.sessionService.resetPassword(email);
   }
+}
+
+export interface ISlide{
+  name: string,
+  url: string,
+  description: string
 }

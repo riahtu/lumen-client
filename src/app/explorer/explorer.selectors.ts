@@ -25,7 +25,7 @@ export class ExplorerSelectors {
 
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
-  @select(['data', 'nilms','entities']) nilms$: Observable<INilmRecords>;
+  @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
 
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 
@@ -78,21 +78,32 @@ export class ExplorerSelectors {
   constructor(
     private ngRedux: NgRedux<IAppState>
   ) {
+
     this.leftElements$ = this.elements$
       .combineLatest(this.leftElementIDs$)
       .map(([elements, ids]) => {
         return ids.map(id => elements[id]);
-      });
+      })
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .share()
+      .startWith([])
+
 
     this.rightElements$ = this.elements$
       .combineLatest(this.rightElementIDs$)
       .map(([elements, ids]) => {
         return ids.map(id => elements[id])
-      });
+      })
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .share()
+      .startWith([])
+
 
     this.plottedElements$ = this.leftElements$
       .combineLatest(this.rightElements$)
       .map(([left, right]) => left.concat(right))
+      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      .share()
 
     this.plottedStreams$ = this.plottedElements$
       .combineLatest(this.streams$)
@@ -101,15 +112,19 @@ export class ExplorerSelectors {
           .map(id => streams[id])
           .filter(stream => stream !== undefined)
       })
+      .share()
 
 
     this.isPlotEmpty$ = this.leftElementIDs$
       .combineLatest(this.rightElementIDs$)
       .map(([left, right]) => left.length == 0 && right.length == 0)
+      .share()
+      .startWith(true);
 
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
       .map(([nav, plot]) => nav && plot)
+      .share()
 
     this.filteredDataViews$ = this.dataViews$
       .map(views => { //convert views to an array
@@ -136,6 +151,7 @@ export class ExplorerSelectors {
             return searchableText.toLowerCase().indexOf(searchText) >= 0
           })
       })
+      .share()
 
     this.isIntervalDataDisplayed$ = this.plottedElements$
       .combineLatest(this.plotData$)
@@ -147,8 +163,9 @@ export class ExplorerSelectors {
           return isInterval || data.type == 'interval'
         }, false)
       })
+      .share()
 
-    this.isPlotDataValid$  = this.plottedElements$
+    this.isPlotDataValid$ = this.plottedElements$
       .combineLatest(this.plotData$)
       .map(([elements, data]) => elements
         .map(e => data[e.id])
@@ -158,5 +175,6 @@ export class ExplorerSelectors {
           .keys(dataset)
           .reduce((isValid, id) => isValid && dataset[id].valid, true)
       })
+      .share()
   }
 }

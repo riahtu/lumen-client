@@ -1,26 +1,26 @@
-<div *ngIf="leftElements.length==0 && rightElements.length==0">
+<div *ngIf="explorerSelectors.isPlotEmpty$ | async">
   <p class="empty-plot"><i class="fa fa-line-chart fa-2x"></i></p>
   <p class="lead empty-plot"> no elements plotted</p>
 </div>
 
-<div *ngIf="leftElements.length>0" class="axis-title lead">Left Axis:
+<div *ngIf="(explorerSelectors.leftElements$ | async)?.length>0" class="axis-title lead">Left Axis:
   <span class="pull-right units">{{explorerSelectors.leftElementUnits$ | async}}</span>
 </div>
 <app-plotted-elements
   class="plotted-element odd"
-  *ngFor="let element of leftElements; let isOdd=odd"
+  *ngFor="let element of explorerSelectors.leftElements$ | async; let isOdd=odd"
   [class.odd]="isOdd"
   [element]="element"
   [axis]="'left'">
 </app-plotted-elements>
 
 
-<div *ngIf="rightElements.length>0" class="axis-title lead">Right Axis:
+<div *ngIf="(explorerSelectors.rightElements$ | async)?.length>0" class="axis-title lead">Right Axis:
   <span class="pull-right units">{{explorerSelectors.rightElementUnits$ | async}}</span>
 </div>
 <app-plotted-elements 
   class="plotted-element"
-  *ngFor="let element of rightElements"
+  *ngFor="let element of explorerSelectors.rightElements$ | async"
   [element]="element"
   [axis]="'right'">
 </app-plotted-elements>

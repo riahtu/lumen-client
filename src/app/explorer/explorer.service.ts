@@ -48,13 +48,13 @@ export class ExplorerService {
   }
 
   // remove all elements from the plot
-  public hideAllElements() {
+  /*public hideAllElements() {
     let elementRecords = this.ngRedux.getState().data.dbElements;
     Object.keys(elementRecords)
       .map(id => {
         this.hideElement(elementRecords[id]);
       })
-  }
+  }*/
 
   public setElementAxis(element: IDbElement, axis: string) {
     //if the destination axis has elements plotted, this element
@@ -240,35 +240,6 @@ export class ExplorerService {
   }
 
   public autoScaleTime() {
-    /*
-    //figure out the bounds of the displayed elements
-    //set the xaxis range to the min/max time limits
-    let state = this.ngRedux.getState();
-    let bounds = _(state.ui.explorer.left_elements)
-      .concat(state.ui.explorer.right_elements)
-      .map(id => state.data.dbElements[id])
-      .map(elem => state.data.dbStreams[elem.db_stream_id])
-      .uniq()
-      .map(stream => {
-        return {
-          //stream timestamps are in us, we want ms
-          min: Math.round(stream.start_time / 1e3),
-          max: Math.round(stream.end_time / 1e3)
-        }
-      })
-      .reduce((bounds, range) => {
-        bounds.min = Math.min(bounds.min, range.min);
-        bounds.max = Math.max(bounds.max, range.max);
-        return bounds;
-      }, {
-        min: Number.POSITIVE_INFINITY,
-        max: Number.NEGATIVE_INFINITY
-      });
-    this.ngRedux.dispatch({
-      type: ExplorerActions.SET_PLOT_TIME_RANGE,
-      payload: bounds
-    })
-    */
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,
       payload: {min: null, max: null}
@@ -404,7 +375,7 @@ export class ExplorerService {
         } else {
           return false;
         }
-      })
+      })      
   }
 
 

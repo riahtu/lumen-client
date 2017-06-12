@@ -67,19 +67,7 @@ export class ExplorerPageComponent implements OnInit {
         else
           return 0;
       })
-    //retrieve any streams that are missing for displayed elements
-    this.explorerSelectors.plottedElements$
-      .combineLatest(this.explorerSelectors.streams$)
-      .map(([elements, streams]) => {
-        return _.uniq(elements
-          .map(e => e.db_stream_id)
-          .filter(id => streams[id] === undefined))
-      })
-      .filter(missingIDs => missingIDs.length>0)
-      .distinctUntilChanged((x,y) => _.isEqual(x,y))
-      .subscribe(
-      ids => this.dbStreamService.loadStreams(ids)
-      )
+    
   }
 
   showSaveDataView() {
