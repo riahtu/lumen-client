@@ -47,7 +47,7 @@ export class DbStreamService {
       .map(resp => resp.json())
       .subscribe(
       json => {
-        let entities = normalize(json, schema.dbStream).entities;
+        let entities = normalize(json.data, schema.dbStream).entities;
         this._dispatch(entities);
         this.messageService.setMessages(json.messages);
       },
