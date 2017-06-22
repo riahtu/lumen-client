@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Angular2TokenService } from 'angular2-token';
 import { Observable } from 'rxjs';
+import {compressToEncodedURIComponent} from 'lz-string';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as _ from 'lodash';
@@ -28,7 +29,7 @@ export class DataViewService {
 
   private dataViewsLoaded: boolean;
   private homeViewRestored: boolean; //only load the home view once
-
+  
   constructor(
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
@@ -91,6 +92,7 @@ export class DataViewService {
   public create(name: string, description: string, isPrivate: boolean, isHome: boolean, image: string) {
 
     let state = this.getDataViewState(true);
+    
     let visibility = isPrivate ? 'private' : 'public'
     let params = {
       name: name,
@@ -99,7 +101,7 @@ export class DataViewService {
       visibility: visibility,
       stream_ids: state.stream_ids,
       home: isHome,
-      redux_json: JSON.stringify(state.redux)
+      redux_json: compressToEncodedURIComponent(JSON.stringify(state.redux))
     }
     let o = this.tokenService
       .post('data_views.json', JSON.stringify(params))

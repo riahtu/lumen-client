@@ -1,5 +1,5 @@
 import { schema } from 'normalizr';
-
+import {decompressFromEncodedURIComponent} from 'lz-string'
 
 
 
@@ -83,8 +83,11 @@ export const userGroups = new schema.Array(userGroup);
 export const dataView = new schema.Entity('data_views', {},
   {
     processStrategy: (entity) => {
+      console.log('here!')
       if (entity.redux_json != null) {
-        entity.redux = JSON.parse(entity.redux_json);
+        let x = decompressFromEncodedURIComponent(entity.redux_json);
+        console.log(entity.redux_json.length, x.length)
+        entity.redux = JSON.parse(decompressFromEncodedURIComponent(entity.redux_json));
         entity.live = entity.redux.ui_explorer.live_update;
       } else {
         entity.redux = {}
