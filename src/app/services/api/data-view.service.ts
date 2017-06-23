@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Angular2TokenService } from 'angular2-token';
 import { Observable } from 'rxjs';
-import {compressToEncodedURIComponent} from 'lz-string';
+import { compressToEncodedURIComponent } from 'lz-string';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as _ from 'lodash';
@@ -17,11 +17,14 @@ import {
   IDbElementRecords,
   DbElementActions,
   IDataView,
+  IData,
   IDataViewRedux,
   DataViewActions
 } from '../../store/data';
 
 import * as explorer from '../../explorer/store';
+
+export const MAX_SAVE_DATA_LENGTH = 200;
 
 @Injectable()
 export class DataViewService {
@@ -29,7 +32,7 @@ export class DataViewService {
 
   private dataViewsLoaded: boolean;
   private homeViewRestored: boolean; //only load the home view once
-  
+
   constructor(
     private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
@@ -92,7 +95,7 @@ export class DataViewService {
   public create(name: string, description: string, isPrivate: boolean, isHome: boolean, image: string) {
 
     let state = this.getDataViewState(true);
-    
+
     let visibility = isPrivate ? 'private' : 'public'
     let params = {
       name: name,
@@ -181,7 +184,7 @@ export class DataViewService {
       type: explorer.ExplorerActions.SET_PLOT_TIME_RANGE,
       payload: view.redux.ui_explorer.plot_time
     })
-     this.ngRedux.dispatch({
+    this.ngRedux.dispatch({
       type: explorer.ExplorerActions.SET_NAV_TIME_RANGE,
       payload: view.redux.ui_explorer.nav_time
     })
@@ -207,8 +210,8 @@ export class DataViewService {
       .map(elem => elem.db_stream_id))
     let existingStreamIds = _.keys(this.ngRedux.getState().data.dbStreams)
       .map(id => parseInt(id))
-    let newStreamIds = _.difference(viewStreamIds,existingStreamIds)
-    if(newStreamIds.length>0)
+    let newStreamIds = _.difference(viewStreamIds, existingStreamIds)
+    if (newStreamIds.length > 0)
       this.streamService.loadStreams(newStreamIds)
 
   }
@@ -238,12 +241,20 @@ export class DataViewService {
       //remove nav_data and data that are not part of plottedElements
       ui_explorer.plot_data = Object.keys(plottedElements)
         .reduce((acc, id) => {
-          acc[id] = ui_explorer.plot_data[id];
+          let dataset = ui_explorer.plot_data[id];
+          if (dataset === undefined) {
+            return acc; //data is missing we can't save it
+          }
+          acc[id] = this.decimateDataset(dataset);
           return acc;
         }, {})
       ui_explorer.nav_data = Object.keys(plottedElements)
         .reduce((acc, id) => {
-          acc[id] = ui_explorer.nav_data[id];
+          let dataset = ui_explorer.nav_data[id];
+          if (dataset === undefined) {
+            return acc; //data is missing we can't save it
+          }
+          acc[id] = this.decimateDataset(dataset);
           return acc;
         }, {})
     } else {
@@ -259,6 +270,33 @@ export class DataViewService {
     }
   }
 
+  public decimateDataset(dataset: IData) {
+    let smallDataset: IData = { //manually copy so this is not an immutable record
+      data: dataset.data,
+      end_time: dataset.end_time,
+      start_time: dataset.start_time,
+      valid: dataset.valid,
+      type: dataset.type
+    }
+    let data = dataset.data
+    if (data !== undefined && data.length > MAX_SAVE_DATA_LENGTH) {
+      //we need to decimate the data, there is too much
+      smallDataset.data = [];
+      //remove time stamps so the client will automatically reload this
+      //data at the full resolution
+      smallDataset.end_time = 0;
+      smallDataset.start_time = 0;
+      let step = Math.ceil(data.length / MAX_SAVE_DATA_LENGTH)
+      for (let i = 0; i < data.length; i = i + step) {
+        smallDataset.data.push(data[i])
+      }
+      //console.log('orig, decimated:', data.length, smallDataset.data.length)
+    } else {
+      //console.log('no decimation required: ',data.length, smallDataset.data.length);
+    }
+    return smallDataset
+
+  }
 }
 
 export interface IDataViewState {
