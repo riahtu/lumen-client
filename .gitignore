@@ -41,3 +41,6 @@ Thumbs.db
 
 #Temp files
 *~
+
+#Sphinx Documentation
+docs/_build/*
