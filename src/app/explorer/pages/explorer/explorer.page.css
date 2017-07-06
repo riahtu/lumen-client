@@ -167,6 +167,10 @@ i.fa-close:hover{
   color: black;
 }
 
+a.help-btn {
+  margin-left: 20px;
+}
+
 @media(max-width: 767px){
   :host(.main-plot) >>> plot{
     height: 400px;
