@@ -1,0 +1,23 @@
+.plot-warning {
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  padding-left: 4px;
+  padding-right: 4px;
+  color: #8a6d3b;
+  background-color: #fcf8e3;
+  border-color: #faebcc;
+  display: inline;
+}
+
+.plot-error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border-radius: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  border-style: solid;
+  border-width: 1px;
+  display: inline
+}

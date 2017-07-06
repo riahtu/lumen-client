@@ -37,30 +37,55 @@ Axis Isolation
 ***************************
 
 When the cursor is in the center of the plot, pan and zoom operates
-simultaneously on all the axes. In general it is easier to manipulate one axis
-at a time.  To isolate an axis move the cursor towards the desired axis until it
-is highlighted.
+simultaneously on all the axes. It is often more intuitive to manipulate one
+axis at a time.  To isolate an axis move the cursor towards the desired axis
+until it is highlighted.
 
 **Left/Right Y Axes:**
 
-  .. rst-class:: click-to-play
-  .. image:: _static/explorer/left_axis_lock.png
+.. rst-class:: click-to-play
+.. image:: _static/explorer/left_axis_lock.png
 
 Both the left and right y-axes can be isolated. Adjust the offset between left
 and right axes by isolating one side and panning up or down.
 
 **Time:**
 
-  .. rst-class:: click-to-play
-  .. image:: _static/explorer/time_axis_lock.png
+.. rst-class:: click-to-play
+.. image:: _static/explorer/time_axis_lock.png
 
 Date Selector
 *************
 
+.. image:: _static/explorer/date_selector.png
+
+Open the date selector by clicking the date text
+below the main plot. The selector overlay allows you to specify exact time
+bounds for the main plot. The navigation plot is unaffected.
+
+
 Plotting Errors
 ***************
-Insufficient Decimation
-Error Contacting Server
+
+As you interact with the plot, you may encounter error messages like the
+following:
+
+.. rst-class:: plot-error
+some data could not be retrieved
+
+These errors may occur periodically due to a slow or unreliable connection
+with the remote installation. Pan or zoom the plot to retry the request. If
+an initial data request fails, the plot may zoom to an incorrect location.
+Use the autoscale buttons in the tool panel to recenter the plot.
+
+.. rst-class:: plot-warning
+some data cannot be displayed at this resolution
+
+If a continuous or discrete element is not sufficiently decimated or if an event
+element has too many samples the plot data will be replaced with a thick line
+and an asterix will appear next to the legend entry. Once you have zoomed in
+sufficiently the data will reappear. To avoid this problem make sure the data
+stream is fully decimated, then refresh the installation database.
 
 
 Navigation Plot
@@ -69,17 +94,14 @@ Navigation Plot
 The Navigation Plot shows a fixed overview of the data and highlights the
 portion displayed in the Main Plot. The y-axis is fixed to the autoscale values
 of the data (either the range of the plotted data or the ``Default Max`` and
-``Default Min`` of the streams). In the default navigation mode clicking and
-dragging on the plot selects the subset of data displayed in the Main Plot
-window. This mode is animated in the left hand figure below. The mode can be
-changed on the Tool Tab by clicking the Zoom Lock check box. When this box is
-checked the time range of the selection is locked. Clicking and dragging the
-selection window changes the fixed time range displayed in the Main Plot. This
-mode is animated in the right hand figure below.
+``Default Min`` of the streams). Click and drag to select the range of
+data displayed in the Main Plot.
 
 
 Control Panel
 -------------
+
+.. image:: _static/explorer/control_panel.png
 
 Files Tab
 *********
