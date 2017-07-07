@@ -6,11 +6,11 @@ Wattsworth
    :caption: Contents:
 
    explorer
-
+   installation
+   account
 
 Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
