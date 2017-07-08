@@ -208,6 +208,11 @@ export class ExplorerService {
       type: ExplorerActions.DISABLE_LIVE_UPDATE
     });
   }
+  public toggleShowDataEnvelope() {
+    this.ngRedux.dispatch({
+      type: ExplorerActions.TOGGLE_SHOW_DATA_ENVELOPE
+    });
+  }
   public setPlotTimeRange(range: IRange) {
     this.ngRedux.dispatch({
       type: ExplorerActions.SET_PLOT_TIME_RANGE,
@@ -281,7 +286,8 @@ export class ExplorerService {
   buildDataset(
     elements: IDbElement[],
     data: IDataSet,
-    axis: number) {
+    axis: number,
+    showEnvelope: boolean) {
     return elements.map(element => {
       if (data[element.id] === undefined || data[element.id] == null)
         return null;
@@ -325,17 +331,18 @@ export class ExplorerService {
                 });
           }
         case 'decimated':
+          let opacity = showEnvelope ? 0.2: 0.0;
           switch (element.display_type) {
             case 'continuous':
               return Object.assign({}, baseConfig,
                 {
-                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  fillArea: [{ opacity: opacity, representation: "asymmetric" }],
                   lines: { show: true }
                 });
             case 'discrete':
               return Object.assign({}, baseConfig,
                 {
-                  fillArea: [{ opacity: 0.2, representation: "asymmetric" }],
+                  fillArea: [{ opacity: opacity, representation: "asymmetric" }],
                   points: { show: true, radius: 1 }
                 });
           }

@@ -40,6 +40,12 @@
         (change)="explorerService.toggleNavZoomLock()"><i class="fa fa-fw fa-lock"></i> Lock Selection Width
     </label>
   </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" [checked]="explorerSelectors.showDataEnvelope$ | async" 
+        (change)="explorerService.toggleShowDataEnvelope()"><i class="fa fa-fw fa-area-chart"></i>Data Envelope
+    </label>
+  </div>
   <hr/>
 
   

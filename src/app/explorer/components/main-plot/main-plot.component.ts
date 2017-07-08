@@ -158,13 +158,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.leftElements$
       .combineLatest(this.explorerSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(this.explorerSelectors.plotData$)
-      .subscribe(([elementsByAxis, data]) => {
+      .combineLatest(this.explorerSelectors.plotData$, this.explorerSelectors.showDataEnvelope$)
+      .subscribe(([elementsByAxis, data, showEnvelope]) => {
         //build data structure
         let leftAxis = this.explorerService
-          .buildDataset(elementsByAxis.left, data, 1);
+          .buildDataset(elementsByAxis.left, data, 1, showEnvelope);
         let rightAxis = this.explorerService
-          .buildDataset(elementsByAxis.right, data, 2);
+          .buildDataset(elementsByAxis.right, data, 2, showEnvelope);
         let dataset = leftAxis.concat(rightAxis);
         if (dataset.length == 0) {
           this.explorerService.hidePlot();
@@ -172,7 +172,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.explorerService.showPlot();
         if (this.plot == null) {
-          //let xrange = this.calcDatasetTimeRange(dataset);
           FLOT_OPTIONS.xaxis.min = this.storedPlotTimeRange.min;
           FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
@@ -180,8 +179,6 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
           this.explorerService.disableDataCursor();
-
-
         } else {
           this.plot.setData(dataset);
           this.plot.setupGrid();

@@ -31,6 +31,7 @@ export const ExplorerFactory =
     live_update: false,
     show_public_data_views: true,
     data_view_filter_text: '',
+    show_data_envelope: true,
     //
     nilms_loaded: false,
     data_views_loaded: false

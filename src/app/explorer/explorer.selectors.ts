@@ -51,6 +51,7 @@ export class ExplorerSelectors {
   @select(['ui', 'explorer', 'right_units']) rightElementUnits$: Observable<string>;
   @select(['ui', 'explorer', 'nilms_loaded']) nilmsLoaded$: Observable<boolean>;
   @select(['ui', 'explorer', 'data_views_loaded']) dataViewsLoaded$: Observable<boolean>;
+  @select(['ui', 'explorer', 'show_data_envelope']) showDataEnvelope$: Observable<boolean>;
 
 
   public leftElements$: Observable<IDbElement[]>

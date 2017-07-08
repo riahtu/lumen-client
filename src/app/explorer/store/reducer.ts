@@ -207,6 +207,12 @@ export function reducer(
       return state
         .set('live_update', false)
 
+    //toggle whether the data envelope is plotted
+    //
+    case ExplorerActions.TOGGLE_SHOW_DATA_ENVELOPE:
+      return state
+        .set('show_data_envelope', !state.show_data_envelope)
+
     //toggle whether public data views are displayed
     //
     case ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS:
