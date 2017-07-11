@@ -113,13 +113,13 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.explorerSelectors.leftElements$
       .combineLatest(this.explorerSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(this.explorerSelectors.navData$)
-      .subscribe(([elementsByAxis, data]) => {
+      .combineLatest(this.explorerSelectors.navData$, this.explorerSelectors.showDataEnvelope$)
+      .subscribe(([elementsByAxis, data, showEnvelope]) => {
         //build data structure
         let leftAxis = this.explorerService
-          .buildDataset(elementsByAxis.left, data, 1);
+          .buildDataset(elementsByAxis.left, data, 1, showEnvelope);
         let rightAxis = this.explorerService
-          .buildDataset(elementsByAxis.right, data, 2);
+          .buildDataset(elementsByAxis.right, data, 2, showEnvelope);
         let dataset = leftAxis.concat(rightAxis);
         if (dataset.length == 0) {
           return; //no data to plot

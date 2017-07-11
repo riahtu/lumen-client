@@ -21,3 +21,67 @@
   border-width: 1px;
   display: inline
 }
+
+i.fa-styled {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ddd;
+  border-radius: 4px;
+}
+
+.tree-button {
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  padding-left: 3px;
+}
+
+.tree-button.plot {
+  padding-right: 5px;	
+  margin-right: 4px;
+  color: #3c763d;
+  background-color: #dff0d8;
+  border-color: #3c763d;
+}
+
+.tree-button.unplot{
+  padding-right: 2px;
+  margin-right: 4px;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #a94442;
+}
+
+.live-update{
+  background: #dff0d8;
+  color: #3c763d;
+  padding-left: 5px;
+  margin-right: 5px;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+}
+
+.btn {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    padding: 2px;
+    border-radius: 4px;
+    margin-right: 5px;
+    border-style: solid;
+    border-width: 1.11px;
+}
+.btn.primary{
+    color: #fff;
+    background-color: #337ab7;
+    border-color: #2e6da4;
+}
+.btn.tbl {
+    margin-top: 2px;
+    text-align: center;
+    display: block;
+}
+
+.btn.default{
+    border-color: rgb(204, 204, 204);
+}

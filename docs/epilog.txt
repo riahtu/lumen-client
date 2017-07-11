@@ -1,0 +1,76 @@
+.. |fa-circle| raw:: html
+
+  <i class="fa fa-circle"></i>
+
+.. |fa-gear| raw:: html
+
+  <i class="fa fa-gear fa-fw fa-styled"></i>
+
+
+.. |fa-close| raw:: html
+
+  <i class="fa fa-close fa-fw fa-styled"></i>
+
+.. |fa-error| raw:: html
+
+  <i class="fa fa-error"></i>
+
+.. |fa-exclamation-circle| raw:: html
+
+  <i class="fa fa-exclamation-circle"></i>
+
+.. |fa-exclamation-triangle| raw:: html
+
+  <i class="fa fa-exclamation-triangle"></i>
+
+.. |fa-caret-right| raw:: html
+
+  <i class="fa fa-caret-right fa-fw fa-styled"></i>
+
+.. |add-element| raw:: html
+
+  <span class="tree-button plot"><i class="fa fa-line-chart"></i> add </span>
+
+.. |remove-element| raw:: html
+
+  <span class="tree-button unplot"><i class="fa fa-line-chart"></i> hide </span>
+
+.. |live-update| raw:: html
+
+  <span class="live-update"><i class="fa fa-heartbeat"></i> Live Update </span>
+
+.. |plot-data| raw:: html
+
+  <span class="btn default"><i class="fa fa-download"></i> Plot Data </span>
+
+.. |plot-image| raw:: html
+
+  <span class="btn default"><i class="fa fa-download"></i> Plot Image </span>
+
+.. |download-data| raw:: html
+
+  <span class="btn primary"><i class="fa fa-download"></i> download </span>
+
+.. |open-view| raw:: html
+
+  <span class="btn default">Open View</span>
+
+.. |save-view| raw:: html
+
+  <span class="btn default">Save View</span>
+
+.. |scale-left| raw:: html
+
+  <span class="btn primary tbl">Left</span>
+
+.. |scale-right| raw:: html
+
+  <span class="btn primary tbl">Right</span>
+
+.. |scale-time| raw:: html
+
+  <span class="btn primary tbl">Time</span>
+
+.. |sync-plots| raw:: html
+
+  <span class="btn primary tbl">Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i></span>

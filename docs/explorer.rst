@@ -20,6 +20,7 @@ Data Explorer
 .. image:: _static/explorer/screenshot.png
 
 
+
 Main Plot
 ---------
 
@@ -54,14 +55,17 @@ and right axes by isolating one side and panning up or down.
 .. rst-class:: click-to-play
 .. image:: _static/explorer/time_axis_lock.png
 
+
 Date Selector
 *************
 
 .. image:: _static/explorer/date_selector.png
+  :width: 400px
+  :align: center
 
 Open the date selector by clicking the date text
-below the main plot. The selector overlay allows you to specify exact time
-bounds for the main plot. The navigation plot is unaffected.
+below the Main Plot. The selector overlay allows you to specify exact time
+bounds for the Main Plot. The Navigation Plot is unaffected.
 
 
 Plotting Errors
@@ -71,15 +75,15 @@ As you interact with the plot, you may encounter error messages like the
 following:
 
 .. rst-class:: plot-error
-some data could not be retrieved
+|fa-exclamation-circle| some data could not be retrieved
 
 These errors may occur periodically due to a slow or unreliable connection
 with the remote installation. Pan or zoom the plot to retry the request. If
 an initial data request fails, the plot may zoom to an incorrect location.
-Use the autoscale buttons in the tool panel to recenter the plot.
+Use the autoscale buttons in the :ref:`explorer-tools-tab` to recenter the plot.
 
 .. rst-class:: plot-warning
-some data cannot be displayed at this resolution
+|fa-exclamation-triangle| some data cannot be displayed at this resolution
 
 If a continuous or discrete element is not sufficiently decimated or if an event
 element has too many samples the plot data will be replaced with a thick line
@@ -103,29 +107,34 @@ Control Panel
 
 .. image:: _static/explorer/control_panel.png
 
-The control panel contains three tabs shown above. Use the File Tab to select
-data to plot. Use the Plot Tab to see the currently plotted elements and
-customize the display. Use the Tools Tab to open and save views, download data,
-and adjust the plot behavior.
+The control panel contains three tabs shown above. Use the
+:ref:`explorer-files-tab` to select data to plot. Use the
+:ref:`explorer-plot-tab` to see the currently plotted elements and customize the
+display. Use the :ref:`explorer-tools-tab` to open and save views, download
+data, and adjust the plot behavior.
+
+.. _explorer-files-tab:
 
 Files Tab
 *********
 
-Each installation is an expandable file tree. Clicking the triangle icon expands
-or collapses a node. Expand an installation to see the list of root folders.
-Folders contain data streams and/or subfolders. Expand a data stream to see the
-list of plottable elements. Add an element to the plot by clicking the green
-button next to the element name. The plot color will appear as a square patch next to
-the name.
+Each installation is an expandable file tree. Clicking the |fa-caret-right| icon
+expands or collapses a node. Expand an installation to see the list of root
+folders. Folders contain data streams and/or subfolders. Expand a data stream to
+see the list of plottable elements. Add an element to the plot by clicking the
+|add-element| button next to the element name. The plot color will appear as a
+square patch next to the name.
 
-Remove an element by clicking the red button next to the element name. Elements
-may only be plotted on an axis with matching units. If both left and right axes
-have elements with other units, the plot button will be disabled and the
-tooltip will display an error message.
+Remove an element by clicking the |remove-element| button. Elements may only be
+plotted on an axis with matching units. If both left and right axes have
+elements with other units, the plot button will be disabled. Hover the cursor
+over the button to display the required axis units.
 
-Installations with owner or administrator rights will have a gear icon next to the
-installation name. Click the gear to open the Installation Settings
+If you have owner or administrator rights on an installation, click the
+|fa-gear| icon next to the installation name to open the Installation Settings
 page.
+
+.. _explorer-plot-tab:
 
 Plot Tab
 ********
@@ -135,59 +144,179 @@ headers show the current unit on the righthand side. Hover the cursor over an
 element to display the element stream and installation. The format is
 ``[stream_name] @ [installation_name]``.
 
-Click the ``x`` icon next to the element entry to remove it from the plot. When
-all elements are removed the Plot Tab is disabled.
+Click the |fa-close| icon next to the element entry to remove it from the plot.
+When all elements are removed the Plot Tab is disabled.
 
-Click the gear icon next to the element entry to bring up the  Plot
-Settings dialog. Customization options are on the left and element information
+Click the |fa-gear| icon next to the element entry to bring up the  **Plot
+Settings Dialog** shown below:
+
+.. image:: _static/explorer/plot_settings.png
+  :width: 400px
+  :align: center
+
+Customization options are on the left and element information
 is displayed on the right. The Path and URL refer to the NilmDB location
 where this data is stored. All customizations are local to the browser- they are
 not persisted to the database. Customization is available for:
 
-* **Legend Entry**: Clear the display name field to restore the default name.
-* **Color**: Click the color patch or type a custom hex value.
-* **Axis**: Remember, an element can only be plotted on an axis with matching units.
++--------------+-------+-------------------------------------------------------+
+|  Option      | Value | Description                                           |
++==============+=======+=======================================================+
+| Display Name | Text  | The legend entry, leave empty to use the element name |
++--------------+-------+-------------------------------------------------------+
+| Color        | Hex   | Click the color patch or type a custom value          |
++--------------+-------+-------------------------------------------------------+
+| Axis         | Left, | Override default axis assignment (units must match)   |
+|              | Right |                                                       |
++--------------+-------+-------------------------------------------------------+
 
-.. image:: _static/explorer/plot_settings.png
 
-
-
+.. _explorer-tools-tab:
 
 Tools Tab
 *********
 
+This tab displays various plot control options as well as the
+:ref:`explorer-dataviews` and :ref:`explorer-download` tools.
+
+.. _explorer-autoscale-axes:
+
 Autoscale Axes
 ++++++++++++++
+
+These buttons adjust the time and y axis scales for the Main Plot and
+Navigation Plot.
+
++-----------------------+---------------------------------------------+
+|  Button               | Description                                 |
++=======================+=============================================+
+| |sync-plots|          | Rescale the Navigation Plot time axis to    |
+|                       | match the Main Plot                         |
++-----------------------+---------------------------------------------+
+| |scale-left|          | Rescale the Main Plot left axis to fit      |
+|                       | the data                                    |
++-----------------------+---------------------------------------------+
+| |scale-time|          | Rescale the Main Plot time axis fit         |
+|                       | all the data                                |
++-----------------------+---------------------------------------------+
+| |scale-right|         | Rescale the Main Plot right axis to fit     |
+|                       | the data                                    |
++-----------------------+---------------------------------------------+
 
 Data Cursor
 +++++++++++
 
+Display the plot value when the cursor is hovering over a datapoint in the Main Plot.
+
 Lock Selection Width
 ++++++++++++++++++++
+
+When checked the Navigation Plot selection is locked to a fixed width. Click
+and drag to pan the selection along the time axis.
+
+When unchecked the Navigation Plot selection is variable width. Click and drag
+to scale the selection along the time axis.
 
 Live Update
 +++++++++++
 
+When checked the plots are synced to the current time. The Navigation Plot
+displays the last hour and the Main Plot displays the last twenty minutes. If
+the plotted elements have no data over this interval the plots will be empty.
+
+The plots automatically refresh to track the current time. To stop the auto
+refresh clear the checkbox or click the |fa-close| icon on the |live-update|
+label at the bottom of the Main Plot.
+
+.. _explorer-dataviews:
 
 Data Views
 ----------
 
+Data views are saved plots that can be shared between users. Users may only
+open views if they have permissions on all the datasets used in the view. The open/save
+buttons are located at the top of the :ref:`explorer-tools-tab`.
+
 Open View
 *********
+
+Click |open-view| to display the **Open View** dialog. This dialog lists all available
+data views. If you do not see a view you are expecting check to make sure you
+have permissions on all the installations involved with the view.
+
+.. image:: _static/explorer/open_view.png
+  :width: 400px
+  :align: center
+
+The search bar at the top of the dialog filters views by title and description.
+It updates as you type.
+
+Clear the **include public views?** check box to show only the views you have
+created. Views that are locked to the current time have a |live-update| label
+superimposed on the plot thumbnail. Click a thumbnail to load the view onto the
+plot. This will hide any currently plotted elements.
 
 Save View
 *********
 
+Click |save-view| to display the **Save Current View** dialog. This dialog
+allows you to save the current plot so you can reload it later. See the
+:ref:`explorer-download` section for saving the plot data to your local
+computer.
+
+.. image:: _static/explorer/save_view.png
+  :width: 400px
+  :align: center
+
+The Main Plot is used as the thumbnail image. The name is required and the description
+is optional.
+
+Click **Set as Home View?** to automatically load this dataview when you open the
+website. This setting can be updated from the Account Page.
+
+Click **Private?** to hide the view from other users. The view will always
+be hidden from users who do not have permission on the datasets regardless of
+the check box setting.
+
+.. _explorer-download:
+
 Download
 --------
+
+You can download the plot image as a high resolution png file or download the
+datasets directly. The download tools are located in the :ref:`explorer-tools-tab`.
 
 Image
 *****
 
+Click the |plot-image| button to display a png image of the Main Plot. The
+picture resolution matches your display. To generate a higher resolution use the
+browser controls to zoom out on the web page before clicking the download
+button.
+
 Data
 ****
 
-Download example::
+Click the |plot-data| button to display the **Data Download Dialog** shown
+below. Streams with plotted elements are listed along with details about the
+NilmDB location (URL and path).
+
+.. image:: _static/explorer/data_download.png
+  :width: 400px
+  :align: center
+
+
+Click |download-data| to download the selected stream over the time
+range displayed in the Main Plot. The data will be decimated to fit within
+the maximum resolution of the host installation. For example if the
+installation has a maximum resolution of 3000, the downloaded dataset will have
+3000 points or less. The data format is designed to be loaded into MATLAB or
+Excel. Instructions for loading the data into MATLAB are included in the file
+header along with information about the data source, time range, and elements.
+The file name referes to the selected date range as ``hhmm_DDMMYYYY__to__hhmm_DDMMYY``.
+
+
+**Download Example**: ``0725_28Sep2010__to__0811_14Apr2020.txt``::
 
   ###############################################
   # Stream: Weather
@@ -195,9 +324,9 @@ Download example::
   # Path:   /archive/bcil/sensors/weather
   # URL: http://benchtop.vpn.wattsworth.net/nilmdb
   #
-  # start:             2011-12-02 11:55:50 -0500
-  # end:               2017-06-28 20:13:58 -0400
-  # total time:        over 5 years
+  # start:             2010-09-28 07:25:29 -0400
+  # end:               2020-04-14 08:11:07 -0400
+  # total time:        over 9 years
   # total rows:        1163
   # decimation factor: 1024
   # notes:
@@ -216,17 +345,18 @@ Download example::
   #
   #   >> x = importdata('~/Downloads/filename.csv')
   #   x =
-  #       data: [1737x7 double] % the data
+  #       data: [1737x15 double] % the data
   #   textdata: {41x1 cell}      % this help text
   #
   # --------- NILMTOOL INSTRUCTIONS ----------
   #
   # raw data can be accessed using nilmtool, run:
   #
-  # $> nilmtool -u http://benchtop.vpn.wattsworth.net/nilmdb extract -s @1322844950000000 -e @1498695238647000 /archive/bcil/sensors/weather
+  # $> nilmtool -u http://benchtop.vpn.wattsworth.net/nilmdb extract -s @1285673129971000 -e @1586866267264000 /archive/bcil/sensors/weather
   #
   # ------------------------------------------
   #
-  1322857034602538, 30.24609, 47.51152, 28.41116, 46.0334, 34.15723, 47.46582
-  1322867909921874, 30.31547, 43.41709, 30.82982, 42.68623, 38.76562, 60.99707
-  ....more data....
+  1322857034602538, 30.24609, 47.51152, 28.41116, 46.0334,  34.15723, 47.46582
+  1322867909921874, 30.31547, 43.41709, 30.82982, 42.68623, 38.76562,60.99707
+  1322878231684569, 30.39615, 40.28399, 28.69991, 39.25175, 40.0, 63.2002
+  ...more data...

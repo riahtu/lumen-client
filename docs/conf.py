@@ -164,3 +164,6 @@ intersphinx_mapping = {'https://docs.python.org/': None}
 
 def setup(app):
     app.add_stylesheet('css/custom.css')  # may also be an URL
+    app.add_stylesheet('css/font-awesome.css')  # may also be an URL
+
+rst_epilog = file('epilog.txt').read()
