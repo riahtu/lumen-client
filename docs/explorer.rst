@@ -19,8 +19,6 @@ Data Explorer
 
 .. image:: _static/explorer/screenshot.png
 
-
-
 Main Plot
 ---------
 
@@ -208,15 +206,6 @@ Data Cursor
 
 Display the plot value when the cursor is hovering over a datapoint in the Main Plot.
 
-Lock Selection Width
-++++++++++++++++++++
-
-When checked the Navigation Plot selection is locked to a fixed width. Click
-and drag to pan the selection along the time axis.
-
-When unchecked the Navigation Plot selection is variable width. Click and drag
-to scale the selection along the time axis.
-
 Live Update
 +++++++++++
 
@@ -227,6 +216,25 @@ the plotted elements have no data over this interval the plots will be empty.
 The plots automatically refresh to track the current time. To stop the auto
 refresh clear the checkbox or click the |fa-close| icon on the |live-update|
 label at the bottom of the Main Plot.
+
+Lock Selection Width
+++++++++++++++++++++
+
+When checked the Navigation Plot selection is locked to a fixed width. Click
+and drag to pan the selection along the time axis.
+
+When unchecked the Navigation Plot selection is variable width. Click and drag
+to scale the selection along the time axis.
+
+Data Envelope
++++++++++++++
+
+When checked the maximum and minimum bounds are displayed as shaded regions
+around the data mean. This shows the envelope of the data even though not all of
+the samples are available to plot.
+
+When unchecked only the mean of the data is plotted. This setting does not affect
+plots where the resolution is high enough to show the raw samples.
 
 .. _explorer-dataviews:
 
