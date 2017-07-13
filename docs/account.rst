@@ -33,8 +33,8 @@ is online and your permission level. The icon legend is below:
 Installations where you are an admin or owner have a |fa-gear| button. Click
 this button open the Installation Settings page.
 
-Add a new installation by clicking the |add-installation| button. This will
-display the dialog below.
+Add a new installation by clicking the |new-installation| button. This will
+display the **Add New Installation Dialog** shown below.
 
 .. image:: _static/account/new_installation.png
   :width: 400px
@@ -71,18 +71,47 @@ installations.
 Groups
 ------
 
-This panel lists the groups you manage and the groups you are a member of.
-The top portion of the panel shows groups you manage. T
-Any groups you manage are listed with the members.
+Groups make it easier to manage installation permissions for a large  number of
+users. This panel lists the groups you own. The |fa-bars| icon next to group
+name opens up the group management menu. This menu allows you to edit the group,
+add members, or remove the group.
 
-.. image:: _static/account/group_add_user.png
-  :width: 400px
-  :align: center
+**Edit Group**
+
+This dialog allows you to change the name and description of the group. The
+group name must be unique.
 
 .. image:: _static/account/edit_group.png
   :width: 400px
   :align: center
 
+
+
+**Add Users**
+
+This dialog allows you to add members to the group. You may add a member three
+different ways.
+
+.. image:: _static/account/group_add_user.png
+  :width: 400px
+  :align: center
+
+* **pick an existing user or group**: If the user already has an
+  account you can select their name from a drop down list.
+* **invite a user by e-mail**: If the user does not have an account
+  you may send them an e-mail invitation. The user will not appear
+  in the list until they have accepted the invitation and created an
+  account.
+* **create a new user**: Create a new account manually
+
+**Create a Group**
+
+Click the |new-group| button to create a new group. Provide a name and
+description for the group and click |save|. The group name must be unique.
+
 .. image:: _static/account/create_group.png
   :width: 400px
   :align: center
+
+Groups you are a member of are listed at the bottom of the panel. You may not
+edit groups that you do not own.

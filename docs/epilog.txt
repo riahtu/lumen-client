@@ -1,6 +1,3 @@
-.. |fa-circle| raw:: html
-
-  <i class="fa fa-circle"></i>
 
 .. |fa-gear| raw:: html
 
@@ -74,3 +71,51 @@
 .. |sync-plots| raw:: html
 
   <span class="btn primary tbl">Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i></span>
+
+.. |fa-online| raw:: html
+
+  <i class="fa fa-fw fa-circle available" style="color:green"></i>
+
+.. |fa-offline| raw:: html
+
+  <i class="fa fa-fw fa-circle" style="color:firebrick;"></i>
+
+.. |fa-admin| raw:: html
+
+  <i class="fa fa-user fa-fw"></i>
+
+.. |fa-owner| raw:: html
+
+  <i class="fa fa-user-o fa-fw"></i>
+
+.. |fa-viewer| raw:: html
+
+  <i class="fa fa-eye fa-fw"></i>
+
+.. |save| raw:: html
+
+  <span class="btn primary">Save</span>
+
+.. |new-installation| raw:: html
+
+  <span class="btn default"><i class="fa fa-plus"></i>New Installation</span>
+
+.. |fa-edit| raw:: html
+
+  <i class="fa fa-edit fa-fw fa-styled"></i>
+
+.. |fa-home| raw:: html
+
+  <i class="fa fa-home fa-fw fa-styled"></i>
+
+.. |fa-bars| raw:: html
+
+  <i class="fa fa-bars fa-fw fa-styled"></i>
+
+.. |new-group| raw:: html
+
+  <span class="btn default"><i class="fa fa-plus"></i>New Group</span>
+
+.. |my-account| raw:: html
+
+  <span class="btn default">My Account</span>
