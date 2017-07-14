@@ -8,9 +8,3 @@ Wattsworth
    explorer
    installation
    account
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
