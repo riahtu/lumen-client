@@ -10,40 +10,53 @@
   <hr/>
 
   <button class="btn btn-primary btn-block"
-    (click)="explorerService.setNavRangeToPlotRange()">
+    (click)="plotService.setNavRangeToPlotRange()">
     Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i> </button>
 
   <div class="btn-group btn-block" role="group">
     <button class="btn btn-primary autoscale"
-      (click)="explorerService.autoScaleAxis('left')">Left</button>
+      (click)="plotService.autoScaleAxis('left')">Left</button>
     <button class="btn btn-primary autoscale"
-      (click)="explorerService.autoScaleTime()">Time</button>
+      (click)="plotService.autoScaleTime()">Time</button>
     <button class="btn btn-primary autoscale"
-      (click)="explorerService.autoScaleAxis('right')">Right</button>
+      (click)="plotService.autoScaleAxis('right')">Right</button>
   </div>
-  
+  <hr/>
+
+  <!-- Measurement Buttons -->
+  <!--   start a new measurement -->
+  <button class="btn btn-primary btn-block"
+    *ngIf="!(measurementSelectors.enabled$ | async)"
+    (click)="measurementService.startMeasurement()">
+    Measure </button>
+  <!-- cancel the current measurement -->
+  <button class="btn btn-danger btn-block"
+    *ngIf="(measurementSelectors.enabled$ | async)"
+    (click)="measurementService.cancelMeasurement()">
+    Cancel Measurement </button>
+    
   <div class="checkbox">
     <label>
-      <input type="checkbox" [checked]="explorerSelectors.dataCursor$ | async" 
-        (change)="explorerService.toggleDataCursor()"><i class="fa fa-fw fa-crosshairs"></i> Show Data Cursor
+      <input type="checkbox" [checked]="plotSelectors.dataCursor$ | async" 
+        (change)="plotService.toggleDataCursor()"><i class="fa fa-fw fa-crosshairs"></i> Show Data Cursor
     </label>
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox" [checked]="explorerSelectors.liveUpdate$ | async"
-        (change)="explorerService.toggleLiveUpdate()"><i class="fa fa-fw fa-heartbeat"></i> Live Update
+      <input type="checkbox" [checked]="plotSelectors.liveUpdate$ | async"
+        (change)="plotService.toggleLiveUpdate()"><i class="fa fa-fw fa-heartbeat"></i> Live Update
     </label>
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox" [checked]="explorerSelectors.navZoomLock$ | async" 
-        (change)="explorerService.toggleNavZoomLock()"><i class="fa fa-fw fa-lock"></i> Lock Selection Width
+      <input type="checkbox" [checked]="plotSelectors.navZoomLock$ | async" 
+        (change)="plotService.toggleNavZoomLock()"><i class="fa fa-fw fa-lock"></i> Lock Selection Width
     </label>
   </div>
   <div class="checkbox">
     <label>
-      <input type="checkbox" [checked]="explorerSelectors.showDataEnvelope$ | async" 
-        (change)="explorerService.toggleShowDataEnvelope()"><i class="fa fa-fw fa-area-chart"></i>Data Envelope
+      <input type="checkbox" [checked]="plotSelectors.showDataEnvelope$ | async" 
+        (change)="plotService.toggleShowDataEnvelope()"><i class="fa fa-fw fa-area-chart"></i>Data Envelope
     </label>
   </div>
   <hr/>
@@ -69,15 +82,37 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Data from {{explorerSelectors.plotTimeRange$ | async | duration}}</h4>
+        <h4 class="modal-title pull-left">Data from {{plotSelectors.plotTimeRange$ | async | duration}}</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="downloadDataModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <app-download-data [range]="explorerSelectors.plotTimeRange$ | async"></app-download-data>
+          <app-download-data [range]="plotSelectors.plotTimeRange$ | async"></app-download-data>
       </div>
     </div>
   </div>
 </div>
 
+
+<!-- ====== measurement results modal ====== -->
+<div class="modal fade" bsModal #measurementModal="bs-modal" 
+     [config]="{backdrop: false}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">
+          Measurements over {{measurementSelectors.measurementRange$ | async | duration}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="measurementModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-measurement-results></app-measurement-results>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,35 +1,37 @@
-import { IPayloadAction } from '../../store/helpers';
-import { ExplorerActions } from './actions';
-import { IExplorerRecord } from './types';
+import { IPayloadAction } from '../../../store/helpers';
+import { PlotActions } from './actions';
+import { IStateRecord } from './types';
 import {
   IDbElement,
   IDataSet,
   IData,
   IDataRecord,
   DataFactory
-} from '../../store/data'
+} from '../../../store/data'
 import {
   recordify
-} from '../../store/helpers';
+} from '../../../store/helpers';
 import {
-  ExplorerFactory,
+  PlotFactory,
   INITIAL_STATE
 } from './initial-state';
 import * as _ from 'lodash';
 import {
-  IRange,
-  IExplorer
+  IState
 } from './types';
+import {
+  IRange
+} from '../helpers'
 
 export function reducer(
-  state: IExplorerRecord = INITIAL_STATE,
-  action: IPayloadAction): IExplorerRecord {
+  state: IStateRecord = INITIAL_STATE,
+  action: IPayloadAction): IStateRecord {
   let element: IDbElement;
   let data: IDataSet;
   switch (action.type) {
     // plot an element, auto select the appropriate axis
     //
-    case ExplorerActions.PLOT_ELEMENT:
+    case PlotActions.PLOT_ELEMENT:
       element = action.payload;
       //first try to plot element on the left
       if (state.left_elements.length == 0 ||
@@ -53,7 +55,7 @@ export function reducer(
 
     //hide a plotted element
     //
-    case ExplorerActions.HIDE_ELEMENT:
+    case PlotActions.HIDE_ELEMENT:
       element = action.payload;
       return state
         .set('left_elements', state.left_elements
@@ -63,12 +65,12 @@ export function reducer(
 
     //hide all elements (clear left_elements and right_elements)
     //
-    case ExplorerActions.HIDE_ALL_ELEMENTS:
+    case PlotActions.HIDE_ALL_ELEMENTS:
       return state.remove('left_elements').remove('right_elements')
       
     //change a plotted element's axis
     //
-    case ExplorerActions.SET_ELEMENT_AXIS:
+    case PlotActions.SET_ELEMENT_AXIS:
       element = action.payload.element;
       let targetAxis = action.payload.axis;
       let src, dest;
@@ -87,32 +89,32 @@ export function reducer(
 
     //show the plot window
     //
-    case ExplorerActions.SHOW_PLOT:
+    case PlotActions.SHOW_PLOT:
       return state.set('show_plot', true);
 
     //hide the plot window
     //
-    case ExplorerActions.HIDE_PLOT:
+    case PlotActions.HIDE_PLOT:
       return state.set('show_plot', false);
 
     //show the plot date selector
     //
-    case ExplorerActions.SHOW_DATE_SELECTOR:
+    case PlotActions.SHOW_DATE_SELECTOR:
       return state.set('show_date_selector', true);
 
     //hide the plot date selector
     //
-    case ExplorerActions.HIDE_DATE_SELECTOR:
+    case PlotActions.HIDE_DATE_SELECTOR:
       return state.set('show_date_selector', false);
 
     //adding data: indicate a server request has been made
     //
-    case ExplorerActions.ADDING_PLOT_DATA:
+    case PlotActions.ADDING_PLOT_DATA:
       return state.set('adding_plot_data', true);
 
     //add data retrieved from server to the plot dataset
     //
-    case ExplorerActions.ADD_PLOT_DATA:
+    case PlotActions.ADD_PLOT_DATA:
       data =
         handleMissingData(
           state.plot_data,
@@ -128,12 +130,12 @@ export function reducer(
 
     //adding nav data: indicate a server request has been made
     //
-    case ExplorerActions.ADDING_NAV_DATA:
+    case PlotActions.ADDING_NAV_DATA:
       return state.set('adding_nav_data', true);
 
     //add data retrieved from server to the nav dataset
     //
-    case ExplorerActions.ADD_NAV_DATA:
+    case PlotActions.ADD_NAV_DATA:
       data =
         handleMissingData(
           state.nav_data,
@@ -148,86 +150,86 @@ export function reducer(
 
     //reset the plot time ranges
     //
-    case ExplorerActions.RESET_TIME_RANGES:
+    case PlotActions.RESET_TIME_RANGES:
       return state
         .set('plot_time', { min: null, max: null })
         .set('nav_time', { min: null, max: null })
 
     //set plot time range
     //
-    case ExplorerActions.SET_PLOT_TIME_RANGE:
+    case PlotActions.SET_PLOT_TIME_RANGE:
       return state
         .set('plot_time', action.payload);
 
     //set nav time range
     //
-    case ExplorerActions.SET_NAV_TIME_RANGE:
+    case PlotActions.SET_NAV_TIME_RANGE:
       return state
         .set('nav_time', action.payload);
 
     //set nav range to the plot range
     //
-    case ExplorerActions.SET_NAV_RANGE_TO_PLOT_RANGE:
+    case PlotActions.SET_NAV_RANGE_TO_PLOT_RANGE:
       return state
         .set('nav_time', state.plot_time);
 
     //toggle whether the nav zoom window is locked
     //
-    case ExplorerActions.TOGGLE_ZOOM_LOCK:
+    case PlotActions.TOGGLE_ZOOM_LOCK:
       return state
         .set('nav_zoom_lock', !state.nav_zoom_lock)
 
     //disable the nav zoom window lock
     //
-    case ExplorerActions.DISABLE_ZOOM_LOCK:
+    case PlotActions.DISABLE_ZOOM_LOCK:
       return state
         .set('nav_zoom_lock', false)
 
     //toggle whether the nav zoom window is locked
     //
-    case ExplorerActions.TOGGLE_DATA_CURSOR:
+    case PlotActions.TOGGLE_DATA_CURSOR:
       return state
         .set('data_cursor', !state.data_cursor)
 
     //disable the nav zoom window lock
     //
-    case ExplorerActions.DISABLE_DATA_CURSOR:
+    case PlotActions.DISABLE_DATA_CURSOR:
       return state
         .set('data_cursor', false)
 
     //toggle whether the view is live updating
     //
-    case ExplorerActions.TOGGLE_LIVE_UPDATE:
+    case PlotActions.TOGGLE_LIVE_UPDATE:
       return state
         .set('live_update', !state.live_update)
 
     //disable the live update
     //
-    case ExplorerActions.DISABLE_LIVE_UPDATE:
+    case PlotActions.DISABLE_LIVE_UPDATE:
       return state
         .set('live_update', false)
 
     //toggle whether the data envelope is plotted
     //
-    case ExplorerActions.TOGGLE_SHOW_DATA_ENVELOPE:
+    case PlotActions.TOGGLE_SHOW_DATA_ENVELOPE:
       return state
         .set('show_data_envelope', !state.show_data_envelope)
 
     //toggle whether public data views are displayed
     //
-    case ExplorerActions.SET_SHOW_PUBLIC_DATA_VIEWS:
+    case PlotActions.SET_SHOW_PUBLIC_DATA_VIEWS:
       return state
         .set('show_public_data_views', action.payload)
 
     //set filter text for data view search bar
     //
-    case ExplorerActions.SET_DATA_VIEW_FILTER_TEXT:
+    case PlotActions.SET_DATA_VIEW_FILTER_TEXT:
       return state
         .set('data_view_filter_text', action.payload)
 
     //auto scale specified axis to include
     // all available data
-    case ExplorerActions.AUTO_SCALE_AXIS:
+    case PlotActions.AUTO_SCALE_AXIS:
       let axis = action.payload;
       switch (axis) {
         case 'left':
@@ -241,8 +243,8 @@ export function reducer(
 
     //restore view from a saved redux object
     //
-    case ExplorerActions.RESTORE_VIEW:
-      return ExplorerFactory(
+    case PlotActions.RESTORE_VIEW:
+      return PlotFactory(
         Object.assign({}, action.payload,
           {  //convert plot and nav data to records
             nav_data: recordify(action.payload.nav_data, DataFactory),
@@ -254,13 +256,13 @@ export function reducer(
     
     //set flag to indicate nilms are loaded
     //
-    case ExplorerActions.SET_NILMS_LOADED:
+    case PlotActions.SET_NILMS_LOADED:
       return state
         .set('nilms_loaded',true);
 
     //set flag to indicate data views are loaded
     //
-    case ExplorerActions.SET_DATA_VIEWS_LOADED:
+    case PlotActions.SET_DATA_VIEWS_LOADED:
       return state
         .set('data_views_loaded',true);
 

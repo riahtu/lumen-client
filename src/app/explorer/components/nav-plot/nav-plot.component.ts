@@ -17,8 +17,8 @@ import {
   IDataSet,
   IDbElement
 } from '../../../store/data';
-import { ExplorerService } from '../../explorer.service';
-import { ExplorerSelectors } from '../../explorer.selectors';
+import { PlotService } from '../../services/plot.service';
+import { PlotSelectors } from '../../selectors/plot.selectors';
 import { FLOT_OPTIONS } from './flot.options';
 import * as _ from 'lodash';
 
@@ -41,8 +41,8 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private renderer: Renderer,
-    private explorerSelectors: ExplorerSelectors,
-    private explorerService: ExplorerService
+    private plotSelectors: PlotSelectors,
+    private plotService: PlotService
   ) {
     this.plot = null;
     this.xBounds = new Subject();
@@ -53,15 +53,15 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(
   ) {
     /* load data based on changes to navTimeRange */
-    this.subs.push(this.explorerSelectors.navTimeRange$
+    this.subs.push(this.plotSelectors.navTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .combineLatest(this.explorerSelectors.plottedElements$
+      .combineLatest(this.plotSelectors.plottedElements$
         .distinctUntilChanged((x,y) => _.isEqual(x,y)),
-        this.explorerSelectors.addingNavData$)
+        this.plotSelectors.addingNavData$)
       .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
       .subscribe(([timeRange, elements, busy]) => {
         let resolution = $(this.plotArea.nativeElement).width()
-        this.explorerService.loadNavData(elements, timeRange, resolution);
+        this.plotService.loadNavData(elements, timeRange, resolution);
         if (this.plot != null)
           this.plot.clearSelection(true);
       }));
@@ -69,9 +69,9 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.xBounds
       .debounceTime(100)
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .subscribe(range => this.explorerService.setPlotTimeRange(range)));
+      .subscribe(range => this.plotService.setPlotTimeRange(range)));
     /* set the selection window to track the plot time range */
-    this.subs.push(this.explorerSelectors.plotTimeRange$
+    this.subs.push(this.plotSelectors.plotTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .subscribe(timeRange => {
         if (this.plot == null) {
@@ -82,14 +82,14 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           true); //do not fire the plot selected event
       }));
     /* toggle the zoom lock feature based on the state */
-    this.subs.push(this.explorerSelectors.navZoomLock$
+    this.subs.push(this.plotSelectors.navZoomLock$
       .distinctUntilChanged()
       .subscribe(val => {
         if (this.plot != null)
           this.plot.lockZoom(val);
       }));
     /* set nav plot axes based on changes to navTimeRange */
-    this.subs.push(this.explorerSelectors.navTimeRange$
+    this.subs.push(this.plotSelectors.navTimeRange$
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .subscribe(timeRange => {
         if (this.plot == null) {
@@ -110,15 +110,15 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     /* update the plot when new data comes in */
-    this.subs.push(this.explorerSelectors.leftElements$
-      .combineLatest(this.explorerSelectors.rightElements$)
+    this.subs.push(this.plotSelectors.leftElements$
+      .combineLatest(this.plotSelectors.rightElements$)
       .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(this.explorerSelectors.navData$, this.explorerSelectors.showDataEnvelope$)
+      .combineLatest(this.plotSelectors.navData$, this.plotSelectors.showDataEnvelope$)
       .subscribe(([elementsByAxis, data, showEnvelope]) => {
         //build data structure
-        let leftAxis = this.explorerService
+        let leftAxis = this.plotService
           .buildDataset(elementsByAxis.left, data, 1, showEnvelope);
-        let rightAxis = this.explorerService
+        let rightAxis = this.plotService
           .buildDataset(elementsByAxis.right, data, 2, showEnvelope);
         let dataset = leftAxis.concat(rightAxis);
         if (dataset.length == 0) {
@@ -129,7 +129,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
-          this.explorerService.disableNavZoomLock();
+          this.plotService.disableNavZoomLock();
           $(this.plotArea.nativeElement).bind('plotselected', this.selectRange.bind(this))
 
         } else {

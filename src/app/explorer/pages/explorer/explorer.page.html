@@ -17,11 +17,11 @@
         </div>
       </tab>
       <!-- Plot Tab -->
-      <tab heading='Plot'  [disabled]="explorerSelectors.isPlotEmpty$ | async">
+      <tab heading='Plot'  [disabled]="plotSelectors.isPlotEmpty$ | async">
         <app-plot-tab> </app-plot-tab>
       </tab>
       <!-- Tool Tab -->
-      <tab heading='Tools' [disabled]="explorerSelectors.isPlotEmpty$ | async">
+      <tab heading='Tools' [disabled]="plotSelectors.isPlotEmpty$ | async">
         <app-tool-tab 
           (savePlotImage)="showSavePlotImage()"
           (saveDataView)="showSaveDataView()"
@@ -37,28 +37,28 @@
         <!-- ==== NAV PLOT ==== -->
         <!-- nav loading spinner -->
         <span class="data-loading" [@fadeInOut]
-          *ngIf="explorerSelectors.addingNavData$ | async">
+          *ngIf="plotSelectors.addingNavData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
         <span class="nav-date-range">
-          {{explorerSelectors.navTimeRange$ | async | duration}}
+          {{plotSelectors.navTimeRange$ | async | duration}}
         </span>
         <!-- navigation plot (25% of view) -->
         <app-nav-plot class="nav-plot"></app-nav-plot>
         <!-- ===== MAIN PLOT ==== -->
         <!-- plot loading spinner -->
         <span class="data-loading" [@fadeInOut]
-          *ngIf="explorerSelectors.addingPlotData$ | async">
+          *ngIf="plotSelectors.addingPlotData$ | async">
           <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
         </span>
         <!-- warning if some plot data has errors -->
         <span class="data-errors" [@fadeInOut]
-          *ngIf="!(explorerSelectors.isPlotDataValid$ | async)&&!(explorerSelectors.addingPlotData$ | async)">
+          *ngIf="!(plotSelectors.isPlotDataValid$ | async)&&!(plotSelectors.addingPlotData$ | async)">
           <i class="fa fa-exclamation-circle"></i> some data could not be retrieved
         </span>
         <!-- warning if interval data is displayed -->
         <span class="interval-warning" [@fadeInOut]
-          *ngIf="explorerSelectors.isIntervalDataDisplayed$ | async">
+          *ngIf="plotSelectors.isIntervalDataDisplayed$ | async">
           <i class="fa fa-exclamation-triangle"></i> some data cannot be displayed at this resolution
         </span>
         
@@ -66,27 +66,27 @@
         <app-main-plot class="main-plot" #plot></app-main-plot>
 
         <!-- date bar (5% of view) -->
-        <button class="date-bar" (click)="explorerService.showDateSelector()" 
-          [disabled]="explorerSelectors.liveUpdate$ | async">
-          {{explorerSelectors.plotTimeRange$ | async | duration}}
+        <button class="date-bar" (click)="plotService.showDateSelector()" 
+          [disabled]="plotSelectors.liveUpdate$ | async">
+          {{plotSelectors.plotTimeRange$ | async | duration}}
         </button>
         <!-- live update notification -->
           <div class="live-update pull-right" [@fadeInOut]
-            *ngIf="explorerSelectors.liveUpdate$ | async">
+            *ngIf="plotSelectors.liveUpdate$ | async">
             <i class="fa fa-heartbeat"></i> Live Update
-            <i class="fa fa-close" (click)="explorerService.disableLiveUpdate()"></i>
+            <i class="fa fa-close" (click)="plotService.disableLiveUpdate()"></i>
           </div>
       </div>
       <!--modal overlay to pick date -->
       <app-date-picker class="plot overlay" 
-        *ngIf="explorerSelectors.showDateSelector$ | async"
-        [timeRange]="explorerSelectors.plotTimeRange$ | async"></app-date-picker>
+        *ngIf="plotSelectors.showDateSelector$ | async"
+        [timeRange]="plotSelectors.plotTimeRange$ | async"></app-date-picker>
 
       <!-- modal overlay if no plot -->
       <div class="plot overlay" [@fadeOut]
-        *ngIf="!(explorerSelectors.showPlot$ |async)" >
+        *ngIf="!(plotSelectors.showPlot$ |async)" >
         <div class="message">
-          <span *ngIf="explorerSelectors.addingPlotData$ | async; then loading else default"></span>
+          <span *ngIf="plotSelectors.addingPlotData$ | async; then loading else default"></span>
         </div>
         <ng-template #loading>
            <i class="fa fa-spinner fa-spin fa-5x"></i>
@@ -156,7 +156,7 @@
           description: '',
           private: true,
           home: false,
-          live: this.explorerSelectors.liveUpdate$ | async}" 
+          live: this.plotSelectors.liveUpdate$ | async}" 
             (save)="createDataView($event)" 
             (cancel)="saveDataViewModal.hide()"></app-data-view-form>
           

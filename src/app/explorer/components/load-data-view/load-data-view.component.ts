@@ -2,8 +2,8 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { IDataView } from '../../../store/data';
 import { DataViewService } from '../../../services';
-import { ExplorerService } from '../../explorer.service';
-import {ExplorerSelectors} from '../../explorer.selectors';
+import { PlotService } from '../../services/plot.service';
+import {PlotSelectors} from '../../selectors/plot.selectors';
 import {Observable} from 'rxjs';
 
 @Component({
@@ -18,8 +18,8 @@ export class LoadDataViewComponent implements OnInit {
   public hasFilteredViews$: Observable<boolean>;
 
   constructor(
-    public explorerSelectors: ExplorerSelectors,
-    public explorerService: ExplorerService,
+    public plotSelectors: PlotSelectors,
+    public plotService: PlotService,
     private dataViewService: DataViewService
   ) {
     this.loaded = new EventEmitter();
@@ -28,12 +28,12 @@ export class LoadDataViewComponent implements OnInit {
   ngOnInit() {
 
     this.hasViews$ = 
-      this.explorerSelectors.dataViews$
+      this.plotSelectors.dataViews$
         .map(records => Object.keys(records))
         .map(ids => ids.length!=0)
         
     this.hasFilteredViews$ = 
-      this.explorerSelectors.filteredDataViews$
+      this.plotSelectors.filteredDataViews$
         .map(views => views.length>0)
   }
 
@@ -42,10 +42,10 @@ export class LoadDataViewComponent implements OnInit {
     this.loaded.next('success');
   }
   setDataViewFilterText(text: string){
-    this.explorerService.setDataViewFilterText(text);
+    this.plotService.setDataViewFilterText(text);
   }
   setShowPublicDataViews(val: boolean){
-    this.explorerService.setShowPublicDataViews(val);
+    this.plotService.setShowPublicDataViews(val);
   }
 
 

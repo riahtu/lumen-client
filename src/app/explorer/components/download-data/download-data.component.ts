@@ -8,7 +8,7 @@ import {
   MessageService
 } from '../../../services';
 import { IRange } from '../../store';
-import { ExplorerSelectors } from '../../explorer.selectors';
+import { PlotSelectors } from '../../selectors/plot.selectors';
 
 @Component({
   selector: 'app-download-data',
@@ -23,7 +23,7 @@ export class DownloadDataComponent implements OnInit {
   public downloadInfo$: Observable<IDownloadInfo[]>
   
   constructor(
-    public explorerSelectors: ExplorerSelectors,
+    public plotSelectors: PlotSelectors,
     public messageService: MessageService,
     public dataService: DataService
   ) {
@@ -31,8 +31,8 @@ export class DownloadDataComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.downloadInfo$ = this.explorerSelectors
-      .plottedStreams$.combineLatest(this.explorerSelectors.nilms$)
+    this.downloadInfo$ = this.plotSelectors
+      .plottedStreams$.combineLatest(this.plotSelectors.nilms$)
       .map(([streams,nilms])=>{
         return streams
         .filter(stream => nilms[stream.nilm_id]!==undefined)

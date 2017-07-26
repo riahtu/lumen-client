@@ -20,12 +20,13 @@ import { SelectModule } from 'ng-select';
 import { SharedModule } from '../shared/shared.module';
 import { COMPONENTS } from './components';
 import { ExplorerPageComponent } from './pages/explorer/explorer.page';
-import { ExplorerService } from './explorer.service';
-import { ExplorerSelectors } from './explorer.selectors';
+import { SERVICES } from './services';
+import { SELECTORS } from './selectors';
 import { TreeModule } from 'angular-tree-component';
 import { DurationPipe } from './duration.pipe';
 import { LoadDataViewComponent } from './components/load-data-view/load-data-view.component';
 import { DownloadDataComponent } from './components/download-data/download-data.component';
+import { MeasurementResultsComponent } from './components/measurement-results/measurement-results.component';
 
 @NgModule({
   imports: [
@@ -49,11 +50,12 @@ import { DownloadDataComponent } from './components/download-data/download-data.
     ExplorerPageComponent,
     DurationPipe,
     LoadDataViewComponent,
-    DownloadDataComponent
+    DownloadDataComponent,
+    MeasurementResultsComponent
   ],
   providers: [
-    ExplorerService,
-    ExplorerSelectors,
+    SERVICES,
+    SELECTORS,
     DatePipe
   ],
   exports: [

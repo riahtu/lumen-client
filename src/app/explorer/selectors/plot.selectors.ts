@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
-import { IAppState } from '../app.store';
+import { IAppState } from '../../app.store';
 import {
-  IExplorer,
   IRange
-} from './store';
+} from '../store';
 import {
+  IState,
   INilmRecords,
   IDbElement,
   IDbElementRecords,
@@ -18,41 +18,42 @@ import {
   IDataSet,
   IDataViewRecords,
   IDataView
-} from '../store/data';
+} from '../../store/data';
+
+export const PLOT_REDUX= ['ui','explorer','plot'];
 
 @Injectable()
-export class ExplorerSelectors {
+export class PlotSelectors {
 
+  @select(['data']) data$: Observable<IState>;
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
   @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
 
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 
-  //@select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
-  @select(['ui', 'explorer', 'left_elements']) leftElementIDs$: Observable<number[]>;
-  @select(['ui', 'explorer', 'right_elements']) rightElementIDs$: Observable<number[]>;
-  @select(['ui', 'explorer', 'show_plot']) showPlot$: Observable<boolean>;
-  @select(['ui', 'explorer', 'show_date_selector']) showDateSelector$: Observable<boolean>;
-  @select(['ui', 'explorer', 'plot_time']) plotTimeRange$: Observable<IRange>
-  @select(['ui', 'explorer', 'plot_data']) plotData$: Observable<IDataSet>;
-  @select(['ui', 'explorer', 'adding_plot_data']) addingPlotData$: Observable<boolean>;
-  @select(['ui', 'explorer', 'nav_time']) navTimeRange$: Observable<IRange>
-  @select(['ui', 'explorer', 'nav_data']) navData$: Observable<IDataSet>;
-  @select(['ui', 'explorer', 'adding_nav_data']) addingNavData$: Observable<boolean>;
-  @select(['ui', 'explorer', 'nav_zoom_lock']) navZoomLock$: Observable<boolean>;
-  @select(['ui', 'explorer', 'data_cursor']) dataCursor$: Observable<boolean>;
-  @select(['ui', 'explorer', 'plot_y1']) plotY1$: Observable<IRange>;
-  @select(['ui', 'explorer', 'plot_y2']) plotY2$: Observable<IRange>;
-  @select(['ui', 'explorer', 'live_update']) liveUpdate$: Observable<boolean>;
-  @select(['ui', 'explorer', 'data_view_filter_text']) dataViewFilterText$: Observable<string>;
-  @select(['ui', 'explorer', 'show_public_data_views']) showPublicDataViews$: Observable<boolean>;
-  @select(['ui', 'explorer', 'left_units']) leftElementUnits$: Observable<string>;
-  @select(['ui', 'explorer', 'right_units']) rightElementUnits$: Observable<string>;
-  @select(['ui', 'explorer', 'nilms_loaded']) nilmsLoaded$: Observable<boolean>;
-  @select(['ui', 'explorer', 'data_views_loaded']) dataViewsLoaded$: Observable<boolean>;
-  @select(['ui', 'explorer', 'show_data_envelope']) showDataEnvelope$: Observable<boolean>;
-
+  @select(_.concat(PLOT_REDUX,'left_elements')) leftElementIDs$: Observable<number[]>;
+  @select(_.concat(PLOT_REDUX,'right_elements')) rightElementIDs$: Observable<number[]>;
+  @select(_.concat(PLOT_REDUX,'show_plot')) showPlot$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'show_date_selector')) showDateSelector$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'plot_time')) plotTimeRange$: Observable<IRange>
+  @select(_.concat(PLOT_REDUX,'plot_data')) plotData$: Observable<IDataSet>;
+  @select(_.concat(PLOT_REDUX,'adding_plot_data')) addingPlotData$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'nav_time')) navTimeRange$: Observable<IRange>
+  @select(_.concat(PLOT_REDUX,'nav_data')) navData$: Observable<IDataSet>;
+  @select(_.concat(PLOT_REDUX,'adding_nav_data')) addingNavData$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'nav_zoom_lock')) navZoomLock$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'data_cursor')) dataCursor$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'plot_y1')) plotY1$: Observable<IRange>;
+  @select(_.concat(PLOT_REDUX,'plot_y2')) plotY2$: Observable<IRange>;
+  @select(_.concat(PLOT_REDUX,'live_update')) liveUpdate$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'data_view_filter_text')) dataViewFilterText$: Observable<string>;
+  @select(_.concat(PLOT_REDUX,'show_public_data_views')) showPublicDataViews$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'left_units')) leftElementUnits$: Observable<string>;
+  @select(_.concat(PLOT_REDUX,'right_units')) rightElementUnits$: Observable<string>;
+  @select(_.concat(PLOT_REDUX,'nilms_loaded')) nilmsLoaded$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'data_views_loaded')) dataViewsLoaded$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'show_data_envelope')) showDataEnvelope$: Observable<boolean>;
 
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>

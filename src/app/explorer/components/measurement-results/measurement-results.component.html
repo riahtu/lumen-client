@@ -1,0 +1,47 @@
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Element</th>
+      <th><span *ngIf="measurementSelectors.relative$ | async">Δ </span>Mean</th>
+      <th><span *ngIf="measurementSelectors.relative$ | async">Δ </span>Min</th>
+      <th><span *ngIf="measurementSelectors.relative$ | async">Δ </span>Max</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let m of displayedMeasurements$ | async">
+      <td>
+        <span class="element-color pull-left" [style.background]="m.color"></span>
+        {{m.name}}
+      </td>
+      <td><span *ngIf="m.valid; else empty">
+        {{m.mean | number: '1.2-2'}}</span></td>
+      <td><span *ngIf="m.valid; else empty">
+        {{m.min | number: '1.2-2'}}</span></td>
+      <td><span *ngIf="m.valid; else empty">
+        {{m.max | number: '1.2-2'}}</span></td>
+    </tr>
+  </tbody>
+</table>
+<ng-template #empty>&mdash;</ng-template>
+
+<div class="clearfix">
+  <!-- checkbox for relative measurements -->
+  <div class="checkbox pull-left" 
+    *ngIf="(measurementSelectors.zeroRange$ | async) != null">
+    <label>
+    <input type="checkbox"
+        [checked]="measurementSelectors.relative$ | async" 
+        (change)="measurementService.setRelative($event.target.checked)">
+      Relative to <b>{{measurementSelectors.zeroRange$ | async | duration }}</b>
+    </label>
+  </div>
+
+  <!-- button to set zero -->
+  <div class="pull-right">
+    <button class="btn btn-default" 
+    (click)="measurementService.setZero()">Set Zero</button>
+  </div>
+  
+</div>

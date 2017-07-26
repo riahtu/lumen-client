@@ -1,15 +1,15 @@
 
 import {
-  IExplorer,
-  IExplorerRecord,
+  IState,
+  IStateRecord,
 } from './types';
 
 import { makeTypedFactory } from 'typed-immutable-record';
 
 
-// ---- Explorer ----
-export const ExplorerFactory =
-  makeTypedFactory<IExplorer, IExplorerRecord>({
+// ---- Plot ----
+export const PlotFactory =
+  makeTypedFactory<IState, IStateRecord>({
     left_elements: [],
     right_elements: [],
     left_units: 'none',
@@ -34,8 +34,8 @@ export const ExplorerFactory =
     show_data_envelope: true,
     //
     nilms_loaded: false,
-    data_views_loaded: false
+    data_views_loaded: false,
   });
 
 
-export const INITIAL_STATE = ExplorerFactory();
+export const INITIAL_STATE = PlotFactory();

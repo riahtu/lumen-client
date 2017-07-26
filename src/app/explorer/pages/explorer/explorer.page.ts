@@ -7,9 +7,8 @@ import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
-import { IExplorer } from '../../store';
-import { ExplorerSelectors } from '../../explorer.selectors';
-import { ExplorerService } from '../../explorer.service';
+import { PlotSelectors } from '../../selectors/plot.selectors';
+import { PlotService } from '../../services/plot.service';
 import { 
   DataViewService, 
   DbStreamService 
@@ -55,12 +54,12 @@ export class ExplorerPageComponent implements OnInit {
   public newDataView: IDataView;
 
   constructor(
-    public explorerSelectors: ExplorerSelectors,
-    public explorerService: ExplorerService,
+    public plotSelectors: PlotSelectors,
+    public plotService: PlotService,
     public dataViewService: DataViewService,
     public dbStreamService: DbStreamService
   ) {
-    this.plotZValue$ = this.explorerSelectors.showDateSelector$
+    this.plotZValue$ = this.plotSelectors.showDateSelector$
       .map(show => {
         if (show)
           return -1;
@@ -98,7 +97,7 @@ export class ExplorerPageComponent implements OnInit {
       .subscribe(
       () => { },
       () => { },
-      () => this.explorerService.setDataViewsLoaded())
+      () => this.plotService.setDataViewsLoaded())
 
     this.loadDataViewModal.show();
   }

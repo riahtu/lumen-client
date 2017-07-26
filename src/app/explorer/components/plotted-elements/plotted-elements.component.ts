@@ -11,11 +11,10 @@ import {
 import { select } from '@angular-redux/store';
 import { Subject, Observable, Subscription } from 'rxjs';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { IExplorer } from '../../store';
 import { DbElementService } from '../../../services';
 import { IDbElement } from '../../../store/data';
-import { ExplorerService } from '../../explorer.service';
-import { ExplorerSelectors } from '../../explorer.selectors';
+import { PlotService } from '../../services/plot.service';
+import { PlotSelectors } from '../../selectors/plot.selectors';
 
 declare var $: any;
 
@@ -47,9 +46,9 @@ export class PlottedElementsComponent
   //----------------------------------
 
   constructor(
-    private explorerService: ExplorerService,
+    private plotService: PlotService,
     private dbElementService: DbElementService,
-    private explorerSelectors: ExplorerSelectors
+    private plotSelectors: PlotSelectors
   ) {
     this.newColor = "";
   }
@@ -59,8 +58,8 @@ export class PlottedElementsComponent
 
     //create tooltip text as [stream_name] @ [installation_name]
     //
-    this.toolTipText$ = this.explorerSelectors.streams$
-      .combineLatest(this.explorerSelectors.nilms$)
+    this.toolTipText$ = this.plotSelectors.streams$
+      .combineLatest(this.plotSelectors.nilms$)
       .map(([streams, nilms]) => {
         if (streams[this.element.db_stream_id] === undefined)
           return '<unknown>'
@@ -73,8 +72,8 @@ export class PlottedElementsComponent
 
     //element info 
     //
-    this.elementInfo$ = this.explorerSelectors.streams$
-      .combineLatest(this.explorerSelectors.nilms$)
+    this.elementInfo$ = this.plotSelectors.streams$
+      .combineLatest(this.plotSelectors.nilms$)
       .map(([streams, nilms]) => {
         if (streams[this.element.db_stream_id] === undefined)
           return {};
@@ -101,7 +100,7 @@ export class PlottedElementsComponent
   }
   // X button on the element display
   hideElement() {
-    this.explorerService.hideElement(this.element);
+    this.plotService.hideElement(this.element);
   }
 
   // ---- code to handle element customization modal ----
@@ -129,7 +128,7 @@ export class PlottedElementsComponent
   onSave() {
     //check if the axis changed
     if (this.axis != this.newAxis) {
-      let result = this.explorerService.setElementAxis(this.element, this.newAxis);
+      let result = this.plotService.setElementAxis(this.element, this.newAxis);
       if (result == false) {
         this.axisMessage = `this axis does not have units [ ${this.element.units} ]`
         return; //do not close the dialog

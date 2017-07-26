@@ -22,6 +22,7 @@ import {
   DataViewActions
 } from '../../store/data';
 
+import * as plot from '../../explorer/store/plot'
 import * as explorer from '../../explorer/store';
 
 export const MAX_SAVE_DATA_LENGTH = 200;
@@ -176,16 +177,16 @@ export class DataViewService {
     //first clear the plot
     this.elementService.resetElements();
     this.ngRedux.dispatch({
-      type: explorer.ExplorerActions.HIDE_ALL_ELEMENTS,
+      type: explorer.PlotActions.HIDE_ALL_ELEMENTS,
     })
     //now set the plot & nav time ranges so we don't reload the data 
     //(they are null after HIDE_ALL_ELEMENTS)
     this.ngRedux.dispatch({
-      type: explorer.ExplorerActions.SET_PLOT_TIME_RANGE,
+      type: explorer.PlotActions.SET_PLOT_TIME_RANGE,
       payload: view.redux.ui_explorer.plot_time
     })
     this.ngRedux.dispatch({
-      type: explorer.ExplorerActions.SET_NAV_TIME_RANGE,
+      type: explorer.PlotActions.SET_NAV_TIME_RANGE,
       payload: view.redux.ui_explorer.nav_time
     })
     //now load the data elements
@@ -200,7 +201,7 @@ export class DataViewService {
       })
     //restore the plot
     this.ngRedux.dispatch({
-      type: explorer.ExplorerActions.RESTORE_VIEW,
+      type: explorer.PlotActions.RESTORE_VIEW,
       payload: view.redux.ui_explorer
     });
     //load the associated streams if they haven't been retrieved already
@@ -221,7 +222,7 @@ export class DataViewService {
   //
   public getDataViewState(includeData: boolean): IDataViewState {
     let allElements = this.ngRedux.getState().data.dbElements;
-    let explorerState = this.ngRedux.getState().ui.explorer;
+    let explorerState = this.ngRedux.getState().ui.explorer.plot;
     let plottedElements = _.concat(
       explorerState.left_elements,
       explorerState.right_elements)
@@ -235,22 +236,22 @@ export class DataViewService {
     let stream_ids = _.uniq(Object.keys(plottedElements)
       .map(id => plottedElements[id].db_stream_id))
     //sanitize explorer ui state
-    let ui_explorer = <explorer.IState>(<any>this.ngRedux.getState().ui.explorer).toJS();
-    ui_explorer.show_date_selector = false; //hide in case it is visible
+    let plot_ui = <plot.IState>(<any>this.ngRedux.getState().ui.explorer.plot).toJS();
+    plot_ui.show_date_selector = false; //hide in case it is visible
     if (includeData) {
       //remove nav_data and data that are not part of plottedElements
-      ui_explorer.plot_data = Object.keys(plottedElements)
+      plot_ui.plot_data = Object.keys(plottedElements)
         .reduce((acc, id) => {
-          let dataset = ui_explorer.plot_data[id];
+          let dataset = plot_ui.plot_data[id];
           if (dataset === undefined) {
             return acc; //data is missing we can't save it
           }
           acc[id] = this.decimateDataset(dataset);
           return acc;
         }, {})
-      ui_explorer.nav_data = Object.keys(plottedElements)
+      plot_ui.nav_data = Object.keys(plottedElements)
         .reduce((acc, id) => {
-          let dataset = ui_explorer.nav_data[id];
+          let dataset = plot_ui.nav_data[id];
           if (dataset === undefined) {
             return acc; //data is missing we can't save it
           }
@@ -258,12 +259,12 @@ export class DataViewService {
           return acc;
         }, {})
     } else {
-      ui_explorer.plot_data = {};
-      ui_explorer.nav_data = {};
+      plot_ui.plot_data = {};
+      plot_ui.nav_data = {};
     }
     return {
       redux: {
-        ui_explorer: ui_explorer,
+        ui_explorer: plot_ui,
         data_dbElements: plottedElements
       },
       stream_ids: stream_ids

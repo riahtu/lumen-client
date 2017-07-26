@@ -4,6 +4,11 @@ export const FLOT_OPTIONS = {
 			hoverable: true,
 			clickable: true,
 		},
+		selection: {
+			mode: "x",
+			interactive: false,
+			color: "#00b33c"
+		},
 		tooltip: true,
 		canvas: true,
 		tooltipOpts:{

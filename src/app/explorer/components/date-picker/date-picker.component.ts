@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChange } from '@angular/core
 import {
   trigger, animate, style, transition
 } from '@angular/animations';
-import { ExplorerService } from '../../explorer.service'
+import { PlotService } from '../../services/plot.service'
 
 import { IRange } from '../../store';
 
@@ -32,7 +32,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
   public invalidRange: boolean;
 
   constructor(
-    private explorerService: ExplorerService
+    private plotService: PlotService
   ) { 
     this.invalidRange = false;
   }
@@ -66,12 +66,12 @@ export class DatePickerComponent implements OnInit, OnChanges {
       return;
     }
     this.invalidRange = false;
-    this.explorerService.setPlotTimeRange(range);
-    this.explorerService.hideDateSelector();
+    this.plotService.setPlotTimeRange(range);
+    this.plotService.hideDateSelector();
   }
   public cancel(){
     this.invalidRange = false;
-    this.explorerService.hideDateSelector();
+    this.plotService.hideDateSelector();
   }
 
   ngOnChanges(

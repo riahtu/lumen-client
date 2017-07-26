@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import {IDbElement} from '../../../store/data';
-import { ExplorerSelectors } from '../../explorer.selectors';
+import { PlotSelectors } from '../../selectors/plot.selectors';
 
 @Component({
   selector: 'app-plot-tab',
@@ -13,7 +13,7 @@ export class PlotTabComponent implements OnInit {
   
 
   constructor(
-    public explorerSelectors: ExplorerSelectors
+    public plotSelectors: PlotSelectors
   ) { }
 
   ngOnInit() {

@@ -9,7 +9,6 @@ import {
   DbFolderService
 } from '../../../services';
 import {
-  IState,
   INilm,
   IDb,
   IDbFolder,
@@ -20,9 +19,8 @@ import {
   IDbElementRecords
 } from '../../../store/data';
 import * as _ from 'lodash';
-import { ExplorerService } from '../../explorer.service';
-import { ExplorerSelectors } from '../../explorer.selectors';
-import { IExplorer } from '../../store';
+import { PlotService } from '../../services/plot.service';
+import { PlotSelectors } from '../../selectors/plot.selectors';
 
 @Component({
   selector: 'app-file-tree',
@@ -31,8 +29,6 @@ import { IExplorer } from '../../store';
 })
 
 export class FileTreeComponent implements OnInit {
-  @select(['data']) data$: Observable<IState>;
-  @select(['ui', 'explorer']) uiState$: Observable<IExplorer>;
   public dbNodes$: Observable<DbTreeNode[]>;
 
   public treeOptions = {};
@@ -42,8 +38,8 @@ export class FileTreeComponent implements OnInit {
     private nilmService: NilmService,
     private dbService: DbService,
     private dbFolderService: DbFolderService,
-    private explorerService: ExplorerService,
-    public explorerSelectors: ExplorerSelectors
+    private plotService: PlotService,
+    public plotSelectors: PlotSelectors
   ) {
     this.treeOptions = {
       getChildren: this.getChildren.bind(this)
@@ -52,13 +48,13 @@ export class FileTreeComponent implements OnInit {
 
   ngOnInit() {
     this.nilmService.loadNilms()
-      .subscribe(() => {},
-      () => {},
-      () => this.explorerService.setNilmsLoaded());
+      .subscribe(() => { },
+      () => { },
+      () => this.plotService.setNilmsLoaded());
 
-    this.dbNodes$ = this.data$
-      .combineLatest(this.uiState$)
-      .map(([data, ui]) => {
+    this.dbNodes$ = this.plotSelectors.data$
+      .combineLatest(this.plotSelectors.plottedElements$)
+      .map(([data,elements]) => {
         let nilms = _.toArray(data.nilms.entities);
         let privelegedNilms = [].concat(data.nilms.admin, data.nilms.owner);
         return nilms.map(nilm => {
@@ -68,7 +64,7 @@ export class FileTreeComponent implements OnInit {
             priveleged = true;
           }
           return this.mapNilm(nilm, priveleged, data.dbs[nilm.db_id],
-            data.dbFolders, data.dbStreams, data.dbElements, ui);
+            data.dbFolders, data.dbStreams, data.dbElements);
         })
       })
   }
@@ -91,15 +87,14 @@ export class FileTreeComponent implements OnInit {
     db: IDb,
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
-    elements: IDbElementRecords,
-    ui: IExplorer,
+    elements: IDbElementRecords
   ): DbTreeNode {
     let children = null
     if (db != null && folders[db.contents] !== undefined) {
 
       //nilm is loaded, map it out
       let root = this.mapFolder(folders[db.contents],
-        folders, streams, elements, ui);
+        folders, streams, elements);
 
       return Object.assign({}, root, {
         id: 'n' + nilm.db_id,
@@ -127,7 +122,6 @@ export class FileTreeComponent implements OnInit {
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
     elements: IDbElementRecords,
-    ui: IExplorer
   ): DbTreeNode {
     let children = null;
     //if folder is loaded, map children
@@ -137,12 +131,12 @@ export class FileTreeComponent implements OnInit {
         folder.subfolders
           .filter(id => folders[id] !== undefined)
           .map(id => this.mapFolder(
-            folders[id], folders, streams, elements, ui)),
+            folders[id], folders, streams, elements)),
         //now map streams
         folder.streams
           .filter(id => streams[id] !== undefined)
           .map(id => this.mapStream(
-            streams[id], elements, ui)))
+            streams[id], elements)))
     }
     //create the DbNode and return it
     return {
@@ -156,14 +150,13 @@ export class FileTreeComponent implements OnInit {
 
   mapStream(
     stream: IDbStream,
-    elements: IDbElementRecords,
-    ui: IExplorer
+    elements: IDbElementRecords
   ): DbTreeNode {
     let children = stream.elements
       .map(id => elements[id])
       .filter(element => element !== undefined)
       .filter(element => element.plottable)
-      .map(element => this.mapElement(element, ui))
+      .map(element => this.mapElement(element))
     //create the DbNode and return it
     return {
       id: 's' + stream.id,
@@ -176,20 +169,10 @@ export class FileTreeComponent implements OnInit {
 
   mapElement(
     element: IDbElement,
-    ui: IExplorer
   ): IDbElementNode {
-    let plotted = false;
-    if (_.includes(ui.left_elements, element.id) ||
-      _.includes(ui.right_elements, element.id)) {
-      plotted = true;
-    }
-    let plottable = false;
-    if (ui.left_units == element.units ||
-      ui.right_units == element.units ||
-      ui.left_elements.length == 0 ||
-      ui.right_elements.length == 0) {
-      plottable = true;
-    }
+    let plotted = this.plotService.isPlotted(element);
+    let plottable = this.plotService.isPlottable(element.units);
+
     let tooltip = "";
     if (plottable == false) {
       tooltip = `no axis for [ ${element.units} ]`;

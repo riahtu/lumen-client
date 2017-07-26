@@ -1,8 +1,15 @@
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
-import { ExplorerService } from '../../explorer.service';
-import { ExplorerSelectors } from '../../explorer.selectors';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import {
+  PlotService,
+  MeasurementService
+} from '../../services';
+import {
+  MeasurementSelectors,
+  PlotSelectors
+} from '../../selectors';
 
 export const LIVE_PLOT_UPDATE_INTERVAL = 5000; //5 seconds
 export const LIVE_NAV_UPDATE_INTERVAL = 60 * 1000; //1 minute
@@ -21,6 +28,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   @Output() savePlotImage: EventEmitter<string>;
   @Output() saveDataView: EventEmitter<string>;
   @Output() loadDataView: EventEmitter<string>;
+  @ViewChild('measurementModal') public measurementModal: ModalDirective;
 
   public livePlotUpdateTimer: Observable<any>;
   public liveNavUpdateTimer: Observable<any>;
@@ -30,8 +38,10 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
 
   constructor(
-    public explorerService: ExplorerService,
-    public explorerSelectors: ExplorerSelectors
+    public plotService: PlotService,
+    public measurementService: MeasurementService,
+    public plotSelectors: PlotSelectors,
+    public measurementSelectors: MeasurementSelectors
   ) {
     this.savePlotImage = new EventEmitter();
     this.saveDataView = new EventEmitter();
@@ -45,7 +55,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.explorerSelectors.liveUpdate$
+    this.plotSelectors.liveUpdate$
       .subscribe(live => {
         if (live)
           this.activateLiveUpdate();
@@ -53,12 +63,20 @@ export class ToolTabComponent implements OnInit, OnDestroy {
           this.deactivateLiveUpdate();
       })
     /* remove time bounds when plot is empty (so new elements auto scale)*/
-    this.subs.push(this.explorerSelectors.isPlotEmpty$
+    this.subs.push(this.plotSelectors.isPlotEmpty$
       .distinctUntilChanged()
       .filter(isEmpty => isEmpty == true)
       .subscribe(_ => {
-        this.explorerService.disableLiveUpdate();
+        this.plotService.disableLiveUpdate();
       }));
+    /* show the measurement results modal when the measurement range changes */
+    this.subs.push(this.measurementSelectors.measurementRange$
+      .distinctUntilChanged()
+      .filter(range => range!=null)
+      .subscribe(_ => {
+        //console.log("showing modal...")
+        this.measurementModal.show();
+      }))
   }
   ngOnDestroy() {
     this.deactivateLiveUpdate();
@@ -70,7 +88,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
     this.livePlotTimerSubscription =
       this.livePlotUpdateTimer.subscribe(_ => {
         let now = Date.now();
-        this.explorerService.setPlotTimeRange({
+        this.plotService.setPlotTimeRange({
           min: now - PLOT_LIVE_INTERVAL * (1 - PLOT_PERCENT_FUTURE),
           max: now + PLOT_LIVE_INTERVAL * (PLOT_PERCENT_FUTURE)
         })
@@ -78,7 +96,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
     this.liveNavTimerSubscription =
       this.liveNavUpdateTimer.subscribe(_ => {
         let now = Date.now();
-        this.explorerService.setNavTimeRange({
+        this.plotService.setNavTimeRange({
           min: now - NAV_LIVE_INTERVAL,
           max: now
         });

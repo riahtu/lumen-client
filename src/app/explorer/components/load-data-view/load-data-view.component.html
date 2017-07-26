@@ -6,7 +6,7 @@
       <input type="text"  class="form-control" 
         placeholder="search by name or description" 
         aria-describedby="basic-addon1"
-        [ngModel]="explorerSelectors.dataViewFilterText$ | async"
+        [ngModel]="plotSelectors.dataViewFilterText$ | async"
          (ngModelChange)="setDataViewFilterText($event)">
     </div>
   </div>
@@ -15,16 +15,16 @@
       <label>
         <input type="checkbox" 
           (change)="setShowPublicDataViews($event.target.checked)"
-          [checked]="explorerSelectors.showPublicDataViews$ | async" > include public views?
+          [checked]="plotSelectors.showPublicDataViews$ | async" > include public views?
       </label>
     </div>
   </div>
 </div>
 <!-- data view thumbnails -->
-<div *ngIf="explorerSelectors.dataViewsLoaded$ | async; else loading">
+<div *ngIf="plotSelectors.dataViewsLoaded$ | async; else loading">
   <div class="data-view-list" *ngIf="hasViews$ | async; else empty">
     <!-- list of thumbnails that match search criteria -->
-    <div *ngFor="let view of explorerSelectors.filteredDataViews$ | async">
+    <div *ngFor="let view of plotSelectors.filteredDataViews$ | async">
       <app-plot-thumbnail class="thumbnail" 
         [view]="view" (click)="loadDataView(view)">
       </app-plot-thumbnail>

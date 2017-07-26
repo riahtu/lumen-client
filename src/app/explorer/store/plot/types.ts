@@ -1,8 +1,8 @@
 import { TypedRecord } from 'typed-immutable-record';
-import { IDataSet } from '../../store/data';
+import { IDataSet } from '../../../store/data';
+import { IRange} from '../helpers';
 
-// ---- Explorer ----
-export interface IExplorer {
+export interface IState {
   left_elements?: number[];
   right_elements?: number[];
   left_units?: string;
@@ -28,12 +28,10 @@ export interface IExplorer {
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
   data_views_loaded?: boolean;
+  
+  
 }
 
-export interface IExplorerRecord extends
-  TypedRecord<IExplorerRecord>, IExplorer { };
+export interface IStateRecord extends
+  TypedRecord<IStateRecord>, IState { };
 
-export interface IRange {
-  min: number;
-  max: number;
-}

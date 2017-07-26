@@ -1,5 +1,5 @@
 import { TypedRecord } from 'typed-immutable-record';
-import { IExplorer} from '../../explorer/store';
+import * as plot from '../../explorer/store/plot';
 
 // ---- Nilm ----
 export interface INilm {
@@ -174,7 +174,7 @@ export interface IData {
   start_time: number;
   end_time: number;
   data: any[];
-  type: string;
+  type: string; //raw, decimated, interval
   valid: boolean;
 }
 
@@ -198,7 +198,7 @@ export interface IDataView {
   home: boolean;
 }
 export interface IDataViewRedux{
-  ui_explorer: IExplorer,
+  ui_explorer: plot.IState,
   data_dbElements: IDbElementRecords
 }
 
