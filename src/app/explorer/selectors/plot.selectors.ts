@@ -106,6 +106,7 @@ export class PlotSelectors {
       .map(([left, right]) => left.concat(right))
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
       .share()
+      .startWith([])
 
     this.plottedStreams$ = this.plottedElements$
       .combineLatest(this.streams$)

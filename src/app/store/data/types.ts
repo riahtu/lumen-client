@@ -173,7 +173,8 @@ export interface IPermissionRecords {
 export interface IData {
   start_time: number;
   end_time: number;
-  data: any[];
+  data: any[]; //raw: [[ts, val],...]
+               //decimated: [[ts, ]]
   type: string; //raw, decimated, interval
   valid: boolean;
 }
