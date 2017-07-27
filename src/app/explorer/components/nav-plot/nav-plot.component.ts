@@ -18,7 +18,10 @@ import {
   IDbElement
 } from '../../../store/data';
 import { PlotService } from '../../services/plot.service';
-import { PlotSelectors } from '../../selectors/plot.selectors';
+import { 
+  PlotSelectors,
+  MeasurementSelectors
+} from '../../selectors';
 import { FLOT_OPTIONS } from './flot.options';
 import * as _ from 'lodash';
 
@@ -42,6 +45,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private renderer: Renderer,
     private plotSelectors: PlotSelectors,
+    private measurementSelectors: MeasurementSelectors,
     private plotService: PlotService
   ) {
     this.plot = null;
@@ -101,6 +105,18 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         xaxis.options.max = timeRange.max;
         this.plot.setupGrid();
         this.plot.draw();
+      }));
+    /* show the zero range */
+    this.subs.push(this.measurementSelectors.zeroRange$
+      .subscribe(range => {
+        if(this.plot==null)
+          return; //no plot so nothing to highlight
+
+        if(range===undefined || range==null){
+          this.plot.showHighlight(false);  
+        } else {
+          this.plot.setHighlight(range.min, range.max);
+        }
       }));
   }
   ngOnDestroy() {

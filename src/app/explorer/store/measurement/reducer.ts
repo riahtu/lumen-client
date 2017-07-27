@@ -72,7 +72,12 @@ export function reducer(
         Object.assign({}, 
           state.zero_measurements,
           action.payload))
-          
+
+    //clear the zero
+    case MeasurementActions.CLEAR_ZERO:
+      return state
+          .set('zero_measurements', {})
+          .set('zero_range', null);
     default:
       return state;
   }

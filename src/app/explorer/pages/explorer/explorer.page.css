@@ -148,6 +148,21 @@ div.live-update{
   right: 10px;
   transform: translateY(100%);
 }
+div.clear-zero{
+  background: #d9e7ff;
+  color: #3d79db;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-width: 1px;
+  margin-left: 15px;
+  border-style: solid;
+  border-radius: 4px;
+  padding: 5px; 
+  position: absolute;
+  bottom: 5%;
+  left: 10px;
+  transform: translateY(100%);
+}
 img.plot-image{
   width: 100%;
 }

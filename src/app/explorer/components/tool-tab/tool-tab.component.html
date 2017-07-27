@@ -28,12 +28,12 @@
   <button class="btn btn-primary btn-block"
     *ngIf="!(measurementSelectors.enabled$ | async)"
     (click)="measurementService.startMeasurement()">
-    Measure </button>
+    Measurement Mode </button>
   <!-- cancel the current measurement -->
   <button class="btn btn-danger btn-block"
     *ngIf="(measurementSelectors.enabled$ | async)"
     (click)="measurementService.cancelMeasurement()">
-    Cancel Measurement </button>
+    Exit Measurement Mode </button>
     
   <div class="checkbox">
     <label>

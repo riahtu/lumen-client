@@ -33,4 +33,18 @@ export class MeasurementSelectors {
   @select(_.concat(MEASUREMENT_REDUX, 'relative_measurements')) relativeMeasurements$: Observable<IMeasurementSet>
   @select(_.concat(MEASUREMENT_REDUX, 'relative')) relative$: Observable<boolean>
   @select(_.concat(MEASUREMENT_REDUX, 'zero_measurements')) zeroMeasurements$: Observable<IMeasurementSet>
+
+  public zeroSet$: Observable<boolean>
+
+  constructor(
+    private ngRedux: NgRedux<IAppState>
+  ){
+
+    this.zeroSet$ = this.zeroRange$
+      .map(range => {
+        if(range==null)
+          return false;
+        return true;
+      })
+  }
 }

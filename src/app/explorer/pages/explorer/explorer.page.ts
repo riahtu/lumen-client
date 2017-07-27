@@ -7,8 +7,15 @@ import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
-import { PlotSelectors } from '../../selectors/plot.selectors';
-import { PlotService } from '../../services/plot.service';
+import { 
+  PlotSelectors,
+  MeasurementSelectors
+} from '../../selectors';
+
+import { 
+  PlotService,
+  MeasurementService 
+} from '../../services';
 import { 
   DataViewService, 
   DbStreamService 
@@ -55,7 +62,9 @@ export class ExplorerPageComponent implements OnInit {
 
   constructor(
     public plotSelectors: PlotSelectors,
+    public measurementSelectors: MeasurementSelectors,
     public plotService: PlotService,
+    public measurementService: MeasurementService,
     public dataViewService: DataViewService,
     public dbStreamService: DbStreamService
   ) {

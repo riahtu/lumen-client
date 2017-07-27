@@ -70,12 +70,19 @@
           [disabled]="plotSelectors.liveUpdate$ | async">
           {{plotSelectors.plotTimeRange$ | async | duration}}
         </button>
+        <!-- clear zero button -->
+        <div class="clear-zero pull-left" [@fadeInOut]
+          (click)="measurementService.clearZero()"
+          *ngIf="measurementSelectors.zeroSet$ | async">
+          Clear Zero
+          <i class="fa fa-close" ></i>
+        </div>
         <!-- live update notification -->
-          <div class="live-update pull-right" [@fadeInOut]
-            *ngIf="plotSelectors.liveUpdate$ | async">
-            <i class="fa fa-heartbeat"></i> Live Update
-            <i class="fa fa-close" (click)="plotService.disableLiveUpdate()"></i>
-          </div>
+        <div class="live-update pull-right" [@fadeInOut]
+          *ngIf="plotSelectors.liveUpdate$ | async">
+          <i class="fa fa-heartbeat"></i> Live Update
+          <i class="fa fa-close" (click)="plotService.disableLiveUpdate()"></i>
+        </div>
       </div>
       <!--modal overlay to pick date -->
       <app-date-picker class="plot overlay" 

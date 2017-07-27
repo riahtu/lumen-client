@@ -4,6 +4,9 @@ export const FLOT_OPTIONS = {
 			hoverable: true,
 			clickable: true,
 		},
+		highlight: {
+			color: "#3d79db",
+		},
 		selection: {
 			mode: "x",
 			interactive: false,

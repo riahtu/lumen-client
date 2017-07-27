@@ -190,7 +190,20 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
 
+    /* show the zero range */
+    this.subs.push(this.measurementSelectors.zeroRange$
+      .subscribe(range => {
+        if(this.plot==null)
+          return; //no plot so nothing to highlight
+
+        if(range===undefined || range==null){
+          this.plot.showHighlight(false);  
+        } else {
+          this.plot.setHighlight(range.min, range.max);
+        }
+      }));
   }
+  
   ngOnDestroy() {
     while (this.subs.length > 0)
       this.subs.pop().unsubscribe()

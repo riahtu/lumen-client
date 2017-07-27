@@ -37,6 +37,7 @@
         "../src/flot/jquery.flot.tooltip.js",
         "../src/flot/jquery.flot.selection.js",
         "../src/flot/jquery.flot.canvas.js",
+        "../src/flot/jquery.flot.highlight.js",
         "../node_modules/@claviska/jquery-minicolors/jquery.minicolors.js",
         "../node_modules/html2canvas/dist/html2canvas.js"
       ],

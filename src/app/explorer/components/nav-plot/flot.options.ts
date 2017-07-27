@@ -2,6 +2,9 @@ export const FLOT_OPTIONS = {
 		grid: {
 			backgroundColor: "#FFFFFF",
 		},
+		highlight: {
+			color: "#3d79db",
+		},
 		xaxis:{
 			mode:"time",
 			timezone: "browser",

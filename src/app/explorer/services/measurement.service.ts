@@ -61,6 +61,13 @@ export class MeasurementService {
     })
   }
 
+  //remove the zero
+  public clearZero(){
+    this.ngRedux.dispatch({
+      type: MeasurementActions.CLEAR_ZERO
+    })
+  }
+
   //set whether the measurement is relative
   //
   public setRelative(x: boolean) {
