@@ -77,6 +77,7 @@ export function reducer(
     case MeasurementActions.CLEAR_ZERO:
       return state
           .set('zero_measurements', {})
+          .set('relative', false)
           .set('zero_range', null);
     default:
       return state;
