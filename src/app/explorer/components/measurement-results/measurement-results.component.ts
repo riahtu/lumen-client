@@ -1,14 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { 
+import {
   MeasurementService,
-  PlotService 
+  PlotService
 } from '../../services';
 import {
   MeasurementSelectors,
   PlotSelectors
 } from "../../selectors"
-import { IMeasurement } from "../../store/measurement";
+import { 
+  IMeasurement,
+  IMeasurementSet
+ } from "../../store/measurement";
+import { DataService } from "../../../services";
 import { IData } from "../../../store/data";
 
 @Component({
@@ -25,16 +29,21 @@ export class MeasurementResultsComponent implements OnInit, OnDestroy {
     public measurementSelectors: MeasurementSelectors,
     public measurementService: MeasurementService,
     public plotService: PlotService,
-    public plotSelectors: PlotSelectors
+    public plotSelectors: PlotSelectors,
+    public dataService: DataService
   ) {
-      this.subs = [];
+    this.subs = [];
 
+    //figure out whether measurements are direct or relative
+    //
     let activeMeasurements$ = this.measurementSelectors.relative$
       .combineLatest(
-        this.measurementSelectors.directMeasurements$,
-        this.measurementSelectors.relativeMeasurements$)
-      .map(([isRelative, direct, relative])=> isRelative? relative: direct)
+      this.measurementSelectors.directMeasurements$,
+      this.measurementSelectors.relativeMeasurements$)
+      .map(([isRelative, direct, relative]) => isRelative ? relative : direct)
 
+    //create the display data type
+    //
     this.displayedMeasurements$ = activeMeasurements$
       .combineLatest(this.plotSelectors.plottedElements$)
       .map(([measurements, elements]) => {
@@ -56,23 +65,29 @@ export class MeasurementResultsComponent implements OnInit, OnDestroy {
       })
   }
 
-  
+
   ngOnInit() {
     //make direct measurements
     //
     this.subs.push(this.measurementSelectors.enabled$
       .filter(x => x)
-      .combineLatest(this.measurementSelectors.measurementRange$)
-      .filter(([enabled,range])=> range!=null)
-      .subscribe(([enabled, range]) => {
+      .combineLatest(
+        this.measurementSelectors.measurementRange$,
+        this.plotSelectors.plottedElements$)
+      .filter(([enabled, range, elements]) => range != null)
+      .subscribe(([enabled, range, elements]) => {
         let dataSet = this.plotService.getPlotData();
-        let measurements = Object.keys(dataSet).reduce((acc, id) => {
-          acc[id] = this.measure(dataSet[id], range);
+        let measurements = elements.reduce((acc:IMeasurementSet, e) => {
+          if(dataSet[e.id]===undefined){
+            acc[e.id] = {valid: false}
+          } else {
+            acc[e.id] = this.measure(dataSet[e.id], range);
+          }
           return acc;
         }, {})
         this.measurementService
           .setDirectMeasurements(measurements)
-        
+
       }));
 
     //make relative measurements
@@ -80,14 +95,18 @@ export class MeasurementResultsComponent implements OnInit, OnDestroy {
     this.subs.push(this.measurementSelectors.enabled$
       .filter(x => x)
       .combineLatest(
+      this.measurementSelectors.zeroRange$,
       this.measurementSelectors.directMeasurements$,
       this.measurementSelectors.zeroMeasurements$)
-      .subscribe(([enabled, measurements, zeros]) => {
+      .subscribe(([enabled, range, measurements, zeros]) => {
+        if(range==null){
+          return; //no zero set so no relative measurements
+        }
         let relative_measurements =
           Object.keys(measurements).reduce((acc, id) => {
-            if(zeros[id]===undefined){
+            if (zeros[id] === undefined) {
               //we don't have zero data for this element
-              acc[id] = { valid: false}
+              acc[id] = { valid: false }
             } else {
               acc[id] = {
                 mean: measurements[id].mean - zeros[id].mean,
@@ -100,6 +119,40 @@ export class MeasurementResultsComponent implements OnInit, OnDestroy {
           }, {});
         this.measurementService
           .setRelativeMeasurements(relative_measurements)
+      }));
+
+    //retrieve missing data from zero range
+    //
+    this.subs.push(this.measurementSelectors.enabled$
+      .filter(x => x)
+      .combineLatest(
+      this.plotSelectors.plottedElements$,
+      this.measurementSelectors.zeroMeasurements$,
+      this.measurementSelectors.zeroRange$)
+      .subscribe(([enabled, plottedElements, measurements, range]) => {
+        if(range===undefined || range == null)
+          return; //no zero is set
+
+        //figure out if any elements are missing zero measurements
+        let missing_elements =
+          plottedElements.reduce((acc, e) => {
+            if (measurements[e.id] === undefined) {
+              acc.push(e);
+            }
+            return acc;
+          }, []);
+        if(missing_elements.length==0)
+          return; //we have all the data, return
+
+        //some data is missing, retrieve it (use a small resolution and no padding)
+        this.dataService.loadData(range.min, range.max, missing_elements, 200, 0)
+          .subscribe(dataSet => {
+            let measurements = Object.keys(dataSet).reduce((acc, id) => {
+              acc[id] = this.measure(dataSet[id], range);
+              return acc;
+            }, {})
+            this.measurementService.addZeroMeasurements(measurements)
+          })
       }));
   }
 

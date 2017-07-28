@@ -39,6 +39,12 @@ export function reducer(
       return state
         .set('measurement_range', action.payload);
 
+    //clear the range (remove the measurement)
+    //
+    case MeasurementActions.CLEAR_RANGE:
+      return state
+        .set('measurement_range', null);
+        
     //set the zero to the current measurement range
     //
     case MeasurementActions.SET_ZERO:
@@ -66,7 +72,7 @@ export function reducer(
 
     //update the zero measurements
     //
-    case MeasurementActions.UPDATE_ZERO_MEASUREMENTS:
+    case MeasurementActions.ADD_ZERO_MEASUREMENTS:
       return state
         .set('zero_measurements',
         Object.assign({}, 

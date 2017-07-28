@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {
   trigger, animate, style, transition
 } from '@angular/animations';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -48,17 +48,19 @@ import { MainPlotComponent } from '../../components/main-plot/main-plot.componen
   templateUrl: './explorer.page.html',
   styleUrls: ['./explorer.page.css']
 })
-export class ExplorerPageComponent implements OnInit {
+export class ExplorerPageComponent implements OnInit, OnDestroy {
 
   public plotZValue$: Observable<number>;
   public imageData: string;
   @ViewChild('imageModal') public imageModal: ModalDirective;
   @ViewChild('saveDataViewModal') public saveDataViewModal: ModalDirective;
   @ViewChild('loadDataViewModal') public loadDataViewModal: ModalDirective;
+  @ViewChild('measurementModal') public measurementModal: ModalDirective;
 
   @ViewChild('plot') public plot: MainPlotComponent;
 
   public newDataView: IDataView;
+  private subs: Subscription[];
 
   constructor(
     public plotSelectors: PlotSelectors,
@@ -75,7 +77,8 @@ export class ExplorerPageComponent implements OnInit {
         else
           return 0;
       })
-    
+    this.subs = [];
+
   }
 
   showSaveDataView() {
@@ -112,6 +115,20 @@ export class ExplorerPageComponent implements OnInit {
   }
   ngOnInit() {
     this.dataViewService.restoreHomeDataView();
+
+    /* show the measurement results modal when the measurement range changes */
+    this.subs.push(this.measurementSelectors.measurementRange$
+      .distinctUntilChanged()
+      .filter(range => range!=null)
+      .subscribe(_ => {
+        //console.log("showing modal...")
+        this.measurementModal.show();
+      }))
+  }
+
+  ngOnDestroy(){
+    while (this.subs.length > 0)
+      this.subs.pop().unsubscribe()
   }
 
 

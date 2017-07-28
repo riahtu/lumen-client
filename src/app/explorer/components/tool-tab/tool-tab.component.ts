@@ -28,7 +28,6 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   @Output() savePlotImage: EventEmitter<string>;
   @Output() saveDataView: EventEmitter<string>;
   @Output() loadDataView: EventEmitter<string>;
-  @ViewChild('measurementModal') public measurementModal: ModalDirective;
 
   public livePlotUpdateTimer: Observable<any>;
   public liveNavUpdateTimer: Observable<any>;
@@ -69,14 +68,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
       .subscribe(_ => {
         this.plotService.disableLiveUpdate();
       }));
-    /* show the measurement results modal when the measurement range changes */
-    this.subs.push(this.measurementSelectors.measurementRange$
-      .distinctUntilChanged()
-      .filter(range => range!=null)
-      .subscribe(_ => {
-        //console.log("showing modal...")
-        this.measurementModal.show();
-      }))
+    
   }
   ngOnDestroy() {
     this.deactivateLiveUpdate();

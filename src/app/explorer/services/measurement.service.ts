@@ -53,6 +53,14 @@ export class MeasurementService {
     })
   }
 
+  //eraseMeasurement
+  //
+  public clearRange(){
+    this.ngRedux.dispatch({
+      type: MeasurementActions.CLEAR_RANGE,
+    });
+  }
+
   //set zero to current measurement range
   //
   public setZero() {
@@ -91,6 +99,15 @@ export class MeasurementService {
   public setRelativeMeasurements(measurements: IMeasurementSet) {
     this.ngRedux.dispatch({
       type: MeasurementActions.SET_RELATIVE_MEASUREMENTS,
+      payload: measurements
+    })
+  }
+
+  //add new zero measurements 
+  //
+  public addZeroMeasurements(measurements: IMeasurementSet){
+    this.ngRedux.dispatch({
+      type: MeasurementActions.ADD_ZERO_MEASUREMENTS,
       payload: measurements
     })
   }

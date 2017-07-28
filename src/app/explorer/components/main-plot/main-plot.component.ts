@@ -202,6 +202,16 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.setHighlight(range.min, range.max);
         }
       }));
+    
+    /* remove the measurement selector when range is cleared */
+    this.subs.push(this.measurementSelectors.measurementRange$
+      .subscribe(range => {
+        if(this.plot==null)
+          return; //no plot so nothing to do
+        if(range==null){
+          this.plot.clearSelection(true);
+        }
+      }))
   }
   
   ngOnDestroy() {

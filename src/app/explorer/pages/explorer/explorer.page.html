@@ -194,3 +194,28 @@
   </div>
 </div>
 
+
+<!-- ====== measurement results modal ====== -->
+<div class="modal fade" bsModal #measurementModal="bs-modal" 
+     [config]="{backdrop: false}"
+     (onHide)="measurementService.clearRange()"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title pull-left">
+          Measurements over {{measurementSelectors.measurementRange$ | async | duration}}</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="measurementModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-measurement-results></app-measurement-results>
+      </div>
+    </div>
+  </div>
+</div>
+
+
