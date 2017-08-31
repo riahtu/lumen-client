@@ -6,6 +6,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
+import {environment } from '../../../../environments/environment'
 
 import { 
   PlotSelectors,
@@ -59,6 +60,7 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
 
   @ViewChild('plot') public plot: MainPlotComponent;
 
+  public helpUrl: string;
   public newDataView: IDataView;
   private subs: Subscription[];
 
@@ -70,6 +72,8 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
     public dataViewService: DataViewService,
     public dbStreamService: DbStreamService
   ) {
+    this.helpUrl = environment.helpUrl;
+    
     this.plotZValue$ = this.plotSelectors.showDateSelector$
       .map(show => {
         if (show)

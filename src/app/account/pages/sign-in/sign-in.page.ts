@@ -10,6 +10,8 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-sign-in',
@@ -20,11 +22,14 @@ export class SignInPageComponent implements OnInit {
 
   public form: FormGroup;
   public slides: ISlide[];
+  public isStandalone: boolean;
 
   constructor(
     private fb: FormBuilder,
     private sessionService: SessionService
   ) {
+    this.isStandalone = environment.standalone;
+    
     this.slides = [
       {
         url: "assets/images/slides/Slide1.png",

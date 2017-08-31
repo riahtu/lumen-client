@@ -17,6 +17,7 @@ import {
 } from '@angular/forms';
 /*https://github.com/yuyang041060120/ng2-validation*/
 import { CustomValidators } from 'ng2-validation';
+import { environment } from '../../../../environments/environment';
 
 import {
   IUserGroup,
@@ -54,24 +55,33 @@ export class GroupComponent implements OnInit {
     private userService: UserService,
     public fb: FormBuilder
   ) {
-    this.userType='select';
-    this.userOptions = [
-      {value: 'select', label: 'pick an existing user or group'},
-      {value: 'invite', label: 'invite a user by e-mail'},
-      {value: 'create', label: 'create a new user'}
-    ];
-   }
+    this.userType = 'select';
+
+    //if the installation is standalone, e-mail is not an option
+    if (environment.standalone) {
+      this.userOptions = [
+        { value: 'select', label: 'pick an existing user or group' },
+        { value: 'create', label: 'create a new user' }
+      ];
+    } else {
+      this.userOptions = [
+        { value: 'select', label: 'pick an existing user or group' },
+        { value: 'invite', label: 'invite a user by e-mail' },
+        { value: 'create', label: 'create a new user' }
+      ];
+    }
+  }
 
 
-  destroyGroup(){
+  destroyGroup() {
     this.userGroupService.destroyGroup(this.group);
   }
-  updateGroup(values: any){
+  updateGroup(values: any) {
     this.userGroupService.updateGroup(
-      this.group, 
-      values.name, 
+      this.group,
+      values.name,
       values.description)
-    .subscribe(resp => this.groupModal.hide())
+      .subscribe(resp => this.groupModal.hide())
   }
   removeMember(user: IUser) {
     this.userGroupService.removeMember(this.group, user);
@@ -79,24 +89,24 @@ export class GroupComponent implements OnInit {
   addMember(user: IUser) {
     this.userGroupService.addMember(this.group, user);
   }
-  inviteMember(email: string){
+  inviteMember(email: string) {
     this.userGroupService.inviteMember(
       this.group,
       this.emailField.value);
   }
-  addMemberShown(){
+  addMemberShown() {
     this.userService.loadUsers();
   }
-  cancel(){
+  cancel() {
     this.userModal.hide();
   }
-  createMember(values: any){
+  createMember(values: any) {
     this.userGroupService.createMember(this.group, values)
       .subscribe(
-        success => this.userModal.hide()
+      success => this.userModal.hide()
       );
   }
-  
+
   ngOnInit() {
     this.members$ = this.users$.map(users =>
       this.group.members.map(id => users[id])
@@ -108,7 +118,7 @@ export class GroupComponent implements OnInit {
       });
     });
     this.emailForm = this.fb.group({
-      email: ['',[Validators.required,CustomValidators.email]],
+      email: ['', [Validators.required, CustomValidators.email]],
     });
     this.emailField = this.emailForm.controls['email'];
   }

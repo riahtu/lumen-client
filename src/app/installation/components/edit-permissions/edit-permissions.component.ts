@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 /*https://github.com/yuyang041060120/ng2-validation*/
 import { CustomValidators } from 'ng2-validation';
+import { environment } from '../../../../environments/environment';
 
 import {
   PermissionService,
@@ -49,11 +50,20 @@ export class EditPermissionsComponent implements OnInit {
     public fb: FormBuilder
   ) {
     this.userType = 'select';
-    this.userOptions = [
-      { value: 'select', label: 'pick an existing user or group' },
-      { value: 'invite', label: 'invite a user by e-mail' },
-      { value: 'create', label: 'create a new user' }
-    ];
+    //standalone installlations cannot invite users
+    if (environment.standalone) {
+      this.userOptions = [
+        { value: 'select', label: 'pick an existing user or group' },
+        { value: 'create', label: 'create a new user' }
+      ];
+    } else {
+      this.userOptions = [
+        { value: 'select', label: 'pick an existing user or group' },
+        { value: 'invite', label: 'invite a user by e-mail' },
+        { value: 'create', label: 'create a new user' }
+      ];
+    }
+
     this.role = 'viewer';
     this.roleOptions = [
       { value: 'viewer', label: 'a viewer' },
@@ -61,7 +71,7 @@ export class EditPermissionsComponent implements OnInit {
       { value: 'admin', label: 'an admin' }
     ];
     this.resetModal();
-    
+
   }
 
   resetModal() {
@@ -118,7 +128,7 @@ export class EditPermissionsComponent implements OnInit {
       })
     });
     this.emailForm = this.fb.group({
-      email: ['',[Validators.required,CustomValidators.email]],
+      email: ['', [Validators.required, CustomValidators.email]],
     });
     this.emailField = this.emailForm.controls['email'];
   }

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
-
+import {environment } from '../../../../environments/environment'
 import {
   NilmService,
 } from '../../../services';
@@ -27,11 +27,14 @@ export class InstallationPageComponent implements OnInit {
 
   public nilm$: Observable<INilm>
   public role$: Observable<string>
+  public helpUrl: string;
 
   constructor(
     private route: ActivatedRoute,
     private nilmService: NilmService
   ) {
+    this.helpUrl = environment.helpUrl;
+    
     this.nilmService.loadNilms();
 
     this.nilm$ = this.nilmStore$

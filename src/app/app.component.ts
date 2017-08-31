@@ -22,6 +22,9 @@ import {
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  public isStandalone: boolean;
+
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private devTools: DevToolsExtension,
@@ -30,6 +33,8 @@ export class AppComponent {
     private sessionService: SessionService
   ) {
 
+    //set UI variables based on environment 
+    this.isStandalone = environment.standalone;
     //configure redux
     const middleware = [
       createLogger({collapsed: true}),

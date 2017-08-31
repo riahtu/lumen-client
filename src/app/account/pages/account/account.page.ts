@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
+import {environment } from '../../../../environments/environment'
 
 import {
   UserGroupService,
@@ -25,18 +26,16 @@ import { AccountService } from '../../account.service';
 export class AccountPageComponent implements OnInit {
 
   @select(['data', 'users']) users$: Observable<IUserStoreRecord>
-
-
-
+  public helpUrl: string;
 
   constructor(
     private nilmService: NilmService,
     private userGroupService: UserGroupService,
     public accountSelectors: AccountSelectors,
     public accountService: AccountService,
-    public dataViewService: DataViewService
+    public dataViewService: DataViewService, 
   ) {
-
+    this.helpUrl = environment.helpUrl;
   }
 
   ngOnInit() {

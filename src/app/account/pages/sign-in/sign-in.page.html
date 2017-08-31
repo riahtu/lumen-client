@@ -21,6 +21,7 @@
       <label class="control-label" for="email">E-mail</label>
       <input class="form-control" id="email" 
              type="email"
+             [attr.placeholder]="isStandalone? 'admin@wattsworth.local' : 'e-mail'"
              [formControl]="form.get('email')" 
               placeholder="name@wattsworth.net">
     </div>
@@ -30,7 +31,7 @@
              [formControl]="form.get('password')" 
              id="password">
     </div>
-    <a class="btn btn-link" (click)="resetPassword(form.get('email').value)">
+    <a *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
       Forgot your password?</a>
 
     <button class="btn btn-primary btn-block" 
