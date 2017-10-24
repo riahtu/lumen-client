@@ -20,7 +20,8 @@ import {
   IState
 } from './types';
 import {
-  IRange
+  IRange,
+  IAxisSettings
 } from '../helpers'
 
 export function reducer(
@@ -240,6 +241,16 @@ export function reducer(
           console.log(`error, invalid axis ${axis}`)
       }
       return state;
+
+    //update left axis settings
+    //
+    case PlotActions.SET_LEFT_AXIS_SETTINGS:
+      return state.set('left_axis_settings', <IAxisSettings>Object.assign({},action.payload));
+
+    //update right axis settings
+    //
+    case PlotActions.SET_RIGHT_AXIS_SETTINGS:
+      return state.set('right_axis_settings', <IAxisSettings>Object.assign({},action.payload));
 
     //restore view from a saved redux object
     //

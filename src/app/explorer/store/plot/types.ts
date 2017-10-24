@@ -1,6 +1,6 @@
 import { TypedRecord } from 'typed-immutable-record';
 import { IDataSet } from '../../../store/data';
-import { IRange} from '../helpers';
+import { IRange, IAxisSettings } from '../helpers';
 
 export interface IState {
   left_elements?: number[];
@@ -25,6 +25,8 @@ export interface IState {
   data_view_filter_text?: string;
   show_public_data_views?: boolean;
   show_data_envelope?: boolean;
+  left_axis_settings?: IAxisSettings;
+  right_axis_settings?: IAxisSettings;
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
   data_views_loaded?: boolean;

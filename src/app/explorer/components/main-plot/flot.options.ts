@@ -1,3 +1,12 @@
+export const FLOT_FONT = {
+	size: 12, 
+	lineHeight: 13, 
+	style: "normal", 
+	weight: "normal", 
+	family: "sans-serif", 
+	variant: "normal", 
+	color: "#555" 
+}
 export const FLOT_OPTIONS = {
 		grid: {
 			backgroundColor: "#FFFFFF",
@@ -24,6 +33,7 @@ export const FLOT_OPTIONS = {
 		xaxis:{
 			mode:"time",
 			timezone: "browser",
+			font: FLOT_FONT,
 			min: 0,
 			max: 0
 		},
@@ -33,7 +43,7 @@ export const FLOT_OPTIONS = {
 		},*/
 		yaxes:[
 			{
-				 axisLabel: "Sin(x)",
+				 font: FLOT_FONT,
 				//axisLabel: "undefineds",
 				//axisLabelPadding: 10,
 				//show: false
@@ -41,6 +51,7 @@ export const FLOT_OPTIONS = {
 			{
 				//axisLabel: "undefineds",
 				position: "right",
+				font: FLOT_FONT,
 				//axisLabelPadding: 10,
 				//show: false
 			},

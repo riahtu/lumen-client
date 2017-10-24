@@ -1,0 +1,36 @@
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
+import {Subject, Subscription} from 'rxjs';
+import {IAxisSettings } from '../../store';
+
+import * as _ from 'lodash';
+
+@Component({
+  selector: 'app-axis-settings',
+  templateUrl: './axis-settings.component.html',
+  styleUrls: ['./axis-settings.component.css']
+})
+export class AxisSettingsComponent implements OnInit, OnDestroy{
+  @Input() settings: IAxisSettings;
+  @Output() changed: EventEmitter<IAxisSettings>;
+  
+  private prev_settings: IAxisSettings; //TODO: fix distinct until changed!
+
+  constructor() {
+    this.changed = new EventEmitter();
+    this.prev_settings = Object.assign({},this.settings);
+  }
+
+  ngOnInit() {
+    
+  }
+
+  ngOnDestroy(){
+  }
+  onBlur(){
+    if(!_.isEqual(this.prev_settings,this.settings)){
+      this.changed.next(this.settings);
+      this.prev_settings = Object.assign({},this.settings);
+    }    
+  }
+
+}

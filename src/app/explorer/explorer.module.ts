@@ -24,9 +24,6 @@ import { SERVICES } from './services';
 import { SELECTORS } from './selectors';
 import { TreeModule } from 'angular-tree-component';
 import { DurationPipe } from './duration.pipe';
-import { LoadDataViewComponent } from './components/load-data-view/load-data-view.component';
-import { DownloadDataComponent } from './components/download-data/download-data.component';
-import { MeasurementResultsComponent } from './components/measurement-results/measurement-results.component';
 
 @NgModule({
   imports: [
@@ -48,10 +45,7 @@ import { MeasurementResultsComponent } from './components/measurement-results/me
   declarations: [
     COMPONENTS,
     ExplorerPageComponent,
-    DurationPipe,
-    LoadDataViewComponent,
-    DownloadDataComponent,
-    MeasurementResultsComponent
+    DurationPipe
   ],
   providers: [
     SERVICES,

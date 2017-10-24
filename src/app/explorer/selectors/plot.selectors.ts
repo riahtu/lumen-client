@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 
 import { IAppState } from '../../app.store';
 import {
-  IRange
+  IRange,
+  IAxisSettings
 } from '../store';
 import {
   IState,
@@ -33,7 +34,10 @@ export class PlotSelectors {
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 
   @select(_.concat(PLOT_REDUX,'left_elements')) leftElementIDs$: Observable<number[]>;
+  @select(_.concat(PLOT_REDUX,'left_axis_settings')) leftAxisSettings$: Observable<IAxisSettings>;
   @select(_.concat(PLOT_REDUX,'right_elements')) rightElementIDs$: Observable<number[]>;
+  @select(_.concat(PLOT_REDUX,'right_axis_settings')) rightAxisSettings$: Observable<IAxisSettings>;
+
   @select(_.concat(PLOT_REDUX,'show_plot')) showPlot$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'show_date_selector')) showDateSelector$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'plot_time')) plotTimeRange$: Observable<IRange>

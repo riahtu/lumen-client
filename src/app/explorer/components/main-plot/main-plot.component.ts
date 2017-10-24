@@ -157,6 +157,45 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(_ => {
         this.plotService.resetTimeRanges();
       }));
+    /* set the left axis options based on state */
+    this.subs.push(this.plotSelectors.leftAxisSettings$
+      .subscribe(settings => {
+        if(this.plot != null){
+          let options = this.plot.getAxes().yaxis.options;
+          options.font.size = settings.font_size;
+          options.ticks = settings.ticks;
+          options.tickFormatter = (val) => {
+            if(settings.scale!=null)
+              val = (val/(10**settings.scale));
+            if(settings.precision != null)
+              return val.toFixed(settings.precision);
+            else
+              return val;
+          };
+          this.plot.setupGrid();
+          this.plot.draw();
+        }
+      }))
+    /* set the right axis options based on state */
+    this.subs.push(this.plotSelectors.rightAxisSettings$
+      .subscribe(settings => {
+        if(this.plot != null){
+          console.log(this.plot.getAxes())
+          let options = this.plot.getAxes().y2axis.options;
+          options.font.size = settings.font_size;
+          options.ticks = settings.ticks;
+          options.tickFormatter = (val) => {
+            if(settings.scale!=null)
+              val = (val/(10**settings.scale));
+            if(settings.precision != null)
+              return val.toFixed(settings.precision);
+            else
+              return val;
+          };
+          this.plot.setupGrid();
+          this.plot.draw();
+        }
+      }))
     // ---------
     //auto scale the axes to match the data when elements
     //are added to an empty axis

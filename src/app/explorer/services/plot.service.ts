@@ -12,6 +12,9 @@ import {
   IDataSet
 } from '../../store/data';
 import {
+  IAxisSettings
+} from '../store';
+import {
   DataService,
   DbElementService,
 } from '../../services';
@@ -261,6 +264,20 @@ export class PlotService {
     this.ngRedux.dispatch({
       type: PlotActions.SET_SHOW_PUBLIC_DATA_VIEWS,
       payload: show
+    })
+  }
+
+  public setLeftAxisSettings(settings: IAxisSettings){
+    this.ngRedux.dispatch({
+      type: PlotActions.SET_LEFT_AXIS_SETTINGS,
+      payload: settings
+    })
+  }
+
+  public setRightAxisSettings(settings: IAxisSettings){
+    this.ngRedux.dispatch({
+      type: PlotActions.SET_RIGHT_AXIS_SETTINGS,
+      payload: settings
     })
   }
 
