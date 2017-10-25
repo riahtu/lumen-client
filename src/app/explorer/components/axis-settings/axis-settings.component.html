@@ -27,7 +27,7 @@
       <label for="fontsize" class="col-sm-6 control-label">value &times;  10<sup>x</sup></label>
       <div class="col-sm-6">
         <input type="number" [(ngModel)]="settings.scale" name="scale" step="1" required
-        class="form-control" placeholder="1" (blur)="onBlur()">
+        class="form-control" placeholder="0" (blur)="onBlur()">
       </div>
     </div>
     <div class="form-group" *ngIf="yaxis_settings">

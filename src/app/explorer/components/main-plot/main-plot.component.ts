@@ -49,6 +49,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private xBounds: Subject<IRange>
   private measurementBounds: Subject<IRange>
 
+  //make a local copy of FLOT_OPTIONS so the plot
+  //can be customized before it is displayed
+  private flot_options: any;  
+
   //saved by the time range listener if the plot
   //isn't drawn yet
   private storedPlotTimeRange: IRange;
@@ -63,6 +67,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.plot = null;
     this.xBounds = new Subject();
     this.measurementBounds = new Subject();
+    this.flot_options = _.cloneDeep(FLOT_OPTIONS);
     this.subs = [];
     this.storedPlotTimeRange = { min: null, max: null }
   }
@@ -159,46 +164,34 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       }));
     /* set the left axis options based on state */
     this.subs.push(this.plotSelectors.leftAxisSettings$
-      .subscribe(settings => {
-        if(this.plot != null){
+      .combineLatest(this.plotSelectors.leftElementUnits$
+        .distinctUntilChanged((x,y) => _.isEqual(x,y)))
+      .subscribe(([settings,units]) => {
+        let options = this.flot_options.yaxes[0];
+        this.flot_options.legend.left_font_size=settings.legend_font_size;
+        if(this.plot!=null){
           this.plot.getOptions().legend.left_font_size=settings.legend_font_size;          
-          let options = this.plot.getAxes().yaxis.options;
-          if(settings.axis_font_size!=null)
-            options.font.size = settings.axis_font_size;
-          else
-            options.font.size = 12;
-          options.ticks = settings.ticks;
-          options.tickFormatter = (val) => {
-            if(settings.scale!=null)
-              val = (val/(10**settings.scale));
-            if(settings.precision != null)
-              return val.toFixed(settings.precision);
-            else
-              return val;
-          };
+          options = this.plot.getAxes().yaxis.options;
+        }
+        this.configureAxis(options, settings, units);
+        if(this.plot != null){  
           this.plot.setupGrid();
           this.plot.draw();
         }
       }))
     /* set the right axis options based on state */
     this.subs.push(this.plotSelectors.rightAxisSettings$
-      .subscribe(settings => {
-        if(this.plot != null){
-          this.plot.getOptions().legend.right_font_size=settings.legend_font_size;
-          let options = this.plot.getAxes().y2axis.options;
-          if(settings.axis_font_size!=null)
-            options.font.size = settings.axis_font_size;
-          else
-            options.font.size = 12;
-          options.ticks = settings.ticks;
-          options.tickFormatter = (val) => {
-            if(settings.scale!=null)
-              val = (val/(10**settings.scale));
-            if(settings.precision != null)
-              return val.toFixed(settings.precision);
-            else
-              return val;
-          };
+      .combineLatest(this.plotSelectors.rightElementUnits$
+        .distinctUntilChanged((x,y) => _.isEqual(x,y)))
+      .subscribe(([settings,units]) => {
+        let options = this.flot_options.yaxes[1];
+        this.flot_options.legend.right_font_size=settings.legend_font_size;
+        if(this.plot!=null){
+          this.plot.getOptions().legend.right_font_size=settings.legend_font_size;          
+          options = this.plot.getAxes().y2axis.options;
+        }
+        this.configureAxis(options, settings, units);
+        if(this.plot != null){  
           this.plot.setupGrid();
           this.plot.draw();
         }
@@ -206,10 +199,16 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     /* set the time axis options based on state */
     this.subs.push(this.plotSelectors.timeAxisSettings$
       .subscribe(settings => {
-        if(this.plot != null){
-          let options = this.plot.getAxes().xaxis.options;
+        let options = this.flot_options.xaxis;
+        if(this.plot!=null){
+          options = this.plot.getAxes().xaxis.options;
+        }
+        if(settings.axis_font_size!=null)
           options.font.size = settings.axis_font_size;
-          options.ticks = settings.ticks;
+        else
+          options.font.size = 12;
+        options.ticks = settings.ticks;       
+        if(this.plot != null){  
           this.plot.setupGrid();
           this.plot.draw();
         }
@@ -297,10 +296,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
         this.plotService.showPlot();
         if (this.plot == null) {
-          FLOT_OPTIONS.xaxis.min = this.storedPlotTimeRange.min;
-          FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
+          this.flot_options.xaxis.min = this.storedPlotTimeRange.min;
+          this.flot_options.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
-            dataset, FLOT_OPTIONS);
+            dataset, this.flot_options);
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotselected', this.updateMeasurement.bind(this))
@@ -315,6 +314,23 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   
+  //flot helper function to customize axes based on settings
+  configureAxis(axis_options, settings, units){
+    axis_options.axisLabel=this.buildUnitLabel(units,settings.scale);
+    if(settings.axis_font_size!=null)
+      axis_options.font.size = settings.axis_font_size;
+    else
+      axis_options.font.size = 12;
+    axis_options.ticks = settings.ticks;
+    axis_options.tickFormatter = (val) => {
+      if(settings.scale!=null)
+        val = (val/(10**settings.scale));
+      if(settings.precision != null)
+        return val.toFixed(settings.precision);
+      else
+        return val;
+    };
+  }
   //flot hook to listen for zoom/scroll events
   updateAxes() {
     let axes = this.plot.getAxes();
@@ -337,4 +353,34 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     return html2canvas(this.plotArea.nativeElement);
   };
 
+  //flot helper to add scientific notation to unit
+  buildUnitLabel(units,scale){
+    if(units==null || units=="none" || units=="event")
+      return null;
+    switch(scale){
+      case -12:
+        return "p"+units;
+      case -9:
+        return "n"+units;
+      case -6:
+        return "&mu;"+units;
+      case -3:
+        return "m"+units;
+      case null:
+      case 0:
+        return units;
+      case 3:
+        return "k"+units;
+      case 6:
+        return "M"+units;
+      case 9:
+        return "G"+units;
+      case 12:
+        return "T"+units;
+      default:
+        return units+`&times;10<sup>${scale}</sup>`
+    }
+  }
 };
+
+
