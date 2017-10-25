@@ -161,8 +161,12 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.plotSelectors.leftAxisSettings$
       .subscribe(settings => {
         if(this.plot != null){
+          this.plot.getOptions().legend.left_font_size=settings.legend_font_size;          
           let options = this.plot.getAxes().yaxis.options;
-          options.font.size = settings.font_size;
+          if(settings.axis_font_size!=null)
+            options.font.size = settings.axis_font_size;
+          else
+            options.font.size = 12;
           options.ticks = settings.ticks;
           options.tickFormatter = (val) => {
             if(settings.scale!=null)
@@ -180,9 +184,12 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subs.push(this.plotSelectors.rightAxisSettings$
       .subscribe(settings => {
         if(this.plot != null){
-          console.log(this.plot.getAxes())
+          this.plot.getOptions().legend.right_font_size=settings.legend_font_size;
           let options = this.plot.getAxes().y2axis.options;
-          options.font.size = settings.font_size;
+          if(settings.axis_font_size!=null)
+            options.font.size = settings.axis_font_size;
+          else
+            options.font.size = 12;
           options.ticks = settings.ticks;
           options.tickFormatter = (val) => {
             if(settings.scale!=null)
@@ -196,6 +203,18 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.draw();
         }
       }))
+    /* set the time axis options based on state */
+    this.subs.push(this.plotSelectors.timeAxisSettings$
+      .subscribe(settings => {
+        if(this.plot != null){
+          let options = this.plot.getAxes().xaxis.options;
+          options.font.size = settings.axis_font_size;
+          options.ticks = settings.ticks;
+          this.plot.setupGrid();
+          this.plot.draw();
+        }
+      }))
+
     // ---------
     //auto scale the axes to match the data when elements
     //are added to an empty axis

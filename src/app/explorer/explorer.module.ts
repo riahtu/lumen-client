@@ -45,7 +45,7 @@ import { DurationPipe } from './duration.pipe';
   declarations: [
     COMPONENTS,
     ExplorerPageComponent,
-    DurationPipe
+    DurationPipe,
   ],
   providers: [
     SERVICES,

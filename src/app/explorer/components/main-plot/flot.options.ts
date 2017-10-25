@@ -85,6 +85,8 @@ export const FLOT_OPTIONS = {
 			}
 		},
 		legend: {
-			split: true
+			split: true,
+			left_font_size: 12,
+			right_font_size: 12
 		}
 	};

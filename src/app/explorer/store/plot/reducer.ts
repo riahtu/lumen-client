@@ -252,6 +252,11 @@ export function reducer(
     case PlotActions.SET_RIGHT_AXIS_SETTINGS:
       return state.set('right_axis_settings', <IAxisSettings>Object.assign({},action.payload));
 
+    //update time axis settings
+    //
+    case PlotActions.SET_TIME_AXIS_SETTINGS:
+      return state.set('time_axis_settings', <IAxisSettings>Object.assign({},action.payload));
+
     //restore view from a saved redux object
     //
     case PlotActions.RESTORE_VIEW:

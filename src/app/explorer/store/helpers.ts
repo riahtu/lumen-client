@@ -6,5 +6,6 @@ export interface IAxisSettings {
   scale: number;
   ticks: number;
   precision: number;
-  font_size: number;
+  axis_font_size: number;
+  legend_font_size: number;
 }

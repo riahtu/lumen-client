@@ -27,6 +27,7 @@ export interface IState {
   show_data_envelope?: boolean;
   left_axis_settings?: IAxisSettings;
   right_axis_settings?: IAxisSettings;
+  time_axis_settings?: IAxisSettings;
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
   data_views_loaded?: boolean;

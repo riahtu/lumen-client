@@ -16,11 +16,13 @@
   opacity: 0.5;
 }
 
-:host-context(.odd) .plotted-element { 
-  border-top-width: 1px;
-  border-top-style: solid;
+.plotted-element { 
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-color: #bbb;
-  background:#ddd; 
+  
+  /*border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: #bbb;
+  background:#ddd; */
 }

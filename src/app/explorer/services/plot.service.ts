@@ -281,6 +281,12 @@ export class PlotService {
     })
   }
 
+  public setTimeAxisSettings(settings: IAxisSettings){
+    this.ngRedux.dispatch({
+      type: PlotActions.SET_TIME_AXIS_SETTINGS,
+      payload: settings
+    })
+  }
   //set flag to indicate nilms have been loaded
   //
   public setNilmsLoaded(){

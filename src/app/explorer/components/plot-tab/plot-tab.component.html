@@ -9,14 +9,15 @@
 <div *ngIf="(plotSelectors.leftElements$ | async)?.length>0" class="axis-title lead">Left Axis:
   <span class="pull-right units">{{plotSelectors.leftElementUnits$ | async}}</span>
 </div>
+
 <app-axis-settings *ngIf="(plotSelectors.leftElements$ | async)?.length>0"
   [settings]="plotSelectors.leftAxisSettings$ | async" 
+  [yaxis-settings]="true"  
   (changed)="plotService.setLeftAxisSettings($event)"></app-axis-settings>
 
 <app-plotted-elements
-  class="plotted-element odd"
-  *ngFor="let element of plotSelectors.leftElements$ | async; let isOdd=odd"
-  [class.odd]="isOdd"
+  class="plotted-element"
+  *ngFor="let element of plotSelectors.leftElements$ | async;"
   [element]="element"
   [axis]="'left'">
 </app-plotted-elements>
@@ -25,8 +26,10 @@
 <div *ngIf="(plotSelectors.rightElements$ | async)?.length>0" class="axis-title lead">Right Axis:
   <span class="pull-right units">{{plotSelectors.rightElementUnits$ | async}}</span>
 </div>
+
 <app-axis-settings *ngIf="(plotSelectors.rightElements$ | async)?.length>0" 
     [settings]="plotSelectors.rightAxisSettings$ | async"
+    [yaxis-settings]="true"
     (changed)="plotService.setRightAxisSettings($event)"></app-axis-settings>
 
 <app-plotted-elements 
@@ -38,3 +41,8 @@
 
 <!-- Time Axis -->
 <div class="axis-title lead">Time Axis:</div>
+
+<app-axis-settings 
+    [settings]="plotSelectors.timeAxisSettings$ | async"
+    [yaxis-settings]="false"
+    (changed)="plotService.setTimeAxisSettings($event)"></app-axis-settings>

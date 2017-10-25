@@ -32,9 +32,9 @@ export const PlotFactory =
     show_public_data_views: true,
     data_view_filter_text: '',
     show_data_envelope: true,
-    left_axis_settings: {font_size: 12, precision: null, ticks: null, scale: 1},
-    right_axis_settings: {font_size: 12, precision: null, ticks: null, scale: 1},
-  
+    left_axis_settings: {legend_font_size: 12, axis_font_size: 12, precision: null, ticks: null, scale: 1},
+    right_axis_settings: {legend_font_size: 12, axis_font_size: 12, precision: null, ticks: null, scale: 1},
+    time_axis_settings: {legend_font_size: 12, axis_font_size: 12, precision: null, ticks: null, scale: 1},
     //
     nilms_loaded: false,
     data_views_loaded: false,

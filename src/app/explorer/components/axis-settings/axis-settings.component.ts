@@ -12,7 +12,8 @@ import * as _ from 'lodash';
 export class AxisSettingsComponent implements OnInit, OnDestroy{
   @Input() settings: IAxisSettings;
   @Output() changed: EventEmitter<IAxisSettings>;
-  
+  @Input("yaxis-settings") yaxis_settings: boolean;
+
   private prev_settings: IAxisSettings; //TODO: fix distinct until changed!
 
   constructor() {
@@ -27,6 +28,7 @@ export class AxisSettingsComponent implements OnInit, OnDestroy{
   ngOnDestroy(){
   }
   onBlur(){
+  
     if(!_.isEqual(this.prev_settings,this.settings)){
       this.changed.next(this.settings);
       this.prev_settings = Object.assign({},this.settings);
