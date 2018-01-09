@@ -13,6 +13,9 @@
   <dl class="dl-horizontal">
     <dt class="dt-left">URL</dt><dd class="dd-small">{{item.installation_url}}</dd>
     <dt class="dt-left">Path</dt><dd class="dd-small">{{item.stream.path}}</dd>
+    <dt class="dt-left">Points</dt><dd class="dd-small">
+      <input type="number" min="1" #box (blur)="setResolution(box.value)" placeholder="maximum">
+    </dd>
   </dl>
 
 </li>

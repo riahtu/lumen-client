@@ -21,7 +21,8 @@ export class DownloadDataComponent implements OnInit {
   @ViewChild('link') link: ElementRef
 
   public downloadInfo$: Observable<IDownloadInfo[]>
-  
+  public resolution: number;
+
   constructor(
     public plotSelectors: PlotSelectors,
     public messageService: MessageService,
@@ -31,6 +32,7 @@ export class DownloadDataComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.resolution = null;
     this.downloadInfo$ = this.plotSelectors
       .plottedStreams$.combineLatest(this.plotSelectors.nilms$)
       .map(([streams,nilms])=>{
@@ -45,10 +47,14 @@ export class DownloadDataComponent implements OnInit {
         })
       })
   }
+  setResolution(value: number){
+    this.resolution = value;
+    console.log('resolution=',this.resolution);
+  }
 
   download(stream: IDbStream){
     this.dataService.downloadStream(
-      this.range.min, this.range.max,stream)
+      this.range.min, this.range.max, this.resolution, stream)
       .subscribe(
       file => {
         //create the file name based on the time ranges

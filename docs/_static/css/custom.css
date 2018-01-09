@@ -85,3 +85,13 @@ i.fa-styled {
 .btn.default{
     border-color: rgb(204, 204, 204);
 }
+.btn.success{
+  background-color:rgb(92, 184, 92);
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(76, 174, 76);
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  color: white;
+}

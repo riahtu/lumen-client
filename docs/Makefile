@@ -22,5 +22,4 @@ help:
 livehtml:
 	sphinx-autobuild $(SOURCEDIR) $(BUILDDIR)/html
 deploy:
-	rsync -r -v -e 'ssh -p 2222' $(BUILDDIR)/html/* beta.wattsworth.net:/var/www/docs/web && \
-	ssh -A -p2222 beta.wattsworth.net /home/jdonnal/rebuild_docs.sh
+	rsync -r -v $(BUILDDIR)/html/* portal.wattsworth.net:/var/www/docs/lumen

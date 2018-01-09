@@ -27,8 +27,6 @@ Database
   :width: 400px
   :align: center
 
-.. _installation-folder:
-
 The **Plot Resolution** is the maximum number of data points
 this installation will return. If you request an interval of data that has more
 samples than this value, a decimated copy of the data will be returned. This setting
@@ -39,6 +37,8 @@ when you add or remove streams on the remote installation. This operation may
 take a while to complete.
 
 Do not change the URL, this feature is currently unsupported.
+
+.. _installation-folder:
 
 Folder
 ++++++

@@ -57,13 +57,15 @@ export class DataService {
   public downloadStream(
     startTime: number, //values in milliseconds!
     endTime: number,
+    resolution: number,
     stream: IDbStream): Observable<any> {
-
+      console.log('at resolution: ', resolution)
     return this.tokenService
       .post(`db_streams/${stream.id}/data.csv`,
       {
         start_time: (startTime * 1e3).toString(),
-        end_time: (endTime * 1e3).toString()
+        end_time: (endTime * 1e3).toString(),
+        resolution: resolution
       })
       .map(data => new Blob([data['_body']], { type: 'text/csv' }))
       .map(blob => window.URL.createObjectURL(blob))
