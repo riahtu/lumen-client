@@ -5,7 +5,7 @@ all : deploy
 .PHONY : all deploy production
 
 deploy : production
-	rsync -r -v --delete dist/aws portal.wattsworth.net:/opt/angular
+	rsync -r -v --delete dist/aws/* portal.wattsworth.net:/opt/angular
 
 olddeploy: 
 	rsync -r -v -e 'ssh -p 2222' --delete dist/local/ beta.wattsworth.net:/home/jdonnal/puppet/modules/static_sites/files/lumen && \
