@@ -124,9 +124,9 @@ export class PlotSelectors {
 
     this.isPlotEmpty$ = this.leftElementIDs$
       .combineLatest(this.rightElementIDs$)
-      .map(([left, right]) => left.length == 0 && right.length == 0)
+      .map(([left, right]) => ((left.length == 0) && (right.length == 0)))
       .share()
-      .startWith(true);
+      //.startWith(true)
 
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)

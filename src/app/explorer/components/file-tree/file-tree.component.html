@@ -5,9 +5,9 @@
 <tree-root 
   *ngIf="plotSelectors.nilmsLoaded$ | async"
   [nodes]="dbNodes$ | async" 
-  [options]="treeOptions">
+  (toggleExpanded)="toggleNode($event)">
 
-  <template #treeNodeTemplate let-node="node">
+  <ng-template #treeNodeTemplate let-node="node">
     <span [ngSwitch]="node.data.type">
       <span *ngSwitchCase="'nilm'">
         {{ node.data.name }}
@@ -49,6 +49,6 @@
       </span>
     </span>
     
-  </template>
-  <template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</template>
+  </ng-template>
+  <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
 </tree-root>

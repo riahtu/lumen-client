@@ -95,8 +95,7 @@ export class InstallationSelectors {
     // ---- dbNodes: DbTreeNode[] -----
     this.dbNodes$ = this.selectedDb$
       .combineLatest(this.data$)
-      .map(([db, data]) => this._mapRoot(data, db));
-
+      .map(([db, data]) => this._mapRoot(data, db))
   }
 
   ///----------- Tree Helper Functions -----------------------

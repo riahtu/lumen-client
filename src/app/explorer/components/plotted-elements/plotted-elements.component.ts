@@ -75,11 +75,17 @@ export class PlottedElementsComponent
     this.elementInfo$ = this.plotSelectors.streams$
       .combineLatest(this.plotSelectors.nilms$)
       .map(([streams, nilms]) => {
+        let missing_info = {
+          stream_name: "unknown",
+          installation_name: "unknown",
+          path: "unknown",
+          installation_url: "unkown"
+        };
         if (streams[this.element.db_stream_id] === undefined)
-          return {};
+          return missing_info;
         let myStream = streams[this.element.db_stream_id]
         if (nilms[myStream.nilm_id] === undefined)
-          return {};
+          return missing_info;
         let myNilm = nilms[myStream.nilm_id]
         return {
           stream_name: myStream.name,

@@ -4,9 +4,9 @@
 
   <div class="col-sm-3 app-content">
     <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
-      [options]="treeOptions" 
-      (onActivate)="selectNode($event)">
-      <template #treeNodeTemplate let-node="node">
+      (toggleExpanded)="toggleNode($event)"
+      (activate)="selectNode($event)">
+      <ng-template #treeNodeTemplate let-node="node">
         <span [ngSwitch]="node.data.type">
           <span *ngSwitchCase="'root'">
           </span>
@@ -19,8 +19,8 @@
           </span>
         </span>
         {{ node.data.name }}
-      </template>
-      <template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</template>
+      </ng-template>
+      <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
     </tree-root>
   </div>
   <!-- folder/stream edits -->

@@ -36,18 +36,18 @@
   </div>
 
   <!-- show a message if there aren't saved data views -->
-  <template #empty class="alert alert-info">
+  <ng-template #empty class="alert alert-info">
     <div class="alert alert-info">
       No saved views
     </div>
-  </template>
+  </ng-template>
 </div>
 <!--show spinner if we are waiting on dataviews -->
-<template #loading>
+<ng-template #loading>
   <div class="loading-container">
     <div class="loading">
       <i class="fa fa-spinner fa-spin fa-4x"></i>
       <p class="lead"> Loading... </p>
     </div>
   </div>
-</template>
+</ng-template>

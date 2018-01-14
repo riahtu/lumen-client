@@ -3,17 +3,17 @@
   <div class="form-group" [class.has-error]="!form.get('name').valid && !form.get('name').pristine">
     <label class="control-label" for="name">Name</label>
     <input class="form-control" placeholder="Installation Name" 
-          id="name" [formControl]="form.get('name')">
+          [formControl]="form.get('name')">
   </div>
   <!-- Installation Description -->
   <div class="form-group">
     <label class="control-label" for="description">Description</label>
-    <input class="form-control" id="description" type="text" [formControl]="form.get('description')">
+    <input class="form-control" type="text" [formControl]="form.get('description')">
   </div>
   <!-- Installation URL -->
   <div class="form-group">
     <label class="control-label" for="description">URL</label>
-    <input class="form-control" id="description" placeholder="http://localhost/nilmdb" 
+    <input class="form-control" placeholder="http://localhost/nilmdb" 
       type="text" [formControl]="form.get('url')">
   </div>
   <!-- Save and Cancel buttons -->

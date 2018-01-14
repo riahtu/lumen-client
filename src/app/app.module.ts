@@ -25,7 +25,7 @@ import {
   SessionComponent,
 } from './components';
 
-
+import './rxjs-operators';
 
 @NgModule({
   declarations: [

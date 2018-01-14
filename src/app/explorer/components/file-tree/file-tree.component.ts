@@ -31,9 +31,6 @@ import { PlotSelectors } from '../../selectors/plot.selectors';
 export class FileTreeComponent implements OnInit {
   public dbNodes$: Observable<DbTreeNode[]>;
 
-  public treeOptions = {};
-
-
   constructor(
     private nilmService: NilmService,
     private dbService: DbService,
@@ -41,9 +38,6 @@ export class FileTreeComponent implements OnInit {
     private plotService: PlotService,
     public plotSelectors: PlotSelectors
   ) {
-    this.treeOptions = {
-      getChildren: this.getChildren.bind(this)
-    };
   }
 
   ngOnInit() {
@@ -69,15 +63,23 @@ export class FileTreeComponent implements OnInit {
       })
   }
 
+  public toggleNode(event: any){
+    if(event.isExpanded == false)
+      return; //nothing to do
+    let node = event.node;
+    if(node.hasChildren && node.children == null){
+      this.getChildren(node);
+    }
+  }
   public getChildren(node: TreeNode) {
     let id = node.data.id.slice(1, node.data.id.len);
     switch (node.data.type) {
       case 'nilm':
         this.dbService.loadDb(id);
-        return;
+        return [];
       case 'dbFolder':
         this.dbFolderService.loadFolder(id);
-        return;
+        return [];
     }
   }
 

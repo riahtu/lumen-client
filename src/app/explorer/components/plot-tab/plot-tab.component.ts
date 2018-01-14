@@ -19,7 +19,4 @@ export class PlotTabComponent implements OnInit {
 
   ngOnInit() {
   }
-  fire(event){
-    console.log("here")
-  }
 }

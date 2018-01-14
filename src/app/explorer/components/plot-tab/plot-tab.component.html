@@ -1,11 +1,11 @@
 
 
-<!-- Left Axis -->
 <div *ngIf="plotSelectors.isPlotEmpty$ | async">
   <p class="empty-plot"><i class="fa fa-line-chart fa-2x"></i></p>
   <p class="lead empty-plot"> no elements plotted</p>
 </div>
 
+<!-- Left Axis -->
 <div *ngIf="(plotSelectors.leftElements$ | async)?.length>0" class="axis-title lead">Left Axis:
   <span class="pull-right units">{{plotSelectors.leftElementUnits$ | async}}</span>
 </div>

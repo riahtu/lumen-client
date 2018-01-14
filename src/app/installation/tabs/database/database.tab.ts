@@ -24,7 +24,6 @@ export class DatabaseTabComponent implements OnInit {
   @Input() nilm: Observable<INilm>
   @select(['data', 'dbs']) dbs$: Observable<IDbRecords>;
 
-  public treeOptions = {};
   private subs: Subscription[];
   public myNilm: INilm;
 
@@ -34,13 +33,18 @@ export class DatabaseTabComponent implements OnInit {
     private dbFolderService: DbFolderService,
     public installationSelectors: InstallationSelectors,
   ) {
-    this.treeOptions = {
-      getChildren: this.getChildren.bind(this)
-    };
     this.subs = [];
     this.myNilm = null;
   };
 
+  public toggleNode(event: any){
+    if(event.isExpanded == false)
+      return; //nothing to do
+    let node = event.node;
+    if(node.hasChildren && node.children == null){
+      this.getChildren(node);
+    }
+  }
   public getChildren(node: TreeNode) {
     this.dbFolderService.loadFolder(node.data.id);
   }
