@@ -42,11 +42,8 @@ export class DatabaseTabComponent implements OnInit {
       return; //nothing to do
     let node = event.node;
     if(node.hasChildren && node.children == null){
-      this.getChildren(node);
+      this.dbFolderService.loadFolder(node.data.dbId);
     }
-  }
-  public getChildren(node: TreeNode) {
-    this.dbFolderService.loadFolder(node.data.id);
   }
 
   public refresh(){
@@ -63,10 +60,10 @@ export class DatabaseTabComponent implements OnInit {
         this.installationService.selectDbRoot();
         return;
       case 'dbFolder':
-        this.installationService.selectDbFolder(node.data.id);
+        this.installationService.selectDbFolder(node.data.dbId);
         return;
       case 'dbStream':
-        this.installationService.selectDbStream(node.data.id);
+        this.installationService.selectDbStream(node.data.dbId);
         return;
       default:
         console.log(`unknown type ${node.data.type}`);

@@ -21,7 +21,8 @@ import { select } from '@angular-redux/store';
 
 
 export interface DbTreeNode {
-  id: number;
+  id: string;
+  dbId: number;
   name: string;
   type: string;
   isExpanded?: boolean;
@@ -124,7 +125,8 @@ export class InstallationSelectors {
             .map(stream_id => this._mapStream(data, stream_id)));
     }
     return {
-      id: dbFolder.id,
+      id: 'f'+dbFolder.id,
+      dbId: dbFolder.id,
       name: dbFolder.name,
       type: 'dbFolder',
       children: children,
@@ -135,7 +137,8 @@ export class InstallationSelectors {
   private _mapStream(data, db_stream_id): DbTreeNode {
     let dbStream = data.dbStreams[db_stream_id];
     return {
-      id: dbStream.id,
+      id: 's'+dbStream.id,
+      dbId: dbStream.id,
       name: dbStream.name,
       type: 'dbStream',
       hasChildren: false,
