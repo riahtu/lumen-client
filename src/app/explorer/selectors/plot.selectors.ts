@@ -91,7 +91,7 @@ export class PlotSelectors {
         return ids.map(id => elements[id]);
       })
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .share()
+      //.share()
       .startWith([])
 
 
@@ -101,7 +101,7 @@ export class PlotSelectors {
         return ids.map(id => elements[id])
       })
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .share()
+      //.share()
       .startWith([])
 
 
@@ -109,7 +109,7 @@ export class PlotSelectors {
       .combineLatest(this.rightElements$)
       .map(([left, right]) => left.concat(right))
       .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .share()
+      //.share()
       .startWith([])
 
     this.plottedStreams$ = this.plottedElements$
@@ -119,19 +119,19 @@ export class PlotSelectors {
           .map(id => streams[id])
           .filter(stream => stream !== undefined)
       })
-      .share()
+      //.share()
 
 
     this.isPlotEmpty$ = this.leftElementIDs$
       .combineLatest(this.rightElementIDs$)
       .map(([left, right]) => ((left.length == 0) && (right.length == 0)))
-      .share()
+      //.share()
       //.startWith(true)
 
     this.isDataLoading$ = this.addingNavData$
       .combineLatest(this.addingPlotData$)
       .map(([nav, plot]) => nav && plot)
-      .share()
+      //.share()
 
     this.filteredDataViews$ = this.dataViews$
       .map(views => { //convert views to an array
@@ -158,7 +158,7 @@ export class PlotSelectors {
             return searchableText.toLowerCase().indexOf(searchText) >= 0
           })
       })
-      .share()
+      //.share()
 
     this.isIntervalDataDisplayed$ = this.plottedElements$
       .combineLatest(this.plotData$)
@@ -170,7 +170,7 @@ export class PlotSelectors {
           return isInterval || data.type == 'interval'
         }, false)
       })
-      .share()
+      //.share()
 
     this.isPlotDataValid$ = this.plottedElements$
       .combineLatest(this.plotData$)
@@ -182,6 +182,6 @@ export class PlotSelectors {
           .keys(dataset)
           .reduce((isValid, id) => isValid && dataset[id].valid, true)
       })
-      .share()
+      //.share()
   }
 }

@@ -145,7 +145,7 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           FLOT_OPTIONS.xaxis.max = this.storedPlotTimeRange.max;
           this.plot = $.plot(this.plotArea.nativeElement,
             dataset, FLOT_OPTIONS);
-          this.plotService.disableNavZoomLock();
+          setTimeout(()=>this.plotService.disableNavZoomLock(),0)
           $(this.plotArea.nativeElement).bind('plotselected', this.selectRange.bind(this))
 
         } else {

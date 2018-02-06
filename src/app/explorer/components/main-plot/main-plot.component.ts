@@ -303,8 +303,8 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotselected', this.updateMeasurement.bind(this))
-
-          this.plotService.disableDataCursor();
+          setTimeout(()=>this.plotService.disableDataCursor(),0);
+        
         } else {
           this.plot.setData(dataset);
           this.plot.setupGrid();
