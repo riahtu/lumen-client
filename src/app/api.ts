@@ -2,6 +2,8 @@ import { schema } from 'normalizr';
 import {decompressFromEncodedURIComponent} from 'lz-string'
 
 
+export const jouleModule = new schema.Entity('jouleModules');
+export const jouleModules = new schema.Array(jouleModule);
 
 export const dbElement = new schema.Entity('dbElements',
   {},

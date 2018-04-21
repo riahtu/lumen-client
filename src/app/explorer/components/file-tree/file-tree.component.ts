@@ -5,6 +5,7 @@ import { TreeNode } from 'angular-tree-component';
 
 import {
   NilmService,
+  JouleModuleService,
   DbService,
   DbFolderService
 } from '../../../services';
@@ -14,6 +15,7 @@ import {
   IDbFolder,
   IDbStream,
   IDbElement,
+  IJouleModuleRecords,
   IDbFolderRecords,
   IDbStreamRecords,
   IDbElementRecords
@@ -33,6 +35,7 @@ export class FileTreeComponent implements OnInit {
 
   constructor(
     private nilmService: NilmService,
+    private jouleModuleService: JouleModuleService,
     private dbService: DbService,
     private dbFolderService: DbFolderService,
     private plotService: PlotService,
@@ -58,6 +61,7 @@ export class FileTreeComponent implements OnInit {
             priveleged = true;
           }
           return this.mapNilm(nilm, priveleged, data.dbs[nilm.db_id],
+            data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
       })
@@ -76,6 +80,7 @@ export class FileTreeComponent implements OnInit {
     switch (node.data.type) {
       case 'nilm':
         this.dbService.loadDb(id);
+        this.jouleModuleService.loadJouleModules(id);
         return [];
       case 'dbFolder':
         this.dbFolderService.loadFolder(id);
@@ -87,9 +92,10 @@ export class FileTreeComponent implements OnInit {
     nilm: INilm,
     priveleged: boolean,
     db: IDb,
+    jouleModules: IJouleModuleRecords,
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
-    elements: IDbElementRecords
+    elements: IDbElementRecords,
   ): DbTreeNode {
     let children = null
     if (db != null && folders[db.contents] !== undefined) {
@@ -97,7 +103,14 @@ export class FileTreeComponent implements OnInit {
       //nilm is loaded, map it out
       let root = this.mapFolder(folders[db.contents],
         folders, streams, elements);
-
+      //add the Joule Modules
+      root.children.unshift({
+        id: 'mf' + nilm.id,
+        type: 'jouleModulesFolder',
+        name: 'Interfaces',
+        hasChildren: true,
+        children: this.mapJouleModules(nilm.joule_modules, jouleModules),
+      });
       return Object.assign({}, root, {
         id: 'n' + nilm.db_id,
         type: 'nilm',
@@ -117,6 +130,21 @@ export class FileTreeComponent implements OnInit {
         hasChildren: true
       }
     }
+  }
+
+  mapJouleModules(
+    moduleIds: Array<number>,
+    jouleModules: IJouleModuleRecords
+  ): DbTreeNode[]{
+    return moduleIds.map(id =>{
+      return {
+      id: 'j'+id,
+      type: 'jouleModule',
+      name: jouleModules[id].name,
+      children: [],
+      hasChildren: false
+      }
+    })
   }
 
   mapFolder(

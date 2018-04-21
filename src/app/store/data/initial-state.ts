@@ -17,7 +17,21 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   description: '',
   url: '',
   available: false,
+  joule_modules: [],
   db_id: null
+});
+
+// ---- JouleModule ----
+export const JouleModuleFactory = makeTypedFactory<data.IJouleModule, data.IJouleModuleRecord>({
+  id: null,
+  name: '',
+  description: '',
+  exec_cmd: '',
+  status: 'unknown',
+  pid: null,
+  web_interface: false,
+  joule_id: null,
+  nilm_id: null
 });
 
 // ---- Db ----

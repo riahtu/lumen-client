@@ -9,6 +9,7 @@
 
   <ng-template #treeNodeTemplate let-node="node">
     <span [ngSwitch]="node.data.type">
+      <!-- nilm element -->
       <span *ngSwitchCase="'nilm'">
         {{ node.data.name }}
         <i *ngIf="node.data.priveleged"
@@ -16,15 +17,32 @@
           [routerLink]="['/installations',node.data.nilmId]"
           tooltip="installation settings"></i>
       </span>
+      <!-- folder of jouleModules  -->
+      <span *ngSwitchCase="'jouleModulesFolder'">
+        <i *ngIf="node.isExpanded" class="fa fa-folder-open module-folder"></i>
+        <i *ngIf="!node.isExpanded" class="fa fa-folder module-folder"></i>
+        {{ node.data.name }}
+        <i *ngIf="node.data.priveleged"
+          class="fa fa-refresh icon-button"
+          tooltip="refresh module listing"></i>
+      </span>
+      <!-- jouleModule -->
+      <span *ngSwitchCase="'jouleModule'">
+          {{ node.data.name }}
+          <i class="fa fa-external-link icon-button"></i>
+        </span>
+      <!-- dbFolder -->
       <span *ngSwitchCase="'dbFolder'">
         <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
         <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
         {{ node.data.name }}
       </span>
+      <!-- dbStream -->
       <span *ngSwitchCase="'dbStream'">
         <i class="fa fa-database"></i>
         {{ node.data.name }}
       </span>
+      <!-- dbElement -->
       <span *ngSwitchCase="'dbElement'">
         <!--plot element button-->
         <span class="tree-button plot" 

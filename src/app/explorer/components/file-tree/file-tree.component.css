@@ -7,6 +7,9 @@ div.nilms-loading{
   left: 50%;
 }
 
+.module-folder{
+  color: blue;
+}
 .folder{
   color: tan;
 }

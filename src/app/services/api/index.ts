@@ -10,9 +10,10 @@ import { PermissionService } from './permission.service';
 import { UserGroupService } from './user-group.service';
 import { UserService } from './user.service';
 import { ColorService } from './color.service';
-
+import { JouleModuleService } from './joule-module.service';
 export {
   NilmService,
+  JouleModuleService,
   DbService,
   DbFolderService,
   DbStreamService,

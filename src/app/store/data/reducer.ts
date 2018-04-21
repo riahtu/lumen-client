@@ -39,6 +39,12 @@ export function nilmReducer(
         .set('admin', state.admin.filter(id => id != action.payload))
         .set('owner', state.owner.filter(id => id != action.payload))
         .set('viewer', state.viewer.filter(id => id != action.payload))
+    case actions.NilmActions.SET_JOULE_MODULES:
+      let nilmId=action.payload.id;
+      return state.set('entities',{
+        ...state.entities,
+        [nilmId]: state.entities[nilmId].set('joule_modules', action.payload.module_ids)
+        });
     default:
       return state;
   }
@@ -52,6 +58,19 @@ export function mergeNilmEntities(currentEntities, payload): any {
     currentEntities,
     recordify(payload.entities.nilms,
       factories.NilmFactory));
+}
+
+export function jouleModuleReducer(
+  state: records.IJouleModuleRecords = {},
+  action: IPayloadAction): records.IJouleModuleRecords {
+  switch (action.type) {
+    case actions.JouleModuleActions.RECEIVE:
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.JouleModuleFactory));
+    default:
+      return state;
+  }
 }
 
 export function dbReducer(

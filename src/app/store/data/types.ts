@@ -9,6 +9,7 @@ export interface INilm {
   available: boolean;
   url: string;
   db_id: number;
+  joule_modules: Array<number>;
 }
 export interface INilmRecord extends
   TypedRecord<INilmRecord>, INilm { };
@@ -25,6 +26,23 @@ export interface INilmStore {
 export interface INilmStoreRecord extends
   TypedRecord<INilmStoreRecord>, INilmStore { };
 
+// ---- JouleModule ----
+export interface IJouleModule{
+  id: number;
+  name: string;
+  description: string;
+  web_interface: boolean;
+  exec_cmd: string;
+  status: string;
+  pid: string;
+  joule_id: string; //id used on the Joule node
+  nilm_id: number;  //id of the NILM owner
+}
+export interface IJouleModuleRecord extends
+  TypedRecord<IJouleModuleRecord>, IJouleModule { };
+export interface IJouleModuleRecords {
+  [index: string]: IJouleModuleRecord;
+}
 
 // ---- Db ----
 export interface IDb {
