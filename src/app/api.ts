@@ -66,7 +66,8 @@ export const data = new schema.Entity('data', {},
 export const datas = new schema.Array(data);
 
 export const nilm = new schema.Entity('nilms',
-  { db: db });
+  { db: db,
+  jouleModules: [jouleModule] });
 export const nilms = new schema.Array(nilm);
 
 export const user = new schema.Entity('users')

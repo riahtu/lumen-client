@@ -13,7 +13,8 @@ import {
   DbFolderActions,
   DbStreamActions,
   DbElementActions,
-  INilm
+  INilm,
+  JouleModuleActions
 } from '../../store/data';
 import {
   MessageService
@@ -46,24 +47,28 @@ export class NilmService {
     o.subscribe(
       json => {
         this.nilmsLoaded = true;
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_ADMIN_NILMS,
-          payload: normalize(json.admin, schema.nilms)
-        });
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_OWNER_NILMS,
-          payload: normalize(json.owner, schema.nilms)
-        });
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_VIEWER_NILMS,
-          payload: normalize(json.viewer, schema.nilms)
-        });
+        let data = normalize(json, schema.nilms)
+        this._dispatch(data.entities);
       },
       error => this.messageService.setErrorsFromAPICall(error)
     );
     return o; //for other subscribers
   }
 
+  public loadNilm(id: number): Observable<any> {
+    let o = this.tokenService
+      .get(`nilms/${id}.json`, {})
+      .map(resp => resp.json())
+
+    o.subscribe(
+      json => {
+        let data = normalize(json.data, schema.nilm)
+        this._dispatch(data.entities);
+      },
+      error => this.messageService.setErrorsFromAPICall(error)
+    );
+    return o; //for other subscribers
+  }
   public createNilm(
     name: string,
     description: string,
@@ -79,10 +84,7 @@ export class NilmService {
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_ADMIN_NILMS,
-          payload: data
-        })
+        this._dispatch(data.entities);
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrorsFromAPICall(error)
@@ -104,10 +106,7 @@ export class NilmService {
       .subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_NILM,
-          payload: data
-        })
+        this._dispatch(data.entities);
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrorsFromAPICall(error)
@@ -122,11 +121,7 @@ export class NilmService {
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
-        this.ngRedux.dispatch({
-          type: NilmActions.RECEIVE_NILM,
-          payload: data
-        });
-        this.processDb(data.entities);
+        this._dispatch(data.entities);
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrorsFromAPICall(error)
@@ -142,7 +137,7 @@ export class NilmService {
     o.subscribe(
       json => {
         this.ngRedux.dispatch({
-          type: NilmActions.REMOVE_NILM,
+          type: NilmActions.REMOVE,
           payload: nilm.id
         });
         this.messageService.setMessages(json.messages);
@@ -153,7 +148,9 @@ export class NilmService {
   }
 
   // -------- private helper functions --------
-  private processDb(entities) {
+  private _dispatch(entities) {
+    this._receive(NilmActions, entities['nilms']);
+    this._receive(JouleModuleActions, entities['jouleModules']);
     this._receive(DbActions, entities['dbs']);
     this._receive(DbFolderActions, entities['dbFolders']);
   }

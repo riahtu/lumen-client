@@ -14,50 +14,18 @@ import {
 import * as records from './types';
 
 export function nilmReducer(
-  state: records.INilmStoreRecord = factories.NilmStoreFactory(),
-  action: IPayloadAction): records.INilmStoreRecord {
+  state: records.INilmRecords = {},
+  action: IPayloadAction): records.INilmRecords {
   switch (action.type) {
-    case actions.NilmActions.RECEIVE_ADMIN_NILMS:
-      return state
-        .set('admin', _.union(state.admin, toArray(action.payload.result)))
-        .set('entities', mergeNilmEntities(state.entities, action.payload))
-    case actions.NilmActions.RECEIVE_OWNER_NILMS:
-      return state
-        .set('owner', _.union(state.owner, toArray(action.payload.result)))
-        .set('entities', mergeNilmEntities(state.entities, action.payload))
-    case actions.NilmActions.RECEIVE_VIEWER_NILMS:
-      return state
-        .set('viewer', _.union(state.viewer, toArray(action.payload.result)))
-        .set('entities', mergeNilmEntities(state.entities, action.payload))
-    case actions.NilmActions.RECEIVE_NILM:
-      return state
-        .set('entities', mergeNilmEntities(state.entities, action.payload))
-    case actions.NilmActions.REMOVE_NILM:
-      return state
-        .set('entities', _.omit(state.entities, action.payload))
-        //remove the nilm wherever it is [probably admin]
-        .set('admin', state.admin.filter(id => id != action.payload))
-        .set('owner', state.owner.filter(id => id != action.payload))
-        .set('viewer', state.viewer.filter(id => id != action.payload))
-    case actions.NilmActions.SET_JOULE_MODULES:
-      let nilmId=action.payload.id;
-      return state.set('entities',{
-        ...state.entities,
-        [nilmId]: state.entities[nilmId].set('joule_modules', action.payload.module_ids)
-        });
+    case actions.NilmActions.RECEIVE:
+      return Object.assign({},
+        state,
+        recordify(action.payload, factories.NilmFactory));
+    case actions.NilmActions.REMOVE:
+      return removeByKey(state, action.payload)
     default:
       return state;
   }
-}
-
-export function mergeNilmEntities(currentEntities, payload): any {
-  if (payload.entities.nilms === undefined) {
-    return currentEntities;
-  }
-  return Object.assign({},
-    currentEntities,
-    recordify(payload.entities.nilms,
-      factories.NilmFactory));
 }
 
 export function jouleModuleReducer(

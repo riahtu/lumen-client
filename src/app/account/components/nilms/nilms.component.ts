@@ -12,7 +12,6 @@ import {
 } from '../../../services';
 
 import {
-  INilmStore,
   INilm
 } from '../../../store/data';
 
@@ -25,8 +24,8 @@ import {AccountService} from '../../account.service';
 })
 export class NilmsComponent implements OnInit {
   @ViewChild('nilmModal') public nilmModal: ModalDirective;
-  @select(['data','nilms']) nilmStore$: Observable<INilmStore>;
-  public nilms$: Observable<INilmWithRole[]>
+  @select(['data','nilms']) nilms$: Observable<INilm[]>;
+  public sortedNilms$: Observable<INilm[]>
 
   constructor(
     private nilmService: NilmService,
@@ -34,23 +33,13 @@ export class NilmsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
-
-    //combine all nilms into a flat array of INilmWithRole objects
-    this.nilms$ = this.nilmStore$.map(store =>{
-      return store.admin.map(id=> {
-        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'admin'})
-      }).concat(
-      store.owner.map(id=> {
-        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'owner'})
-      }),
-      store.viewer.map(id=> {
-        return <INilmWithRole>Object.assign({},store.entities[id].toJS(),{role: 'viewer'})
-      })
-      ).sort((a,b)=>{ 
+    //sort the nilms alphabetically    
+    this.sortedNilms$ = this.nilms$.map(nilms => {
+      return nilms.sort((a,b)=>{ 
         return a.name == b.name ? 0 : +(a.name > b.name) || -1;
-      });
-    })
+      })
+    });
+    
   }
 
   createNilm(values: any){
@@ -62,8 +51,4 @@ export class NilmsComponent implements OnInit {
       .subscribe(result => this.nilmModal.hide())
   }
 
-}
-
-interface INilmWithRole extends INilm{
-  role: string;
 }

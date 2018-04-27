@@ -8,23 +8,15 @@ export interface INilm {
   description: string;
   available: boolean;
   url: string;
-  db_id: number;
-  joule_modules: Array<number>;
+  role: string;
+  db: number;
+  jouleModules: Array<number>;
 }
 export interface INilmRecord extends
   TypedRecord<INilmRecord>, INilm { };
 export interface INilmRecords {
   [index: string]: INilmRecord;
 }
-
-export interface INilmStore {
-  admin: number[];
-  owner: number[];
-  viewer: number[];
-  entities: INilmRecords;
-}
-export interface INilmStoreRecord extends
-  TypedRecord<INilmStoreRecord>, INilmStore { };
 
 // ---- JouleModule ----
 export interface IJouleModule{

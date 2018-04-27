@@ -52,15 +52,10 @@ export class FileTreeComponent implements OnInit {
     this.dbNodes$ = this.plotSelectors.data$
       .combineLatest(this.plotSelectors.plottedElements$)
       .map(([data,elements]) => {
-        let nilms = _.toArray(data.nilms.entities);
-        let privelegedNilms = [].concat(data.nilms.admin, data.nilms.owner);
+        let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
-          //check if user had owner/admin priveleges
           let priveleged = false;
-          if (privelegedNilms.indexOf(nilm.id) != -1) {
-            priveleged = true;
-          }
-          return this.mapNilm(nilm, priveleged, data.dbs[nilm.db_id],
+          return this.mapNilm(nilm, priveleged, data.dbs[nilm.db],
             data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
@@ -79,8 +74,7 @@ export class FileTreeComponent implements OnInit {
     let id = node.data.id.slice(1, node.data.id.len);
     switch (node.data.type) {
       case 'nilm':
-        this.dbService.loadDb(id);
-        this.jouleModuleService.loadJouleModules(id);
+        this.nilmService.loadNilm(id);
         return [];
       case 'dbFolder':
         this.dbFolderService.loadFolder(id);
@@ -99,20 +93,19 @@ export class FileTreeComponent implements OnInit {
   ): DbTreeNode {
     let children = null
     if (db != null && folders[db.contents] !== undefined) {
-
       //nilm is loaded, map it out
       let root = this.mapFolder(folders[db.contents],
         folders, streams, elements);
-      //add the Joule Modules
+      //add the Joule Modules to the top of the folder listing
       root.children.unshift({
         id: 'mf' + nilm.id,
         type: 'jouleModulesFolder',
         name: 'Interfaces',
         hasChildren: true,
-        children: this.mapJouleModules(nilm.joule_modules, jouleModules),
+        children: this.mapJouleModules(nilm.jouleModules, jouleModules),
       });
       return Object.assign({}, root, {
-        id: 'n' + nilm.db_id,
+        id: 'n' + nilm.id,
         type: 'nilm',
         priveleged: priveleged,
         nilmId: nilm.id,
@@ -121,7 +114,7 @@ export class FileTreeComponent implements OnInit {
     } else {
       //nilm is a stub, it has not been loaded
       return {
-        id: 'n' + nilm.db_id,
+        id: 'n' + nilm.id,
         type: 'nilm',
         priveleged: priveleged,
         nilmId: nilm.id,

@@ -29,7 +29,7 @@ export class PlotSelectors {
   @select(['data']) data$: Observable<IState>;
   @select(['data', 'dbElements']) elements$: Observable<IDbElementRecords>;
   @select(['data', 'dbStreams']) streams$: Observable<IDbStreamRecords>;
-  @select(['data', 'nilms', 'entities']) nilms$: Observable<INilmRecords>;
+  @select(['data', 'nilms']) nilms$: Observable<INilmRecords>;
 
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
 
