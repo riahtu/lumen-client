@@ -322,13 +322,11 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     else
       axis_options.font.size = 12;
     axis_options.ticks = settings.ticks;
-    axis_options.tickFormatter = (val) => {
+    axis_options.tickDecimals = settings.precision;
+    axis_options.tickScaler = (val) => {
       if(settings.scale!=null)
         val = (val/(10**settings.scale));
-      if(settings.precision != null)
-        return val.toFixed(settings.precision);
-      else
-        return val;
+      return val;
     };
   }
   //flot hook to listen for zoom/scroll events
