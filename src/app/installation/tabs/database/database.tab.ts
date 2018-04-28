@@ -21,11 +21,11 @@ import {
 })
 export class DatabaseTabComponent implements OnInit {
 
-  @Input() nilm: Observable<INilm>
+  @Input() nilm: INilm;
   @select(['data', 'dbs']) dbs$: Observable<IDbRecords>;
 
   private subs: Subscription[];
-  public myNilm: INilm;
+  //public myNilm: INilm;
 
   constructor(
     public dbService: DbService,
@@ -34,7 +34,6 @@ export class DatabaseTabComponent implements OnInit {
     public installationSelectors: InstallationSelectors,
   ) {
     this.subs = [];
-    this.myNilm = null;
   };
 
   public toggleNode(event: any){
@@ -47,11 +46,7 @@ export class DatabaseTabComponent implements OnInit {
   }
 
   public refresh(){
-    if(this.myNilm==null){
-      console.log('error, nilm is not set');
-      return;
-    }
-    this.installationService.refreshNilm(this.myNilm);
+    this.installationService.refreshNilm(this.nilm);
   }
   public selectNode(event) {
     let node: TreeNode = event.node;
@@ -71,25 +66,9 @@ export class DatabaseTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.subs.push(
-      this.nilm
-        .combineLatest(this.dbs$)
-        .subscribe(([nilm, dbs]) => {
-          if (dbs[nilm.db_id] === undefined) {
-            this.dbService.loadDb(nilm.db_id);
-          }
-          //store nilm locally
-          this.myNilm = nilm;
-        })
-    );
-    this.subs.push(
-      this.nilm
-        .distinctUntilChanged((x, y) => x.id === y.id)
-        .subscribe(nilm => {
-          this.installationService.setDbId(nilm.db_id);
-          this.installationService.selectDbRoot();
-        })
-    );
+    this.installationService.setDbId(this.nilm.db);
+    this.installationService.selectDbRoot();
+
   }
 
   ngOnDestroy() {

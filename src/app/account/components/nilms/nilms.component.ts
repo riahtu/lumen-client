@@ -6,6 +6,7 @@ import {
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import * as _ from 'lodash';
 
 import {
   NilmService
@@ -25,21 +26,16 @@ import {AccountService} from '../../account.service';
 export class NilmsComponent implements OnInit {
   @ViewChild('nilmModal') public nilmModal: ModalDirective;
   @select(['data','nilms']) nilms$: Observable<INilm[]>;
-  public sortedNilms$: Observable<INilm[]>
 
+  public nilmArray$: Observable<INilm[]>;
   constructor(
     private nilmService: NilmService,
-    private accountService: AccountService
   ) { }
 
   ngOnInit() {
-    //sort the nilms alphabetically    
-    this.sortedNilms$ = this.nilms$.map(nilms => {
-      return nilms.sort((a,b)=>{ 
-        return a.name == b.name ? 0 : +(a.name > b.name) || -1;
-      })
-    });
-    
+    this.nilmService.loadNilms();   
+    this.nilmArray$ = this.nilms$
+      .map(nilms => _.sortBy(nilms,['name']))
   }
 
   createNilm(values: any){

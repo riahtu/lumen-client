@@ -28,7 +28,7 @@ export class AppComponent {
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private devTools: DevToolsExtension,
-    private epics: AppEpics,
+   private epics: AppEpics,
     private tokenService: Angular2TokenService,
     private sessionService: SessionService
   ) {

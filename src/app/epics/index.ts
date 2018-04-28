@@ -3,7 +3,6 @@ import { combineEpics } from 'redux-observable';
 import { Epic } from 'redux-observable';
 
 import {PageEpics} from './page.epics';
-import {SessionEpics } from './session.epics';
 
 import { 
   IPayloadAction 
@@ -15,12 +14,11 @@ export class AppEpics {
   public root: Epic<IPayloadAction, IAppState>;
  
   constructor(
-    private pageEpics: PageEpics,
-    private sessionEpics: SessionEpics) {
+    private pageEpics: PageEpics) {
     this.root = combineEpics(
-      ...pageEpics.epics,
-      ...sessionEpics.epics);
+      ...pageEpics.epics);
+      //...sessionEpics.epics);
   }
 }
 
-export const EPIC_PROVIDERS = [PageEpics, SessionEpics, AppEpics];
+export const EPIC_PROVIDERS = [PageEpics, AppEpics];

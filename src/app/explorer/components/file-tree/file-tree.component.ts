@@ -5,7 +5,6 @@ import { TreeNode } from 'angular-tree-component';
 
 import {
   NilmService,
-  JouleModuleService,
   DbService,
   DbFolderService
 } from '../../../services';
@@ -35,7 +34,6 @@ export class FileTreeComponent implements OnInit {
 
   constructor(
     private nilmService: NilmService,
-    private jouleModuleService: JouleModuleService,
     private dbService: DbService,
     private dbFolderService: DbFolderService,
     private plotService: PlotService,

@@ -3,7 +3,7 @@ import * as types from './types';
 import * as reducers from './reducer';
 
 export interface IState {
-  nilms: types.INilmStoreRecord;
+  nilms: types.INilmRecords;
   jouleModules: types.IJouleModuleRecords;
   dbs: types.IDbRecords;
   dbFolders: types.IDbFolderRecords;

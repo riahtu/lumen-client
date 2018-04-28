@@ -9,7 +9,7 @@
   </thead>-->
 
   <!-- nilms with admin or owner privleges -->
-  <tr *ngFor="let nilm of nilms$ | async">
+  <tr *ngFor="let nilm of nilmArray$ | async">
     <!-- Installation status (nilm state) -->
     <td style="vertical-align: middle">
       <i *ngIf="nilm.available" class="fa fa-circle available" tooltip="online"></i>

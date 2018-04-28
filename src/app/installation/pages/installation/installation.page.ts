@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
 import {environment } from '../../../../environments/environment'
 import {
@@ -9,7 +9,6 @@ import {
 } from '../../../services';
 
 import {
-  INilmStore,
   INilm
 } from '../../../store/data';
 
@@ -23,11 +22,12 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 })
 export class InstallationPageComponent implements OnInit {
 
-  @select(['data', 'nilms']) nilmStore$: Observable<INilmStore>;
+  @select(['data', 'nilms']) nilms$: Observable<INilm[]>;
 
   public nilm$: Observable<INilm>
   public role$: Observable<string>
   public helpUrl: string;
+  private subs: Subscription[];
 
   constructor(
     private route: ActivatedRoute,
@@ -35,28 +35,22 @@ export class InstallationPageComponent implements OnInit {
   ) {
     this.helpUrl = environment.helpUrl;
     
-    this.nilmService.loadNilms();
-
-    this.nilm$ = this.nilmStore$
-      .combineLatest(route.params)
-      .map(([store, params]) => store.entities[params['id']])
-      .filter(nilm => !(nilm === undefined))
-
-    this.role$ = this.nilmStore$
-      .combineLatest(route.params)
-      .map(([store,params]) => {
-        //figure out the role for this nilm
-        if(store.admin.indexOf(+params['id'])!=-1){
-          return 'admin'
-        } else if(store.owner.indexOf(+params['id'])!=-1) {
-          return 'owner'
-        } else {
-          return 'viewer'
-        }
-      })
+    this.subs = [];
   }
 
   ngOnInit() {
+
+    this.subs.push(this.route.params.subscribe(params => 
+      this.nilmService.loadNilm(params['id'])));
+
+    this.nilm$ = this.nilms$.combineLatest(this.route.params)
+      .map(([nilms,params]) => nilms[params['id']])
+      .filter(nilm => !(nilm === undefined));
+  }
+
+  ngOnDestroy(){
+    while (this.subs.length > 0)
+    this.subs.pop().unsubscribe()
   }
 
   @ViewChild('childModal') public childModal:ModalDirective;
