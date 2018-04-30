@@ -10,21 +10,17 @@
   <ng-template #treeNodeTemplate let-node="node">
     <span [ngSwitch]="node.data.type">
       <!-- nilm element -->
-      <span *ngSwitchCase="'nilm'">
+      <span *ngSwitchCase="'nilm'" class="nilm-entry">
         {{ node.data.name }}
-        <i *ngIf="node.data.priveleged"
-          class="fa fa-gear icon-button"
-          [routerLink]="['/installations',node.data.nilmId]"
-          tooltip="installation settings"></i>
+        <i class="fa fa-refresh icon-button refresh" *ngIf="!node.data.refreshing"
+        tooltip="refresh installation" (click)="nilmService.refreshNilm(node.data.nilmId)"></i>
+        <i class="fa fa-refresh fa-spin" *ngIf="node.data.refreshing"></i>
       </span>
       <!-- folder of jouleModules  -->
       <span *ngSwitchCase="'jouleModulesFolder'">
         <i *ngIf="node.isExpanded" class="fa fa-folder-open module-folder"></i>
         <i *ngIf="!node.isExpanded" class="fa fa-folder module-folder"></i>
         {{ node.data.name }}
-        <i *ngIf="node.data.priveleged"
-          class="fa fa-refresh icon-button"
-          tooltip="refresh module listing"></i>
       </span>
       <!-- jouleModule -->
       <span *ngSwitchCase="'jouleModule'">

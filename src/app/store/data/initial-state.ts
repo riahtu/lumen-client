@@ -11,6 +11,7 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   role: '',
   available: false,
   jouleModules: [],
+  refreshing: false,
   db: null
 });
 

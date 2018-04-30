@@ -113,20 +113,29 @@ export class NilmService {
       );
   }
 
-  public refreshNilm(nilm: INilm) {
+  public refreshNilm(id: number) {
     let o = this.tokenService
-      .put(`nilms/${nilm.id}/refresh.json`, {})
-      .map(resp => resp.json())
-
+    .get(`nilms/${id}.json?refresh=1`, {})
+    .map(resp => resp.json())
+    this.ngRedux.dispatch({
+      type: NilmActions.REFRESHING,
+      payload: id
+    });
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
+        this.messageService.setNotice("Updated installation")
         this._dispatch(data.entities);
-        this.messageService.setMessages(json.messages);
       },
-      error => this.messageService.setErrorsFromAPICall(error)
+      error => {
+        this.ngRedux.dispatch({
+          type: NilmActions.REFRESHED,
+          payload: id
+        })
+        this.messageService.setErrorsFromAPICall(error)
+      }
     );
-    return o;
+    return o; //for other subscribers
   }
 
   public removeNilm(nilm: INilm) {

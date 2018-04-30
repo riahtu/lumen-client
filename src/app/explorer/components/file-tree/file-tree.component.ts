@@ -33,7 +33,7 @@ export class FileTreeComponent implements OnInit {
   public dbNodes$: Observable<DbTreeNode[]>;
 
   constructor(
-    private nilmService: NilmService,
+    public nilmService: NilmService,
     private dbService: DbService,
     private dbFolderService: DbFolderService,
     private plotService: PlotService,
@@ -53,7 +53,7 @@ export class FileTreeComponent implements OnInit {
         let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
           let priveleged = false;
-          return this.mapNilm(nilm, priveleged, data.dbs[nilm.db],
+          return this.mapNilm(nilm, data.dbs[nilm.db],
             data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
@@ -82,7 +82,6 @@ export class FileTreeComponent implements OnInit {
 
   mapNilm(
     nilm: INilm,
-    priveleged: boolean,
     db: IDb,
     jouleModules: IJouleModuleRecords,
     folders: IDbFolderRecords,
@@ -105,7 +104,7 @@ export class FileTreeComponent implements OnInit {
       return Object.assign({}, root, {
         id: 'n' + nilm.id,
         type: 'nilm',
-        priveleged: priveleged,
+        refreshing: nilm.refreshing,
         nilmId: nilm.id,
         name: nilm.name
       });
@@ -114,7 +113,7 @@ export class FileTreeComponent implements OnInit {
       return {
         id: 'n' + nilm.id,
         type: 'nilm',
-        priveleged: priveleged,
+        refreshing: nilm.refreshing,
         nilmId: nilm.id,
         name: nilm.name,
         children: null,
@@ -219,6 +218,7 @@ export interface DbTreeNode {
   id: string;
   name: string;
   type: string;
+  refreshing?: boolean;
   isExpanded?: boolean;
   children: DbTreeNode[];
   hasChildren: boolean;

@@ -78,8 +78,11 @@ div.nilms-loading{
   border-style: solid;
   border-width: 2px;
 }
-:host>>>.tree{
+:host>>>.tree-node{
   cursor: default;
+}
+:host>>>.toggle-children-wrapper{
+  cursor: pointer;
 }
 :host>>>.node-content-wrapper:hover{
   background: inherit !important;
@@ -91,6 +94,12 @@ div.nilms-loading{
   box-shadow: unset !important;
 }
 
+.nilm-entry > .refresh{
+  visibility: hidden;
+}
+.nilm-entry:hover > .refresh{
+  visibility: visible;
+}
 /* Tree styling 
 :host>>>.node-content-wrapper {
   display: block;

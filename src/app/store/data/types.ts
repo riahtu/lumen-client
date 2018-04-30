@@ -9,6 +9,7 @@ export interface INilm {
   available: boolean;
   url: string;
   role: string;
+  refreshing: boolean;
   db: number;
   jouleModules: Array<number>;
 }

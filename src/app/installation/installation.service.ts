@@ -75,7 +75,7 @@ export class InstallationService {
     this.ngRedux.dispatch({
       type: InstallationActions.REFRESHING
     })
-    this.nilmService.refreshNilm(nilm).subscribe(
+    this.nilmService.refreshNilm(nilm.id).subscribe(
       success => this.notBusy(),
       error => this.notBusy()
     );

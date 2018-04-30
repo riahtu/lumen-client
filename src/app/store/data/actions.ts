@@ -1,6 +1,8 @@
 
 export const NilmActions = {
   'RECEIVE': 'NILM_RECEIVE',
+  'REFRESHING': 'NILM_REFRESHING',
+  'REFRESHED': 'NILM_REFRESHED',
   'REMOVE': 'NILM_REMOVE',
 };
 export const JouleModuleActions = {

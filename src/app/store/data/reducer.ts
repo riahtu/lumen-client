@@ -17,10 +17,24 @@ export function nilmReducer(
   state: records.INilmRecords = {},
   action: IPayloadAction): records.INilmRecords {
   switch (action.type) {
+    //RECEIVE: update Nilm with server data (implicitly clears "refreshing")
+    //
     case actions.NilmActions.RECEIVE:
       return Object.assign({},
         state,
         recordify(action.payload, factories.NilmFactory));
+    //REFRESHING: set UI state of Nilm to indicate new data is requested
+    //
+    case actions.NilmActions.REFRESHING:
+      return Object.assign({}, state,
+        { [action.payload]: state[action.payload].set('refreshing', true) })
+    //REFRESHED: clear "refreshing" UI state (whether or not new data was received)
+    //
+    case actions.NilmActions.REFRESHED:
+      return Object.assign({}, state,
+        { [action.payload]: state[action.payload].set('refreshing', false) })
+    //REMOVE: remove Nilm from store
+    //
     case actions.NilmActions.REMOVE:
       return removeByKey(state, action.payload)
     default:
