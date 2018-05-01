@@ -16,16 +16,10 @@
         tooltip="refresh installation" (click)="nilmService.refreshNilm(node.data.nilmId)"></i>
         <i class="fa fa-refresh fa-spin" *ngIf="node.data.refreshing"></i>
       </span>
-      <!-- folder of jouleModules  -->
-      <span *ngSwitchCase="'jouleModulesFolder'">
-        <i *ngIf="node.isExpanded" class="fa fa-folder-open module-folder"></i>
-        <i *ngIf="!node.isExpanded" class="fa fa-folder module-folder"></i>
-        {{ node.data.name }}
-      </span>
       <!-- jouleModule -->
-      <span *ngSwitchCase="'jouleModule'">
+      <span *ngSwitchCase="'jouleModule'" class="visualizer-node" (click)="console.log('clicked!')">
+          <i class="fa fa-list-alt"></i>
           {{ node.data.name }}
-          <i class="fa fa-external-link icon-button"></i>
         </span>
       <!-- dbFolder -->
       <span *ngSwitchCase="'dbFolder'">

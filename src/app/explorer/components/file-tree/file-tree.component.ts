@@ -94,13 +94,8 @@ export class FileTreeComponent implements OnInit {
       let root = this.mapFolder(folders[db.contents],
         folders, streams, elements);
       //add the Joule Modules to the top of the folder listing
-      root.children.unshift({
-        id: 'mf' + nilm.id,
-        type: 'jouleModulesFolder',
-        name: 'Interfaces',
-        hasChildren: true,
-        children: this.mapJouleModules(nilm.jouleModules, jouleModules),
-      });
+      root.children.unshift(...this.mapJouleModules(
+        nilm.jouleModules, jouleModules));
       return Object.assign({}, root, {
         id: 'n' + nilm.id,
         type: 'nilm',
@@ -126,11 +121,13 @@ export class FileTreeComponent implements OnInit {
     moduleIds: Array<number>,
     jouleModules: IJouleModuleRecords
   ): DbTreeNode[]{
-    return moduleIds.map(id =>{
+    return moduleIds.map(id => jouleModules[id])
+    .filter(module => module !== undefined)
+    .map(module => {
       return {
-      id: 'j'+id,
+      id: 'j'+module.id,
       type: 'jouleModule',
-      name: jouleModules[id].name,
+      name: module.name,
       children: [],
       hasChildren: false
       }
