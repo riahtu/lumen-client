@@ -13,7 +13,7 @@
       <span *ngSwitchCase="'nilm'" class="nilm-entry">
         {{ node.data.name }}
         <i class="fa fa-refresh icon-button refresh" *ngIf="!node.data.refreshing"
-        tooltip="refresh installation" (click)="nilmService.refreshNilm(node.data.nilmId)"></i>
+        tooltip="refresh installation" [delay]="500" (click)="nilmService.refreshNilm(node.data.nilmId)"></i>
         <i class="fa fa-refresh fa-spin" *ngIf="node.data.refreshing"></i>
       </span>
       <!-- jouleModule -->
