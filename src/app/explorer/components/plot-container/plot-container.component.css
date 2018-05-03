@@ -1,66 +1,15 @@
-.page-title-bar{
-    font-weight: 400;
-    font-size: 1.5em;
-    color: #ddd;
-    margin-bottom: 3px;
-    padding: 2px;
-    padding-left: 25px;
-    border-top-style: solid;
-    border-bottom-style: solid;
-    border-width: 1px;
-    border-color: #265986;
-    background: #5d81a0;
-}
-
-.tab-pane{
-  max-height: calc(100vh - 175px);
-  height: calc(100vh - 175px);
-  overflow-y: auto;
-  overflow-x: auto;
-}
-.tab-pane{
-    border-style: solid;
-    border-width: 1px;
-    border-color: #ddd;
-    border-top-style: none;
-}
-
 div.parent{
   position: relative;
   top: 0;
   left: 0;
 }
 div.plot-container{
-  height: calc(100vh - 129px);
+  height: calc(100vh - 125px);
   width: 100%;
   position: absolute;
   top: 0px;
   left: 0px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ddd;
   /*z-index: -1;*/
-}
-/*shrink to accomodate tab header*/
-div.plot-container.shrink{
-  border-top-width: 0px;
-  height: calc(100vh - 175px); 
-}
-div.interfaces{
-  position: relative;
-  top: 0;
-  left: 0;
-}
-div.interfaces > iframe{
-  height: calc(100vh - 175px);
-  width: 100%;
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  border-style: solid;
-  border-width: 1px;
-  border-top-width: 0px;
-  border-color: #ddd;
 }
 
 .date-bar{
@@ -84,18 +33,15 @@ div.interfaces > iframe{
 }
 
 div.overlay{
-  height: calc(100vh - 129px);
+  height: calc(100vh - 125px);
   width: 100%;
   background: #fafcfe;
   border-style: solid;
+  border-radius: 15px;
   border-width: 1px;
-  border-color: #ddd;
+  border-color: #bbb;
   color: #999;
   position: absolute;
-}
-div.overlay.shrink{
-  border-top-width: 0px;
-  height: calc(100vh - 175px); 
 }
 div.overlay > div.message {
   margin-top: calc((75vh - 260px)/2);
@@ -190,41 +136,6 @@ div.clear-zero{
   left: 10px;
   transform: translateY(100%);
 }
-img.plot-image{
-  width: 100%;
-}
-
-img.data-view-preview{
-    width: 400px;
-    height: 200px;
-    margin-left: calc(50% - 200px);
-}
-
-i.fa-close {
-  color: gray;
-  margin-left: 10px;
-}
-i.fa-close:hover{
-  cursor: pointer;
-  color: black;
-}
-/*
-i.fa-close.tab-close{
-  margin-left: 0px;
-  font-size: 18px;
-  visibility: hidden;
-}
-
-.tab-title:hover > i.fa-close.tab-close{
-  margin-left: 0px;
-  font-size: 18px;
-  visibility: visible;
-}*/
-
-
-a.help-btn {
-  margin-left: 20px;
-}
 
 @media(max-width: 767px){
   :host(.main-plot) >>> plot{
@@ -234,9 +145,3 @@ a.help-btn {
     height: 400px;
   }
 }
-
-.interface-tab {
-  height: 0px;
-  border-bottom: 0px;
-}
-

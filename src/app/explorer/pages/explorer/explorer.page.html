@@ -29,10 +29,36 @@
       </tab>
     </tabset>
   </div>
+  <!-- ========Content display panel========= -->
   <div class="col-md-9 col-sm-8">
-    <div class="parent">
-      
+    <!-- Tab Headers (only visible if at least one interface is displayed-->
+    <tabset #interfaceTabs [hidden]="interfacesSelectors.noneDisplayed$ | async">
+      <tab heading="Data Explorer" class='interface-tab'
+      (select)="interfacesService.select(null)"></tab>
+      <tab class='interface-tab'
+        *ngFor="let interface of interfacesSelectors.displayed$ | async"
+        (select)="interfacesService.select(interface.id)">
+        <ng-template tabHeading>
+          <span class="tab-title">
+            {{interface.name}}
+            <i class="fa fa-close tab-close" 
+              (click)="interfacesService.remove(interface.id)"></i>
+          </span>
+        </ng-template>
+      </tab>
+    </tabset>
+    <!-- Interface tabs -->
+    <div class="interfaces-parent">
+      <div class="interfaces" *ngFor="let interface of interfacesSelectors.displayed$ | async"
+        [hidden]="interface.id!=(interfacesSelectors.selectedId$ | async)">
+        <iframe [src]="interface.url | safe"></iframe>
+      </div>
+    </div>
+    <!-- Data Explorer "tab" -->
+    <div class="parent"         
+      [hidden]="(interfacesSelectors.selectedId$ | async) != null">
       <div class="plot-container" 
+        [ngClass]="{'shrink': !(interfacesSelectors.noneDisplayed$ | async)}"
         [ngStyle]="{ 'z-index': plotZValue$ | async }">
         <!-- ==== NAV PLOT ==== -->
         <!-- nav loading spinner -->
@@ -91,7 +117,8 @@
 
       <!-- modal overlay if no plot -->
       <div class="plot overlay" [@fadeOut]
-        *ngIf="!(plotSelectors.showPlot$ |async)" >
+        *ngIf="!(plotSelectors.showPlot$ |async)"
+        [ngClass]="{'shrink': !(interfacesSelectors.noneDisplayed$ | async)}" >
         <div class="message">
           <span *ngIf="plotSelectors.addingPlotData$ | async; then loading else default"></span>
         </div>

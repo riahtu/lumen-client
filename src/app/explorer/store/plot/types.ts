@@ -28,6 +28,7 @@ export interface IState {
   left_axis_settings?: IAxisSettings;
   right_axis_settings?: IAxisSettings;
   time_axis_settings?: IAxisSettings;
+  visualizer_tabs?: IVisualizerTab[];
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
   data_views_loaded?: boolean;
@@ -37,4 +38,8 @@ export interface IState {
 
 export interface IStateRecord extends
   TypedRecord<IStateRecord>, IState { };
+export interface IVisualizerTab {
+  id: number,
+  url: string
+}
 

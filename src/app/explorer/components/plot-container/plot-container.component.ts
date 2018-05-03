@@ -3,22 +3,18 @@ import {
   trigger, animate, style, transition
 } from '@angular/animations';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { TabsetComponent } from 'ngx-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
-import {environment } from '../../../../environments/environment'
 
 import { 
   PlotSelectors,
-  MeasurementSelectors,
-  InterfacesSelectors 
+  MeasurementSelectors
 } from '../../selectors';
 
 import { 
   PlotService,
-  MeasurementService,
-  InterfacesService,
+  MeasurementService 
 } from '../../services';
 import { 
   DataViewService, 
@@ -48,24 +44,20 @@ import { MainPlotComponent } from '../../components/main-plot/main-plot.componen
         animate(500, style({ opacity: 0 }))
       ])])
   ],
-  selector: 'app-explorer-page',
-  templateUrl: './explorer.page.html',
-  styleUrls: ['./explorer.page.css']
+  selector: 'plot-container',
+  templateUrl: './plot-container.component.html',
+  styleUrls: ['./plot-container.component.css']
 })
-export class ExplorerPageComponent implements OnInit, OnDestroy {
-
-  public plotZValue$: Observable<number>;
-  public imageData: string;
+export class PlotContainerComponent implements OnInit {
   @ViewChild('imageModal') public imageModal: ModalDirective;
   @ViewChild('saveDataViewModal') public saveDataViewModal: ModalDirective;
   @ViewChild('loadDataViewModal') public loadDataViewModal: ModalDirective;
   @ViewChild('measurementModal') public measurementModal: ModalDirective;
 
   @ViewChild('plot') public plot: MainPlotComponent;
-  @ViewChild('interfaceTabs') interfaceTabs: TabsetComponent;
-  public helpUrl: string;
-  public newDataView: IDataView;
-  private subs: Subscription[];
+  public plotZValue$: Observable<number>;
+  public subs: Subscription[];
+  public imageData: string;
 
   constructor(
     public plotSelectors: PlotSelectors,
@@ -73,11 +65,8 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
     public plotService: PlotService,
     public measurementService: MeasurementService,
     public dataViewService: DataViewService,
-    public dbStreamService: DbStreamService,
-    public interfacesSelectors: InterfacesSelectors,
-    public interfacesService: InterfacesService
+    public dbStreamService: DbStreamService
   ) {
-    this.helpUrl = environment.helpUrl;
     
     this.plotZValue$ = this.plotSelectors.showDateSelector$
       .map(show => {
@@ -130,22 +119,14 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
       .distinctUntilChanged()
       .filter(range => range!=null)
       .subscribe(_ => {
+        //console.log("showing modal...")
         this.measurementModal.show();
       }))
-    /* sync the tab selection to the redux state */
-    this.subs.push(this.interfacesSelectors.displayedIds$
-        .combineLatest(this.interfacesSelectors.selectedId$)
-        .map(([ids,id])=> ids.indexOf(id)+1)
-        .subscribe(tabIndex => {
-          setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}); 
-        }));
   }
 
   ngOnDestroy(){
     while (this.subs.length > 0)
       this.subs.pop().unsubscribe()
   }
-
-
 
 }

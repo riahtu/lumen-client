@@ -17,7 +17,8 @@
         <i class="fa fa-refresh fa-spin" *ngIf="node.data.refreshing"></i>
       </span>
       <!-- jouleModule -->
-      <span *ngSwitchCase="'jouleModule'" class="visualizer-node" (click)="console.log('clicked!')">
+      <span *ngSwitchCase="'jouleModule'" class="visualizer-node" 
+        (click)="interfacesService.add(+node.data.id.substring(1))">
           <i class="fa fa-list-alt"></i>
           {{ node.data.name }}
         </span>

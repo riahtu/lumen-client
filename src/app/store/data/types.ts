@@ -23,6 +23,7 @@ export interface INilmRecords {
 export interface IJouleModule{
   id: number;
   name: string;
+  url: string;
   description: string;
   web_interface: boolean;
   exec_cmd: string;

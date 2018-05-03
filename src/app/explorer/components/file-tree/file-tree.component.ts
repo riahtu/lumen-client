@@ -6,7 +6,7 @@ import { TreeNode } from 'angular-tree-component';
 import {
   NilmService,
   DbService,
-  DbFolderService
+  DbFolderService,
 } from '../../../services';
 import {
   INilm,
@@ -20,8 +20,13 @@ import {
   IDbElementRecords
 } from '../../../store/data';
 import * as _ from 'lodash';
-import { PlotService } from '../../services/plot.service';
-import { PlotSelectors } from '../../selectors/plot.selectors';
+import { 
+  PlotService,
+  InterfacesService 
+} from '../../services';
+import { 
+  PlotSelectors,
+} from '../../selectors';
 
 @Component({
   selector: 'app-file-tree',
@@ -37,7 +42,8 @@ export class FileTreeComponent implements OnInit {
     private dbService: DbService,
     private dbFolderService: DbFolderService,
     private plotService: PlotService,
-    public plotSelectors: PlotSelectors
+    public plotSelectors: PlotSelectors,
+    public interfacesService: InterfacesService
   ) {
   }
 

@@ -18,6 +18,7 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
 // ---- JouleModule ----
 export const JouleModuleFactory = makeTypedFactory<data.IJouleModule, data.IJouleModuleRecord>({
   id: null,
+  url: '',
   name: '',
   description: '',
   exec_cmd: '',

@@ -282,6 +282,7 @@ export function reducer(
       return state
         .set('data_views_loaded',true);
 
+    
     default:
       return state;
   }
