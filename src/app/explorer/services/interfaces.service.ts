@@ -5,6 +5,10 @@ import {
   InterfaceActions,
 } from '../store';
 import { IAppState } from '../../app.store';
+import * as schema from '../../api';
+import { normalize } from 'normalizr';
+import { Angular2TokenService } from 'angular2-token';
+import { JouleModuleActions } from '../../store/data';
 
 
 @Injectable()
@@ -12,16 +16,32 @@ export class InterfacesService {
 
 
   constructor(
+    private tokenService: Angular2TokenService,
     private ngRedux: NgRedux<IAppState>,
   ) {}
 
   //display a joule module interface
   //
   public add(id: number) {
-    this.ngRedux.dispatch({
-      type: InterfaceActions.ADD,
-      payload: +id
-    })
+    //get the joule module with the 
+    //authorization URL
+    this.tokenService
+      .get(`joule_modules/${id}.json`)
+      .map(resp => resp.json())
+      .subscribe(
+      json => {
+        let entities = normalize(json, schema.jouleModule).entities;
+        console.log(entities);
+        this.ngRedux.dispatch({
+          type: JouleModuleActions.RECEIVE,
+          payload: entities.jouleModules
+        })
+        this.ngRedux.dispatch({
+          type: InterfaceActions.ADD,
+          payload: +id
+        })
+    });
+    
   }
 
   //hide a joule module interface
