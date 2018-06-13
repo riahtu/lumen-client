@@ -1,3 +1,5 @@
+
+import {} from 'rxjs/operators';
 import {
   Component,
   ViewChild,
@@ -9,7 +11,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, combineLatest } from 'rxjs';
+import { map, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -75,26 +78,28 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(
   ) {
     /* load data based on changes to the plotTimeRange */
-    this.subs.push(this.plotSelectors.plotTimeRange$
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .combineLatest(this.plotSelectors.plottedElements$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y)),
-        this.plotSelectors.addingPlotData$)
-      .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
+    let newTimeRange = this.plotSelectors.plotTimeRange$.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
+    let newPlottedElements = this.plotSelectors.plottedElements$.pipe(
+      distinctUntilChanged((x,y) => _.isEqual(x,y)));
+    this.subs.push(combineLatest(
+      newTimeRange, newPlottedElements,this.plotSelectors.addingPlotData$)
+      .pipe(
+        filter(([timeRange, elements, busy]) => !busy && elements.length!=0))
       .subscribe(([timeRange, elements, busy]) => {
         //retrieve current width of plot to determine the appropriate resolution
         let resolution = $(this.plotArea.nativeElement).width();
         this.plotService.loadPlotData(elements, timeRange, resolution*2)
       }));
     /* set the plotTimeRange based on changes to xbounds */
-    this.subs.push(this.xBounds
-      .debounceTime(250)
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.xBounds.pipe(
+      debounceTime(250),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe(range =>
         this.plotService.setPlotTimeRange(range)));
     /* set plot axes based on changes to plotTimeRange */
-    this.subs.push(this.plotSelectors.plotTimeRange$
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.plotSelectors.plotTimeRange$.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe(timeRange => {
         if (this.plot == null) {
           this.storedPlotTimeRange = timeRange;
@@ -107,16 +112,16 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         this.plot.draw();
       }));
     /* set data cursor visibility based on state */
-    this.subs.push(this.plotSelectors.dataCursor$
-      .distinctUntilChanged()
+    this.subs.push(this.plotSelectors.dataCursor$.pipe(
+      distinctUntilChanged())
       .subscribe(val => {
         if (this.plot != null)
           this.plot.enableTooltip(val);
       })
     );
     /* enable selection mode when the plot is in measurement state*/
-    this.subs.push(this.measurementSelectors.enabled$
-      .distinctUntilChanged()
+    this.subs.push(this.measurementSelectors.enabled$.pipe(
+      distinctUntilChanged())
       .subscribe(val => {
         if (this.plot != null){
           if(val){ //enter measurement mode
@@ -156,16 +161,17 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }));
     /* remove time bounds when plot is empty (so new elements auto scale)*/
-    this.subs.push(this.plotSelectors.isPlotEmpty$
-      .distinctUntilChanged()
-      .filter(isEmpty => isEmpty==true)
+    this.subs.push(this.plotSelectors.isPlotEmpty$.pipe(
+      distinctUntilChanged(),
+      filter(isEmpty => isEmpty==true))
       .subscribe(_ => {
         this.plotService.resetTimeRanges();
       }));
     /* set the left axis options based on state */
-    this.subs.push(this.plotSelectors.leftAxisSettings$
-      .combineLatest(this.plotSelectors.leftElementUnits$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y)))
+    let newLeftElementUnits = this.plotSelectors.leftElementUnits$.pipe(
+      distinctUntilChanged((x,y) => _.isEqual(x,y)));
+    this.subs.push(combineLatest(
+      this.plotSelectors.leftAxisSettings$,newLeftElementUnits)
       .subscribe(([settings,units]) => {
         let options = this.flot_options.yaxes[0];
         this.flot_options.legend.left_font_size=settings.legend_font_size;
@@ -180,9 +186,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }))
     /* set the right axis options based on state */
-    this.subs.push(this.plotSelectors.rightAxisSettings$
-      .combineLatest(this.plotSelectors.rightElementUnits$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y)))
+    let newRightElementUnits = this.plotSelectors.rightElementUnits$.pipe(
+      distinctUntilChanged((x,y) => _.isEqual(x,y)));
+    this.subs.push(combineLatest(
+      this.plotSelectors.rightAxisSettings$, newRightElementUnits)
       .subscribe(([settings,units]) => {
         let options = this.flot_options.yaxes[1];
         this.flot_options.legend.right_font_size=settings.legend_font_size;
@@ -219,18 +226,18 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     //are added to an empty axis
     //autoscale y1 (left)
     this.subs.push(this.plotSelectors.leftElementIDs$
-      .map(ids => ids.length == 0)
-      .distinctUntilChanged()
-      .filter(isEmpty => isEmpty == true)
+      .pipe(map(ids => ids.length == 0),
+      distinctUntilChanged(),
+      filter(isEmpty => isEmpty == true))
       .subscribe(x => {
         if (this.plot == null)
           return;
         this.plotService.autoScaleAxis('left');
       }));
     this.subs.push(this.plotSelectors.rightElementIDs$
-      .map(ids => ids.length == 0)
-      .distinctUntilChanged()
-      .filter(isEmpty => isEmpty == true)
+      .pipe(map(ids => ids.length == 0),
+      distinctUntilChanged(),
+      filter(isEmpty => isEmpty == true))
       .subscribe(x => {
         if (this.plot == null)
           return;
@@ -239,8 +246,8 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     //
 
     /* listen for plot measurements */
-    this.subs.push(this.measurementBounds
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.measurementBounds.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe( range => {
         this.measurementService.setRange(range);
         //this.measurementModal.show();
@@ -277,10 +284,11 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.subs.push(this.plotSelectors.leftElements$
-      .combineLatest(this.plotSelectors.rightElements$)
-      .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(
+    let elementsByAxis = combineLatest(
+      this.plotSelectors.leftElements$,this.plotSelectors.rightElements$)
+      .pipe(map(([left, right]) => { return { left: left, right: right } }));
+    this.subs.push(combineLatest(
+        elementsByAxis,
         this.plotSelectors.plotData$, 
         this.plotSelectors.showDataEnvelope$)
       .subscribe(([elementsByAxis, data, showEnvelope]) => {

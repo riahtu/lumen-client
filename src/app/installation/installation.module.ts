@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { SelectModule } from 'ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { 
   ReactiveFormsModule,
   FormsModule
@@ -28,7 +28,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     RouterModule,
     TreeModule,
-    SelectModule,
+    NgSelectModule,
     SharedModule,
     AlertModule.forRoot(),
     TabsModule.forRoot(),

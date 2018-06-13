@@ -4,6 +4,7 @@ import {
 } from '@angular/animations';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Observable, Subscription } from 'rxjs';
+import { filter, distinctUntilChanged, map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -69,12 +70,12 @@ export class PlotContainerComponent implements OnInit {
   ) {
     
     this.plotZValue$ = this.plotSelectors.showDateSelector$
-      .map(show => {
+      .pipe(map(show => {
         if (show)
           return -1;
         else
           return 0;
-      })
+      }))
     this.subs = [];
 
   }
@@ -116,8 +117,8 @@ export class PlotContainerComponent implements OnInit {
 
     /* show the measurement results modal when the measurement range changes */
     this.subs.push(this.measurementSelectors.measurementRange$
-      .distinctUntilChanged()
-      .filter(range => range!=null)
+      .pipe(distinctUntilChanged(),
+      filter(range => range!=null))
       .subscribe(_ => {
         //console.log("showing modal...")
         this.measurementModal.show();

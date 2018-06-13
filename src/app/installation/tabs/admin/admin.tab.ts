@@ -1,5 +1,7 @@
+
 import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 
 
@@ -43,19 +45,19 @@ export class AdminTabComponent implements OnInit {
     this.nilmSub = this.nilm.subscribe(
       nilm => this.permissionService.loadPermissions(nilm.id)
     )
-    let nilmPermissions = 
-    this.nilm.combineLatest(this.permissions$)
-    .map(([nilm, permissions]) => {
-      let values = Object.keys(permissions)
-                              .map(id=>permissions[id])
-      return values.filter(p => p.nilm_id==nilm.id)
-    });
-    this.admins$ = nilmPermissions.map(permissions =>
-      permissions.filter(p => p.role=='admin'))
-    this.owners$ = nilmPermissions.map(permissions =>
-      permissions.filter(p => p.role=='owner'))
-    this.viewers$ = nilmPermissions.map(permissions =>
-      permissions.filter(p => p.role=='viewer'))
+    let nilmPermissions = combineLatest(
+      this.nilm, this.permissions$).pipe(
+      map(([nilm, permissions]) => {
+        let values = Object.keys(permissions)
+                                .map(id=>permissions[id])
+        return values.filter(p => p.nilm_id==nilm.id)
+      }));
+    this.admins$ = nilmPermissions.pipe(map(permissions =>
+      permissions.filter(p => p.role=='admin')))
+    this.owners$ = nilmPermissions.pipe(map(permissions =>
+      permissions.filter(p => p.role=='owner')))
+    this.viewers$ = nilmPermissions.pipe(map(permissions =>
+      permissions.filter(p => p.role=='viewer')))
   }
 
   ngOnDestroy() {

@@ -1,3 +1,4 @@
+
 import {
   Component,
   ViewChild,
@@ -7,7 +8,8 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
-import { Observable, Subscription, Subject } from 'rxjs';
+import { Observable, Subscription, Subject, combineLatest } from 'rxjs';
+import { filter, distinctUntilChanged, map, debounceTime } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import {
   IRange
@@ -57,12 +59,13 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(
   ) {
     /* load data based on changes to navTimeRange */
-    this.subs.push(this.plotSelectors.navTimeRange$
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
-      .combineLatest(this.plotSelectors.plottedElements$
-        .distinctUntilChanged((x,y) => _.isEqual(x,y)),
-        this.plotSelectors.addingNavData$)
-      .filter(([timeRange, elements, busy]) => !busy && elements.length!=0)
+    let timeRange = this.plotSelectors.navTimeRange$.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)));
+    let elements = this.plotSelectors.plottedElements$.pipe(
+      distinctUntilChanged((x,y) => _.isEqual(x,y)));
+    this.subs.push(combineLatest(
+      timeRange, elements,this.plotSelectors.addingNavData$).pipe(
+      filter(([timeRange, elements, busy]) => !busy && elements.length!=0))
       .subscribe(([timeRange, elements, busy]) => {
         let resolution = $(this.plotArea.nativeElement).width()
         this.plotService.loadNavData(elements, timeRange, resolution);
@@ -70,13 +73,13 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.clearSelection(true);
       }));
     /* set the plot time range based on changes to selected range */
-    this.subs.push(this.xBounds
-      .debounceTime(100)
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.xBounds.pipe(
+      debounceTime(100),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe(range => this.plotService.setPlotTimeRange(range)));
     /* set the selection window to track the plot time range */
-    this.subs.push(this.plotSelectors.plotTimeRange$
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.plotSelectors.plotTimeRange$.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe(timeRange => {
         if (this.plot == null) {
           return;
@@ -86,15 +89,15 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           true); //do not fire the plot selected event
       }));
     /* toggle the zoom lock feature based on the state */
-    this.subs.push(this.plotSelectors.navZoomLock$
-      .distinctUntilChanged()
+    this.subs.push(this.plotSelectors.navZoomLock$.pipe(
+      distinctUntilChanged())
       .subscribe(val => {
         if (this.plot != null)
           this.plot.lockZoom(val);
       }));
     /* set nav plot axes based on changes to navTimeRange */
-    this.subs.push(this.plotSelectors.navTimeRange$
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.subs.push(this.plotSelectors.navTimeRange$.pipe(
+      distinctUntilChanged((x, y) => _.isEqual(x, y)))
       .subscribe(timeRange => {
         if (this.plot == null) {
           this.storedPlotTimeRange = timeRange;
@@ -126,10 +129,13 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     /* update the plot when new data comes in */
-    this.subs.push(this.plotSelectors.leftElements$
-      .combineLatest(this.plotSelectors.rightElements$)
-      .map(([left, right]) => { return { left: left, right: right } })
-      .combineLatest(this.plotSelectors.navData$, this.plotSelectors.showDataEnvelope$)
+    let elementsByAxis = combineLatest(
+      this.plotSelectors.leftElements$, this.plotSelectors.rightElements$)
+      .pipe(map(([left, right]) => { return { left: left, right: right } }));
+    this.subs.push(combineLatest(
+      elementsByAxis, 
+      this.plotSelectors.navData$, 
+      this.plotSelectors.showDataEnvelope$)
       .subscribe(([elementsByAxis, data, showEnvelope]) => {
         //build data structure
         let leftAxis = this.plotService

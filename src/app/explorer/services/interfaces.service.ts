@@ -1,5 +1,7 @@
 import { Injectable} from '@angular/core';
+import { HttpClient } from '@angular/common/http'
 import { NgRedux } from '@angular-redux/store';
+import { map } from 'rxjs/operators'
 import * as _ from 'lodash';
 import {
   InterfaceActions,
@@ -7,7 +9,6 @@ import {
 import { IAppState } from '../../app.store';
 import * as schema from '../../api';
 import { normalize } from 'normalizr';
-import { Angular2TokenService } from 'angular2-token';
 import { JouleModuleActions } from '../../store/data';
 
 
@@ -16,7 +17,7 @@ export class InterfacesService {
 
 
   constructor(
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
   ) {}
 
@@ -25,13 +26,11 @@ export class InterfacesService {
   public add(id: number) {
     //get the joule module with the 
     //authorization URL
-    this.tokenService
+    this.http
       .get(`joule_modules/${id}.json`)
-      .map(resp => resp.json())
       .subscribe(
       json => {
         let entities = normalize(json, schema.jouleModule).entities;
-        console.log(entities);
         this.ngRedux.dispatch({
           type: JouleModuleActions.RECEIVE,
           payload: entities.jouleModules

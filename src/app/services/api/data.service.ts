@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Angular2TokenService } from 'angular2-token';
+import {HttpClient, HttpParams} from '@angular/common/http'
 import { Observable } from 'rxjs';
+import { timeout, map } from 'rxjs/operators';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
@@ -17,7 +18,7 @@ import {
 export class DataService {
 
   constructor(
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
     private dataViewService: DataViewService
@@ -30,23 +31,21 @@ export class DataService {
     resolution: number,
     padding: number = 0
   ): Observable<any> {
-
-    let params = {
-      elements: JSON.stringify(elements.map(e => e.id)),
-      start_time: startTime != null ? (startTime * 1e3).toString() : null,
-      end_time: endTime != null ? (endTime * 1e3).toString() : null,
-      resolution: resolution,
-      padding: padding
-    }
-
-    //convert params to URL search format
-    let urlParams = new URLSearchParams;
-    Object.keys(params).map(key => {urlParams.set(key,params[key])})
-    let o = this.tokenService.get('db_elements/data.json', {search: urlParams})
-      .timeout(7000) //wait a maximum of 7 seconds
-      .map(resp => resp.json())
-      .map(json => normalize(json.data, schema.datas))
-      .map(normalized => normalized.entities.data)
+    
+    let params = new HttpParams()
+      .set('elements', JSON.stringify(elements.map(e => e.id)))
+       .set('resolution', String(resolution))
+      .set('padding', String(padding))
+    if(startTime!=null)
+      params = params.set('start_time',(startTime * 1e3).toString())
+    if(endTime!=null)
+      params = params.set('end_time',(endTime * 1e3).toString())
+     
+    let o = this.http.get<schema.IApiResponse>('db_elements/data.json', 
+      {params: params}).pipe(
+      timeout(7000), //wait a maximum of 7 seconds
+      map(json => normalize(json.data, schema.datas)),
+      map(normalized => normalized.entities.data))
     o.subscribe(_ => {}, 
     error => {
       this.messageService.setErrorsFromAPICall(error)
@@ -60,15 +59,15 @@ export class DataService {
     resolution: number,
     stream: IDbStream): Observable<any> {
       console.log('at resolution: ', resolution)
-    return this.tokenService
+    return this.http
       .post(`db_streams/${stream.id}/data.csv`,
       {
         start_time: (startTime * 1e3).toString(),
         end_time: (endTime * 1e3).toString(),
         resolution: resolution
-      })
-      .map(data => new Blob([data['_body']], { type: 'text/csv' }))
-      .map(blob => window.URL.createObjectURL(blob))
+      }, {responseType: "blob"}).pipe(
+      //map(data => new Blob([data['_body']], { type: 'text/csv' })),
+      map(blob => window.URL.createObjectURL(blob)));
 
   }
 

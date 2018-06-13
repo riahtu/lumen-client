@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Angular2TokenService } from 'angular2-token';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
@@ -19,7 +19,7 @@ export class DbStreamService {
 
 
   constructor(
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
   ) { }
@@ -29,9 +29,9 @@ export class DbStreamService {
     let urlParams = new URLSearchParams;
     urlParams.set('streams',JSON.stringify(streamIDs))
 
-    this.tokenService
-      .get(`db_streams.json`, {search: urlParams})
-      .map(resp => resp.json())
+    this.http
+      .get(`db_streams.json`, {
+        params: new HttpParams().set('streams',JSON.stringify(streamIDs))})
       .subscribe(
       json => {
         let entities = normalize(json, schema.dbStreams).entities;
@@ -41,10 +41,9 @@ export class DbStreamService {
   }
 
   public updateStream(stream): void {
-    this.tokenService
-      .put(`db_streams/${stream.id}.json`,
+    this.http
+      .put<schema.IApiResponse>(`db_streams/${stream.id}.json`,
       JSON.stringify(stream))
-      .map(resp => resp.json())
       .subscribe(
       json => {
         let entities = normalize(json.data, schema.dbStream).entities;

@@ -1,3 +1,5 @@
+
+import {combineLatest, map, filter} from 'rxjs/operators';
 import {
   Component,
   Input,
@@ -58,9 +60,9 @@ export class PlottedElementsComponent
 
     //create tooltip text as [stream_name] @ [installation_name]
     //
-    this.toolTipText$ = this.plotSelectors.streams$
-      .combineLatest(this.plotSelectors.nilms$)
-      .map(([streams, nilms]) => {
+    this.toolTipText$ = this.plotSelectors.streams$.pipe(
+      combineLatest(this.plotSelectors.nilms$),
+      map(([streams, nilms]) => {
         if (streams[this.element.db_stream_id] === undefined)
           return '<unknown>'
         let myStream = streams[this.element.db_stream_id]
@@ -68,13 +70,13 @@ export class PlottedElementsComponent
           return null;
         let myNilm = nilms[myStream.nilm_id]
         return `${myStream.name} @ ${myNilm.name}`
-      })
+      }))
 
     //element info 
     //
-    this.elementInfo$ = this.plotSelectors.streams$
-      .combineLatest(this.plotSelectors.nilms$)
-      .map(([streams, nilms]) => {
+    this.elementInfo$ = this.plotSelectors.streams$.pipe(
+      combineLatest(this.plotSelectors.nilms$),
+      map(([streams, nilms]) => {
         let missing_info = {
           stream_name: "unknown",
           installation_name: "unknown",
@@ -93,8 +95,8 @@ export class PlottedElementsComponent
           path: myStream.path,
           installation_url: myNilm.url
         }
-      })
-      .filter(info => info!=null)
+      }),
+      filter(info => info!=null))
 
   }
   ngOnChanges(changes: SimpleChanges) {

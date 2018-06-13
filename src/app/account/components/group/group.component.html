@@ -4,7 +4,7 @@
 <span class="lead" [tooltip]="group.description" >{{group.name}}</span>
 <!-- drop down menu -->
 <div class="btn-group pull-right" dropdown>
-  <button class="btn btn-sm btn-default dropdown-toggle" dropdownToggle>
+  <button class="btn btn-sm btn-secondary dropdown-toggle" dropdownToggle>
     <i class="fa fa-bars"></i>
   </button>
   <ul *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="menu-button">
@@ -69,10 +69,10 @@
       <div class="modal-body">
         <!-- select how to add a user -->
         <span class="lead">I want to:</span> 
-        <ng-select [(ngModel)]="userType"
-        class="selection-options"
-              [options]="userOptions"
+        <ng-select [(ngModel)]="userType" class="selection-options"
               placeholder = "select one">
+              <ng-option *ngFor="let option of options" 
+                [value] = "options.value">{{options.label}}</ng-option>
         </ng-select>
         <hr/>
 
@@ -80,9 +80,11 @@
           <!-- Option 1: select an existing user -->
           <div *ngSwitchCase="'select'">
             <ng-select [(ngModel)]="selectedUser"
-              [options]="selectEntries$ | async"
+              [items]="selectEntries$ | async"
+              bindLabel="label"
+              bindValue="value"
               placeholder = "select a user"
-              notFoundMsg = "no users found">
+              notFoundText = "no users found">
             </ng-select>
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
@@ -91,7 +93,7 @@
                       [disabled]="selectedUser==null"
                       (click)="addMember(selectedUser)">Save</button>
               <!-- cancel -->
-              <button class="btn btn-default pull-right mtop"
+              <button class="btn btn-secondary pull-right mtop"
                       (click)="userModal.hide()">
                       Cancel</button>
             </div>
@@ -119,7 +121,7 @@
                       [disabled]="!emailForm.valid"
                       (click)="inviteMember(email)">Invite</button>
               <!-- cancel -->
-              <button class="btn btn-default pull-right mtop"
+              <button class="btn btn-secondary pull-right mtop"
                       (click)="userModal.hide()">
                       Cancel</button>
             </div>

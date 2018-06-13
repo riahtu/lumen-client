@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ActionsObservable } from 'redux-observable';
 import { UIActions } from '../store/ui';
-import { Observable } from 'rxjs/Observable';
-import { Epic } from 'redux-observable';
+import { Observable } from 'rxjs';
+import { Epic, ofType } from 'redux-observable';
+import { mapTo, delay } from 'rxjs/operators';
+
 import { IPayloadAction } from '../store';
 import { IAppState } from '../app.store';
 import {
@@ -18,23 +20,24 @@ const BASE_URL = '/api';
 @Injectable()
 export class PageEpics {
 
-  public epics: Epic<IPayloadAction, IAppState>[];
+  public epics: Epic<IPayloadAction>[];
 
   constructor() {
     this.epics = [ this.messages, this.interfaceSelection ]
   }
 
   messages = action$ => {
-    return action$.ofType(UIActions.SET_MESSAGES)
-      .delay(5000)
-      .mapTo({
+    return action$.pipe(
+      ofType(UIActions.SET_MESSAGES),
+      delay(5000),
+      mapTo({
         type: UIActions.CLEAR_MESSAGES
-      });
+      }));
   }
   //When a UI action changes the plot, select the data explorer
   interfaceSelection = action$ => {
-    return action$
-      .ofType(DbElementActions.SET_COLOR,
+    return action$.pipe(
+      ofType(DbElementActions.SET_COLOR,
               DbElementActions.SET_DISPLAY_NAME,
               PlotActions.PLOT_ELEMENT,
               PlotActions.AUTO_SCALE_AXIS,
@@ -46,10 +49,10 @@ export class PageEpics {
               PlotActions.SET_RIGHT_AXIS_SETTINGS,
               PlotActions.TOGGLE_DATA_CURSOR,
               PlotActions.TOGGLE_LIVE_UPDATE,
-              PlotActions.TOGGLE_SHOW_DATA_ENVELOPE)
-      .mapTo({
+              PlotActions.TOGGLE_SHOW_DATA_ENVELOPE),
+      mapTo({
               type: InterfaceActions.SELECT,
               payload: null
-             })
+             }));
   }
 }

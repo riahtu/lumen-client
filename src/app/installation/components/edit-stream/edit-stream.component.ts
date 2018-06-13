@@ -1,7 +1,5 @@
-import {
-  Component, Input, OnInit,
-  trigger, state, animate, transition, style
-} from '@angular/core';
+import { Component, Input, OnInit }from '@angular/core';
+import { trigger, state, animate, transition, style } from '@angular/animations'; 
 import { Observable } from 'rxjs';
 /*https://github.com/yuyang041060120/ng2-validation*/
 import { CustomValidators } from 'ng2-validation';
@@ -52,11 +50,7 @@ export class EditStreamComponent implements OnInit {
   public elements: IDbElement[];
   public showElements = true;
 
-  public displayTypeOptions = [
-    {value: 'continuous', label: 'continuous'},
-    {value: 'discrete', label: 'discrete'},
-    {value: 'event', label: 'event'}
-  ];
+  public displayTypeOptions = ['continuous','discrete','event'];
 
   constructor(
     private fb: FormBuilder,

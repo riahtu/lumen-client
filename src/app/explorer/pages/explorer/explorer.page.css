@@ -224,6 +224,9 @@ i.fa-close.tab-close{
 
 a.help-btn {
   margin-left: 20px;
+  border: #097322;
+  border-width: 1px;
+  border-style: solid;
 }
 
 @media(max-width: 767px){

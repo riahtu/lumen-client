@@ -4,6 +4,7 @@ import {
   OnInit 
 } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as _ from 'lodash';
@@ -34,8 +35,8 @@ export class NilmsComponent implements OnInit {
 
   ngOnInit() {
     this.nilmService.loadNilms();   
-    this.nilmArray$ = this.nilms$
-      .map(nilms => _.sortBy(nilms,['name']))
+    this.nilmArray$ = this.nilms$.pipe(
+      map(nilms => _.sortBy(nilms,['name'])))
   }
 
   createNilm(values: any){

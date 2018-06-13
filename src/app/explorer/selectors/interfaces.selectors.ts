@@ -1,6 +1,9 @@
+
+import {combineLatest} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -25,12 +28,12 @@ export class InterfacesSelectors {
     private ngRedux: NgRedux<IAppState>
   ){
 
-    this.displayed$ = this.displayedIds$
-    .combineLatest(this.modules$)
-    .map(([ids, modules]) => ids.map(id => modules[id]))
-    .filter(module => module !== undefined)
+    this.displayed$ = this.displayedIds$.pipe(
+      combineLatest(this.modules$),
+      map(([ids, modules]) => ids.map(id => modules[id])),
+      filter(module => module !== undefined));
 
     this.noneDisplayed$ = this.displayedIds$
-      .map(ids => ids.length==0)
+      .pipe(map(ids => ids.length==0))
   }
 }

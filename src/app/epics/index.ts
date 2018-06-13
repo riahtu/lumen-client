@@ -11,7 +11,7 @@ import {IAppState } from '../app.store';
 
 @Injectable()
 export class AppEpics {
-  public root: Epic<IPayloadAction, IAppState>;
+  public root: Epic<IPayloadAction>;
  
   constructor(
     private pageEpics: PageEpics) {

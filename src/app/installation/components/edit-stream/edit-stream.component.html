@@ -14,7 +14,7 @@
     <dt>Total Time</dt>
     <dd>{{stream.total_time | duration}}</dd>
     <dt>Database Path</dt>
-    <dd>{{stream.path}} <button class="btn btn-xs btn-default">Move</button></dd>
+    <dd>{{stream.path}} <button class="btn btn-xs btn-secondary">Move</button></dd>
   </dl>
 
   <form class="clearfix" [formGroup]="form" 
@@ -59,7 +59,7 @@
                 [formControl]="subform.get('plottable')"></td>
           <td>
             <ng-select [formControl]="subform.get('display_type')"
-              [options]="displayTypeOptions"></ng-select></td>
+              [items]="displayTypeOptions"></ng-select></td>
           <td class="form-group" [class.has-error]="!subform.get('name').valid"> 
             <input type="text" class="form-control"
                 
@@ -97,12 +97,12 @@
     </table>
     <div class="form-group">
       <div class="pull-left">
-        <button type="submit" class="btn btn-default"
+        <button type="submit" class="btn btn-secondary"
           [disabled]="!form.valid">Save</button>
       </div>
       <div class="pull-right">
         <button class="btn btn-danger">Delete</button>
-        <button class="btn btn-default">
+        <button class="btn btn-secondary">
             <i class="fa fa-lock"></i>
         </button>
       </div>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -26,11 +27,11 @@ export class AccountSelectors {
   public memberGroups$: Observable<IUserGroupRecord[]>;
 
   constructor() {
-    this.ownedGroups$ = this.userGroups$.map(store => {
+    this.ownedGroups$ = this.userGroups$.pipe(map(store => {
       return store.owner.map(id => store.entities[id]);
-    });
-    this.memberGroups$ = this.userGroups$.map(store => {
+    }));
+    this.memberGroups$ = this.userGroups$.pipe(map(store => {
       return store.member.map(id => store.entities[id]);
-    });
+    }));
   }
 }

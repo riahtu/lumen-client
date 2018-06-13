@@ -10,9 +10,8 @@ import {
   ResponseOptions
 } from '@angular/http';
 import {MockBackend} from '@angular/http/testing';
-import {Angular2TokenService} from 'angular2-token';
 import { Observable } from 'rxjs';
-
+import {HttpClient} from '@angular/common/http';
 import { NilmService } from './nilm.service';
 
 import {} from 'jasmine';
@@ -43,7 +42,7 @@ fdescribe('NilmService', () => {
           provide: NgRedux,
           useValue: mockRedux
         },
-        { provide: Angular2TokenService,
+        { provide: HttpClient,
           useFactory: (backend: ConnectionBackend,
                        defaultOptions: BaseRequestOptions) =>{
                          return new Http(backend, defaultOptions); 

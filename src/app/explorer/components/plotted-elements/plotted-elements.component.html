@@ -45,7 +45,8 @@
               <label class="control-label" for="element-axis">Axis</label>
               <ng-select [(ngModel)]="newAxis"
                   class="selection-options"
-                  [options]="axisOptions"
+                  bindValue="value"
+                  [items]="axisOptions"
                   placeholder = "select one">
               </ng-select>
               <span class="help-block">{{axisMessage}}</span>
@@ -74,7 +75,7 @@
           <button class="btn btn-primary pull-left" 
                   (click)="onSave()">Save</button>
           <!-- cancel -->
-          <button class="btn btn-default pull-right"
+          <button class="btn btn-secondary pull-right"
                   (click)="elementModal.hide()">
                   Cancel</button>
         </div>

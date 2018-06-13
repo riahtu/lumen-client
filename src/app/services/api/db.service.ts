@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Angular2TokenService } from 'angular2-token';
+import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, Headers, RequestOptionsArgs, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -21,25 +21,23 @@ export class DbService {
 
 
   constructor(
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
   ) { }
 
 
   public loadDb(dbId): void {
-    this.tokenService
+    this.http
       .get(`dbs/${dbId}.json`, {})
-      .map(resp => resp.json())
       .subscribe(
       json => this._dispatch(json),
       error => this.messageService.setErrorsFromAPICall(error));
   }
 
   public updateDb(db: IDb): void {
-    this.tokenService
-      .put(`dbs/${db.id}.json`, JSON.stringify(db))
-      .map(resp => resp.json())
+    this.http
+      .put<schema.IApiResponse>(`dbs/${db.id}.json`, JSON.stringify(db))
       .subscribe(
       json => {
         this._dispatch(json.data);

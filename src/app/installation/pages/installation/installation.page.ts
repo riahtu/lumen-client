@@ -1,7 +1,9 @@
+
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import {environment } from '../../../../environments/environment'
 import {
@@ -43,9 +45,9 @@ export class InstallationPageComponent implements OnInit {
     this.subs.push(this.route.params.subscribe(params => 
       this.nilmService.loadNilm(params['id'])));
 
-    this.nilm$ = this.nilms$.combineLatest(this.route.params)
-      .map(([nilms,params]) => nilms[params['id']])
-      .filter(nilm => !(nilm === undefined));
+    this.nilm$ = combineLatest(this.nilms$,this.route.params).pipe(
+      map(([nilms,params]) => nilms[params['id']]),
+      filter(nilm => !(nilm === undefined)));
   }
 
   ngOnDestroy(){

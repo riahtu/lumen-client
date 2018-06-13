@@ -1,42 +1,42 @@
-<div class="col-md-9 col-sm-6">
-  
-  
-  <div class="carousel-box">
-    <carousel [noPause]="false" [interval]="false">
-      <slide *ngFor="let slide of slides">
-        <img src="{{slide.url}}" alt="First slide">
-        <div class="carousel-caption">
-          <h3>{{slide.name}}</h3>
-          <p>{{slide.description}}</p>
-        </div>
-      </slide>
-    </carousel>
+<div class="row">
+  <div class="col-md-9 col-sm-6">
+    <div class="carousel-box">
+      <carousel [noPause]="false" [interval]="false">
+        <slide *ngFor="let slide of slides">
+          <img src="{{slide.url}}" alt="First slide">
+          <div class="carousel-caption">
+            <h3>{{slide.name}}</h3>
+            <p>{{slide.description}}</p>
+          </div>
+        </slide>
+      </carousel>
+    </div>
   </div>
-</div>
-<div class="col-md-3 col-sm-6 col-xs-12">
+  <div class="col-md-3 col-sm-6 col-xs-12">
 
-  <form [formGroup]="form">
-    <legend>Sign In</legend>
-    <div class="form-group" [class.has-error]="!form.get('email').valid && !form.get('email').pristine">
-      <label class="control-label" for="email">E-mail</label>
-      <input class="form-control" id="email" 
-             type="email"
-             [attr.placeholder]="isStandalone? 'admin@wattsworth.local' : 'e-mail'"
-             [formControl]="form.get('email')" 
-              placeholder="name@wattsworth.net">
-    </div>
-    <div class="form-group">
-      <label class="control-label" for="password">Password</label>
-      <input type="password" class="form-control" 
-             [formControl]="form.get('password')" 
-             id="password">
-    </div>
-    <a *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
-      Forgot your password?</a>
+    <form [formGroup]="form">
+      <legend>Sign In</legend>
+      <div class="form-group" [class.has-error]="!form.get('email').valid && !form.get('email').pristine">
+        <label class="control-label" for="email">E-mail</label>
+        <input class="form-control" id="email" 
+              type="email"
+              [attr.placeholder]="isStandalone? 'admin@wattsworth.local' : 'e-mail'"
+              [formControl]="form.get('email')" 
+                placeholder="name@wattsworth.net">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="password">Password</label>
+        <input type="password" class="form-control" 
+              [formControl]="form.get('password')" 
+              id="password">
+      </div>
+      <a *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
+        Forgot your password?</a>
 
-    <button class="btn btn-primary btn-block" 
-            (click)="onSubmit(form.value)"
-            [disabled]="!form.valid">Sign In
-    </button>
-  </form>
+      <button class="btn btn-primary btn-block" 
+              (click)="onSubmit(form.value)"
+              [disabled]="!form.valid">Sign In
+      </button>
+    </form>
+  </div>
 </div>

@@ -1,8 +1,14 @@
-import { ModuleWithProviders } from '@angular/core'
+import { ModuleWithProviders, Injectable } from '@angular/core'
 import { Routes, RouterModule } from '@angular/router';
-import { Angular2TokenService } from 'angular2-token';
-
-import {  } from './account/pages';
+import { 
+  HttpRequest, 
+  HttpHandler, 
+  HttpEvent, 
+  HttpInterceptor,
+  HttpResponse
+} from '@angular/common/http'
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { InstallationPageComponent } from './installation/pages';
 import { ExplorerPageComponent } from './explorer/pages';
 import {
@@ -11,6 +17,56 @@ import {
   AcceptInvitationPageComponent,
   PasswordResetPageComponent
 } from './account/pages';
+import { environment } from '../environments/environment';
+
+import { AuthGuard } from './app.guards';
+
+
+@Injectable()
+export class JwtInterceptor implements HttpInterceptor {
+
+  access_token: string;
+  client: string;
+  expiry: string;
+  token_type: string;
+  uid: string;
+
+  constructor(){
+    //try to retrieve credentials from local storage
+    this.access_token = localStorage.getItem('auth.access-token')
+    this.client = localStorage.getItem('auth.client')
+    this.expiry = localStorage.getItem('auth.expiry')
+    this.token_type = localStorage.getItem('auth.token-type')
+    this.uid = localStorage.getItem('auth.uid')
+  }
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    request = request.clone({
+      url: environment.apiUrl+'/'+request.url,
+      setHeaders: {
+        'access-token': this.access_token==null?'':this.access_token,
+        'client': this.client==null?'':this.client,
+        'expiry': this.expiry==null?'':this.expiry,
+        'token-type': this.token_type==null?'':this.token_type,
+        'uid': this.uid==null?'':this.uid
+      }
+    });
+    return next.handle(request).pipe(tap(event => {
+      if(event instanceof HttpResponse){
+        //save the authentication credentials
+        this.access_token = event.headers.get('access-token');
+        localStorage.setItem('auth.access-token',this.access_token);
+        this.client = event.headers.get('client');
+        localStorage.setItem('auth.client',this.client);
+        this.expiry = event.headers.get('expiry');
+        localStorage.setItem('auth.expiry',this.expiry);
+        this.token_type = event.headers.get('token-type');
+        localStorage.setItem('auth.token_type',this.token_type);
+        this.uid = event.headers.get('uid');
+        localStorage.setItem('auth.uid',this.uid);
+      };
+    }));
+  }
+}
 
 const routes: Routes = [
   
@@ -18,22 +74,22 @@ const routes: Routes = [
     path: '',
     redirectTo: 'explorer',
     pathMatch: 'full',
-    canActivate: [Angular2TokenService]
+    canActivate: [AuthGuard]
   },
   {
     path: 'explorer',
     component: ExplorerPageComponent,
-    canActivate: [Angular2TokenService]
+    canActivate: [AuthGuard]
   },
   {
     path: 'account',
     component: AccountPageComponent,
-    canActivate: [Angular2TokenService]
+    canActivate: [AuthGuard]
   },
   {
     path: 'installations/:id',
     component: InstallationPageComponent,
-    canActivate: [Angular2TokenService]
+    canActivate: [AuthGuard]
 
   },
   {

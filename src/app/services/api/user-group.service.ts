@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Angular2TokenService } from 'angular2-token';
+import { Observable, empty } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -24,7 +24,7 @@ export class UserGroupService {
 
   constructor(
     //private http: Http,
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
   ) {
@@ -34,18 +34,17 @@ export class UserGroupService {
   public loadUserGroups(): Observable<any> {
     //only execute request once
     if (this.groupsLoaded) {
-      return Observable.empty<any>();
+      return empty();
     }
 
-    let o = this.tokenService
+    let o = this.http
       .get('user_groups.json', {})
-      .map(resp => resp.json());
       
     o.subscribe(
       json => {
         this.groupsLoaded = true;
         //load owned groups (contains user data)
-        let objs = normalize(json.owner, schema.userGroups);
+        let objs = normalize(json['owner'], schema.userGroups);
         this.ngRedux.dispatch({
           type: UserGroupActions.RECEIVE_OWNER_GROUPS,
           payload: objs
@@ -59,12 +58,12 @@ export class UserGroupService {
         //load member groups 
         this.ngRedux.dispatch({
           type: UserGroupActions.RECEIVE_MEMBER_GROUPS,
-          payload: normalize(json.member, schema.userGroups)
+          payload: normalize(json['member'], schema.userGroups)
         });
         //load other groups (generic action)
         this.ngRedux.dispatch({
           type: UserGroupActions.RECEIVE_GROUPS,
-          payload: normalize(json.other, schema.userGroups)
+          payload: normalize(json['other'], schema.userGroups)
         });
       },
       error => this.messageService.setErrorsFromAPICall(error)
@@ -73,9 +72,8 @@ export class UserGroupService {
   }
 
   public removeMember(group: IUserGroup, member: IUser) {
-    this.tokenService
-      .put(`user_groups/${group.id}/remove_member.json`, { user_id: member.id })
-      .map(resp => resp.json())
+    this.http
+      .put<schema.IApiResponse>(`user_groups/${group.id}/remove_member.json`, { user_id: member.id })
       .subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -90,9 +88,8 @@ export class UserGroupService {
   }
 
   public addMember(group: IUserGroup, member: IUser) {
-    this.tokenService
-      .put(`user_groups/${group.id}/add_member.json`, { user_id: member.id })
-      .map(resp => resp.json())
+    this.http
+      .put<schema.IApiResponse>(`user_groups/${group.id}/add_member.json`, { user_id: member.id })
       .subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -107,12 +104,11 @@ export class UserGroupService {
   }
 
   public inviteMember(group: IUserGroup, email: string) {
-    this.tokenService
-      .put(`user_groups/${group.id}/invite_member.json`, {
+    this.http
+      .put<schema.IApiResponse>(`user_groups/${group.id}/invite_member.json`, {
         email: email,
         redirect_url: `${window.location.origin}/accept`
       })
-      .map(resp => resp.json())
       .subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -129,9 +125,8 @@ export class UserGroupService {
 
 
   public createMember(group: IUserGroup, userParams: any) {
-    let o = this.tokenService
-      .put(`user_groups/${group.id}/create_member.json`, userParams)
-      .map(resp => resp.json());
+    let o = this.http
+      .put<schema.IApiResponse>(`user_groups/${group.id}/create_member.json`, userParams)
 
     o.subscribe(
       json => {
@@ -154,12 +149,11 @@ export class UserGroupService {
   }
 
   public createGroup(name: string, description: string): Observable<any> {
-    let o = this.tokenService
-      .post('user_groups.json', {
+    let o = this.http
+      .post<schema.IApiResponse>('user_groups.json', {
         name: name,
         description: description
       })
-      .map(resp => resp.json());
 
     o.subscribe(
       json => {
@@ -179,11 +173,10 @@ export class UserGroupService {
     group: IUserGroup,
     name: string,
     description: string): Observable<any> {
-    let o = this.tokenService
-      .put(`user_groups/${group.id}.json`, {
+    let o = this.http
+      .put<schema.IApiResponse>(`user_groups/${group.id}.json`, {
         name: name, description: description
       })
-      .map(resp => resp.json());
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -199,9 +192,8 @@ export class UserGroupService {
   }
 
   public destroyGroup(group: IUserGroup) {
-    this.tokenService
-      .delete(`user_groups/${group.id}`)
-      .map(resp => resp.json())
+    this.http
+      .delete<schema.IApiResponse>(`user_groups/${group.id}`)
       .subscribe(
       json => {
         this.ngRedux.dispatch({

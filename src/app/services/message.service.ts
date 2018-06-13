@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NgRedux } from '@angular-redux/store';
-import { Angular2TokenService } from 'angular2-token';
+import { Router } from '@angular/router';
 
 import { IAppState } from '../app.store';
 import {
@@ -13,7 +13,7 @@ export class MessageService {
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
-    private tokenService: Angular2TokenService
+    private router: Router
   ) { }
 
   public setMessages(messages: IStatusMessages): void {
@@ -75,8 +75,9 @@ export class MessageService {
     } catch (e) {
       if (error.status == 401) {
         //user is not authorized, sign them out and return to login page
-        this.tokenService.signOut();
-        window.location.href ='/session/sign_in';
+        localStorage.clear();
+        this.router.navigate(['/']);
+        this.setNotice('Log in before continuing');
       }
       return [`server error: ${error.status}`]
 

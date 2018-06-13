@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -41,10 +42,10 @@ export class MeasurementSelectors {
   ){
 
     this.zeroSet$ = this.zeroRange$
-      .map(range => {
+      .pipe(map(range => {
         if(range==null)
           return false;
         return true;
-      })
+      }));
   }
 }

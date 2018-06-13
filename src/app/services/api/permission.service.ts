@@ -1,6 +1,8 @@
+
 import { Injectable } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Angular2TokenService } from 'angular2-token';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   NgRedux,
   select
@@ -37,7 +39,7 @@ export class PermissionService {
 
   constructor(
     //private http: Http,
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
     private userService: UserService,
@@ -46,8 +48,8 @@ export class PermissionService {
     //keep track of NILM's we retrieve permissions for
     this.nilmsWithPermissions = [];
 
-    this.targets$ = this.users$.combineLatest(this.userGroups$)
-      .map(([users, userGroups]) => {
+    this.targets$ = combineLatest(this.users$, this.userGroups$).pipe(
+      map(([users, userGroups]) => {
         let targets: PermissionTarget[] = []
         Object.keys(users).reduce((acc: PermissionTarget[], id) => {
           let user = users[id];
@@ -68,7 +70,7 @@ export class PermissionService {
           return acc;
         }, targets)
         return targets;
-      });
+      }));
   }
 
   public loadPermissions(nilmId: number): void {
@@ -76,11 +78,9 @@ export class PermissionService {
     if (this.nilmsWithPermissions.indexOf(nilmId) > -1) {
       return;
     }
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('nilm_id', nilmId.toString());
-    this.tokenService
-      .get('permissions.json', { search: params })
-      .map(resp => resp.json())
+    this.http
+      .get('permissions.json', { 
+        params: new HttpParams().set('nilm_id', nilmId.toString()) })
       .subscribe(
       json => {
         this.nilmsWithPermissions.push(nilmId);
@@ -94,11 +94,9 @@ export class PermissionService {
   }
 
   public removePermission(permission: IPermission): void {
-    let params: URLSearchParams = new URLSearchParams();
-    params.set('nilm_id', permission.nilm_id.toString());
-    this.tokenService
-      .delete(`permissions/${permission.id}.json`, { search: params })
-      .map(resp => resp.json())
+    this.http
+      .delete<schema.IApiResponse>(`permissions/${permission.id}.json`, { 
+        params: new HttpParams().set('nilm_id', permission.nilm_id.toString()) })
       .subscribe(
       json => {
         this.ngRedux.dispatch({
@@ -115,15 +113,14 @@ export class PermissionService {
     nilmId: number,
     role: string,
     targetId: number,
-    targetType: string): Observable<string> {
-    let o = this.tokenService
-      .post('/permissions.json', {
+    targetType: string): Observable<schema.IApiResponse> {
+    let o = this.http
+      .post<schema.IApiResponse>('/permissions.json', {
         nilm_id: nilmId,
         role: role,
         target: targetType,
         target_id: targetId
       })
-      .map(resp => resp.json());
 
     o.subscribe(
       json => {
@@ -143,14 +140,13 @@ export class PermissionService {
     role: string,
     userParams: any
   ) {
-    let o = this.tokenService
-      .put(`permissions/create_user.json`,
+    let o = this.http
+      .put<schema.IApiResponse>(`permissions/create_user.json`,
       Object.assign({}, userParams,
         {
           nilm_id: nilmId,
           role: role,
         }))
-      .map(resp => resp.json());
 
     o.subscribe(
       json => {
@@ -170,14 +166,13 @@ export class PermissionService {
     nilmId: number,
     role: string,
     email: string) {
-    let o = this.tokenService
-      .put(`permissions/invite_user.json`, {
+    let o = this.http
+      .put<schema.IApiResponse>(`permissions/invite_user.json`, {
         email: email,
         nilm_id: nilmId,
         role: role,
         redirect_url: `${window.location.origin}/accept`
       })
-      .map(resp => resp.json());
 
       o.subscribe(
       json => {

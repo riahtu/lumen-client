@@ -7,6 +7,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import {
@@ -108,15 +109,15 @@ export class GroupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.members$ = this.users$.map(users =>
+    this.members$ = this.users$.pipe(map(users =>
       this.group.members.map(id => users[id])
-    );
-    this.selectEntries$ = this.users$.map(users => {
+    ));
+    this.selectEntries$ = this.users$.pipe(map(users => {
       return Object.keys(users).map(id => {
         let user = users[id];
         return { value: user, label: `${user.first_name} ${user.last_name}` }
       });
-    });
+    }));
     this.emailForm = this.fb.group({
       email: ['', [Validators.required, CustomValidators.email]],
     });

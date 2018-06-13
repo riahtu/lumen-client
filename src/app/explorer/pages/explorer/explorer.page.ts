@@ -1,3 +1,5 @@
+
+import {combineLatest, distinctUntilChanged} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import {
   trigger, animate, style, transition
@@ -5,6 +7,7 @@ import {
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Observable, Subscription } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 import {environment } from '../../../../environments/environment'
@@ -80,12 +83,12 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
     this.helpUrl = environment.helpUrl;
     
     this.plotZValue$ = this.plotSelectors.showDateSelector$
-      .map(show => {
+      .pipe(map(show => {
         if (show)
           return -1;
         else
           return 0;
-      })
+      }));
     this.subs = [];
 
   }
@@ -126,16 +129,16 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
     this.dataViewService.restoreHomeDataView();
 
     /* show the measurement results modal when the measurement range changes */
-    this.subs.push(this.measurementSelectors.measurementRange$
-      .distinctUntilChanged()
-      .filter(range => range!=null)
+    this.subs.push(this.measurementSelectors.measurementRange$.pipe(
+      distinctUntilChanged(),
+      filter(range => range!=null))
       .subscribe(_ => {
         this.measurementModal.show();
       }))
     /* sync the tab selection to the redux state */
-    this.subs.push(this.interfacesSelectors.displayedIds$
-        .combineLatest(this.interfacesSelectors.selectedId$)
-        .map(([ids,id])=> ids.indexOf(id)+1)
+    this.subs.push(this.interfacesSelectors.displayedIds$.pipe(
+        combineLatest(this.interfacesSelectors.selectedId$),
+        map(([ids,id])=> ids.indexOf(id)+1))
         .subscribe(tabIndex => {
           setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}); 
         }));

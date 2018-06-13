@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Angular2TokenService } from 'angular2-token';
+import { Observable, empty } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -28,7 +28,7 @@ export class NilmService {
 
   constructor(
     //private http: Http,
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService
   ) {
@@ -37,12 +37,11 @@ export class NilmService {
 
   public loadNilms(): Observable<any> {
     if (this.nilmsLoaded) {
-      return Observable.empty<any>();
+      return empty();
     }
 
-    let o = this.tokenService
+    let o = this.http
       .get('nilms.json', {})
-      .map(resp => resp.json())
 
     o.subscribe(
       json => {
@@ -56,9 +55,8 @@ export class NilmService {
   }
 
   public loadNilm(id: number): Observable<any> {
-    let o = this.tokenService
-      .get(`nilms/${id}.json`, {})
-      .map(resp => resp.json())
+    let o = this.http
+      .get<schema.IApiResponse>(`nilms/${id}.json`, {})
 
     o.subscribe(
       json => {
@@ -73,13 +71,12 @@ export class NilmService {
     name: string,
     description: string,
     url: string): Observable<any> {
-    let o = this.tokenService
-      .post('nilms.json', {
+    let o = this.http
+      .post<schema.IApiResponse>('nilms.json', {
         name: name,
         description: description,
         url: url
       })
-      .map(resp => resp.json());
 
     o.subscribe(
       json => {
@@ -97,13 +94,11 @@ export class NilmService {
     name: string,
     description: string,
     url: string) {
-    this.tokenService.put(`nilms/${nilm.id}.json`, {
+    this.http.put<schema.IApiResponse>(`nilms/${nilm.id}.json`, {
       name: name,
       description: description,
       url: url
-    })
-      .map(resp => resp.json())
-      .subscribe(
+    }).subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
         this._dispatch(data.entities);
@@ -114,9 +109,8 @@ export class NilmService {
   }
 
   public refreshNilm(id: number) {
-    let o = this.tokenService
-    .get(`nilms/${id}.json?refresh=1`, {})
-    .map(resp => resp.json())
+    let o = this.http
+    .get<schema.IApiResponse>(`nilms/${id}.json?refresh=1`, {})
     this.ngRedux.dispatch({
       type: NilmActions.REFRESHING,
       payload: id
@@ -139,9 +133,8 @@ export class NilmService {
   }
 
   public removeNilm(nilm: INilm) {
-    let o = this.tokenService
-      .delete(`nilms/${nilm.id}.json`)
-      .map(resp => resp.json());
+    let o = this.http
+      .delete<schema.IApiResponse>(`nilms/${nilm.id}.json`)
 
     o.subscribe(
       json => {

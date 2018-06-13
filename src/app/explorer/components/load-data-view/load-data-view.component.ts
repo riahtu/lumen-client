@@ -5,6 +5,7 @@ import { DataViewService } from '../../../services';
 import { PlotService } from '../../services/plot.service';
 import {PlotSelectors} from '../../selectors/plot.selectors';
 import {Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-load-data-view',
@@ -28,13 +29,13 @@ export class LoadDataViewComponent implements OnInit {
   ngOnInit() {
 
     this.hasViews$ = 
-      this.plotSelectors.dataViews$
-        .map(records => Object.keys(records))
-        .map(ids => ids.length!=0)
+      this.plotSelectors.dataViews$.pipe(
+        map(records => Object.keys(records)),
+        map(ids => ids.length!=0));
         
     this.hasFilteredViews$ = 
       this.plotSelectors.filteredDataViews$
-        .map(views => views.length>0)
+        .pipe(map(views => views.length>0))
   }
 
   loadDataView(view: IDataView){

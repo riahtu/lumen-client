@@ -1,4 +1,3 @@
-
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { TreeNode } from 'angular-tree-component';
@@ -16,7 +15,8 @@ import {
 
 import {IInstallation} from './store';
 import {IAppState} from '../app.store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { map, filter, distinctUntilChanged } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 
 
@@ -58,45 +58,45 @@ export class InstallationSelectors {
   ) {
 
     // ---- selectedDb: IDbRecord ------
-    this.selectedDb$ = this.dbs$
-      .combineLatest(this.db_id$)
-      .map(([dbs, id]) => dbs[id])
-      .filter(db => !(db === undefined || db == null))
+    this.selectedDb$ = combineLatest(
+      this.dbs$, this.db_id$).pipe(
+      map(([dbs, id]) => dbs[id]),
+      filter(db => !(db === undefined || db == null)))
 
 
     // ---- selectedDb: IDbRecord ------
-    this.selectedDbRootFolder$ = this.selectedDb$
-      .combineLatest(this.dbFolders$)
-      .map(([db, folders]) => folders[db.contents])
-      .filter(folder => !(folder === undefined));
+    this.selectedDbRootFolder$ = combineLatest(
+      this.selectedDb$,this.dbFolders$).pipe(
+      map(([db, folders]) => folders[db.contents]),
+      filter(folder => !(folder === undefined)));
 
     // ---- selectedDbFolder: IDbFolderRecord ------
-    this.selectedDbFolder$ = this.dbFolders$
-      .combineLatest(this.dbFolder_id$)
-      .map(([dbFolders, id]) => dbFolders[id])
-      .filter(dbFolder => !(dbFolder === undefined))
-      .distinctUntilChanged();
+    this.selectedDbFolder$ = combineLatest(
+      this.dbFolders$,this.dbFolder_id$).pipe(
+      map(([dbFolders, id]) => dbFolders[id]),
+      filter(dbFolder => !(dbFolder === undefined)),
+      distinctUntilChanged());
 
     // ---- selectedDbStream: IDbStreamRecord ------
-    this.selectedDbStream$ = this.dbStreams$
-      .combineLatest(this.dbStream_id$)
-      .map(([dbStreams, id]) => dbStreams[id])
-      .filter(dbStream => !(dbStream === undefined))
-      .distinctUntilChanged();
+    this.selectedDbStream$ = combineLatest(
+      this.dbStreams$, this.dbStream_id$).pipe(
+      map(([dbStreams, id]) => dbStreams[id]),
+      filter(dbStream => !(dbStream === undefined)),
+      distinctUntilChanged());
 
 
     // ---- selectedDbElements: IDbElements[] -----
-    this.selectedDbStreamElements$ = this.selectedDbStream$
-      .combineLatest(this.dbElements$)
-      .map(([stream, elements]) => stream.elements.map(id => elements[id]))
-      .filter(elements =>
-        elements.reduce((i, e) => i && !(e === undefined), true))
-      .distinctUntilChanged();
+    this.selectedDbStreamElements$ = combineLatest(
+      this.selectedDbStream$,this.dbElements$).pipe(
+       map(([stream, elements]) => stream.elements.map(id => elements[id])),
+       filter(elements =>
+        elements.reduce((i, e) => i && !(e === undefined), true)),
+      distinctUntilChanged());
 
     // ---- dbNodes: DbTreeNode[] -----
-    this.dbNodes$ = this.selectedDb$
-      .combineLatest(this.data$)
-      .map(([db, data]) => this._mapRoot(data, db))
+    this.dbNodes$ = combineLatest(
+      this.selectedDb$, this.data$).pipe(
+      map(([db, data]) => this._mapRoot(data, db)));
   }
 
   ///----------- Tree Helper Functions -----------------------

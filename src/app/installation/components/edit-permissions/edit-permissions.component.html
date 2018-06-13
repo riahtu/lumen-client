@@ -12,7 +12,7 @@
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
 
-<button class="btn btn-default" (click)='permissionModal.show()'>
+<button class="btn btn-secondary" (click)='permissionModal.show()'>
 <i class="fa fa-user-plus"></i> Add Permission</button>
 
 
@@ -36,7 +36,8 @@
           <span class="lead">I want to:</span> 
           <ng-select [(ngModel)]="userType"
           class="selection-options"
-                [options]="userOptions"
+                [items]="userOptions"
+                bindValue = 'value'
                 placeholder = "select one">
           </ng-select>
         </div>
@@ -44,7 +45,8 @@
           <span class="lead">to be:</span> 
           <ng-select [(ngModel)]="role"
           class="selection-options"
-                [options]="roleOptions"
+                [items]="roleOptions"
+                bindValue = 'value'
                 placeholder = "select one">
           </ng-select>
         </div>
@@ -56,9 +58,10 @@
           <!-- Option 1: select an existing user -->
           <div *ngSwitchCase="'select'">
             <ng-select [(ngModel)]="target"
-              [options]="selectEntries$ | async"
+              [items]="selectEntries$ | async"
+              bindValue = "value"
               placeholder = "select a user or group"
-              notFoundMsg = "no users or groups found">
+              notFoundText = "no users or groups found">
             </ng-select>
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
@@ -67,7 +70,7 @@
                       [disabled]="target==null"
                       (click)="createPermission(target)">Save</button>
               <!-- cancel -->
-              <button class="btn btn-default pull-right mtop"
+              <button class="btn btn-secondary pull-right mtop"
                       (click)="cancel()">
                       Cancel</button>
             </div>
@@ -95,7 +98,7 @@
                       [disabled]="!emailForm.valid"
                       (click)="inviteUserWithPermission(email)">Invite</button>
               <!-- cancel -->
-              <button class="btn btn-default pull-right mtop"
+              <button class="btn btn-secondary pull-right mtop"
                       (click)="cancel()">
                       Cancel</button>
             </div>

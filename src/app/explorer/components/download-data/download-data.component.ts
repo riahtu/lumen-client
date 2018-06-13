@@ -1,5 +1,8 @@
+
+import {combineLatest} from 'rxjs/operators';
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 import { IDbStream } from '../../../store/data';
@@ -34,8 +37,8 @@ export class DownloadDataComponent implements OnInit {
   ngOnInit() {
     this.resolution = null;
     this.downloadInfo$ = this.plotSelectors
-      .plottedStreams$.combineLatest(this.plotSelectors.nilms$)
-      .map(([streams,nilms])=>{
+      .plottedStreams$.pipe(combineLatest(this.plotSelectors.nilms$))
+      .pipe(map(([streams,nilms])=>{
         return streams
         .filter(stream => nilms[stream.nilm_id]!==undefined)
         .map(stream => {
@@ -45,7 +48,7 @@ export class DownloadDataComponent implements OnInit {
             installation_url: nilms[stream.nilm_id].url
           }
         })
-      })
+      }));
   }
   setResolution(value: number){
     this.resolution = value;

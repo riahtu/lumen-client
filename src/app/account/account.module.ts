@@ -8,7 +8,7 @@ import {
   PopoverModule,
   CarouselModule
 } from 'ngx-bootstrap'
-import { SelectModule } from 'ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 import {
   ReactiveFormsModule,
   FormsModule
@@ -26,7 +26,7 @@ import { COMPONENTS } from './components';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    SelectModule,
+    NgSelectModule,
     SharedModule,
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),

@@ -1,5 +1,7 @@
+
+import {distinctUntilChanged, filter} from 'rxjs/operators';
 import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import {
@@ -45,8 +47,8 @@ export class ToolTabComponent implements OnInit, OnDestroy {
     this.savePlotImage = new EventEmitter();
     this.saveDataView = new EventEmitter();
     this.loadDataView = new EventEmitter();
-    this.livePlotUpdateTimer = Observable.timer(0, LIVE_PLOT_UPDATE_INTERVAL);
-    this.liveNavUpdateTimer = Observable.timer(0, LIVE_NAV_UPDATE_INTERVAL);
+    this.livePlotUpdateTimer = timer(0, LIVE_PLOT_UPDATE_INTERVAL);
+    this.liveNavUpdateTimer = timer(0, LIVE_NAV_UPDATE_INTERVAL);
 
     this.livePlotTimerSubscription = null;
     this.liveNavTimerSubscription = null;
@@ -62,9 +64,9 @@ export class ToolTabComponent implements OnInit, OnDestroy {
           this.deactivateLiveUpdate();
       })
     /* remove time bounds when plot is empty (so new elements auto scale)*/
-    this.subs.push(this.plotSelectors.isPlotEmpty$
-      .distinctUntilChanged()
-      .filter(isEmpty => isEmpty == true)
+    this.subs.push(this.plotSelectors.isPlotEmpty$.pipe(
+      distinctUntilChanged(),
+      filter(isEmpty => isEmpty == true))
       .subscribe(_ => {
         this.plotService.disableLiveUpdate();
       }));

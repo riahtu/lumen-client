@@ -1,6 +1,10 @@
 import { schema } from 'normalizr';
 import {decompressFromEncodedURIComponent} from 'lz-string'
 
+export interface IApiResponse {
+  messages?: any,
+  data?: any
+}
 
 export const jouleModule = new schema.Entity('jouleModules');
 export const jouleModules = new schema.Array(jouleModule);

@@ -15,7 +15,7 @@ import {
   FormsModule
 } from '@angular/forms';
 
-import { SelectModule } from 'ng-select';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { SharedModule } from '../shared/shared.module';
 import { COMPONENTS } from './components';
@@ -33,7 +33,7 @@ import { DurationPipe } from './duration.pipe';
     FormsModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    SelectModule,
+    NgSelectModule,
     SharedModule,
     ModalModule.forRoot(),
     TabsModule.forRoot(),

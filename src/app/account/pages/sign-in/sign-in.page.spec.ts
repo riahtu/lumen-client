@@ -3,7 +3,6 @@ import { async, inject, ComponentFixture, TestBed } from '@angular/core/testing'
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Angular2TokenService} from 'angular2-token';
 import { Http } from '@angular/http';
 
 import {SessionService } from '../../../services';
@@ -18,7 +17,6 @@ describe('SignInPageComponent', () => {
       imports: [ ReactiveFormsModule],
       declarations: [ SignInPageComponent ],
       providers: [ SessionService, 
-                   Angular2TokenService, 
                    Http]
     })
     .compileComponents();

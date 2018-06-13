@@ -2,14 +2,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { NgReduxModule, NgRedux } from '@angular-redux/store';
-import { Angular2TokenService} from 'angular2-token';
-import { appRoutes } from './app.routes';
+import { appRoutes, JwtInterceptor } from './app.routes';
 import { AppComponent } from './app.component';
 import { SERVICE_PROVIDERS } from './services';
 import { EPIC_PROVIDERS } from './epics';
-
+import { AuthGuard } from './app.guards';
 import {
   AlertModule,
   ProgressbarModule,
@@ -26,6 +24,7 @@ import {
 } from './components';
 
 import './rxjs-operators';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -37,7 +36,7 @@ import './rxjs-operators';
     BrowserModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     NgReduxModule,
     RouterModule,
     AlertModule.forRoot(),
@@ -49,7 +48,12 @@ import './rxjs-operators';
     appRoutes
   ],
   providers: [
-    [Angular2TokenService],
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
+    },
     SERVICE_PROVIDERS,
     EPIC_PROVIDERS
   ],

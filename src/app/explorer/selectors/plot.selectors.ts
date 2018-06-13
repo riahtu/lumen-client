@@ -1,6 +1,8 @@
+
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
+import { map, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 
@@ -85,65 +87,66 @@ export class PlotSelectors {
     private ngRedux: NgRedux<IAppState>
   ) {
 
-    this.leftElements$ = this.elements$
-      .combineLatest(this.leftElementIDs$)
-      .map(([elements, ids]) => {
+    this.leftElements$ = combineLatest(
+      this.elements$,this.leftElementIDs$).pipe(
+      map(([elements, ids]) => {
         return ids.map(id => elements[id]);
-      })
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      }),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)),
       //.share()
-      .startWith([])
+      startWith([]));
 
 
-    this.rightElements$ = this.elements$
-      .combineLatest(this.rightElementIDs$)
-      .map(([elements, ids]) => {
+    this.rightElements$ = combineLatest(
+      this.elements$, this.rightElementIDs$).pipe(
+      map(([elements, ids]) => {
         return ids.map(id => elements[id])
-      })
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+      }),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)),
       //.share()
-      .startWith([])
+      startWith([]));
 
 
-    this.plottedElements$ = this.leftElements$
-      .combineLatest(this.rightElements$)
-      .map(([left, right]) => left.concat(right))
-      .distinctUntilChanged((x, y) => _.isEqual(x, y))
+    this.plottedElements$ = combineLatest(
+      this.leftElements$, this.rightElements$).pipe(
+      map(([left, right]) => left.concat(right)),
+      distinctUntilChanged((x, y) => _.isEqual(x, y)),
       //.share()
-      .startWith([])
+      startWith([]));
 
-    this.plottedStreams$ = this.plottedElements$
-      .combineLatest(this.streams$)
-      .map(([elements, streams]) => {
+    this.plottedStreams$ = combineLatest(
+      this.plottedElements$, this.streams$).pipe(
+      map(([elements, streams]) => {
         return _.uniq(elements.map(e => e.db_stream_id))
           .map(id => streams[id])
           .filter(stream => stream !== undefined)
-      })
+      }));
       //.share()
 
 
-    this.isPlotEmpty$ = this.leftElementIDs$
-      .combineLatest(this.rightElementIDs$)
-      .map(([left, right]) => ((left.length == 0) && (right.length == 0)))
+    this.isPlotEmpty$ = combineLatest(
+      this.leftElementIDs$,this.rightElementIDs$).pipe(
+      map(([left, right]) => ((left.length == 0) && (right.length == 0))));
       //.share()
       //.startWith(true)
 
-    this.isDataLoading$ = this.addingNavData$
-      .combineLatest(this.addingPlotData$)
-      .map(([nav, plot]) => nav && plot)
+    this.isDataLoading$ = combineLatest(
+      this.addingNavData$,this.addingPlotData$).pipe(
+      map(([nav, plot]) => nav && plot))
       //.share()
-
-    this.filteredDataViews$ = this.dataViews$
-      .map(views => { //convert views to an array
+    
+    let viewArray = this.dataViews$
+      .pipe(map(views => { //convert views to an array
         return Object.keys(views)
           .reduce((acc, id) => {
             acc.push(views[id]);
             return acc;
           }, [])
-      })
-      //mix in the filter observables
-      .combineLatest(this.dataViewFilterText$, this.showPublicDataViews$)
-      .map(([views, filterText, includePublic]) => {
+      }));
+    
+    this.filteredDataViews$ = combineLatest(
+      viewArray,this.dataViewFilterText$, this.showPublicDataViews$).pipe(
+      map(([views, filterText, includePublic]) => {
         return views
           //include public views only if includePublic is true
           .filter(view => view.owner || includePublic)
@@ -157,31 +160,31 @@ export class PlotSelectors {
               searchableText += view.description;
             return searchableText.toLowerCase().indexOf(searchText) >= 0
           })
-      })
+      }));
       //.share()
 
-    this.isIntervalDataDisplayed$ = this.plottedElements$
-      .combineLatest(this.plotData$)
-      .map(([elements, data]) => elements
+    this.isIntervalDataDisplayed$ = combineLatest(
+      this.plottedElements$, this.plotData$).pipe(
+      map(([elements, data]) => elements
         .map(e => data[e.id])
-        .filter(data => data !== undefined))
-      .map(dataset => {
+        .filter(data => data !== undefined)),
+      map(dataset => {
         return dataset.reduce((isInterval, data) => {
           return isInterval || data.type == 'interval'
         }, false)
-      })
+      }));
       //.share()
 
-    this.isPlotDataValid$ = this.plottedElements$
-      .combineLatest(this.plotData$)
-      .map(([elements, data]) => elements
+    this.isPlotDataValid$ = combineLatest(
+      this.plottedElements$,this.plotData$).pipe(
+      map(([elements, data]) => elements
         .map(e => data[e.id])
-        .filter(data => data !== undefined))
-      .map(dataset => {
+        .filter(data => data !== undefined)),
+      map(dataset => {
         return Object
           .keys(dataset)
           .reduce((isValid, id) => isValid && dataset[id].valid, true)
-      })
+      }));
       //.share()
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Angular2TokenService } from 'angular2-token';
+import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -21,15 +21,16 @@ export class SessionService {
 
   constructor(
     //private http: Http,
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private router: Router,
     private messageService: MessageService
   ) { }
 
+
   public login(email: string, password: string): void {
-    this.tokenService.signIn({ "email": email, "password": password })
-      .map(resp => resp.json())
+    this.http.post<schema.IApiResponse>('auth/sign_in',
+    { "email": email, "password": password })
       .subscribe(
       json => {
         this.setUser(json.data)
@@ -41,15 +42,13 @@ export class SessionService {
 
 
   public logout(): void {
-    this.tokenService.signOut()
-      .subscribe(
-      res => this.messageService.setNotice("logging out..."),
-      error => this.messageService.setError("error logging out"));
+    localStorage.clear();
+    this.router.navigate(['/']);
+    this.messageService.setNotice('You are logged out');
   }
 
   public updateAccount(accountParams: any) {
-    this.tokenService.put('/auth.json', accountParams)
-      .map(resp => resp.json())
+    this.http.put<schema.IApiResponse>('/auth.json', accountParams)
       .subscribe(
       json => {
         this.setUser(json.data);
@@ -59,7 +58,7 @@ export class SessionService {
   }
 
   public resetPassword(email: string): void {
-    this.tokenService.resetPassword({ email: email })
+    this.http.post('/auth/reset',{ email: email })
       .subscribe(
       res => this.messageService.setNotice("sent e-mail with password reset"),
       error => this.messageService.setError("error sending password reset")
@@ -71,7 +70,7 @@ export class SessionService {
     passwordConfirmation: string,
     token: string
   ): void {
-    this.tokenService.updatePassword(
+    this.http.put('/user.json',
       {
         password: password,
         passwordConfirmation: passwordConfirmation,
@@ -84,11 +83,10 @@ export class SessionService {
   };
 
   public validateToken(): void {
-    this.tokenService.validateToken()
-      .map(resp => resp.json())
+    this.http.get<schema.IApiResponse>('auth/validate_token')
       .subscribe(
       json => this.setUser(json.data),
-      error => console.log("log in before continuing"));
+      error => this.logout())
   }
 
   // ----------private helper functions----------

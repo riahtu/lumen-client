@@ -1,5 +1,8 @@
+
+import {combineLatest} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import { TreeNode } from 'angular-tree-component';
 
@@ -53,9 +56,9 @@ export class FileTreeComponent implements OnInit {
       () => { },
       () => this.plotService.setNilmsLoaded());
 
-    this.dbNodes$ = this.plotSelectors.data$
-      .combineLatest(this.plotSelectors.plottedElements$)
-      .map(([data,elements]) => {
+    this.dbNodes$ = this.plotSelectors.data$.pipe(
+      combineLatest(this.plotSelectors.plottedElements$))
+      .pipe(map(([data,elements]) => {
         let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
           let priveleged = false;
@@ -63,7 +66,7 @@ export class FileTreeComponent implements OnInit {
             data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
-      })
+      }));
   }
 
   public toggleNode(event: any){

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -46,14 +47,14 @@ export class DataViewsComponent implements OnInit {
       _ => console.log('error updating view'))
   }
   ngOnInit() {
-     this.myDataViewArray$ = this.dataViews$
-      .map(dataViews => {
+     this.myDataViewArray$ = this.dataViews$.pipe(
+      map(dataViews => {
         return Object.keys(dataViews)
           .map(id => dataViews[id])
           .filter(dataView => {
             return dataView.owner
           });
-      });
+      }));
   }
 
 }

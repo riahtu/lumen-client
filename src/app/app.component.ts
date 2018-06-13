@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { createLogger } from 'redux-logger'
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
-import { Angular2TokenService } from 'angular2-token';
 import { createEpicMiddleware } from 'redux-observable';
 
 import {AppEpics} from './epics';
@@ -28,17 +27,18 @@ export class AppComponent {
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private devTools: DevToolsExtension,
-   private epics: AppEpics,
-    private tokenService: Angular2TokenService,
+    private epics: AppEpics,
     private sessionService: SessionService
   ) {
 
     //set UI variables based on environment 
     this.isStandalone = environment.standalone;
     //configure redux
+    const epicMiddleware = createEpicMiddleware();
+
     const middleware = [
       createLogger({collapsed: true}),
-      createEpicMiddleware(this.epics.root)
+      epicMiddleware
     ]
 
     
@@ -50,15 +50,13 @@ export class AppComponent {
         [devTools.enhancer()] : 
         []
     );
-    
+    epicMiddleware.run(this.epics.root);
+    //todo: add interceptor to insert API URL
+    /*
     //configure angular2-token
     tokenService.init({
-      apiPath: environment.apiUrl,
-      signInPath: 'auth/sign_in',
-      signInRedirect: 'session/sign_in',
-      signOutPath: 'auth/sign_out',
-      resetPasswordCallback:  `${environment.appUrl}/session/reset_password`
-    })
+     
+    })*/
 
     sessionService.validateToken();
   }

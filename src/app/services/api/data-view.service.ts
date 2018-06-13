@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Angular2TokenService } from 'angular2-token';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, empty } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
 import { compressToEncodedURIComponent } from 'lz-string';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -35,7 +36,7 @@ export class DataViewService {
   private homeViewRestored: boolean; //only load the home view once
 
   constructor(
-    private tokenService: Angular2TokenService,
+    private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
     private elementService: DbElementService,
@@ -51,13 +52,12 @@ export class DataViewService {
   //
   public loadDataViews() {
     if (this.dataViewsLoaded) {
-      return Observable.empty<any>();
+      return empty();
     }
 
-    let o = this.tokenService
-      .get('data_views.json', {})
-      .map(resp => resp.json())
-      .map(json => normalize(json, schema.dataViews).entities)
+    let o = this.http
+      .get('data_views.json', {}).pipe(
+      map(json => normalize(json, schema.dataViews).entities));
 
     o.subscribe(
       entities => {
@@ -75,16 +75,15 @@ export class DataViewService {
   //remove a data view owned by the current user
   //
   public deleteDataView(view: IDataView) {
-    this.tokenService
+    this.http
       .delete(`data_views/${view.id}`)
-      .map(resp => resp.json())
       .subscribe(
       json => {
         this.ngRedux.dispatch({
           type: DataViewActions.REMOVE,
           payload: view.id
         })
-        this.messageService.setMessages(json.messages);
+        this.messageService.setMessages(json['messages']);
       },
       error => this.messageService.setErrorsFromAPICall(error)
       )
@@ -107,11 +106,10 @@ export class DataViewService {
       home: isHome,
       redux_json: compressToEncodedURIComponent(JSON.stringify(state.redux))
     }
-    let o = this.tokenService
-      .post('data_views.json', JSON.stringify(params))
-      .map(resp => resp.json())
-      .do(json => this.messageService.setMessages(json.messages))
-      .map(json => normalize(json.data, schema.dataView).entities)
+    let o = this.http
+      .post<schema.IApiResponse>('data_views.json', params).pipe(
+      tap(json => this.messageService.setMessages(json.messages)),
+      map(json => normalize(json.data, schema.dataView).entities))
 
     o.subscribe(
       entities => {
@@ -128,16 +126,15 @@ export class DataViewService {
   //update an existing data view
   //
   public update(view: IDataView) {
-    let o = this.tokenService
-      .put(`data_views/${view.id}.json`, {
+    let o = this.http
+      .put<schema.IApiResponse>(`data_views/${view.id}.json`, {
         name: view.name,
         description: view.description,
         visibility: view.private ? 'private' : 'public',
         home: view.home
-      })
-      .map(resp => resp.json())
-      .do(json => this.messageService.setMessages(json.messages))
-      .map(json => normalize(json.data, schema.dataView).entities)
+      }).pipe(
+      tap(json => this.messageService.setMessages(json.messages)),
+      map(json => normalize(json.data, schema.dataView).entities))
 
     o.subscribe(
       entities => {
@@ -157,12 +154,11 @@ export class DataViewService {
     if (this.homeViewRestored)
       return;
     this.homeViewRestored = true;
-    this.tokenService
-      .get('data_views/home.json', {})
-      .map(resp => resp.json())
-      .map(json => normalize(json, schema.dataView))
-      .map(json => json.entities.data_views[json.result])
-      .map(json => DataViewFactory(json))
+    this.http
+      .get('data_views/home.json', {}).pipe(
+       map(json => normalize(json, schema.dataView)),
+       map(json => json.entities.data_views[json.result]),
+       map(json => DataViewFactory(json)))
       .subscribe(
       view => this.restoreDataView(view),
       error => console.log("unable to load home data view")
