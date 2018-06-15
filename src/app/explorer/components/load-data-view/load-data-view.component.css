@@ -3,13 +3,13 @@ div.data-view-list {
    height: 70vh;
    overflow-y: auto;
 }
-.thumbnail:hover{
+.card:hover{
   border-color: #adadad;
   cursor: pointer;
   background: grey;
   background-color: #dee6f1;
 }
-.thumbnail{
+.card{
   border-style: solid;
   border-color: #ccc;
   background-color: white;
@@ -20,10 +20,11 @@ div.search-bar{
     padding-top: 4px;
     margin-bottom: 8px;
     border-style: solid;
-    border-left: inherit;
-    border-right: inherit;
     border-width: 1px;
     border-color: grey;
+    border-right-color: #525252;
+    border-left-color: #525252;
+
 }
 
 div.loading-container{
