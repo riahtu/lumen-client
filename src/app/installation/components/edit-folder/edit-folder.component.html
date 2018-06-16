@@ -1,14 +1,14 @@
 <div class="col-sm-12">
-  <div class="lead">Folder Properties</div>
-  <dl class="dl-horizontal">
-    <dt>Time Range</dt>
-    <dd *ngIf="folder.size_on_disk>0">
+  <div class="panel-title">Folder Properties</div>
+  <dl class="row">
+    <dt class="col-2 text-right">Time Range</dt>
+    <dd class="col-10" *ngIf="folder.size_on_disk>0">
         {{folder.start_time/1e3 | date:"y MMM dd HH:mm:ss"}} &mdash;
         {{folder.end_time/1e3   | date:"y MMM dd HH:mm:ss"}}
     </dd>
-    <dd *ngIf="folder.size_on_disk==0"> &mdash;</dd>
-    <dt>Size on Disk</dt>
-    <dd>{{folder.size_on_disk | byteSize }}</dd>
+    <dd class="col-10" *ngIf="folder.size_on_disk==0"> &mdash;</dd>
+    <dt class="col-2 text-right">Size on Disk</dt>
+    <dd class="col-10" >{{folder.size_on_disk | byteSize }}</dd>
   </dl>
 
   <form [formGroup]="form"  (ngSubmit)="onSubmit(form.value)">
@@ -32,10 +32,6 @@
       <div class="pull-left ">
         <button type="submit " class="btn btn-secondary " 
           [disabled]="!form.valid">Save</button>
-      </div>
-      <div class="pull-right ">
-        <button class="btn btn-danger ">Delete</button>
-        <button class="btn btn-secondary "><i class="fa fa-lock "></i></button>
       </div>
     </div>
   </form>

@@ -1,23 +1,23 @@
 <div class="col-sm-12">
-  <div class="lead">Stream Properties</div>
-  <dl class="dl-horizontal">
-    <dt>Time Range</dt>
-     <dd *ngIf="stream.size_on_disk>0">
+  <div class="panel-title">Stream Properties</div>
+  <dl class="row">
+    <dt class="col-2 text-right">Time Range</dt>
+     <dd class="col-10" *ngIf="stream.size_on_disk>0">
         {{stream.start_time/1e3 | date:"y MMM dd HH:mm:ss"}} &mdash;
         {{stream.end_time/1e3   | date:"y MMM dd HH:mm:ss"}}
     </dd>
-    <dd *ngIf="stream.size_on_disk==0"> &mdash;</dd>
-    <dt>Size on Disk</dt>
-    <dd>{{stream.size_on_disk | byteSize}}</dd>
-    <dt>Total Rows</dt>
-    <dd>{{stream.total_rows}}</dd>
-    <dt>Total Time</dt>
-    <dd>{{stream.total_time | duration}}</dd>
-    <dt>Database Path</dt>
-    <dd>{{stream.path}} <button class="btn btn-xs btn-secondary">Move</button></dd>
+    <dd class="col-10"*ngIf="stream.size_on_disk==0"> &mdash;</dd>
+    <dt class="col-2 text-right">Size on Disk</dt>
+    <dd class="col-10">{{stream.size_on_disk | byteSize}}</dd>
+    <dt class="col-2 text-right">Total Rows</dt>
+    <dd class="col-10">{{stream.total_rows}}</dd>
+    <dt class="col-2 text-right">Total Time</dt>
+    <dd class="col-10">{{stream.total_time | duration}}</dd>
+    <dt class="col-2 text-right">Database Path</dt>
+    <dd class="col-10">{{stream.path}}</dd>
   </dl>
 
-  <form class="clearfix" [formGroup]="form" 
+  <form class="row clearfix" [formGroup]="form" 
     (ngSubmit)="onSubmit(form.value)">
     <div class="form-group col-md-3">
       <label class="control-label" for="folder-name">Name</label>
@@ -36,20 +36,20 @@
           [formControl]="form.controls['description']">
     </div>
 
-    <div class="lead">
+    <div class="panel-title">
       Element Properties
     </div>
     <table class="table table-condensed" >
       <thead>
         <tr>
-          <th>Plottable</th>
-          <th>Type</th>
-          <th>Name</th>
-          <th>Units</th>
-          <th>Offset</th>
-          <th>Scale Factor</th>
-          <th>Default Min</th>
-          <th>Default Max</th>
+          <th class="pt-0 border-top-0">Plottable</th>
+          <th class="pt-0 border-top-0">Type</th>
+          <th class="pt-0 border-top-0">Name</th>
+          <th class="pt-0 border-top-0">Units</th>
+          <th class="pt-0 border-top-0">Offset</th>
+          <th class="pt-0 border-top-0">Scale</th>
+          <th class="pt-0 border-top-0">Default Min</th>
+          <th class="pt-0 border-top-0">Default Max</th>
         </tr>
       </thead>
       <tbody>
@@ -99,12 +99,6 @@
       <div class="pull-left">
         <button type="submit" class="btn btn-secondary"
           [disabled]="!form.valid">Save</button>
-      </div>
-      <div class="pull-right">
-        <button class="btn btn-danger">Delete</button>
-        <button class="btn btn-secondary">
-            <i class="fa fa-lock"></i>
-        </button>
       </div>
     </div>
     </form>

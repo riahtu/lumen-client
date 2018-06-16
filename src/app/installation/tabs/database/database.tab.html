@@ -1,30 +1,33 @@
-<div class="row" class="page-body">
+<div class="page-body row no-gutters">
   
   <!-- db tree -->
 
-  <div class="col-sm-3 app-content">
-    <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
-      (toggleExpanded)="toggleNode($event)"
-      (activate)="selectNode($event)">
-      <ng-template #treeNodeTemplate let-node="node">
-        <span [ngSwitch]="node.data.type">
-          <span *ngSwitchCase="'root'">
+  <div class="col-sm-3 ">
+    <div class="app-content pl-2">
+      <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
+        (toggleExpanded)="toggleNode($event)"
+        (activate)="selectNode($event)">
+        <ng-template #treeNodeTemplate let-node="node">
+          <span [ngSwitch]="node.data.type">
+            <span *ngSwitchCase="'root'">
+            </span>
+            <span *ngSwitchCase="'dbFolder'">
+              <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
+              <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+            </span>
+            <span *ngSwitchCase="'dbStream'">
+              <i class="fa fa-database"></i>
+            </span>
           </span>
-          <span *ngSwitchCase="'dbFolder'">
-            <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
-            <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
-          </span>
-          <span *ngSwitchCase="'dbStream'">
-            <i class="fa fa-database"></i>
-          </span>
-        </span>
-        {{ node.data.name }}
-      </ng-template>
-      <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
-    </tree-root>
+          {{ node.data.name }}
+        </ng-template>
+        <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
+      </tree-root>
+    </div>
   </div>
   <!-- folder/stream edits -->
-  <div [ngSwitch]='installationSelectors.selectedType$ | async' class='app-content'>
+  <div [ngSwitch]='installationSelectors.selectedType$ | async' 
+    class='app-content col-sm-9 pl-3 pr-2'>
     <app-edit-db *ngSwitchCase="'root'"
       [db] = "installationSelectors.selectedDb$ | async"
       [rootFolder] = "installationSelectors.selectedDbRootFolder$ | async"

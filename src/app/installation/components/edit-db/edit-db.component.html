@@ -1,21 +1,21 @@
-<div class="col-sm-12" *ngIf="rootFolder!=null && my_db!=null">
-  <div class="lead">Database Properties</div>
+<div *ngIf="rootFolder!=null && my_db!=null">
+  <div class="panel-title">Database Properties</div>
 
   <alert type="danger" *ngIf="!my_db.available">
     <i class="fa fa-exclamation-triangle"></i> Cannot contact database, check URL or click refresh
   </alert>
 
-  <dl class="dl-horizontal">
-    <dt>Time Range</dt>
-    <dd *ngIf="rootFolder && rootFolder.size_on_disk>0">
+  <dl class="row">
+    <dt class="col-2 text-right">Time Range</dt>
+    <dd class="col-10" *ngIf="rootFolder && rootFolder.size_on_disk>0">
         {{rootFolder.start_time/1e3 | date:"y MMM dd HH:mm:ss"}} &mdash;
         {{rootFolder.end_time/1e3   | date:"y MMM dd HH:mm:ss"}}
     </dd>
-    <dd *ngIf="rootFolder==null || rootFolder.size_on_disk==0"> &mdash;</dd>
-    <dt>Size on Disk</dt>
-    <dd>{{rootFolder.size_on_disk | byteSize }}</dd>
-    <dt>NilmDB Version</dt>
-    <dd>{{my_db.version}}</dd>
+    <dd class="col-10" *ngIf="rootFolder==null || rootFolder.size_on_disk==0"> &mdash;</dd>
+    <dt class="col-2 text-right" >Size on Disk</dt>
+    <dd  class="col-10">{{rootFolder.size_on_disk | byteSize }}</dd>
+    <dt class="col-2 text-right">NilmDB Version</dt>
+    <dd class="col-10">{{my_db.version}}</dd>
   </dl>
   
   <form *ngIf="form!=null" [formGroup]="form">
