@@ -8,6 +8,7 @@ import {
   UIActions,
   IStatusMessages
 } from '../store/ui';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 @Injectable()
 export class MessageService {
 
@@ -62,24 +63,25 @@ export class MessageService {
     });
   }
 
-  private parseAPIErrors(error): string[] {
-    if (error.status == 0) {
+  private parseAPIErrors(response: HttpErrorResponse): string[] {
+    if (response.status == 0) {
       return ['cannot contact server'];
     }
     try {
-      let msgs = error.json().messages;
+      console.log(response);
+      let msgs = response.error["messages"];
       if (msgs === undefined) {
         throw new TypeError("no message property")
       }
       return msgs.errors
     } catch (e) {
-      if (error.status == 401) {
+      if (response.status == 401) {
         //user is not authorized, sign them out and return to login page
         localStorage.clear();
         this.router.navigate(['/']);
         this.setNotice('Log in before continuing');
       }
-      return [`server error: ${error.status}`]
+      return [`server error: ${response.status}`]
 
     }
   }

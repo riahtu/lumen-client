@@ -1,3 +1,12 @@
+.group-title{
+    font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 21px;
+    font-weight: 300;
+    height: 29px;
+    line-height: 29.4px;
+    margin-bottom: 20px;
+}
+
 i.fa-close{
   color: grey;
 }

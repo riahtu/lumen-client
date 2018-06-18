@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, empty } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
-import { Http, URLSearchParams } from '@angular/http';
+import { share } from 'rxjs/operators';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 
@@ -38,7 +38,7 @@ export class UserGroupService {
     }
 
     let o = this.http
-      .get('user_groups.json', {})
+      .get('user_groups.json', {}).pipe(share());
       
     o.subscribe(
       json => {
@@ -127,7 +127,7 @@ export class UserGroupService {
   public createMember(group: IUserGroup, userParams: any) {
     let o = this.http
       .put<schema.IApiResponse>(`user_groups/${group.id}/create_member.json`, userParams)
-
+      .pipe(share());
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -154,6 +154,7 @@ export class UserGroupService {
         name: name,
         description: description
       })
+      .pipe(share())
 
     o.subscribe(
       json => {
@@ -177,6 +178,7 @@ export class UserGroupService {
       .put<schema.IApiResponse>(`user_groups/${group.id}.json`, {
         name: name, description: description
       })
+      .pipe(share());
     o.subscribe(
       json => {
         let data = normalize(json.data, schema.userGroup)
@@ -193,7 +195,7 @@ export class UserGroupService {
 
   public destroyGroup(group: IUserGroup) {
     this.http
-      .delete<schema.IApiResponse>(`user_groups/${group.id}`)
+      .delete<schema.IApiResponse>(`user_groups/${group.id}.json`)
       .subscribe(
       json => {
         this.ngRedux.dispatch({

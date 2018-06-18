@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, empty } from 'rxjs';
+import { share } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
@@ -42,6 +43,7 @@ export class NilmService {
 
     let o = this.http
       .get('nilms.json', {})
+      .pipe(share())
 
     o.subscribe(
       json => {
@@ -57,6 +59,7 @@ export class NilmService {
   public loadNilm(id: number): Observable<any> {
     let o = this.http
       .get<schema.IApiResponse>(`nilms/${id}.json`, {})
+      .pipe(share());
 
     o.subscribe(
       json => {
@@ -76,7 +79,7 @@ export class NilmService {
         name: name,
         description: description,
         url: url
-      })
+      }).pipe(share());
 
     o.subscribe(
       json => {
@@ -109,8 +112,8 @@ export class NilmService {
   }
 
   public refreshNilm(id: number) {
-    let o = this.http
-    .get<schema.IApiResponse>(`nilms/${id}.json?refresh=1`, {})
+    let o = this.http.get<schema.IApiResponse>(`nilms/${id}.json?refresh=1`, {})
+      .pipe(share());
     this.ngRedux.dispatch({
       type: NilmActions.REFRESHING,
       payload: id
@@ -135,6 +138,7 @@ export class NilmService {
   public removeNilm(nilm: INilm) {
     let o = this.http
       .delete<schema.IApiResponse>(`nilms/${nilm.id}.json`)
+      .pipe(share());
 
     o.subscribe(
       json => {

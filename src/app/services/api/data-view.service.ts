@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { HttpClient } from '@angular/common/http';
 import { Observable, empty } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map, share } from 'rxjs/operators';
 import { compressToEncodedURIComponent } from 'lz-string';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -57,7 +57,8 @@ export class DataViewService {
 
     let o = this.http
       .get('data_views.json', {}).pipe(
-      map(json => normalize(json, schema.dataViews).entities));
+      map(json => normalize(json, schema.dataViews).entities))
+      .pipe(share());
 
     o.subscribe(
       entities => {
@@ -92,7 +93,8 @@ export class DataViewService {
 
   //create a new data view
   //
-  public create(name: string, description: string, isPrivate: boolean, isHome: boolean, image: string) {
+  public create(name: string, description: string, 
+    isPrivate: boolean, isHome: boolean, image: string): Observable<any> {
 
     let state = this.getDataViewState(true);
 
@@ -109,7 +111,9 @@ export class DataViewService {
     let o = this.http
       .post<schema.IApiResponse>('data_views.json', params).pipe(
       tap(json => this.messageService.setMessages(json.messages)),
-      map(json => normalize(json.data, schema.dataView).entities))
+      map(json => normalize(json.data, schema.dataView).entities),
+      share()
+    )
 
     o.subscribe(
       entities => {
@@ -125,7 +129,7 @@ export class DataViewService {
 
   //update an existing data view
   //
-  public update(view: IDataView) {
+  public update(view: IDataView): Observable<any> {
     let o = this.http
       .put<schema.IApiResponse>(`data_views/${view.id}.json`, {
         name: view.name,
@@ -134,7 +138,8 @@ export class DataViewService {
         home: view.home
       }).pipe(
       tap(json => this.messageService.setMessages(json.messages)),
-      map(json => normalize(json.data, schema.dataView).entities))
+      map(json => normalize(json.data, schema.dataView).entities),
+      share())
 
     o.subscribe(
       entities => {

@@ -2,15 +2,16 @@
 import {
   IStatusMessages,
 } from '../../store/ui';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 
-export function parseDeviseErrors(error): string[] {
-  if (error.status == 0) {
+export function parseDeviseErrors(resp: HttpErrorResponse): string[] {
+  if (resp.status == 0) {
     return ['cannot contact server'];
   } 
   try{
-    let errors = error.json().errors;
+    let errors = resp.error.errors;
     if(errors === undefined){
       throw new TypeError("no errors property")
     }
@@ -20,7 +21,7 @@ export function parseDeviseErrors(error): string[] {
     }
     return errors
   } catch(e) {
-    return [`server error: ${error.status}`]
+    return [`server error: ${resp.status}`]
   } 
 }
 

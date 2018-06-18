@@ -34,11 +34,13 @@
   </tr>
 </table>
 <!-- add a new NILM -->
-<button class="btn btn-secondary pull-right"
-  (click)="nilmModal.show()">
-  <i class="fa fa-plus"></i> 
-  New Installation
-</button>
+<div class="pr-4">
+  <button class="btn btn-primary pull-right"
+    (click)="nilmModal.show()">
+    <i class="fa fa-plus"></i> 
+    New Installation
+  </button>
+</div>
 
 <!-- ====== add NILM modal ==== -->
 <div class="modal fade" bsModal #nilmModal="bs-modal" 

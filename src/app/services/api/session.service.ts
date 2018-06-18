@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -54,7 +54,9 @@ export class SessionService {
         this.setUser(json.data);
         this.messageService.setNotice("account updated");
       },
-      error => this.messageService.setErrors(parseDeviseErrors(error)));
+      resp => {
+        this.messageService.setErrors(parseDeviseErrors(resp))
+      })
   }
 
   public resetPassword(email: string): void {

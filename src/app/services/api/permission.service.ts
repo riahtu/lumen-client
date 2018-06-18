@@ -1,7 +1,7 @@
 
 import { Injectable } from '@angular/core';
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, share } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import {
   NgRedux,
@@ -120,7 +120,7 @@ export class PermissionService {
         role: role,
         target: targetType,
         target_id: targetId
-      })
+      }).pipe(share());
 
     o.subscribe(
       json => {
@@ -146,7 +146,7 @@ export class PermissionService {
         {
           nilm_id: nilmId,
           role: role,
-        }))
+        })).pipe(share());
 
     o.subscribe(
       json => {
@@ -172,7 +172,7 @@ export class PermissionService {
         nilm_id: nilmId,
         role: role,
         redirect_url: `${window.location.origin}/accept`
-      })
+      }).pipe(share());
 
       o.subscribe(
       json => {

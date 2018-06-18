@@ -34,9 +34,11 @@ export class GroupsComponent implements OnInit {
   }
 
   createGroup(values: any) {
+    console.log("I got called!")
     this.userGroupService
       .createGroup(values.name, values.description)
-      .subscribe(result => this.newGroupModal.hide());
+      .subscribe(_ => {
+        this.newGroupModal.hide()});
   }
 
 }

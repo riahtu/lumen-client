@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import {HttpClient, HttpParams} from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { timeout, map } from 'rxjs/operators';
+import { timeout, map, share } from 'rxjs/operators';
 import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
@@ -45,7 +45,8 @@ export class DataService {
       {params: params}).pipe(
       timeout(7000), //wait a maximum of 7 seconds
       map(json => normalize(json.data, schema.datas)),
-      map(normalized => normalized.entities.data))
+      map(normalized => normalized.entities.data),
+      share())
     o.subscribe(_ => {}, 
     error => {
       this.messageService.setErrorsFromAPICall(error)
