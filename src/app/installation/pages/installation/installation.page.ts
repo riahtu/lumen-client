@@ -7,7 +7,7 @@ import { map, filter } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
 import {environment } from '../../../../environments/environment'
 import {
-  NilmService,
+  NilmService, SessionService,
 } from '../../../services';
 
 import {
@@ -33,11 +33,13 @@ export class InstallationPageComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private session: SessionService,
     private nilmService: NilmService
   ) {
     this.helpUrl = environment.helpUrl;
     
     this.subs = [];
+    this.session.validateToken();
   }
 
   ngOnInit() {

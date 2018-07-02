@@ -25,7 +25,8 @@ import {
 } from '../../services';
 import { 
   DataViewService, 
-  DbStreamService 
+  DbStreamService, 
+  SessionService
 } from '../../../services';
 import {
   IDbElement,
@@ -78,7 +79,8 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
     public dataViewService: DataViewService,
     public dbStreamService: DbStreamService,
     public interfacesSelectors: InterfacesSelectors,
-    public interfacesService: InterfacesService
+    public interfacesService: InterfacesService,
+    public sessionService: SessionService
   ) {
     this.helpUrl = environment.helpUrl;
     
@@ -90,7 +92,7 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
           return 0;
       }));
     this.subs = [];
-
+    this.sessionService.validateToken();
   }
 
   showSaveDataView() {

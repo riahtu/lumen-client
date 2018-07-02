@@ -29,9 +29,8 @@ export class PasswordResetPageComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     route.queryParams.subscribe(params => {
-      console.log(params);
       this.resetPasswordToken = 
-        params['reset_password_token']
+        params['access-token']
     });
    }
 
@@ -46,7 +45,6 @@ export class PasswordResetPageComponent implements OnInit {
     this.sessionService.updatePassword(
       formValues.password,
       formValues.password_confirmation,
-      this.resetPasswordToken
     );
 
   }

@@ -6,7 +6,8 @@ import {environment } from '../../../../environments/environment'
 import {
   UserGroupService,
   NilmService,
-  DataViewService
+  DataViewService,
+  SessionService
 } from '../../../services';
 
 import {
@@ -34,8 +35,10 @@ export class AccountPageComponent implements OnInit {
     public accountSelectors: AccountSelectors,
     public accountService: AccountService,
     public dataViewService: DataViewService, 
+    private sessionService: SessionService
   ) {
     this.helpUrl = environment.helpUrl;
+    this.sessionService.validateToken();
   }
 
   ngOnInit() {

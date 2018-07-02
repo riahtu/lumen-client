@@ -126,7 +126,7 @@ export class EditPermissionsComponent implements OnInit {
     this.selectEntries$ = this.permissionService.targets$
     .pipe(map(targets => {
       return targets.map(t => {
-        return { value: { id: t.id, type: t.type }, label: `${t.type}: ${t.name}` }
+        return { value: { id: t.id, type: t.type }, label: t.name, type: t.type }
       })
     }));
     this.emailForm = this.fb.group({

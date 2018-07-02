@@ -59,7 +59,7 @@
                 [formControl]="subform.get('plottable')"></td>
           <td>
             <ng-select [formControl]="subform.get('display_type')"
-              [items]="displayTypeOptions"></ng-select></td>
+              [items]="displayTypeOptions" [clearable]="false"></ng-select></td>
           <td class="form-group" [class.has-error]="!subform.get('name').valid"> 
             <input type="text" class="form-control"
                 

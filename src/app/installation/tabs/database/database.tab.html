@@ -3,7 +3,7 @@
   <!-- db tree -->
 
   <div class="col-sm-3 ">
-    <div class="app-content pl-2">
+    <div class="app-content border-right-0 pl-2">
       <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
         (toggleExpanded)="toggleNode($event)"
         (activate)="selectNode($event)">

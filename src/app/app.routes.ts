@@ -1,5 +1,5 @@
 import { ModuleWithProviders, Injectable } from '@angular/core'
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ActivatedRoute } from '@angular/router';
 import { 
   HttpRequest, 
   HttpHandler, 
@@ -31,7 +31,9 @@ export class JwtInterceptor implements HttpInterceptor {
   token_type: string;
   uid: string;
 
-  constructor(){
+  constructor(
+    private route: ActivatedRoute
+  ){
     //try to retrieve credentials from local storage
     this.access_token = localStorage.getItem('auth.access-token')
     this.client = localStorage.getItem('auth.client')
@@ -40,6 +42,16 @@ export class JwtInterceptor implements HttpInterceptor {
     this.uid = localStorage.getItem('auth.uid')
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    //check for the access-token in the parameters (from reset password request)
+    let params = this.route.snapshot.queryParams
+    if(params["access-token"]!=null){
+      this.access_token = params["access-token"]
+      this.client = params["client"]
+      this.expiry = params["expiry"]
+      this.token_type = params["token-type"]
+      this.uid = params["uid"]
+    }
+
     request = request.clone({
       url: environment.apiUrl+'/'+request.url,
       setHeaders: {

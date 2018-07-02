@@ -12,7 +12,7 @@
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
 
-<button class="btn btn-secondary" (click)='permissionModal.show()'>
+<button class="btn btn-primary" (click)='permissionModal.show()'>
 <i class="fa fa-user-plus"></i> Add Permission</button>
 
 
@@ -33,19 +33,24 @@
 
         <!-- select how to add a user -->
         <div>
-          <span class="lead">I want to:</span> 
-          <ng-select [(ngModel)]="userType"
-          class="selection-options"
-                [items]="userOptions"
-                bindValue = 'value'
-                placeholder = "select one">
-          </ng-select>
+          <div class="lead">I want to:</div> 
+          <div class>
+            <ng-select [(ngModel)]="userType"
+            class="selection-options"
+                  [items]="userOptions"
+                  [clearable]="false"
+                  bindValue = 'value'
+                  placeholder = "select one">
+            </ng-select>
+          </div>
+          
         </div>
         <div>
           <span class="lead">to be:</span> 
           <ng-select [(ngModel)]="role"
           class="selection-options"
                 [items]="roleOptions"
+                [clearable]="false"
                 bindValue = 'value'
                 placeholder = "select one">
           </ng-select>
@@ -57,11 +62,17 @@
         <div [ngSwitch]='userType'>
           <!-- Option 1: select an existing user -->
           <div *ngSwitchCase="'select'">
+            Hola!
             <ng-select [(ngModel)]="target"
               [items]="selectEntries$ | async"
               bindValue = "value"
               placeholder = "select a user or group"
               notFoundText = "no users or groups found">
+              <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+                  <i class="fa fa-user-o fa-fw" *ngIf="item.type=='user'"></i>
+                  <i class="fa fa-group fa-fw" *ngIf="item.type!='user'"></i>
+                  <span [ngOptionHighlight]="search">{{item.label}}</span>
+                </ng-template>
             </ng-select>
             <!-- Save and Cancel buttons -->
             <div class="clearfix">

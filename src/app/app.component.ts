@@ -58,7 +58,7 @@ export class AppComponent {
      
     })*/
 
-    sessionService.validateToken();
+    //sessionService.validateToken();
   }
 
 }

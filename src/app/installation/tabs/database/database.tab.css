@@ -16,8 +16,8 @@
 .app-content {
   border: 1px;
   border-style: solid;
-  border-color: #bbb;
-  border-radius: 2px;
+  border-color: #dee2e6;
+  border-top-width: 0px;
 }
 
 .folder{

@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
-import { Http, URLSearchParams } from '@angular/http';
-import { normalize } from 'normalizr';
 import { Router } from '@angular/router';
 
+import { environment } from '../../../environments/environment';
 import * as schema from '../../api';
 import { MessageService } from '../message.service';
 import { parseDeviseErrors } from './helpers';
 import { IAppState } from '../../app.store'
 import {
-  IUser,
   UserActions
 } from '../../store/data';
 
@@ -24,7 +21,7 @@ export class SessionService {
     private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
     private router: Router,
-    private messageService: MessageService
+    private messageService: MessageService,
   ) { }
 
 
@@ -48,7 +45,7 @@ export class SessionService {
   }
 
   public updateAccount(accountParams: any) {
-    this.http.put<schema.IApiResponse>('/auth.json', accountParams)
+    this.http.put<schema.IApiResponse>('auth.json', accountParams)
       .subscribe(
       json => {
         this.setUser(json.data);
@@ -60,28 +57,27 @@ export class SessionService {
   }
 
   public resetPassword(email: string): void {
-    this.http.post('/auth/reset',{ email: email })
+    this.http.post('auth/password',{ 
+      email: email,
+      redirect_url: `${environment.appUrl}/session/reset_password` })
       .subscribe(
-      res => this.messageService.setNotice("sent e-mail with password reset"),
-      error => this.messageService.setError("error sending password reset")
+      _ => this.messageService.setNotice("sent e-mail with password reset"),
+      _ => this.messageService.setError("error sending password reset")
       );
   }
 
   public updatePassword(
     password: string,
-    passwordConfirmation: string,
-    token: string
+    passwordConfirmation: string
   ): void {
-    this.http.put('/user.json',
+    this.http.put('auth/password',
       {
         password: password,
-        passwordConfirmation: passwordConfirmation,
-        resetPasswordToken: token,
-        passwordCurrent: null
+        password_confirmation: passwordConfirmation
       })
       .subscribe(
-      res => this.router.navigate(['/explorer']),
-      error => this.messageService.setError(error));
+      _ => this.router.navigate(['/explorer']),
+      resp => this.messageService.setErrors(parseDeviseErrors(resp)));
   };
 
   public validateToken(): void {
