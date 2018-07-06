@@ -1,12 +1,12 @@
 <div class="badge label-default clearfix">
-  <span class="pull-left">
-  <i *ngIf="permission.target_type=='user'" class="fa fa-user-o fa-fw"></i>
-  <i *ngIf="permission.target_type=='group'" class="fa fa-group fa-fw"></i> 
-  {{permission.target_name}}
+  <span class="float-left">
+  <fa-icon *ngIf="permission.target_type=='user'" [icon]="['fas', 'user']" class="icon" [fixedWidth]="True"></fa-icon>
+  <fa-icon *ngIf="permission.target_type=='group'" [icon]="['fas', 'users']" class="icon" [fixedWidth]="True"></fa-icon>
+    {{permission.target_name}}
   </span>
   <span *ngIf="permission.removable"
    (click) = 'removePermission()'
-   class="pull-right remove-permission">
-    <i class="fa fa-close"></i>
+   class="float-right remove-permission">
+   <fa-icon [icon]="['fas', 'times']" class="icon remove"></fa-icon>
   </span>
 </div>

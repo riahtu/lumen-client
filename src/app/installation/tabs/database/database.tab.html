@@ -12,16 +12,16 @@
             <span *ngSwitchCase="'root'">
             </span>
             <span *ngSwitchCase="'dbFolder'">
-              <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
-              <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+              <fa-icon [icon]="['fas', 'folder-open']" *ngIf="node.isExpanded" class="folder"></fa-icon>
+              <fa-icon [icon]="['fas', 'folder']" *ngIf="!node.isExpanded" class="folder"></fa-icon>
             </span>
             <span *ngSwitchCase="'dbStream'">
-              <i class="fa fa-database"></i>
+              <fa-icon [icon]="['fas', 'database']"></fa-icon>
             </span>
           </span>
           {{ node.data.name }}
         </ng-template>
-        <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
+        <ng-template #loadingTemplate><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon> loading</ng-template>
       </tree-root>
     </div>
   </div>

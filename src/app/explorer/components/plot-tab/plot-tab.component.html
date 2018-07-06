@@ -1,13 +1,13 @@
 
 
 <div *ngIf="plotSelectors.isPlotEmpty$ | async">
-  <p class="empty-plot"><i class="fa fa-line-chart fa-2x"></i></p>
+  <p class="empty-plot"><fa-icon [icon]="['fas', 'chart-line']" size="2x"></fa-icon></p>
   <p class="lead empty-plot"> no elements plotted</p>
 </div>
 
 <!-- Left Axis -->
 <div *ngIf="(plotSelectors.leftElements$ | async)?.length>0" class="axis-title lead">Left Axis:
-  <span class="pull-right units">{{plotSelectors.leftElementUnits$ | async}}</span>
+  <span class="float-right units">{{plotSelectors.leftElementUnits$ | async}}</span>
 </div>
 
 <app-axis-settings *ngIf="(plotSelectors.leftElements$ | async)?.length>0"
@@ -24,7 +24,7 @@
 
 <!-- Right Axis -->
 <div *ngIf="(plotSelectors.rightElements$ | async)?.length>0" class="axis-title lead">Right Axis:
-  <span class="pull-right units">{{plotSelectors.rightElementUnits$ | async}}</span>
+  <span class="float-right units">{{plotSelectors.rightElementUnits$ | async}}</span>
 </div>
 
 <app-axis-settings *ngIf="(plotSelectors.rightElements$ | async)?.length>0" 

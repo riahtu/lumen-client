@@ -13,7 +13,8 @@
   (remove)='removePermission(permission)'></app-permission>
 
 <button class="btn btn-primary" (click)='permissionModal.show()'>
-<i class="fa fa-user-plus"></i> Add Permission</button>
+<fa-icon [icon]="['fas', 'user-plus']"></fa-icon>
+ Add Permission</button>
 
 
 
@@ -23,8 +24,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left">Add Permission</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="permissionModal.hide()">
+        <h4 class="modal-title float-left">Add Permission</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="permissionModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -34,7 +35,7 @@
         <!-- select how to add a user -->
         <div>
           <div class="lead">I want to:</div> 
-          <div class>
+          <div>
             <ng-select [(ngModel)]="userType"
             class="selection-options"
                   [items]="userOptions"
@@ -62,26 +63,25 @@
         <div [ngSwitch]='userType'>
           <!-- Option 1: select an existing user -->
           <div *ngSwitchCase="'select'">
-            Hola!
             <ng-select [(ngModel)]="target"
               [items]="selectEntries$ | async"
               bindValue = "value"
               placeholder = "select a user or group"
               notFoundText = "no users or groups found">
               <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
-                  <i class="fa fa-user-o fa-fw" *ngIf="item.type=='user'"></i>
-                  <i class="fa fa-group fa-fw" *ngIf="item.type!='user'"></i>
-                  <span [ngOptionHighlight]="search">{{item.label}}</span>
+                  <fa-icon [icon]="['fas', 'user']" [fixedWidth]="true" *ngIf="item.type=='user'"></fa-icon>
+                  <fa-icon [icon]="['fas', 'users']" [fixedWidth]="true" *ngIf="item.type!='user'"></fa-icon>
+                  <span [ngOptionHighlight]="search">  {{item.label}}</span>
                 </ng-template>
             </ng-select>
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
               <!-- save -->
-              <button class="btn btn-primary pull-left mtop" 
+              <button class="btn btn-primary float-left mtop" 
                       [disabled]="target==null"
                       (click)="createPermission(target)">Save</button>
               <!-- cancel -->
-              <button class="btn btn-secondary pull-right mtop"
+              <button class="btn btn-secondary float-right mtop"
                       (click)="cancel()">
                       Cancel</button>
             </div>
@@ -105,11 +105,11 @@
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
               <!-- save -->
-              <button class="btn btn-primary pull-left mtop" 
+              <button class="btn btn-primary float-left mtop" 
                       [disabled]="!emailForm.valid"
                       (click)="inviteUserWithPermission(email)">Invite</button>
               <!-- cancel -->
-              <button class="btn btn-secondary pull-right mtop"
+              <button class="btn btn-secondary float-right mtop"
                       (click)="cancel()">
                       Cancel</button>
             </div>

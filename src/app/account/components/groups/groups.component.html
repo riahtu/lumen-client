@@ -7,9 +7,9 @@
 
 <!-- create a new group -->
 <div class="clearfix pr-4">
-  <button class="btn btn-primary pull-right" 
+  <button class="btn btn-primary float-right" 
     (click)="newGroupModal.show()">
-    <i class="fa fa-plus" ></i> 
+    <fa-icon [icon]="['fas', 'plus']"></fa-icon>
     New Group
   </button>
 </div>
@@ -34,8 +34,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Create a New Group</h4>
-        <button type="button" class="close pull-right" 
+        <h4 class="modal-title float-left">Create a New Group</h4>
+        <button type="button" class="close float-right" 
           aria-label="Close" (click)="newGroupModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>

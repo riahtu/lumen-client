@@ -2,7 +2,8 @@
   <div class="panel-title">Database Properties</div>
 
   <alert type="danger" *ngIf="!my_db.available">
-    <i class="fa fa-exclamation-triangle"></i> Cannot contact database, check URL or click refresh
+    <fa-icon [icon]="['fas', 'exclamation-triangle']"></fa-icon>
+    Cannot contact database, check URL or click refresh
   </alert>
 
   <dl class="row">
@@ -31,14 +32,14 @@
         [formControl]="form.controls.max_points_per_plot">
     </div>
     <div class="form-group ">
-      <div class="pull-left ">
+      <div class="float-left ">
         <button type="submit" (click) = "onSubmit(form.value)" class="btn btn-primary" 
           [disabled]="!form.valid || (busy$ | async)">Save</button>
       </div>
-      <div class="pull-right ">
+      <div class="float-right ">
         <button class="btn btn-secondary" [disabled]='busy$ | async'
           (click)="refreshDb()">
-          <i class="fa fa-refresh fa-spin" *ngIf='refreshing$ | async'></i>
+          <fa-icon [icon]="['fas', 'sync']" [spin]="true" *ngIf='refreshing$ | async'></fa-icon>
           Refresh
         </button>
       </div>

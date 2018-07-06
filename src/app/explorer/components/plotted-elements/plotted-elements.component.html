@@ -1,14 +1,17 @@
 <div class="plotted-element">
-  <i class="fa fa-gear fa-lg icon-button"
-    (click)="showModal()"></i>
-  <span class="fa-stack fa-lg">
+  <fa-icon [icon]="['fas', 'cog']" size="lg" class="icon-button" (click)="showModal()"></fa-icon>
+  <fa-layers class="fa-2x" >
+    <fa-icon [icon]="['fas', 'square']" ></fa-icon>
+    <fa-icon [icon]="['fas', 'square']" transform="shrink-3" [style.color]="element.color"></fa-icon>
+  </fa-layers>
+  <!--<span class="fa-stack fa-lg">
         <i class="fa fa-square fa-stack-1x fa-lg"></i>
        <i class="fa fa-square fa-stack-1x" [style.color]="element.color"></i>
-      </span> <span [tooltip]="tipTemplate" placement='right'> {{displayName}} </span>
-  <i class="fa fa-close pull-right icon-button"
-    (click)="hideElement()"></i>
+      </span> -->
+  <span [tooltip]="tipTemplate" placement='right'> {{displayName}} </span>
+  <fa-icon [icon]="['fas', 'times']" class="float-right icon-button" (click)="hideElement()"></fa-icon>
 
-  <ng-template #tipTemplate><i class="fa fa-database"></i> {{toolTipText$ | async}}</ng-template>
+  <ng-template #tipTemplate><fa-icon [icon]="['fas', 'database']"></fa-icon> {{toolTipText$ | async}}</ng-template>
 </div>
 
 
@@ -21,8 +24,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Plot Settings for <strong>{{element.name}}</strong></h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="elementModal.hide()">
+        <h4 class="modal-title float-left">Plot Settings for <strong>{{element.name}}</strong></h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="elementModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -72,10 +75,10 @@
         <!-- Save and Cancel buttons -->
         <div class="clearfix">
           <!-- save -->
-          <button class="btn btn-primary pull-left" 
+          <button class="btn btn-primary float-left" 
                   (click)="onSave()">Save</button>
           <!-- cancel -->
-          <button class="btn btn-secondary pull-right"
+          <button class="btn btn-secondary float-right"
                   (click)="elementModal.hide()">
                   Cancel</button>
         </div>

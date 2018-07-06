@@ -12,14 +12,14 @@
   <tr *ngFor="let nilm of nilmArray$ | async">
     <!-- Installation status (nilm state) -->
     <td style="vertical-align: middle">
-      <i *ngIf="nilm.available" class="fa fa-circle available" tooltip="online"></i>
-      <i *ngIf="!nilm.available" class="fa fa-circle offline" tooltip="offline"></i>
+      <fa-icon *ngIf="nilm.available" [icon]="['fas', 'circle']" class="icon available" tooltip="online"></fa-icon>
+      <fa-icon *ngIf="!nilm.available" [icon]="['fas', 'circle']" class="icon offline" tooltip="offline"></fa-icon>
     </td>
     <!-- admin icon -->
     <td style="vertical-align: middle">
-      <i *ngIf="nilm.role=='admin'" class="fa fa-user fa-fw"   tooltip="admin"></i>
-      <i *ngIf="nilm.role=='owner'" class="fa fa-user-o fa-fw" tooltip="owner"></i>
-      <i *ngIf="nilm.role=='viewer'" class="fa fa-eye fa-fw"   tooltip="viewer"></i>
+      <fa-icon *ngIf="nilm.role=='admin'"  [icon]="['fas', 'user']" fixedWidth="true" tooltip="admin"></fa-icon>
+      <fa-icon *ngIf="nilm.role=='owner'"  [icon]="['far', 'user']" fixedWidth="true" tooltip="owner"></fa-icon>
+      <fa-icon *ngIf="nilm.role=='viewer'"  [icon]="['fas', 'eye']" fixedWidth="true" tooltip="viewer"></fa-icon>
     </td>
     <!-- Installation name -->
     <td style="vertical-align: middle"> 
@@ -27,17 +27,16 @@
     </td>
     <!-- Admin/Owner access -->
     <td>
-      <i class="fa fa-gear" *ngIf="nilm.role=='admin' || nilm.role=='owner'"
-         [routerLink]="['/installations',nilm.id]">
-      </i>
+      <fa-icon [icon]="['fas', 'cog']" class="icon configure" *ngIf="nilm.role=='admin' || nilm.role=='owner'"
+      [routerLink]="['/installations',nilm.id]"></fa-icon>
     </td>
   </tr>
 </table>
 <!-- add a new NILM -->
 <div class="pr-4">
-  <button class="btn btn-primary pull-right"
+  <button class="btn btn-primary float-right"
     (click)="nilmModal.show()">
-    <i class="fa fa-plus"></i> 
+    <fa-icon [icon]="['fas', 'plus']"></fa-icon>
     New Installation
   </button>
 </div>
@@ -51,8 +50,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Add New Installation</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="nilmModal.hide()">
+        <h4 class="modal-title float-left">Add New Installation</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="nilmModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

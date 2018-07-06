@@ -12,7 +12,7 @@
   <tbody>
     <tr *ngFor="let m of displayedMeasurements$ | async">
       <td>
-        <span class="element-color pull-left" [style.background]="m.color"></span>
+        <span class="element-color float-left" [style.background]="m.color"></span>
         {{m.name}}
       </td>
       <td><span *ngIf="m.valid; else empty">
@@ -28,7 +28,7 @@
 
 <div class="clearfix">
   <!-- checkbox for relative measurements -->
-  <div class="checkbox pull-left" 
+  <div class="checkbox float-left" 
     *ngIf="(measurementSelectors.zeroRange$ | async) != null">
     <label>
     <input type="checkbox"
@@ -39,7 +39,7 @@
   </div>
 
   <!-- button to set zero -->
-  <div class="pull-right">
+  <div class="float-right">
     <button class="btn btn-secondary" 
     (click)="measurementService.setZero()">Set Zero</button>
   </div>

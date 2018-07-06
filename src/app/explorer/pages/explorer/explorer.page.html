@@ -4,7 +4,7 @@
      Data Explorer
   <!-- help button -->
   <a href="{{helpUrl}}/explorer.html" target="_blank"
-   class="btn btn-success help-btn"><i class="fa fa-life-saver"></i> Help </a>
+   class="btn btn-success help-btn"><fa-icon [icon]="['fas', 'life-ring']"></fa-icon> Help </a>
 </p>
 
 <div class="row">
@@ -41,8 +41,8 @@
         <ng-template tabHeading>
           <span class="tab-title">
             {{interface.name}}
-            <i class="fa fa-close tab-close" 
-              (click)="interfacesService.remove(interface.id)"></i>
+            <fa-icon [icon]="['fas', 'times']" class="fa-close" 
+              (click)="interfacesService.remove(interface.id)"></fa-icon>
           </span>
         </ng-template>
       </tab>
@@ -64,7 +64,8 @@
         <!-- nav loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="plotSelectors.addingNavData$ | async">
-          <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [fixedWidth]="true"></fa-icon>
+          loading data
         </span>
         <span class="nav-date-range">
           {{plotSelectors.navTimeRange$ | async | duration}}
@@ -75,17 +76,20 @@
         <!-- plot loading spinner -->
         <span class="data-loading" [@fadeInOut]
           *ngIf="plotSelectors.addingPlotData$ | async">
-          <i class="fa fa-spinner fa-spin fa-fw"></i> loading data
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" [fixedWidth]="true"></fa-icon>
+          loading data
         </span>
         <!-- warning if some plot data has errors -->
         <span class="data-errors" [@fadeInOut]
           *ngIf="!(plotSelectors.isPlotDataValid$ | async)&&!(plotSelectors.addingPlotData$ | async)">
-          <i class="fa fa-exclamation-circle"></i> some data could not be retrieved
+          <fa-icon [icon]="['far', 'exclamation-circle']"></fa-icon>
+          some data could not be retrieved
         </span>
         <!-- warning if interval data is displayed -->
         <span class="interval-warning" [@fadeInOut]
           *ngIf="plotSelectors.isIntervalDataDisplayed$ | async">
-          <i class="fa fa-exclamation-triangle"></i> some data cannot be displayed at this resolution
+          <fa-icon [icon]="['far', 'exclamation-triangle']"></fa-icon>
+          some data cannot be displayed at this resolution
         </span>
         
         <!-- main plot (70% of view) -->
@@ -97,17 +101,17 @@
           {{plotSelectors.plotTimeRange$ | async | duration}}
         </button>
         <!-- clear zero button -->
-        <div class="clear-zero pull-left" [@fadeInOut]
+        <div class="clear-zero float-left" [@fadeInOut]
           (click)="measurementService.clearZero()"
           *ngIf="measurementSelectors.zeroSet$ | async">
           Clear Zero
-          <i class="fa fa-close" ></i>
+          <fa-icon [icon]="['fas', 'times']" class="fa-close"></fa-icon>
         </div>
         <!-- live update notification -->
-        <div class="live-update pull-right" [@fadeInOut]
+        <div class="live-update float-right" [@fadeInOut]
           *ngIf="plotSelectors.liveUpdate$ | async">
-          <i class="fa fa-heartbeat"></i> Live Update
-          <i class="fa fa-close" (click)="plotService.disableLiveUpdate()"></i>
+          <fa-icon [icon]="['far', 'heartbeat']"></fa-icon> Live Update
+          <fa-icon [icon]="['fas', 'times']" class="fa-close" (click)="plotService.disableLiveUpdate()"></fa-icon>
         </div>
       </div>
       <!--modal overlay to pick date -->
@@ -123,11 +127,11 @@
           <span *ngIf="plotSelectors.addingPlotData$ | async; then loading else default"></span>
         </div>
         <ng-template #loading>
-           <i class="fa fa-spinner fa-spin fa-5x"></i>
+          <fa-icon [icon]="['fas', 'spinner']" [spin]="true" size="5x"></fa-icon>
           <p>Loading Data...</p>
         </ng-template>
         <ng-template #default>
-          <i class="fa fa-line-chart fa-5x"></i>
+          <fa-icon [icon]="['far', 'chart-line']" size="5x"></fa-icon>
           <br/>
           <button class="btn btn-secondary btn-lg"
             (click)="showLoadDataView()">
@@ -148,8 +152,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Right click on image to save</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="imageModal.hide()">
+        <h4 class="modal-title float-left">Right click on image to save</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="imageModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -177,8 +181,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Save Current View</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="saveDataViewModal.hide()">
+        <h4 class="modal-title float-left">Save Current View</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="saveDataViewModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -208,8 +212,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Open View</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="loadDataViewModal.hide()">
+        <h4 class="modal-title float-left">Open View</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="loadDataViewModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -232,9 +236,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">
+        <h4 class="modal-title float-left">
           Measurements over {{measurementSelectors.measurementRange$ | async | duration}}</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="measurementModal.hide()">
+        <button type="button" class="close float-right" aria-label="Close" (click)="measurementModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

@@ -3,9 +3,9 @@
 <!-- group name -->
 <span class="group-title" [tooltip]="group.description" >{{group.name}}</span>
 <!-- drop down menu -->
-<div class="btn-group pull-right" placement="right" dropdown>
+<div class="btn-group float-right" placement="right" dropdown>
   <button class="btn btn-sm btn-light dropdown-toggle" dropdownToggle>
-    <i class="fa fa-bars"></i>
+    <fa-icon [icon]="['fas', 'bars']"></fa-icon>
   </button>
   <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="menu-button">
     <!-- add a new member -->
@@ -22,8 +22,9 @@
     <!-- member name -->
     <td>{{member.first_name}} {{member.last_name}}
     <!-- remove the member -->
-      <span class="pull-right" (click)='removeMember(member)'>
-        <i class="fa fa-close"></i></span>
+      <span class="float-right" (click)='removeMember(member)'>
+          <fa-icon [icon]="['fas', 'times']" class="icon delete"></fa-icon>
+      </span>
     </td>
   </tr>
 </table>
@@ -37,8 +38,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Edit Group [{{group.name}}]</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="groupModal.hide()">
+        <h4 class="modal-title float-left">Edit Group [{{group.name}}]</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="groupModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -61,8 +62,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Add User to [{{group.name}}]</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="userModal.hide()">
+        <h4 class="modal-title float-left">Add User to [{{group.name}}]</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="userModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -70,9 +71,11 @@
         <!-- select how to add a user -->
         <span class="lead">I want to:</span> 
         <ng-select [(ngModel)]="userType" class="selection-options"
-              placeholder = "select one">
-              <ng-option *ngFor="let option of options" 
-                [value] = "options.value">{{options.label}}</ng-option>
+          class="selection-options"
+          [items]="userOptions"
+          [clearable]="false"
+          bindValue = 'value'
+          placeholder = "select one">
         </ng-select>
         <hr/>
 
@@ -89,11 +92,11 @@
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
               <!-- save -->
-              <button class="btn btn-primary pull-left mtop" 
+              <button class="btn btn-primary float-left mtop" 
                       [disabled]="selectedUser==null"
                       (click)="addMember(selectedUser)">Save</button>
               <!-- cancel -->
-              <button class="btn btn-secondary pull-right mtop"
+              <button class="btn btn-secondary float-right mtop"
                       (click)="userModal.hide()">
                       Cancel</button>
             </div>
@@ -117,11 +120,11 @@
             <!-- Save and Cancel buttons -->
             <div class="clearfix">
               <!-- save -->
-              <button class="btn btn-primary pull-left mtop" 
+              <button class="btn btn-primary float-left mtop" 
                       [disabled]="!emailForm.valid"
                       (click)="inviteMember(email)">Invite</button>
               <!-- cancel -->
-              <button class="btn btn-secondary pull-right mtop"
+              <button class="btn btn-secondary float-right mtop"
                       (click)="userModal.hide()">
                       Cancel</button>
             </div>

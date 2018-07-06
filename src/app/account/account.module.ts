@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { 
+import {
   BsDropdownModule,
   ModalModule,
   TooltipModule,
@@ -13,12 +13,40 @@ import {
   ReactiveFormsModule,
   FormsModule
 } from '@angular/forms';
-import {AccountSelectors} from './account.selectors';
-import {AccountService} from './account.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faSpinner,
+  faLifeRing,
+  faHome,
+  faEdit,
+  faTimes,
+  faBars,
+  faCog,
+  faCircle,
+  faPlus,
+  faEye,
+  faUser
+} from '@fortawesome/pro-solid-svg-icons'
 
-import {SharedModule} from '../shared/shared.module';
+import { AccountSelectors } from './account.selectors';
+import { AccountService } from './account.service';
+
+import { SharedModule } from '../shared/shared.module';
 import { PAGES } from './pages';
 import { COMPONENTS } from './components';
+
+library.add(faSpinner);
+library.add(faLifeRing);
+library.add(faHome);
+library.add(faTimes);
+library.add(faEdit);
+library.add(faBars);
+library.add(faCog);
+library.add(faCircle);
+library.add(faPlus);
+library.add(faEye);
+library.add(faUser);
 
 @NgModule({
   imports: [
@@ -28,6 +56,7 @@ import { COMPONENTS } from './components';
     RouterModule,
     NgSelectModule,
     SharedModule,
+    FontAwesomeModule,
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),

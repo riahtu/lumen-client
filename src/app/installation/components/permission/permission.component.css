@@ -10,14 +10,14 @@ div {
     color: black;
 }
 
-i{
+.icon{
   color: black;
 }
-i.fa-close{
+.icon.remove{
   color: grey;
 }
 
-i.fa-close:hover{
+.icon.remove:hover{
   color: firebrick;
 }
 

@@ -200,11 +200,11 @@ img.data-view-preview{
     margin-left: calc(50% - 200px);
 }
 
-i.fa-close {
+.fa-close {
   color: gray;
   margin-left: 10px;
 }
-i.fa-close:hover{
+.fa-close:hover{
   cursor: pointer;
   color: black;
 }

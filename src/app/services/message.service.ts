@@ -68,7 +68,6 @@ export class MessageService {
       return ['cannot contact server'];
     }
     try {
-      console.log(response);
       let msgs = response.error["messages"];
       if (msgs === undefined) {
         throw new TypeError("no message property")

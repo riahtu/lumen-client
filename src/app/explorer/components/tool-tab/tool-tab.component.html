@@ -11,7 +11,7 @@
 
   <button class="btn btn-primary btn-block"
     (click)="plotService.setNavRangeToPlotRange()">
-    Sync Plot Time Scales <i class="fa fa-exchange fa-rotate-90"></i> </button>
+    Sync Plot Time Scales <fa-icon [icon]="['fas', 'exchange-alt']" rotate="90"></fa-icon></button>
 
   <div class="btn-group btn-block" role="group">
     <button class="btn btn-primary autoscale"
@@ -38,25 +38,29 @@
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.dataCursor$ | async" 
-        (change)="plotService.toggleDataCursor()"><i class="fa fa-fw fa-crosshairs"></i> Show Data Cursor
+        (change)="plotService.toggleDataCursor()">
+        <fa-icon [icon]="['far', 'crosshairs']"  [fixedWidth]="true"></fa-icon> Show Data Cursor
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.liveUpdate$ | async"
-        (change)="plotService.toggleLiveUpdate()"><i class="fa fa-fw fa-heartbeat"></i> Live Update
+        (change)="plotService.toggleLiveUpdate()">
+        <fa-icon [icon]="['far', 'heartbeat']"  [fixedWidth]="true"></fa-icon> Live Update
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.navZoomLock$ | async" 
-        (change)="plotService.toggleNavZoomLock()"><i class="fa fa-fw fa-lock"></i> Lock Selection Width
+        (change)="plotService.toggleNavZoomLock()">
+        <fa-icon [icon]="['far', 'lock']"  [fixedWidth]="true"></fa-icon> Lock Selection Width
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.showDataEnvelope$ | async" 
-        (change)="plotService.toggleShowDataEnvelope()"><i class="fa fa-fw fa-area-chart"></i>Data Envelope
+        (change)="plotService.toggleShowDataEnvelope()">
+        <fa-icon [icon]="['fas', 'chart-area']"  [fixedWidth]="true"></fa-icon>Data Envelope
     </label>
   </div>
   <hr/>
@@ -66,11 +70,11 @@
   
   <button class="btn btn-secondary btn-block"
     (click)="downloadDataModal.show()">
-      <i class="fa fa-download"></i> Plot Data
+    <fa-icon [icon]="['fas', 'download']"></fa-icon> Plot Data
   </button>
   <button class="btn btn-secondary btn-block"
     (click)="savePlotImage.emit('save')">
-      <i class="fa fa-download"></i> Plot Image</button>
+    <fa-icon [icon]="['fas', 'image']"></fa-icon> Plot Image</button>
 </div>
 
 <!-- ====== download data modal ====== -->
@@ -82,8 +86,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Data from {{plotSelectors.plotTimeRange$ | async | duration}}</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="downloadDataModal.hide()">
+        <h4 class="modal-title float-left">Data from {{plotSelectors.plotTimeRange$ | async | duration}}</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="downloadDataModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

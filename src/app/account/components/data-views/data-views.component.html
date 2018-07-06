@@ -1,16 +1,12 @@
 <div *ngFor="let view of myDataViewArray$ | async" class="clearfix">
   <!-- add icon to indicate the home view -->
-  <i class="fa fa-home" *ngIf="view.home"></i>
+  <fa-icon [icon]="['fas', 'home']" *ngIf="view.home"></fa-icon>
   <!-- view title -->
   <span [innerHTML]="formatTitle(view) | ellipsis:70"></span>
   <!-- view edit / delete buttons -->
-  <span class="pull-right">
-    <i class="fa fa-edit"
-      (click)="editDataView(view)"></i>
-    
-    <i class="fa fa-close" 
-      (click)="dataViewService.deleteDataView(view)">
-    </i>
+  <span class="float-right">
+    <fa-icon [icon]="['fas', 'edit']"   class="icon edit" (click)="editDataView(view)"></fa-icon>
+    <fa-icon [icon]="['fas', 'times']" class="icon delete" (click)="dataViewService.deleteDataView(view)"></fa-icon>
   </span>
   
 </div>
@@ -28,8 +24,8 @@
     <div class="modal-content">
       <div class="modal-header">
         <!-- modal title bar -->
-        <h4 class="modal-title pull-left">Edit Saved View</h4>
-        <button type="button" class="close pull-right" aria-label="Close" (click)="editDataViewModal.hide()">
+        <h4 class="modal-title float-left">Edit Saved View</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="editDataViewModal.hide()">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>

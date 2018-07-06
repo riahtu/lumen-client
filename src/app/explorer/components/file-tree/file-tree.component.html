@@ -1,5 +1,5 @@
 <div *ngIf="!(plotSelectors.nilmsLoaded$ | async)" class="nilms-loading">
-<i class="fa fa-spinner fa-spin fa-5x"></i>
+<fa-icon [icon]="['fas', 'spinner']" [spin]="true" size="5x"></fa-icon>
 <p class="lead">loading...</p>
 </div>
 <tree-root 
@@ -12,25 +12,26 @@
       <!-- nilm element -->
       <span *ngSwitchCase="'nilm'" class="nilm-entry">
         {{ node.data.name }}
-        <i class="fa fa-refresh icon-button refresh" *ngIf="!node.data.refreshing"
-        tooltip="refresh installation" [delay]="500" (click)="nilmService.refreshNilm(node.data.nilmId)"></i>
-        <i class="fa fa-refresh fa-spin" *ngIf="node.data.refreshing"></i>
+        <fa-icon [icon]="['fas', 'sync-alt']" class="icon-button refresh" *ngIf="!node.data.refreshing"
+        tooltip="refresh installation" [delay]="500" 
+        (click)="nilmService.refreshNilm(node.data.nilmId)"></fa-icon>
+        <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="node.data.refreshing"></fa-icon>
       </span>
       <!-- jouleModule -->
       <span *ngSwitchCase="'jouleModule'" class="visualizer-node" 
         (click)="interfacesService.add(+node.data.id.substring(1))">
-          <i class="fa fa-list-alt"></i>
+        <fa-icon [icon]="['fas', 'cubes']"></fa-icon>
           {{ node.data.name }}
         </span>
       <!-- dbFolder -->
       <span *ngSwitchCase="'dbFolder'">
-        <i *ngIf="node.isExpanded" class="fa fa-folder-open folder"></i>
-        <i *ngIf="!node.isExpanded" class="fa fa-folder folder"></i>
+        <fa-icon [icon]="['fas', 'folder-open']" *ngIf="node.isExpanded" class="folder"></fa-icon>
+        <fa-icon [icon]="['fas', 'folder']" *ngIf="!node.isExpanded" class="folder"></fa-icon>
         {{ node.data.name }}
       </span>
       <!-- dbStream -->
       <span *ngSwitchCase="'dbStream'">
-        <i class="fa fa-database"></i>
+        <fa-icon [icon]="['fas', 'database']"></fa-icon>
         {{ node.data.name }}
       </span>
       <!-- dbElement -->
@@ -39,17 +40,17 @@
         <span class="tree-button plot" 
           *ngIf="node.data.plotted==false && node.data.plottable"
           (click)="plotService.plotElement(node.data.element)">
-          <i class="fa fa-line-chart"></i> add </span>
+          <fa-icon [icon]="['fas', 'chart-line']"></fa-icon> add </span>
         <!--hide plotted element button -->
         <span class="tree-button unplot" 
           *ngIf="node.data.plotted==true"
           (click)="plotService.hideElement(node.data.element)">
-          <i class="fa fa-line-chart"></i> hide </span>
+          <fa-icon [icon]="['fas', 'chart-line']"></fa-icon> hide </span>
         <!-- element cannot be plotted -->
         <a class="tree-button noplot"
           *ngIf="node.data.plottable==false"
           [tooltip]="node.data.tooltip">
-          <i class="fa fa-line-chart"></i> add </a>
+          <fa-icon [icon]="['fas', 'chart-line']"></fa-icon> add </a>
         <!-- element name -->
         {{ node.data.name }}
         <!-- plotting color -->
@@ -59,5 +60,5 @@
     </span>
     
   </ng-template>
-  <ng-template #loadingTemplate><i class="fa fa-spin fa-spinner"></i> loading</ng-template>
+  <ng-template #loadingTemplate><fa-icon [icon]="['far', 'spinner']" [spin]="true"></fa-icon> loading</ng-template>
 </tree-root>

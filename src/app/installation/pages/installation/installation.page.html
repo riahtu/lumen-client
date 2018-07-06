@@ -3,10 +3,10 @@
   <span *ngIf="nilm!=null">[{{nilm.name}}]</span>
     <!-- help button -->
   <a href="{{helpUrl}}/installation.html" target="_blank"
-   class="btn btn-success help-btn"><i class="fa fa-life-saver"></i> Help </a>
+   class="btn btn-success help-btn"><fa-icon [icon]="['fas', 'life-ring']"></fa-icon> Help </a>
 </div>
 <div *ngIf="nilm==null" class="well">
-  <h1><i class="fa fa-spinner fa-spin"></i> Loading</h1>
+  <h1><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon>Loading</h1>
 </div>
 <div *ngIf="nilm!=null">
   <tabset>

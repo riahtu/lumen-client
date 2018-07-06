@@ -3,18 +3,18 @@ img.thumbnail {
   width: 200px;
 }
 
-i{
+.icon{
   color: grey;
   margin: 5px;
 }
 
 
-i.fa-close:hover{
+.icon.delete:hover{
   color: firebrick;
   cursor: pointer;
 }
 
-i.fa-edit:hover{
+.icon.edit:hover{
   cursor: pointer;
   color: #5d81a0;
 }

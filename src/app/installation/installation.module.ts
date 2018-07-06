@@ -12,6 +12,20 @@ import {
   ModalModule,
   TabsModule
  } from 'ngx-bootstrap';
+ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+ import { library } from '@fortawesome/fontawesome-svg-core';
+ import {
+   faSpinner,
+   faLifeRing,
+   faSync,
+   faExclamationTriangle,
+   faUserPlus,
+   faUser,
+   faUsers,
+   faFolder,
+   faFolderOpen,
+   faDatabase
+ } from '@fortawesome/pro-solid-svg-icons'
 
 import { COMPONENTS } from './components';
 import { TABS } from './tabs';
@@ -20,6 +34,16 @@ import { InstallationPageComponent } from './pages';
 import { InstallationService } from './installation.service'
 import { InstallationSelectors } from './installation.selectors';
 import { SharedModule } from '../shared/shared.module';
+
+library.add(faSpinner);
+library.add(faLifeRing);
+library.add(faSync);
+library.add(faExclamationTriangle);
+library.add(faUserPlus);
+library.add(faUser);
+library.add(faUsers);
+library.add(faFolder);
+library.add(faDatabase);
 
 @NgModule({
   imports: [
@@ -30,6 +54,7 @@ import { SharedModule } from '../shared/shared.module';
     TreeModule,
     NgSelectModule,
     SharedModule,
+    FontAwesomeModule,
     AlertModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot()

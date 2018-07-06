@@ -3,12 +3,12 @@
 <li class="list-group-item"
   *ngFor="let item of downloadInfo$ | async">
   
-  <button class="btn btn-primary pull-right" (click)="download(item.stream)">
-    <i class="fa fa-download"></i> download
+  <button class="btn btn-primary float-right" (click)="download(item.stream)">
+      <fa-icon [icon]="['fas', 'download']"></fa-icon> download
   </button>
     
   <h4 class="list-group-item-heading">
-    <i class="fa fa-database"></i> {{item.stream.name}} <span class="installation">@ {{item.installation_name}}</span>
+      <fa-icon [icon]="['fas', 'database']"></fa-icon> {{item.stream.name}} <span class="installation">@ {{item.installation_name}}</span>
   </h4>
   <dl class="dl-horizontal">
     <dt class="dt-left">URL</dt><dd class="dd-small">{{item.installation_url}}</dd>
