@@ -30,13 +30,12 @@
               [formControl]="form.get('password')" 
               id="password">
       </div>
-      <button *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
-        Forgot your password?</button>
-
       <button class="btn btn-primary btn-block" 
               (click)="onSubmit(form.value)"
               [disabled]="!form.valid">Sign In
       </button>
+      <button *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
+          Forgot your password?</button>
     </form>
   </div>
 </div>

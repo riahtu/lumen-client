@@ -42,8 +42,7 @@ export class DbStreamService {
 
   public updateStream(stream): void {
     this.http
-      .put<schema.IApiResponse>(`db_streams/${stream.id}.json`,
-      JSON.stringify(stream))
+      .put<schema.IApiResponse>(`db_streams/${stream.id}.json`, stream)
       .subscribe(
       json => {
         let entities = normalize(json.data, schema.dbStream).entities;

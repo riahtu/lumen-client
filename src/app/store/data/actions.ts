@@ -8,9 +8,6 @@ export const NilmActions = {
 export const JouleModuleActions = {
   'RECEIVE': 'JOULE_MODULE_RECEIVE'
 };
-export const DbActions = {
-  'RECEIVE': 'DB_RECEIVE'
-};
 export const DbFolderActions = {
   'RECEIVE': 'DB_FOLDER_RECEIVE'
 };

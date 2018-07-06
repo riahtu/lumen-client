@@ -3,17 +3,14 @@ import {combineLatest} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { select } from '@angular-redux/store';
 import { TreeNode } from 'angular-tree-component';
 
 import {
   NilmService,
-  DbService,
   DbFolderService,
 } from '../../../services';
 import {
   INilm,
-  IDb,
   IDbFolder,
   IDbStream,
   IDbElement,
@@ -42,7 +39,6 @@ export class FileTreeComponent implements OnInit {
 
   constructor(
     public nilmService: NilmService,
-    private dbService: DbService,
     private dbFolderService: DbFolderService,
     private plotService: PlotService,
     public plotSelectors: PlotSelectors,
@@ -62,7 +58,7 @@ export class FileTreeComponent implements OnInit {
         let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
           let priveleged = false;
-          return this.mapNilm(nilm, data.dbs[nilm.db],
+          return this.mapNilm(nilm, data.dbFolders[nilm.root_folder],
             data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
@@ -91,16 +87,16 @@ export class FileTreeComponent implements OnInit {
 
   mapNilm(
     nilm: INilm,
-    db: IDb,
+    rootDbFolder: IDbFolder,
     jouleModules: IJouleModuleRecords,
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
     elements: IDbElementRecords,
   ): DbTreeNode {
     let children = null
-    if (db != null && folders[db.contents] !== undefined) {
+    if (rootDbFolder !== undefined) {
       //nilm is loaded, map it out
-      let root = this.mapFolder(folders[db.contents],
+      let root = this.mapFolder(rootDbFolder,
         folders, streams, elements);
       //add the Joule Modules to the top of the folder listing
       root.children.unshift(...this.mapJouleModules(

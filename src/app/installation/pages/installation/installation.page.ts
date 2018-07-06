@@ -3,12 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Observable, Subscription, combineLatest } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter, tap } from 'rxjs/operators';
 import { select } from '@angular-redux/store';
-import {environment } from '../../../../environments/environment'
+import { environment } from '../../../../environments/environment'
 import {
   NilmService, SessionService,
 } from '../../../services';
+import {
+  InstallationService
+} from '../../installation.service';
 
 import {
   INilm
@@ -34,36 +37,37 @@ export class InstallationPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private session: SessionService,
-    private nilmService: NilmService
+    private nilmService: NilmService,
+    private installationService: InstallationService
   ) {
     this.helpUrl = environment.helpUrl;
-    
+
     this.subs = [];
     this.session.validateToken();
   }
 
   ngOnInit() {
 
-    this.subs.push(this.route.params.subscribe(params => 
+    this.subs.push(this.route.params.subscribe(params =>
       this.nilmService.loadNilm(params['id'])));
 
-    this.nilm$ = combineLatest(this.nilms$,this.route.params).pipe(
-      map(([nilms,params]) => nilms[params['id']]),
+    this.nilm$ = combineLatest(this.nilms$, this.route.params).pipe(
+      map(([nilms, params]) => nilms[params['id']]),
       filter(nilm => !(nilm === undefined)));
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     while (this.subs.length > 0)
-    this.subs.pop().unsubscribe()
+      this.subs.pop().unsubscribe()
   }
 
-  @ViewChild('childModal') public childModal:ModalDirective;
- 
-  public showChildModal():void {
+  @ViewChild('childModal') public childModal: ModalDirective;
+
+  public showChildModal(): void {
     this.childModal.show();
   }
- 
-  public hideChildModal():void {
+
+  public hideChildModal(): void {
     this.childModal.hide();
   }
 

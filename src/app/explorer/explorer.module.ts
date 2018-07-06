@@ -4,14 +4,13 @@ import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
+
 import {
   faExclamationTriangle,
   faExclamationCircle,
   faHeartbeat,
   faLock,
   faCrosshairs,
-} from '@fortawesome/pro-regular-svg-icons'
-import {
   faDownload,
   faChartLine,
   faLifeRing,
@@ -29,6 +28,7 @@ import {
   faExchangeAlt,
   faImage
 } from '@fortawesome/pro-solid-svg-icons'
+
 import {
   TooltipModule,
   TabsModule,

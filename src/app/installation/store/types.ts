@@ -5,7 +5,7 @@ export interface IInstallation {
   selectedType?: string;
   selectedDbFolder?: number;
   selectedDbStream?: number;
-  selectedDb?: number;
+  rootFolderId?: number;
   refreshing?: boolean;
   busy?: boolean;
 }

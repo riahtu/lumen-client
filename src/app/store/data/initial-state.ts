@@ -12,7 +12,8 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   available: false,
   jouleModules: [],
   refreshing: false,
-  db: null
+  root_folder: null,
+  max_points_per_plot: 0
 });
 
 // ---- JouleModule ----
@@ -27,19 +28,6 @@ export const JouleModuleFactory = makeTypedFactory<data.IJouleModule, data.IJoul
   web_interface: false,
   joule_id: null,
   nilm_id: null
-});
-
-// ---- Db ----
-export const DbFactory = makeTypedFactory<data.IDb, data.IDbRecord>({
-  id: null,
-  url: '',
-  version: 'unknown',
-  size_total: 0,
-  size_db: 0,
-  size_other: 0,
-  max_points_per_plot: 0,
-  available: true,
-  contents: null
 });
 
 // ---- DbFolder ----

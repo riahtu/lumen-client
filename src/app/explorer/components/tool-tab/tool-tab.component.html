@@ -39,21 +39,21 @@
     <label>
       <input type="checkbox" [checked]="plotSelectors.dataCursor$ | async" 
         (change)="plotService.toggleDataCursor()">
-        <fa-icon [icon]="['far', 'crosshairs']"  [fixedWidth]="true"></fa-icon> Show Data Cursor
+        <fa-icon [icon]="['fas', 'crosshairs']"  [fixedWidth]="true"></fa-icon> Show Data Cursor
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.liveUpdate$ | async"
         (change)="plotService.toggleLiveUpdate()">
-        <fa-icon [icon]="['far', 'heartbeat']"  [fixedWidth]="true"></fa-icon> Live Update
+        <fa-icon [icon]="['fas', 'heartbeat']"  [fixedWidth]="true"></fa-icon> Live Update
     </label>
   </div>
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.navZoomLock$ | async" 
         (change)="plotService.toggleNavZoomLock()">
-        <fa-icon [icon]="['far', 'lock']"  [fixedWidth]="true"></fa-icon> Lock Selection Width
+        <fa-icon [icon]="['fas', 'lock']"  [fixedWidth]="true"></fa-icon> Lock Selection Width
     </label>
   </div>
   <div class="checkbox">

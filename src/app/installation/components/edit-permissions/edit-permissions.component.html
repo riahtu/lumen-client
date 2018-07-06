@@ -1,13 +1,13 @@
 
-<span class="lead">Administrators</span><hr class="compact"/>
+<span class="lead"><fa-icon [icon]="['fas', 'user-shield']"></fa-icon> Administrators</span><hr class="compact"/>
 <app-permission  *ngFor="let permission of admins" 
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
-<div class="lead compact">Owners</div><hr class="compact"/>
+<div class="lead compact"><fa-icon [icon]="['fas', 'user']"></fa-icon> Owners</div><hr class="compact"/>
 <app-permission *ngFor="let permission of owners" 
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>
-<div class="lead compact">Viewers</div><hr class="compact"/>
+<div class="lead compact"><fa-icon [icon]="['fas', 'eye']"></fa-icon> Viewers</div><hr class="compact"/>
 <app-permission *ngFor="let permission of viewers"
   [permission]='permission'
   (remove)='removePermission(permission)'></app-permission>

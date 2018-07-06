@@ -28,10 +28,7 @@
   <!-- folder/stream edits -->
   <div [ngSwitch]='installationSelectors.selectedType$ | async' 
     class='app-content col-sm-9 pl-3 pr-2'>
-    <app-edit-db *ngSwitchCase="'root'"
-      [db] = "installationSelectors.selectedDb$ | async"
-      [rootFolder] = "installationSelectors.selectedDbRootFolder$ | async"
-      (refresh) = "refresh(nilm)"></app-edit-db>
+    <div *ngSwitchCase="'root'">Select item from the database</div>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
       [dbStream]="installationSelectors.selectedDbStream$ | async" 
       [dbElements]="installationSelectors.selectedDbStreamElements$ | async"></app-edit-stream>

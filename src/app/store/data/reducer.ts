@@ -55,19 +55,6 @@ export function jouleModuleReducer(
   }
 }
 
-export function dbReducer(
-  state: records.IDbRecords = {},
-  action: IPayloadAction): records.IDbRecords {
-  switch (action.type) {
-    case actions.DbActions.RECEIVE:
-      return Object.assign({},
-        state,
-        recordify(action.payload, factories.DbFactory));
-    default:
-      return state;
-  }
-}
-
 export function dbFolderReducer(
   state: records.IDbFolderRecords = {},
   action: IPayloadAction): records.IDbFolderRecords {

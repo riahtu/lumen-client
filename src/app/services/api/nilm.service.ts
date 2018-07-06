@@ -10,7 +10,6 @@ import * as schema from '../../api';
 import { IAppState } from '../../app.store';
 import {
   NilmActions,
-  DbActions,
   DbFolderActions,
   DbStreamActions,
   DbElementActions,
@@ -96,11 +95,13 @@ export class NilmService {
     nilm: INilm,
     name: string,
     description: string,
-    url: string) {
+    url: string,
+    max_points_per_plot: number) {
     this.http.put<schema.IApiResponse>(`nilms/${nilm.id}.json`, {
       name: name,
       description: description,
-      url: url
+      url: url,
+      max_points_per_plot: max_points_per_plot
     }).subscribe(
       json => {
         let data = normalize(json.data, schema.nilm)
@@ -157,7 +158,6 @@ export class NilmService {
   private _dispatch(entities) {
     this._receive(NilmActions, entities['nilms']);
     this._receive(JouleModuleActions, entities['jouleModules']);
-    this._receive(DbActions, entities['dbs']);
     this._receive(DbFolderActions, entities['dbFolders']);
   }
   private _receive(target: any, data: any) {

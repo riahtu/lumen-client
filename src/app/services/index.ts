@@ -3,7 +3,6 @@
 
 import {
   NilmService,
-  DbService,
   DbFolderService,
   DbStreamService,
   DataService,
@@ -21,11 +20,11 @@ import {
 } from './message.service';
 
 export const SERVICE_PROVIDERS =
-  [NilmService, DbService, DbFolderService, MessageService, DataViewService,
+  [NilmService, DbFolderService, MessageService, DataViewService,
     DbStreamService, SessionService,DataService, ColorService,
     PermissionService, UserGroupService, UserService, DbElementService];
 export {
-  NilmService, DbService, DbFolderService, DbStreamService, SessionService,
+  NilmService, DbFolderService, DbStreamService, SessionService,
   DataService, MessageService, PermissionService, UserGroupService, UserService,
   ColorService, DbElementService, DataViewService
 };

@@ -39,7 +39,7 @@ export class DbFolderService {
 
   public updateFolder(dbFolder: IDbFolder): void {
     this.http
-      .put<schema.IApiResponse>(`db_folders/${dbFolder.id}.json`, JSON.stringify(dbFolder))
+      .put<schema.IApiResponse>(`db_folders/${dbFolder.id}.json`, dbFolder)
       .subscribe(
         json => {
           this._dispatch(json.data);

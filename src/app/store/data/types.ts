@@ -10,7 +10,8 @@ export interface INilm {
   url: string;
   role: string;
   refreshing: boolean;
-  db: number;
+  max_points_per_plot: number;
+  root_folder: number; //id of database root
   jouleModules: Array<number>;
 }
 export interface INilmRecord extends
@@ -36,24 +37,6 @@ export interface IJouleModuleRecord extends
   TypedRecord<IJouleModuleRecord>, IJouleModule { };
 export interface IJouleModuleRecords {
   [index: string]: IJouleModuleRecord;
-}
-
-// ---- Db ----
-export interface IDb {
-  id: number;
-  url: string;
-  version: string;
-  size_total: number;
-  size_db: number;
-  size_other: number;
-  max_points_per_plot: number;
-  available: boolean;
-  contents: number;
-}
-export interface IDbRecord extends
-  TypedRecord<IDbRecord>, IDb { };
-export interface IDbRecords {
-  [index: string]: IDbRecord;
 }
 
 // ---- DbFolder ----

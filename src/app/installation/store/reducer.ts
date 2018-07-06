@@ -25,9 +25,9 @@ export function reducer(
         selectedDbStream: action.payload.id,
         selectedType: 'dbStream'
       });
-    case InstallationActions.SET_DB_ID:
+    case InstallationActions.SET_ROOT_FOLDER_ID:
       return state.merge({
-        selectedDb: action.payload.id
+        rootFolderId: action.payload.id
       });
     case InstallationActions.REFRESHING:
       return state

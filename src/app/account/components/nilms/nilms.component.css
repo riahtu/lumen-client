@@ -1,19 +1,7 @@
 .icon.available{
     color: green;
-    font-size: 1.5em;
 }
 
 .icon.offline{
     color: firebrick;
-    font-size: 1.5em;
-}
-
-.icon.configure{
-  color: grey;
-  margin: 5px;
-}
-
-.icon.configure:hover{
-  cursor: pointer;
-  color: #5d81a0;
 }

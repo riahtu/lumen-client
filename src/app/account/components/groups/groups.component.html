@@ -22,6 +22,9 @@
     {{grp.name}}
   </li>
 </ul>
+<!-- ...or a message if the user isnt' a member of any groups -->
+<div class="alert alert-info" *ngIf="(accountSelectors.memberGroups$ | async).length==0">
+    You do not belong to any groups</div>
 
 
 <!-- ====== create group modal ====== -->

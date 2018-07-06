@@ -26,7 +26,8 @@ import {
   faCircle,
   faPlus,
   faEye,
-  faUser
+  faUser,
+  faUserShield
 } from '@fortawesome/pro-solid-svg-icons'
 
 import { AccountSelectors } from './account.selectors';
@@ -47,6 +48,7 @@ library.add(faCircle);
 library.add(faPlus);
 library.add(faEye);
 library.add(faUser);
+library.add(faUserShield);
 
 @NgModule({
   imports: [

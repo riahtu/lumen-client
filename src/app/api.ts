@@ -40,11 +40,6 @@ dbFolder.define({
   streams: [dbStream]
 });
 
-export const db = new schema.Entity('dbs',
-  {
-    contents: dbFolder
-  });
-
 //convert all unix microsecond times to ms times
 export const data = new schema.Entity('data', {},
   {
@@ -70,7 +65,7 @@ export const data = new schema.Entity('data', {},
 export const datas = new schema.Array(data);
 
 export const nilm = new schema.Entity('nilms',
-  { db: db,
+  { root_folder: dbFolder,
   jouleModules: [jouleModule] });
 export const nilms = new schema.Array(nilm);
 

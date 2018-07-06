@@ -9,7 +9,6 @@ import { InstallationActions } from './store';
 
 import {
   INilm,
-  IDb,
   IDbFolder,
   IDbStream,
   IDbElement
@@ -59,11 +58,11 @@ export class InstallationService {
     this.messageService.clearMessages();
   }
 
-  // ---setDbId: work on specified Db -----
-  public setDbId(id: number) {
+  // ---setRootFolderId: work on specified NILM -----
+  public setRootFolderId(id: number) {
     // set the new db id
     this.ngRedux.dispatch({
-      type: InstallationActions.SET_DB_ID,
+      type: InstallationActions.SET_ROOT_FOLDER_ID,
       payload: {
         id: id
       }

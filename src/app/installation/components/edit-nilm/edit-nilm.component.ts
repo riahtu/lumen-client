@@ -53,6 +53,7 @@ export class EditNilmComponent implements OnInit {
       name: [nilm.name, Validators.required],
       description: [nilm.description],
       url: [nilm.url, Validators.required],
+      max_points_per_plot: [nilm.max_points_per_plot, [Validators.required, Validators.min(1)]]
     });
   }
 
@@ -75,7 +76,8 @@ export class EditNilmComponent implements OnInit {
       this.nilm, 
       values.name, 
       values.description, 
-      values.url
+      values.url,
+      values.max_points_per_plot
     );
   }
 

@@ -5,13 +5,11 @@ import { select } from '@angular-redux/store';
 
 import {
   DbFolderService,
-  DbService,
 } from '../../../services';
 import { InstallationService } from '../../installation.service';
 import { InstallationSelectors } from '../../installation.selectors';
 import {
   INilm,
-  IDbRecords
 } from '../../../store/data';
 
 @Component({
@@ -22,13 +20,11 @@ import {
 export class DatabaseTabComponent implements OnInit {
 
   @Input() nilm: INilm;
-  @select(['data', 'dbs']) dbs$: Observable<IDbRecords>;
 
   private subs: Subscription[];
   //public myNilm: INilm;
 
   constructor(
-    public dbService: DbService,
     private installationService: InstallationService,
     private dbFolderService: DbFolderService,
     public installationSelectors: InstallationSelectors,
@@ -66,9 +62,8 @@ export class DatabaseTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.installationService.setDbId(this.nilm.db);
+    this.installationService.setRootFolderId(this.nilm.root_folder)
     this.installationService.selectDbRoot();
-
   }
 
   ngOnDestroy() {
