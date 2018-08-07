@@ -48,5 +48,8 @@ export class EditFolderComponent implements OnInit {
       description: [folder.description],
       hidden: [folder.hidden]
     });
+    if(folder.locked){
+      this.form.disable();
+    }
   }
 }

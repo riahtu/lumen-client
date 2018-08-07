@@ -46,6 +46,7 @@ export interface IDbFolder {
   description: string;
   path: string;
   hidden: boolean;
+  locked: boolean;
   subfolders: Array<number>;
   streams: Array<number>;
   start_time: number;
@@ -72,7 +73,7 @@ export interface IDbStream {
   total_time: number;
   data_type: string;
   name_abbrev: string;
-  delete_locked: boolean;
+  locked: boolean;
   hidden: boolean;
   elements: Array<number>;
   nilm_id: number;

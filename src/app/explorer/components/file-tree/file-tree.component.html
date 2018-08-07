@@ -13,7 +13,7 @@
       <span *ngSwitchCase="'nilm'" class="nilm-entry">
         {{ node.data.name }}
         <fa-icon [icon]="['fas', 'sync-alt']" class="icon-button refresh" *ngIf="!node.data.refreshing"
-        tooltip="refresh installation" [delay]="500" 
+        tooltip="refresh" placement="right" [delay]="500" 
         (click)="nilmService.refreshNilm(node.data.nilmId)"></fa-icon>
         <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="node.data.refreshing"></fa-icon>
       </span>
@@ -49,7 +49,7 @@
         <!-- element cannot be plotted -->
         <a class="tree-button noplot"
           *ngIf="node.data.plottable==false"
-          [tooltip]="node.data.tooltip">
+          [tooltip]="node.data.tooltip" [delay]="500">
           <fa-icon [icon]="['fas', 'chart-line']"></fa-icon> add </a>
         <!-- element name -->
         {{ node.data.name }}

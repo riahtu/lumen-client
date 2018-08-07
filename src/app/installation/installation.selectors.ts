@@ -8,7 +8,9 @@ import {
   IDbStreamRecord,
   IDbElementRecords,
   IDbElementRecord,
-  IState
+  IState,
+  IDbFolder,
+  IDbStream
 } from '../store/data';
 
 import {IInstallation} from './store';
@@ -37,6 +39,7 @@ export class InstallationSelectors {
   @select(['data', 'dbElements']) dbElements$: Observable<IDbElementRecords>;
 
   @select(['ui','installation']) dbAdmin$: Observable<IInstallation>;
+  @select(['ui','installation', 'refreshing']) refreshing$: Observable<boolean>;
   @select(['ui','installation', 'selectedType']) selectedType$: Observable<string>;
   @select(['ui','installation', 'rootFolderId']) root_folder_id$: Observable<number>;
   @select(['ui','installation', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
@@ -86,22 +89,36 @@ export class InstallationSelectors {
     // ---- dbNodes: DbTreeNode[] -----
     this.dbNodes$ = combineLatest(
       this.root_folder_id$, this.data$).pipe(
-      map(([folder, data]) => this._mapRoot(data, folder)));
+      filter(([root_id, data]) => data.dbFolders[root_id] !== undefined),
+      map(([root_id, data]) => this._mapRoot(data, data.dbFolders[root_id]))
+    );
   }
 
   ///----------- Tree Helper Functions -----------------------
   ///
-  private _mapRoot(data: IState, root: number): DbTreeNode[] {
+  private _mapRoot(data: IState, root: IDbFolder): DbTreeNode[] {
     let node = this._mapFolder(data, root);
     node.name='database';
     node.type='root';
     node.isExpanded = true;
     return [node];
   }
-  private _mapFolder(data: IState, db_folder_id: number): DbTreeNode {
-    let dbFolder = data.dbFolders[db_folder_id];
+  private _mapFolder(data: IState, folder: IDbFolder): DbTreeNode {
     let children = null;
 
+    //if folder is loaded, map children
+    if (!folder.shallow) {
+      children = [].concat(
+        //first map subfolders
+        folder.subfolders
+          .filter(id => data.dbFolders[id] !== undefined)
+          .map(id => this._mapFolder(data,data.dbFolders[id])),
+        //now map streams
+        folder.streams
+          .filter(id => data.dbStreams[id] !== undefined)
+          .map(id => this._mapStream(data, data.dbStreams[id])))
+    }
+    /*
     if (!dbFolder.shallow) {
       children =
         dbFolder.subfolders
@@ -109,23 +126,22 @@ export class InstallationSelectors {
           .concat(dbFolder.streams
             .filter(stream_id => stream_id in data.dbStreams)
             .map(stream_id => this._mapStream(data, stream_id)));
-    }
+    }*/
     return {
-      id: 'f'+dbFolder.id,
-      dbId: dbFolder.id,
-      name: dbFolder.name,
+      id: 'f'+folder.id,
+      dbId: folder.id,
+      name: folder.name,
       type: 'dbFolder',
       children: children,
       hasChildren: true,
     };
   }
 
-  private _mapStream(data, db_stream_id): DbTreeNode {
-    let dbStream = data.dbStreams[db_stream_id];
+  private _mapStream(data: IState, stream: IDbStream ): DbTreeNode {
     return {
-      id: 's'+dbStream.id,
-      dbId: dbStream.id,
-      name: dbStream.name,
+      id: 's'+stream.id,
+      dbId: stream.id,
+      name: stream.name,
       type: 'dbStream',
       hasChildren: false,
       children: []

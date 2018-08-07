@@ -7,9 +7,6 @@ div.nilms-loading{
   left: 50%;
 }
 
-.module-folder{
-  color: blue;
-}
 .folder{
   color: tan;
 }
@@ -57,6 +54,9 @@ div.nilms-loading{
   background-color: #dff0d8;
   border-color: #8fbd90;
   text-decoration: none;
+}
+.tree-button.noplot:hover{
+  color: #8fbd90;
 }
 
 .icon-button{

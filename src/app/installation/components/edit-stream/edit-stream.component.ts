@@ -78,6 +78,8 @@ export class EditStreamComponent implements OnInit {
       id: [stream.id],
       db_elements_attributes: this.fb.array(this._buildElementGroups(elements))
     });
+    if(stream.locked)
+      this.form.disable()
     this.formElementsArray = <FormArray>this.form.get('db_elements_attributes');
   }
 

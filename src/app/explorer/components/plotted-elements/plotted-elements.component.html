@@ -1,5 +1,5 @@
 <div class="plotted-element">
-  <fa-icon [icon]="['fas', 'cog']" size="lg" class="icon-button" (click)="showModal()"></fa-icon>
+  <fa-icon [icon]="['fas', 'cog']" size="lg" class="icon-button left-button float-left" (click)="showModal()"></fa-icon>
   <fa-layers class="fa-2x" >
     <fa-icon [icon]="['fas', 'square']" ></fa-icon>
     <fa-icon [icon]="['fas', 'square']" transform="shrink-3" [style.color]="element.color"></fa-icon>
@@ -8,8 +8,8 @@
         <i class="fa fa-square fa-stack-1x fa-lg"></i>
        <i class="fa fa-square fa-stack-1x" [style.color]="element.color"></i>
       </span> -->
-  <span [tooltip]="tipTemplate" placement='right'> {{displayName}} </span>
-  <fa-icon [icon]="['fas', 'times']" class="float-right icon-button" (click)="hideElement()"></fa-icon>
+  <span [tooltip]="tipTemplate" placement='right' class="lead name" [delay]="500"> {{displayName}} </span>
+  <fa-icon [icon]="['fas', 'times']" class="float-right icon-button right-button" (click)="hideElement()"></fa-icon>
 
   <ng-template #tipTemplate><fa-icon [icon]="['fas', 'database']"></fa-icon> {{toolTipText$ | async}}</ng-template>
 </div>

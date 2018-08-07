@@ -10,7 +10,8 @@ import { TreeModule } from 'angular-tree-component';
 import { 
   AlertModule,
   ModalModule,
-  TabsModule
+  TabsModule,
+  TooltipModule
  } from 'ngx-bootstrap';
  import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
  import { library } from '@fortawesome/fontawesome-svg-core';
@@ -55,6 +56,7 @@ library.add(faDatabase);
     NgSelectModule,
     SharedModule,
     FontAwesomeModule,
+    TooltipModule.forRoot(),
     AlertModule.forRoot(),
     TabsModule.forRoot(),
     ModalModule.forRoot()

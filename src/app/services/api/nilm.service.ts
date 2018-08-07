@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, empty } from 'rxjs';
 import { share } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
@@ -109,12 +109,13 @@ export class NilmService {
         this.messageService.setMessages(json.messages);
       },
       error => this.messageService.setErrorsFromAPICall(error)
-      );
+    );
   }
 
   public refreshNilm(id: number) {
-    let o = this.http.get<schema.IApiResponse>(`nilms/${id}.json?refresh=1`, {})
-      .pipe(share());
+    let o = this.http.get<schema.IApiResponse>(`nilms/${id}.json`, {
+      params: new HttpParams().set('refresh', "1")
+    }).pipe(share());
     this.ngRedux.dispatch({
       type: NilmActions.REFRESHING,
       payload: id

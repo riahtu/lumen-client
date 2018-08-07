@@ -77,7 +77,7 @@ export class DataViewService {
   //
   public deleteDataView(view: IDataView) {
     this.http
-      .delete(`data_views/${view.id}`)
+      .delete(`data_views/${view.id}.json`)
       .subscribe(
       json => {
         this.ngRedux.dispatch({

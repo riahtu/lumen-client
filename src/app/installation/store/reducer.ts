@@ -32,11 +32,9 @@ export function reducer(
     case InstallationActions.REFRESHING:
       return state
         .set('refreshing', true)
-        .set('busy', true);
-    case InstallationActions.NOT_BUSY:
+    case InstallationActions.REFRESHED:
       return state
         .set('refreshing', false)
-        .set('busy', false);
     default:
       return state;
   }

@@ -128,6 +128,7 @@ export class FileTreeComponent implements OnInit {
   ): DbTreeNode[]{
     return moduleIds.map(id => jouleModules[id])
     .filter(module => module !== undefined)
+    .filter(module => module.web_interface)
     .map(module => {
       return {
       id: 'j'+module.id,

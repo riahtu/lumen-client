@@ -43,7 +43,8 @@ export const DbFolderFactory =
     shallow: true,
     start_time: null,
     end_time: null,
-    size_on_disk: 0
+    size_on_disk: 0,
+    locked: false
   });
 
 // ---- DbStream ----
@@ -59,7 +60,7 @@ export const DbStreamFactory =
     total_time: 0,
     data_type: '',
     name_abbrev: '',
-    delete_locked: true,
+    locked: false,
     hidden: false,
     elements: null,
     size_on_disk: 0,
