@@ -24,9 +24,12 @@ export class InterfacesService {
   //display a joule module interface
   //
   public add(id: number) {
-    //get the joule module with the 
-    //authorization URL
-    this.http
+    //if the id is already displayed just select it
+    //otherwise display it and request the index page
+    let state = this.ngRedux.getState()
+    let displayed = state.ui.explorer.interfaces.displayed;
+    if (displayed.indexOf(id) == -1){
+      this.http
       .get(`joule_modules/${id}.json`)
       .subscribe(
       json => {
@@ -35,12 +38,11 @@ export class InterfacesService {
           type: JouleModuleActions.RECEIVE,
           payload: entities.jouleModules
         })
-        this.ngRedux.dispatch({
-          type: InterfaceActions.ADD,
-          payload: +id
-        })
-    });
-    
+    })}
+    this.ngRedux.dispatch({
+      type: InterfaceActions.ADD,
+      payload: +id
+    })
   }
 
   //hide a joule module interface

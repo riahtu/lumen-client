@@ -19,6 +19,7 @@ import {
   faSquare,
   faTimes,
   faCog,
+  faCogs,
   faSearch,
   faSyncAlt,
   faCubes,
@@ -26,7 +27,8 @@ import {
   faFolderOpen,
   faChartArea,
   faExchangeAlt,
-  faImage
+  faImage,
+  faExternalLink
 } from '@fortawesome/pro-solid-svg-icons'
 
 import {
@@ -62,6 +64,7 @@ library.add(faSquare);
 library.add(faTimes);
 library.add(faDatabase);
 library.add(faCog);
+library.add(faCogs);
 library.add(faSyncAlt);
 library.add(faSearch);
 library.add(faCubes);
@@ -73,6 +76,7 @@ library.add(faCrosshairs);
 library.add(faExchangeAlt);
 library.add(faImage);
 library.add(faDownload);
+library.add(faExternalLink);
 
 @NgModule({
   imports: [

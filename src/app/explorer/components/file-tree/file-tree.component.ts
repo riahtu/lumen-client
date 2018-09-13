@@ -57,7 +57,6 @@ export class FileTreeComponent implements OnInit {
       .pipe(map(([data,elements]) => {
         let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
-          let priveleged = false;
           return this.mapNilm(nilm, data.dbFolders[nilm.root_folder],
             data.jouleModules,
             data.dbFolders, data.dbStreams, data.dbElements);

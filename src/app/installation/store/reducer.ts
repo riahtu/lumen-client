@@ -11,10 +11,6 @@ export function reducer(
   state: IInstallationRecord = INITIAL_STATE,
   action: IPayloadAction): IInstallationRecord {
   switch (action.type) {
-    case InstallationActions.SELECT_DB_ROOT:
-      return state.merge({
-        selectedType: 'root'
-      });
     case InstallationActions.SELECT_DB_FOLDER:
       return state.merge({
         selectedDbFolder: action.payload.id,
@@ -25,10 +21,14 @@ export function reducer(
         selectedDbStream: action.payload.id,
         selectedType: 'dbStream'
       });
-    case InstallationActions.SET_ROOT_FOLDER_ID:
+    case InstallationActions.SELECT_JOULE_MODULE:
       return state.merge({
-        rootFolderId: action.payload.id
-      });
+        selectedJouleModule: action.payload.id,
+        selectedType: 'jouleModule'
+      })
+    case InstallationActions.SET_NILM:
+      return state
+        .set('nilm', action.payload.id);
     case InstallationActions.REFRESHING:
       return state
         .set('refreshing', true)

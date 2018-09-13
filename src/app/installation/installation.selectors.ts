@@ -10,7 +10,11 @@ import {
   IDbElementRecord,
   IState,
   IDbFolder,
-  IDbStream
+  IDbStream,
+  IJouleModule,
+  IJouleModuleRecords,
+  INilm,
+  INilmRecords
 } from '../store/data';
 
 import {IInstallation} from './store';
@@ -34,27 +38,37 @@ export interface DbTreeNode {
 export class InstallationSelectors {
 
   @select(['data']) data$: Observable<IState>;
+  @select(['data', 'nilms']) nilms$: Observable<INilmRecords>;
   @select(['data', 'dbFolders']) dbFolders$: Observable<IDbFolderRecords>;
   @select(['data', 'dbStreams']) dbStreams$: Observable<IDbStreamRecords>;
   @select(['data', 'dbElements']) dbElements$: Observable<IDbElementRecords>;
-
+  @select(['data', 'jouleModules']) jouleModules$: Observable<IJouleModuleRecords>;
   @select(['ui','installation']) dbAdmin$: Observable<IInstallation>;
+  @select(['ui','installation', 'nilm']) nilm_id$: Observable<number>;
   @select(['ui','installation', 'refreshing']) refreshing$: Observable<boolean>;
   @select(['ui','installation', 'selectedType']) selectedType$: Observable<string>;
   @select(['ui','installation', 'rootFolderId']) root_folder_id$: Observable<number>;
   @select(['ui','installation', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
   @select(['ui','installation', 'selectedDbStream']) dbStream_id$: Observable<number>;
-  
+  @select(['ui','installation', 'selectedJouleModule']) jouleModule_id$: Observable<number>;
+
+  public nilm$: Observable<INilm>;
   public dbNodes$: Observable<DbTreeNode[]>;
   public rootDbFolder$: Observable<IDbFolderRecord>;
   public selectedDbFolder$: Observable<IDbFolderRecord>;
   public selectedDbStream$: Observable<IDbStreamRecord>;
+  public selectedJouleModule$: Observable<IJouleModule>;
   public selectedDbStreamElements$: Observable<IDbElementRecord[]>;
 
 
   constructor(
     private ngRedux: NgRedux<IAppState>
   ) {
+    // ---- nilm: INilm ------
+    this.nilm$ = combineLatest(
+      this.nilm_id$,this.nilms$).pipe(
+      map(([id, nilms]) => nilms[id]),
+      filter(nilm => !(nilm === undefined)));
 
 
     // ---- selectedDbRootFolder: IDbFolderRecord ------
@@ -68,6 +82,13 @@ export class InstallationSelectors {
       this.dbFolders$,this.dbFolder_id$).pipe(
       map(([dbFolders, id]) => dbFolders[id]),
       filter(dbFolder => !(dbFolder === undefined)),
+      distinctUntilChanged());
+
+    // ---- selectedJouleModule: IJouleModuleRecord ------
+    this.selectedJouleModule$ = combineLatest(
+      this.jouleModules$,this.jouleModule_id$).pipe(
+      map(([jouleModules, id]) => jouleModules[id]),
+      filter(jouleModule => !(jouleModule === undefined)),
       distinctUntilChanged());
 
     // ---- selectedDbStream: IDbStreamRecord ------
@@ -97,11 +118,12 @@ export class InstallationSelectors {
   ///----------- Tree Helper Functions -----------------------
   ///
   private _mapRoot(data: IState, root: IDbFolder): DbTreeNode[] {
-    let node = this._mapFolder(data, root);
-    node.name='database';
-    node.type='root';
-    node.isExpanded = true;
-    return [node];
+    let dbs = this._mapFolder(data, root);
+    dbs.name='database';
+    dbs.type='root';
+    dbs.isExpanded = true;
+    //let interfaces= this._mapInterfaces(data.jouleModules)
+    return [ dbs];
   }
   private _mapFolder(data: IState, folder: IDbFolder): DbTreeNode {
     let children = null;
@@ -145,6 +167,25 @@ export class InstallationSelectors {
       type: 'dbStream',
       hasChildren: false,
       children: []
+    };
+  }
+
+  private _mapInterfaces(modules: IJouleModule[]): DbTreeNode {
+    let nodes = modules.map( m => { return {
+      id: 'm'+m.joule_id,
+      dbId: m.id,
+      name: m.name,
+      type: 'jouleModule',
+      hasChildren: false,
+      children: []
+    }})
+    return {
+      id: 'mroot',
+      dbId: 0,
+      name: 'root',
+      type: 'jouleModule',
+      children: nodes,
+      hasChildren: true,
     };
   }
 }

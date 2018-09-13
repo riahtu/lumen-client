@@ -4,8 +4,11 @@
   .app-content{
     max-height: calc(100vh - 200px);
     height: calc(100vh - 200px);
-    overflow-y: auto;
+    overflow-y: hidden;
     margin-bottom: 0px;
+  }
+  .app-content.scrollable{
+    overflow-y: auto;
   }
 }
 @media(max-width: 767px){
@@ -19,6 +22,15 @@
   border-color: #dee2e6;
   border-top-width: 0px;
 }
+.node-tree{
+  max-height: calc(100vh - 233.5px);
+    height: calc(100vh - 233.5px);
+    overflow-y: auto;
+    margin-bottom: 0px;
+}
+button.refresh{
+  border-radius: 0px;
+}
 
 .folder{
   color: tan;
@@ -31,4 +43,15 @@
 .icon-button:hover{
 cursor: pointer;
 opacity: 0.5;
+}
+
+div.default-overlay{
+  margin-top: calc((75vh - 260px)/2);
+  text-align: center;
+  font-size: 2em;
+  font-weight: 300;
+  color: #999;
+}
+h1.default-overlay-header{
+  font-weight: 300;
 }

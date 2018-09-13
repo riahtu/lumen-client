@@ -58,11 +58,22 @@ export class InstallationService {
     this.messageService.clearMessages();
   }
 
-  // ---setRootFolderId: work on specified NILM -----
-  public setRootFolderId(id: number) {
+  // ---selectJouleModule: pick an interface from tree---
+  public selectJouleModule(id: number){
+    this.ngRedux.dispatch({
+      type: InstallationActions.SELECT_JOULE_MODULE,
+      payload: {
+        id: id,
+      }
+    });
+    this.messageService.clearMessages();
+  }
+
+  // ---setNilm: work on specified NILM -----
+  public setNilm(id: number) {
     // set the new db id
     this.ngRedux.dispatch({
-      type: InstallationActions.SET_ROOT_FOLDER_ID,
+      type: InstallationActions.SET_NILM,
       payload: {
         id: id
       }
@@ -70,11 +81,12 @@ export class InstallationService {
   }
 
   // ---refreshInstallation: refresh current installation ----
-  public refreshNilm(nilm: INilm){
+  public refresh(){
     this.ngRedux.dispatch({
       type: InstallationActions.REFRESHING
     })
-    this.nilmService.refreshNilm(nilm.id).subscribe(
+    let nilm = this.ngRedux.getState().ui.installation.nilm;
+    this.nilmService.refreshNilm(nilm).subscribe(
       success => this.ngRedux.dispatch({type: InstallationActions.REFRESHED}),
       error => this.ngRedux.dispatch({type: InstallationActions.REFRESHED})
     );

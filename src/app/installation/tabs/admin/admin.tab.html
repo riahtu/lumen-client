@@ -7,7 +7,7 @@
         <h3 class="panel-title"> Installation Details</h3>
       </div>
       <div class="panel-body app-content">
-        <app-edit-nilm [nilm]="nilm | async"></app-edit-nilm>
+        <app-edit-nilm [nilm]="installationSelectors.nilm$  | async"></app-edit-nilm>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
         <h3 class="panel-title"> Installation Permissions</h3>
       </div>
       <div class="panel-body app-content">
-       <app-edit-permissions [nilm]="nilm | async"
+       <app-edit-permissions [nilm]="installationSelectors.nilm$ | async"
                               [admins]="admins$ | async"
                               [owners]="owners$ | async"
                               [viewers]="viewers$ | async">

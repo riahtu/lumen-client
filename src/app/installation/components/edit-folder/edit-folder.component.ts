@@ -48,8 +48,11 @@ export class EditFolderComponent implements OnInit {
       description: [folder.description],
       hidden: [folder.hidden]
     });
+    /* TODO: enable this, right now the enable doesn't always work
     if(folder.locked){
       this.form.disable();
-    }
+    } else {
+      this.form.enable();
+    } */
   }
 }

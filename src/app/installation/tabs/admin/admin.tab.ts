@@ -16,6 +16,7 @@ import {
   IUserRecords,
   IUserGroupRecords
 } from '../../../store/data';
+import { InstallationSelectors } from '../../installation.selectors';
 
 @Component({
   selector: 'installation-admin-tab',
@@ -28,25 +29,24 @@ export class AdminTabComponent implements OnInit {
   @select(['data','users','entities']) users$: Observable<IUserRecords>;
   @select(['data','groups','entities']) groups$: Observable<IUserGroupRecords>;
 
-  @Input() nilm: Observable<INilmRecord>
-
   public admins$: Observable<IPermission[]>
   public owners$: Observable<IPermission[]>
   public viewers$: Observable<IPermission[]>
 
   private nilmSub: Subscription;
   constructor(
-    private permissionService: PermissionService
+    private permissionService: PermissionService,
+    private installationSelectors: InstallationSelectors
   ) { 
     
   }
 
   ngOnInit() {
-    this.nilmSub = this.nilm.subscribe(
+    this.nilmSub = this.installationSelectors.nilm$.subscribe(
       nilm => this.permissionService.loadPermissions(nilm.id)
     )
     let nilmPermissions = combineLatest(
-      this.nilm, this.permissions$).pipe(
+      this.installationSelectors.nilm$, this.permissions$).pipe(
       map(([nilm, permissions]) => {
         let values = Object.keys(permissions)
                                 .map(id=>permissions[id])

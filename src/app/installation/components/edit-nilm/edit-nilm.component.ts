@@ -58,7 +58,7 @@ export class EditNilmComponent implements OnInit {
   }
 
   refreshNilm(){
-    this.installationService.refreshNilm(this.nilm);
+    this.installationService.refresh();
   }
   removeNilm(){
     this.nilmService.removeNilm(this.nilm)

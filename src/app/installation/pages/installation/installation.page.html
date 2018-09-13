@@ -11,11 +11,11 @@
 <div *ngIf="nilm!=null">
   <tabset>
     <tab heading='Database'>
-      <installation-database-tab [nilm]="nilm$ | async">
+      <installation-database-tab>
       </installation-database-tab>
     </tab>
     <tab  *ngIf="nilm.role =='admin'" heading='Admin'>
-      <installation-admin-tab [nilm]="nilm$">
+      <installation-admin-tab>
       </installation-admin-tab>
     </tab>
     

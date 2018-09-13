@@ -3,42 +3,49 @@
   <!-- db tree -->
 
   <div class="col-sm-3 ">
-    <div class="app-content border-right-0 pl-2">
-      <tree-root [nodes]="installationSelectors.dbNodes$ | async" 
-        (toggleExpanded)="toggleNode($event)"
-        (activate)="selectNode($event)">
-        <ng-template #treeNodeTemplate let-node="node">
-          <span [ngSwitch]="node.data.type">
-            <span *ngSwitchCase="'root'">
+    <div class="app-content border-right-0">
+      <div class="node-tree pl-2">
+        <tree-root [nodes]="nilmTree$ | async" 
+          (toggleExpanded)="toggleNode($event)"
+          (activate)="selectNode($event)">
+          <ng-template #treeNodeTemplate let-node="node">
+            <span [ngSwitch]="node.data.type">
+              <span *ngSwitchCase="'jouleModule'">
+                  <fa-icon [icon]="['fas', 'cubes']"></fa-icon>
+              </span>
+              <span *ngSwitchCase="'dbFolder'">
+                <fa-icon [icon]="['fas', 'folder-open']" *ngIf="node.isExpanded" class="folder"></fa-icon>
+                <fa-icon [icon]="['fas', 'folder']" *ngIf="!node.isExpanded" class="folder"></fa-icon>
+              </span>
+              <span *ngSwitchCase="'dbStream'">
+                <fa-icon [icon]="['fas', 'database']"></fa-icon>
+              </span>
             </span>
-            <span *ngSwitchCase="'dbFolder'">
-              <fa-icon [icon]="['fas', 'folder-open']" *ngIf="node.isExpanded" class="folder"></fa-icon>
-              <fa-icon [icon]="['fas', 'folder']" *ngIf="!node.isExpanded" class="folder"></fa-icon>
-            </span>
-            <span *ngSwitchCase="'dbStream'">
-              <fa-icon [icon]="['fas', 'database']"></fa-icon>
-            </span>
-          </span>
-          {{ node.data.name }}
-          <span *ngIf="node.data.type=='root'">
-            <fa-icon [icon]="['fas', 'sync-alt']" class="icon-button refresh" *ngIf="!(installationSelectors.refreshing$ | async)"
-              tooltip="refresh" placement="auto" [delay]="500" 
-              (click)="refresh()"></fa-icon>
-            <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="installationSelectors.refreshing$ | async"></fa-icon>
-          </span>
-        </ng-template>
-        <ng-template #loadingTemplate><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon> loading</ng-template>
-      </tree-root>
+            {{ node.data.name }}
+          </ng-template>
+          <ng-template #loadingTemplate><fa-icon [icon]="['fas', 'spinner']" [spin]="true"></fa-icon> loading</ng-template>
+        </tree-root>
+      </div>
+      <button class="btn btn-primary btn-block refresh" 
+        (click)="installationService.refresh()"
+        [disabled]="installationSelectors.refreshing$ | async">
+        <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="installationSelectors.refreshing$ | async"></fa-icon>
+        Refresh<span *ngIf="installationSelectors.refreshing$ | async">ing</span></button>
     </div>
   </div>
   <!-- folder/stream edits -->
   <div [ngSwitch]='installationSelectors.selectedType$ | async' 
-    class='app-content col-sm-9 pl-3 pr-2'>
-    <div *ngSwitchCase="'root'">Select item from the database</div>
+    class='app-content scrollable col-sm-9 pl-3 pr-2'>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
       [dbStream]="installationSelectors.selectedDbStream$ | async" 
       [dbElements]="installationSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 
       [dbFolder]="installationSelectors.selectedDbFolder$ | async "></app-edit-folder>
+    <app-edit-module *ngSwitchCase="'jouleModule'"
+      [jouleModule]="installationSelectors.selectedJouleModule$ | async"></app-edit-module>
+    <div *ngSwitchDefault class="default-overlay">
+      <fa-icon [icon]="['fas', 'cogs']" size="5x"></fa-icon>
+      <br>
+      <h1 class="default-overlay-header">select an item to configure</h1></div>
   </div>
 </div>

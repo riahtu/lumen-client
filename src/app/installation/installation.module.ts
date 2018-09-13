@@ -35,6 +35,7 @@ import { InstallationPageComponent } from './pages';
 import { InstallationService } from './installation.service'
 import { InstallationSelectors } from './installation.selectors';
 import { SharedModule } from '../shared/shared.module';
+import { EditModuleComponent } from './components/edit-module/edit-module.component';
 
 library.add(faSpinner);
 library.add(faLifeRing);
@@ -65,7 +66,8 @@ library.add(faDatabase);
     COMPONENTS,
     TABS,
     PIPES,
-    InstallationPageComponent
+    InstallationPageComponent,
+    EditModuleComponent
   ],
   providers: [
     InstallationService,

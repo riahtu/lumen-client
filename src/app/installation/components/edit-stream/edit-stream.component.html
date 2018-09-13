@@ -97,11 +97,11 @@
     </table>
     <div class="form-group">
       <div class="float-left">
-        <button class="btn btn-secondary btn-disabled"
-          *ngIf="stream.locked">
+        <button class="btn btn-primary"
+          *ngIf="stream.locked" disabled>
           Locked
         </button>
-        <button type="submit" class="btn btn-secondary"
+        <button type="submit" class="btn btn-primary"
           *ngIf="!stream.locked"
           [disabled]="!form.valid">Save</button>
       </div>

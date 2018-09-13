@@ -13,7 +13,9 @@ export const InstallationFactory =
     selectedType: 'unknown',
     selectedDbFolder: null,
     selectedDbStream: null,
-    rootFolderId: null,
+    selectedJouleModule: null,
+    //rootFolderId: null,
+    nilm: null,
     refreshing: false,
     busy: false
   });

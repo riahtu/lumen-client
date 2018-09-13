@@ -48,8 +48,10 @@ export class InstallationPageComponent implements OnInit {
 
   ngOnInit() {
 
-    this.subs.push(this.route.params.subscribe(params =>
-      this.nilmService.loadNilm(params['id'])));
+    this.subs.push(this.route.params.subscribe(params => {
+      this.nilmService.loadNilm(params['id']);
+      this.installationService.setNilm(+params['id'])
+    }));
 
     this.nilm$ = combineLatest(this.nilms$, this.route.params).pipe(
       map(([nilms, params]) => nilms[params['id']]),
