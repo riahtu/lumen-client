@@ -65,8 +65,12 @@ export class SignInPageComponent implements OnInit {
   }
 
   ngOnInit() {
+    let email = '';
+    if(this.isStandalone){
+      email = 'admin@wattsworth.localhost';
+    }
     this.form = this.fb.group({
-      email: ['', [Validators.required, CustomValidators.email]],
+      email: [email, [Validators.required, CustomValidators.email]],
       password: ['']
     });
   }

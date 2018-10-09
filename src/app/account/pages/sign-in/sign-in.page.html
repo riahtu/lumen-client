@@ -18,11 +18,10 @@
       <legend>Sign In</legend>
       <div class="form-group" [class.has-error]="!form.get('email').valid && !form.get('email').pristine">
         <label class="control-label" for="email">E-mail</label>
-        <input class="form-control" id="email" 
+        <input class="form-control" id="email"
               type="email"
-              [attr.placeholder]="isStandalone? 'admin@wattsworth.local' : 'e-mail'"
-              [formControl]="form.get('email')" 
-                placeholder="name@wattsworth.net">
+              [attr.placeholder]="isStandalone? 'admin@wattsworth.localhost' : 'e-mail'"
+              [formControl]="form.get('email')" >
       </div>
       <div class="form-group">
         <label class="control-label" for="password">Password</label>

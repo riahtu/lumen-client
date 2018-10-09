@@ -34,7 +34,7 @@ export class DatabaseTabComponent {
   public nilmTree$: Observable<DbTreeNode[]>
 
   constructor(
-    private installationService: InstallationService,
+    public installationService: InstallationService,
     private dbFolderService: DbFolderService,
     public installationSelectors: InstallationSelectors,
   ) {

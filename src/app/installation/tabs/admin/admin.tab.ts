@@ -36,7 +36,7 @@ export class AdminTabComponent implements OnInit {
   private nilmSub: Subscription;
   constructor(
     private permissionService: PermissionService,
-    private installationSelectors: InstallationSelectors
+    public installationSelectors: InstallationSelectors
   ) { 
     
   }
