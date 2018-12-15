@@ -11,6 +11,8 @@ import {
   Validators
 } from '@angular/forms';
 import { environment } from '../../../../environments/environment';
+import { AccountService } from 'app/account/account.service';
+import { AccountSelectors } from 'app/account/account.selectors';
 
 
 @Component({
@@ -26,7 +28,9 @@ export class SignInPageComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private accountService: AccountService,
+    public accountSelectors: AccountSelectors
   ) {
     this.isStandalone = environment.standalone;
     
@@ -64,18 +68,20 @@ export class SignInPageComponent implements OnInit {
     ]
   }
 
-  ngOnInit() {
-    let email = '';
-    if(this.isStandalone){
-      email = 'admin@wattsworth.localhost';
-    }
+  ngOnInit() {    
     this.form = this.fb.group({
-      email: [email, [Validators.required, CustomValidators.email]],
+      email: ['', [Validators.required, CustomValidators.email]],
       password: ['']
     });
   }
   onSubmit(formValues: any) {
-    this.sessionService.login(formValues.email, formValues.password)
+    this.accountService.setLoggingIn(true);
+    
+    this.sessionService.login(formValues.email, 
+      formValues.password).subscribe(
+        json => {console.log("here!"); this.accountService.setLoggingIn(false)},
+        error => {console.log("there!"); this.accountService.setLoggingIn(false)}
+      )
   }
 
 

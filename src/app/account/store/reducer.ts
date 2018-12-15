@@ -29,9 +29,15 @@ export function reducer(
     case AccountActions.SET_USER_GROUPS_LOADED:
       return state
         .set('user_groups_loaded', true);
-    default:
-      return state;
+    
+    //set flag to indicate server is processing login
+    //
+    case AccountActions.SET_LOGGING_IN:
+      return state
+        .set('logging_in', action.payload);
 
+    default:
+        return state;
   }
 }
 

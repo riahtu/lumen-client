@@ -41,4 +41,11 @@ export class AccountService {
     })
   }
 
+  public setLoggingIn(val: boolean){
+    this.ngRedux.dispatch({
+      type: AccountActions.SET_LOGGING_IN,
+      payload: val
+    })
+  }
+
 }

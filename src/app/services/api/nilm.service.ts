@@ -3,7 +3,6 @@ import { Observable, empty } from 'rxjs';
 import { share } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
-import { Http, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
 
@@ -11,8 +10,6 @@ import { IAppState } from '../../app.store';
 import {
   NilmActions,
   DbFolderActions,
-  DbStreamActions,
-  DbElementActions,
   INilm,
   JouleModuleActions
 } from '../../store/data';

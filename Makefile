@@ -4,8 +4,8 @@
 all : deploy
 .PHONY : all deploy production
 
-deploy : local
-	#rsync -r --delete dist/aws/ portal.wattsworth.net:/opt/angular
+deploy : local production
+	rsync -r --delete dist/aws/ portal.wattsworth.net:/opt/angular
 	rsync -r --delete dist/local/ portal.wattsworth.net:/opt/standalone
 	ssh portal.wattsworth.net ./update_lumen_tarball.sh
 
@@ -14,7 +14,7 @@ olddeploy:
 	ssh -A -p2222 beta.wattsworth.net /home/jdonnal/rebuild_angular.sh
 
 production:
-	ng build --e aws  -op dist/aws -prod 
+	ng build --configuration aws  --output-path dist/aws --prod 
 local:
 	ng build --configuration local --output-path dist/local --prod
 

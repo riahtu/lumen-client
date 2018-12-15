@@ -19,7 +19,8 @@ export class AccountSelectors {
   @select(['ui', 'account', 'nilms_loaded']) nilmsLoaded$: Observable<boolean>;
   @select(['ui', 'account', 'data_views_loaded']) dataViewsLoaded$: Observable<boolean>;
   @select(['ui', 'account', 'user_groups_loaded']) userGroupsLoaded$: Observable<boolean>;
-
+  @select(['ui', 'account', 'logging_in']) loggingIn$: Observable<boolean>;
+  
   @select(['data', 'userGroups']) userGroups$: Observable<IUserGroupStore>
   @select(['data','users']) users$: Observable<IUserStoreRecord>
 

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Router } from '@angular/router';
+import {Observable} from 'rxjs';
+import { share } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
 import * as schema from '../../api';
@@ -25,16 +27,19 @@ export class SessionService {
   ) { }
 
 
-  public login(email: string, password: string): void {
-    this.http.post<schema.IApiResponse>('auth/sign_in',
-    { "email": email, "password": password })
-      .subscribe(
+  public login(email: string, password: string): Observable<any> {
+    let o = this.http.post<schema.IApiResponse>('auth/sign_in',
+    { "email": email, "password": password }).pipe(share())
+
+    o.subscribe(
       json => {
         this.setUser(json.data)
         this.router.navigate(['/explorer']);
         this.messageService.clearMessages();
       },
-      error => this.messageService.setErrors(parseDeviseErrors(error)));
+      error => this.messageService.setErrors(parseDeviseErrors(error))
+    );
+    return o; //for other subscribers
   }
 
 

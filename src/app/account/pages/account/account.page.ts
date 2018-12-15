@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 import {environment } from '../../../../environments/environment'
 
@@ -12,8 +12,6 @@ import {
 
 import {
   IUserStoreRecord,
-  IUserGroupRecord,
-  IUserGroupStore
 } from '../../../store/data';
 
 
