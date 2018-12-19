@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { Router } from '@angular/router';
-import {Observable} from 'rxjs';
+import {Observable, empty} from 'rxjs';
 import { share } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
@@ -13,10 +13,12 @@ import { IAppState } from '../../app.store'
 import {
   UserActions
 } from '../../store/data';
+import { UIActions } from 'app/store/ui';
 
 @Injectable()
 export class SessionService {
 
+  private settingsLoaded: boolean;
 
   constructor(
     //private http: Http,
@@ -24,7 +26,9 @@ export class SessionService {
     private ngRedux: NgRedux<IAppState>,
     private router: Router,
     private messageService: MessageService,
-  ) { }
+  ) {
+    this.settingsLoaded = false;
+   }
 
 
   public login(email: string, password: string): Observable<any> {
@@ -61,14 +65,22 @@ export class SessionService {
       })
   }
 
-  public resetPassword(email: string): void {
-    this.http.post('auth/password',{ 
+  public resetPassword(email: string): Observable<any> {
+    if(email.length == 0){
+      this.messageService.setError("enter an e-mail address");
+      console.log("returning empty")
+      return empty();
+    }
+    let o = this.http.post('auth/password',{ 
       email: email,
       redirect_url: `${environment.appUrl}/session/reset_password` })
-      .subscribe(
+      .pipe(share());
+
+    o.subscribe(
       _ => this.messageService.setNotice("sent e-mail with password reset"),
       _ => this.messageService.setError("error sending password reset")
       );
+    return o;
   }
 
   public updatePassword(
@@ -92,6 +104,15 @@ export class SessionService {
       error => this.logout())
   }
 
+  public retrieveSiteSettings(): void{
+    if(this.settingsLoaded)
+      return;
+    this.http.get<schema.ISiteSettings>('index.json')
+    .subscribe(
+      json => this.updateSiteSettings(json)
+    );
+  }
+
   // ----------private helper functions----------
 
   private setUser(json) {
@@ -99,5 +120,17 @@ export class SessionService {
       type: UserActions.SET_CURRENT,
       payload: json
     });
+  }
+
+  private updateSiteSettings(data: schema.ISiteSettings){
+    this.ngRedux.dispatch({
+      type: UIActions.SET_PAGE_HEADER,
+      payload: data.node_name
+    });
+    this.ngRedux.dispatch({
+      type: UIActions.ENABLE_EMAILS,
+      payload: data.send_emails
+    });
+    this.settingsLoaded=true;
   }
 }

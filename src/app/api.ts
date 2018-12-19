@@ -1,6 +1,11 @@
 import { schema } from 'normalizr';
 import {decompressFromEncodedURIComponent} from 'lz-string'
 
+export interface ISiteSettings{
+  node_name?: string,
+  send_emails?: boolean,
+}
+
 export interface IApiResponse {
   messages?: any,
   data?: any

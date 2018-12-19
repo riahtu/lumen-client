@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { select } from '@angular-redux/store';
 
 import {
   SessionService
@@ -24,7 +26,8 @@ export class SignInPageComponent implements OnInit {
 
   public form: FormGroup;
   public slides: ISlide[];
-  public isStandalone: boolean;
+
+  @select(['ui', 'global', 'email_enabled']) emailEnabled$: Observable<string>;
 
   constructor(
     private fb: FormBuilder,
@@ -32,7 +35,6 @@ export class SignInPageComponent implements OnInit {
     private accountService: AccountService,
     public accountSelectors: AccountSelectors
   ) {
-    this.isStandalone = environment.standalone;
     
     this.slides = [
       {
@@ -78,15 +80,20 @@ export class SignInPageComponent implements OnInit {
     this.accountService.setLoggingIn(true);
     
     this.sessionService.login(formValues.email, 
-      formValues.password).subscribe(
-        json => {console.log("here!"); this.accountService.setLoggingIn(false)},
-        error => {console.log("there!"); this.accountService.setLoggingIn(false)}
-      )
+      formValues.password).subscribe({
+        error: () => this.accountService.setLoggingIn(false),
+        complete: () => this.accountService.setLoggingIn(false)
+      });
   }
 
 
   resetPassword(email: string) {
-    this.sessionService.resetPassword(email);
+    this.accountService.setLoggingIn(true);
+
+    this.sessionService.resetPassword(email).subscribe({
+      error: () => this.accountService.setLoggingIn(false),
+      complete: () => this.accountService.setLoggingIn(false)
+    });
   }
 }
 

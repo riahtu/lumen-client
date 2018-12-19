@@ -18,6 +18,14 @@ export function reducer(
       return state.merge({
         messages: StatusMessagesFactory()
       });
+    case UIActions.ENABLE_EMAILS:
+      return state.merge({
+        email_enabled: action.payload
+      });
+    case UIActions.SET_PAGE_HEADER:
+      return state.merge({
+        page_header: action.payload
+      });
     default:
       return state;
   }

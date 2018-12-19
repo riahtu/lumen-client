@@ -20,6 +20,8 @@ export const StatusMessagesFactory =
 export const PageFactory =
   makeTypedFactory<IUI, IUIRecord>({
     messages: StatusMessagesFactory(),
+    page_header: '',
+    email_enabled: false
   });
 
 

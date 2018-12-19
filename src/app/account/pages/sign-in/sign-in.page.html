@@ -35,7 +35,7 @@
               <fa-icon [icon]="['fas', 'spinner']" [spin]="true" 
                 *ngIf="accountSelectors.loggingIn$ | async"></fa-icon>
       </button>
-      <button *ngIf="!isStandalone" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
+      <button *ngIf="(emailEnabled$ | async) && !(accountSelectors.loggingIn$ | async)" class="btn btn-link" (click)="resetPassword(form.get('email').value)">
           Forgot your password?</button>
     </form>
   </div>

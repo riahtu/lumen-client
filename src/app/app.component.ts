@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { createLogger } from 'redux-logger'
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { createEpicMiddleware } from 'redux-observable';
+import { Observable } from 'rxjs';
+import { select } from '@angular-redux/store';
 
 import {AppEpics} from './epics';
 import { environment } from '../environments/environment';
@@ -23,6 +25,7 @@ import {
 export class AppComponent {
 
   public isStandalone: boolean;
+  @select(['ui', 'global', 'page_header']) pageHeader$: Observable<string>;
 
   constructor(
     private ngRedux: NgRedux<IAppState>,
@@ -30,6 +33,7 @@ export class AppComponent {
     private epics: AppEpics,
     private sessionService: SessionService
   ) {
+
 
     //set UI variables based on environment 
     this.isStandalone = environment.standalone;
@@ -58,6 +62,7 @@ export class AppComponent {
      
     })*/
 
+    sessionService.retrieveSiteSettings();
     //sessionService.validateToken();
   }
 

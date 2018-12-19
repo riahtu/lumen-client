@@ -4,7 +4,7 @@
       <img src="assets/images/header_logo_80px.png"
           class="page-title">
     </a>
-    <span *ngIf="isStandalone" class="badge badge-primary standalone">Standalone Server</span>
+    <span class="badge badge-primary standalone">{{pageHeader$ | async}}</span>
   <app-session></app-session>
   </div>
 

@@ -5,8 +5,7 @@
 
 export const environment = {
   production: false,
-  standalone: true,
   helpUrl: 'http://docs.wattsworth.net/web',
-  apiUrl: 'http://localhost/api',
+  apiUrl: 'http://localhost:3000/',
   appUrl: 'http://localhost'
 };

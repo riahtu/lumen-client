@@ -3,6 +3,8 @@ import { TypedRecord } from 'typed-immutable-record';
 // ---- Installtions ----
 export interface IUI {
   messages: IStatusMessagesRecord;
+  page_header: string,
+  email_enabled: boolean
 }
 
 export interface IUIRecord extends
