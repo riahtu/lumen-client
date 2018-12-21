@@ -2,6 +2,8 @@ import { Component, Input, OnInit, ViewChild, EventEmitter } from '@angular/core
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ModalDirective } from 'ngx-bootstrap/modal';
+import { select } from '@angular-redux/store';
+
 import {
   FormBuilder,
   FormGroup,
@@ -10,7 +12,6 @@ import {
 } from '@angular/forms';
 /*https://github.com/yuyang041060120/ng2-validation*/
 import { CustomValidators } from 'ng2-validation';
-import { environment } from '../../../../environments/environment';
 
 import {
   PermissionService,
@@ -21,6 +22,7 @@ import {
   IPermission,
   INilm
 } from '../../../store/data';
+import { AccountSelectors } from 'app/account/account.selectors';
 
 @Component({
   selector: 'app-edit-permissions',
@@ -36,11 +38,13 @@ export class EditPermissionsComponent implements OnInit {
   @Input() viewers: IPermission[]
   @Input() nilm: INilm
 
+  @select(['ui', 'global', 'email_enabled']) emailEnabled$: Observable<string>;
+
   public selectEntries$: Observable<SelectEntry[]>;
 
   public target: any;
   public userType: string;
-  public userOptions: any[];
+  public userOptions$: Observable<any[]>;
   public role: string;
   public roleOptions: any[];
   public emailForm: FormGroup;
@@ -48,22 +52,26 @@ export class EditPermissionsComponent implements OnInit {
 
   constructor(
     private permissionService: PermissionService,
+    private accountSelectors: AccountSelectors,
     public fb: FormBuilder
   ) {
     this.userType = 'select';
-    //standalone installlations cannot invite users
-    if (environment.standalone) {
-      this.userOptions = [
-        { value: 'select', label: 'pick an existing user or group' },
-        { value: 'create', label: 'create a new user' }
-      ];
-    } else {
-      this.userOptions = [
-        { value: 'select', label: 'pick an existing user or group' },
-        { value: 'invite', label: 'invite a user by e-mail' },
-        { value: 'create', label: 'create a new user' }
-      ];
-    }
+
+    //email must be enabled to invite users
+    this.userOptions$ = this.emailEnabled$.pipe(map((val)=>{
+      if(val){
+        return [
+          { value: 'select', label: 'pick an existing user or group' },
+          { value: 'invite', label: 'invite a user by e-mail' },
+          { value: 'create', label: 'create a new user' }
+        ]; 
+      } else {
+        return [
+          { value: 'select', label: 'pick an existing user or group' },
+          { value: 'create', label: 'create a new user' }
+        ];
+      }
+     }))
 
     this.role = 'viewer';
     this.roleOptions = [

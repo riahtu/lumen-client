@@ -16,5 +16,5 @@ olddeploy:
 production:
 	ng build --configuration aws  --output-path dist/aws --prod 
 local:
-	ng build --configuration local --output-path dist/local --prod
+	ng build --configuration production --output-path dist/local --prod
 

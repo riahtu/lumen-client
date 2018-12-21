@@ -24,7 +24,6 @@ import {
 })
 export class AppComponent {
 
-  public isStandalone: boolean;
   @select(['ui', 'global', 'page_header']) pageHeader$: Observable<string>;
 
   constructor(
@@ -35,8 +34,6 @@ export class AppComponent {
   ) {
 
 
-    //set UI variables based on environment 
-    this.isStandalone = environment.standalone;
     //configure redux
     const epicMiddleware = createEpicMiddleware();
 

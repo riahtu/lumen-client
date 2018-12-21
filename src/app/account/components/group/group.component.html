@@ -72,7 +72,7 @@
         <span class="lead">I want to:</span> 
         <ng-select [(ngModel)]="userType" class="selection-options"
           class="selection-options"
-          [items]="userOptions"
+          [items]="userOptions$ | async"
           [clearable]="false"
           bindValue = 'value'
           placeholder = "select one">

@@ -38,7 +38,7 @@
           <div>
             <ng-select [(ngModel)]="userType"
             class="selection-options"
-                  [items]="userOptions"
+                  [items]="userOptions$ | async"
                   [clearable]="false"
                   bindValue = 'value'
                   placeholder = "select one">

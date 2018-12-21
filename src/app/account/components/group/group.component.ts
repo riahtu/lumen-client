@@ -41,12 +41,14 @@ export class GroupComponent implements OnInit {
   @ViewChild('groupModal') public groupModal: ModalDirective;
 
   @select(['data', 'users', 'entities']) users$: Observable<IUserRecords>
+  @select(['ui', 'global', 'email_enabled']) emailEnabled$: Observable<string>;
+
   @Input() group: IUserGroup;
 
   public members$: Observable<IUser[]>
   public selectEntries$: Observable<ISelectEntry[]>
   public userType: string;
-  public userOptions: any[];
+  public userOptions$: Observable<any[]>;
 
   public emailForm: FormGroup;
   public emailField: AbstractControl;
@@ -58,19 +60,21 @@ export class GroupComponent implements OnInit {
   ) {
     this.userType = 'select';
 
-    //if the installation is standalone, e-mail is not an option
-    if (environment.standalone) {
-      this.userOptions = [
-        { value: 'select', label: 'pick an existing user or group' },
-        { value: 'create', label: 'create a new user' }
-      ];
-    } else {
-      this.userOptions = [
-        { value: 'select', label: 'pick an existing user or group' },
-        { value: 'invite', label: 'invite a user by e-mail' },
-        { value: 'create', label: 'create a new user' }
-      ];
-    }
+     //email must be enabled to invite users
+     this.userOptions$ = this.emailEnabled$.pipe(map((val)=>{
+      if(val){
+        return [
+          { value: 'select', label: 'pick an existing user or group' },
+          { value: 'invite', label: 'invite a user by e-mail' },
+          { value: 'create', label: 'create a new user' }
+        ]; 
+      } else {
+        return [
+          { value: 'select', label: 'pick an existing user or group' },
+          { value: 'create', label: 'create a new user' }
+        ];
+      }
+     }))
   }
 
 
