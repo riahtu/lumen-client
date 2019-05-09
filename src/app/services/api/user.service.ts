@@ -51,6 +51,24 @@ export class UserService {
       );
   }
 
+  public requestInstallationToken(): void{
+    this.http
+      .post('users/auth_token.json',{})
+      .subscribe(
+      data => {
+        this.ngRedux.dispatch({
+          type: UserActions.RECEIVE_INSTALLATION_TOKEN,
+          payload: data["key"]
+        });
+      },
+      error => {
+        this.ngRedux.dispatch({
+          type: UserActions.INSTALLATION_TOKENS_UNAVAILABLE,
+        });
+      }
+    )
+  }
+
   public acceptInvitation(userParams: any, token: string): void {
     userParams['invitation_token'] = token;
     this.http

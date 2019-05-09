@@ -41,7 +41,7 @@
 <!-- add a new NILM -->
 <div class="pr-4">
   <button class="btn btn-primary float-right"
-    (click)="nilmModal.show()">
+    (click)="addNilm()">
     <fa-icon [icon]="['fas', 'plus']"></fa-icon>
     New Installation
   </button>
@@ -49,7 +49,7 @@
 
 <!-- ====== add NILM modal ==== -->
 <div class="modal fade" bsModal #nilmModal="bs-modal" 
-     [config]="{backdrop: 'static'}"
+     [config]="{backdrop: true}"
      tabindex="-1" role="dialog"
      aria-labelledby="mySmallModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -62,8 +62,17 @@
         </button>
       </div>
       <div class="modal-body">
-        <account-nilm-form (cancel)="nilmModal.hide()" (save)="createNilm($event)">
-        </account-nilm-form>
+        <div *ngIf="accountSelectors.can_add_installations$ | async; else unauthorized" >
+          On the target run <code>joule master add lumen</code> using the key below:
+          <div class="auth-key">
+            {{accountSelectors.installation_token$ | async}}
+          </div>
+        </div>
+        <ng-template #unauthorized>
+          <div class="alert alert-warning" role="alert">
+            You must already be an administrator of at least one installation in order to add new installations.
+          </div>
+        </ng-template>
       </div>
     </div>
   </div>

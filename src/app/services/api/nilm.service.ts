@@ -66,27 +66,6 @@ export class NilmService {
     );
     return o; //for other subscribers
   }
-  public createNilm(
-    name: string,
-    description: string,
-    url: string): Observable<any> {
-    let o = this.http
-      .post<schema.IApiResponse>('nilms.json', {
-        name: name,
-        description: description,
-        url: url
-      }).pipe(share());
-
-    o.subscribe(
-      json => {
-        let data = normalize(json.data, schema.nilm)
-        this._dispatch(data.entities);
-        this.messageService.setMessages(json.messages);
-      },
-      error => this.messageService.setErrorsFromAPICall(error)
-    )
-    return o; //for other subscribers
-  }
 
   public updateNilm(
     nilm: INilm,

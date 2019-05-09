@@ -5,3 +5,11 @@
 .icon.offline{
     color: firebrick;
 }
+.auth-key{
+    text-align: center;
+    font-size: 3em;
+    border: solid;
+    border-radius: 15px;
+    border-width: 1px;
+    margin-top: 10px;
+}

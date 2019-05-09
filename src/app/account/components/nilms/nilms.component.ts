@@ -10,7 +10,8 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as _ from 'lodash';
 
 import {
-  NilmService
+  NilmService,
+  UserService
 } from '../../../services';
 
 import {
@@ -18,6 +19,7 @@ import {
 } from '../../../store/data';
 
 import {AccountService} from '../../account.service';
+import { AccountSelectors } from '../../account.selectors';
 
 @Component({
   selector: 'app-account-nilms',
@@ -31,6 +33,8 @@ export class NilmsComponent implements OnInit {
   public nilmArray$: Observable<INilm[]>;
   constructor(
     private nilmService: NilmService,
+    private userService: UserService,
+    public accountSelectors: AccountSelectors
   ) { }
 
   ngOnInit() {
@@ -39,13 +43,9 @@ export class NilmsComponent implements OnInit {
       map(nilms => _.sortBy(nilms,['name'])))
   }
 
-  createNilm(values: any){
-    this.nilmService
-      .createNilm(
-        values.name, 
-        values.description, 
-        values.url)
-      .subscribe(result => this.nilmModal.hide())
+  addNilm(){
+    this.nilmModal.show()
+    this.userService.requestInstallationToken()
   }
 
 }

@@ -23,7 +23,9 @@ export class AccountSelectors {
   
   @select(['data', 'userGroups']) userGroups$: Observable<IUserGroupStore>
   @select(['data','users']) users$: Observable<IUserStoreRecord>
-
+  @select(['data', 'users','new_installation_token']) installation_token$: Observable<string>
+  @select(['data','users','installation_token_available']) can_add_installations$: Observable<boolean>
+  
   public ownedGroups$: Observable<IUserGroupRecord[]>;
   public memberGroups$: Observable<IUserGroupRecord[]>;
 

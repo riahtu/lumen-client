@@ -186,6 +186,14 @@ export function userReducer(
         .set('entities', Object.assign({},
           state.entities,
           entity));
+    case actions.UserActions.RECEIVE_INSTALLATION_TOKEN:
+      return state
+        .set('new_installation_token', action.payload)
+        .set('installation_token_available', true)
+    case actions.UserActions.INSTALLATION_TOKENS_UNAVAILABLE:
+      return state
+        .set('new_installation_token', null)
+        .set('installation_token_available', false)
     default:
       return state;
   }

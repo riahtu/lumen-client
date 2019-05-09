@@ -122,6 +122,8 @@ export interface IUserRecords {
 };
 export interface IUserStore {
   current: number;
+  new_installation_token: string;
+  installation_token_available: boolean;
   entities: IUserRecords;
 }
 export interface IUserStoreRecord extends

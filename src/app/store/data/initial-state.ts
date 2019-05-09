@@ -108,6 +108,8 @@ export const UserFactory =
 export const UserStoreFactory = 
   makeTypedFactory<data.IUserStore, data.IUserStoreRecord>({
     current: null,
+    new_installation_token: null,
+    installation_token_available: true,
     entities: {}
 });
 
