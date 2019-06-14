@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, empty } from 'rxjs';
 import { tap, map, share } from 'rxjs/operators';
 import { compressToEncodedURIComponent } from 'lz-string';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { normalize } from 'normalizr';
 import * as _ from 'lodash';
 import * as schema from '../../api';

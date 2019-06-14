@@ -26,7 +26,7 @@ import {
    faFolder,
    faFolderOpen,
    faDatabase
- } from '@fortawesome/pro-solid-svg-icons'
+ } from '@fortawesome/free-solid-svg-icons'
 
 import { COMPONENTS } from './components';
 import { TABS } from './tabs';

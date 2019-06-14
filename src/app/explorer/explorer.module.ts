@@ -28,8 +28,8 @@ import {
   faChartArea,
   faExchangeAlt,
   faImage,
-  faExternalLink
-} from '@fortawesome/pro-solid-svg-icons'
+  faExternalLinkAlt
+} from '@fortawesome/free-solid-svg-icons'
 
 import {
   TooltipModule,
