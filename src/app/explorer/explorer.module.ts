@@ -76,7 +76,7 @@ library.add(faCrosshairs);
 library.add(faExchangeAlt);
 library.add(faImage);
 library.add(faDownload);
-library.add(faExternalLink);
+library.add(faExternalLinkAlt);
 
 @NgModule({
   imports: [

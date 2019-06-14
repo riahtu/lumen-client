@@ -8,19 +8,14 @@ import {
   OnInit,
   OnDestroy,
   AfterViewInit,
-  Output,
-  EventEmitter
+
 } from '@angular/core';
-import { Observable, Subscription, Subject, combineLatest } from 'rxjs';
+import { Subscription, Subject, combineLatest } from 'rxjs';
 import { map, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import { select } from '@angular-redux/store';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+
 
 import { IRange } from '../../store';
-import {
-  IDataSet,
-  IDbElement
-} from '../../../store/data';
+
 import { 
   PlotService,
   MeasurementService 
@@ -44,7 +39,7 @@ declare var $: any;
 })
 export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  @ViewChild('plotArea') plotArea: ElementRef
+  @ViewChild('plotArea', {static: true}) plotArea: ElementRef
 
   private subs: Subscription[];
   private plot: any;

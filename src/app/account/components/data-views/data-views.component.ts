@@ -18,7 +18,7 @@ import {
   styleUrls: ['./data-views.component.css']
 })
 export class DataViewsComponent implements OnInit {
-  @ViewChild('editDataViewModal') public editViewModal: ModalDirective;
+  @ViewChild('editDataViewModal', {static: false}) public editViewModal: ModalDirective;
   @select(['data', 'dataViews']) dataViews$: Observable<IDataViewRecords>;
   
   public myDataViewArray$: Observable<IDataView[]>

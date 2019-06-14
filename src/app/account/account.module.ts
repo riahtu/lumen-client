@@ -28,7 +28,7 @@ import {
   faEye,
   faUser,
   faUserShield
-} from '@fortawesome/pro-solid-svg-icons'
+} from '@fortawesome/free-solid-svg-icons'
 
 import { AccountSelectors } from './account.selectors';
 import { AccountService } from './account.service';

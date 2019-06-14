@@ -28,6 +28,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 export class InstallationPageComponent implements OnInit {
 
   @select(['data', 'nilms']) nilms$: Observable<INilm[]>;
+  @ViewChild('childModal', {static: false}) public childModal: ModalDirective;
 
   public nilm$: Observable<INilm>
   public role$: Observable<string>
@@ -63,7 +64,6 @@ export class InstallationPageComponent implements OnInit {
       this.subs.pop().unsubscribe()
   }
 
-  @ViewChild('childModal') public childModal: ModalDirective;
 
   public showChildModal(): void {
     this.childModal.show();

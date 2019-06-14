@@ -15,7 +15,6 @@ import { CustomValidators } from 'ng2-validation';
 
 import {
   PermissionService,
-  PermissionTarget
 } from '../../../services/api/permission.service';
 
 import {
@@ -31,7 +30,7 @@ import { AccountSelectors } from 'app/account/account.selectors';
   styleUrls: ['./edit-permissions.component.css']
 })
 export class EditPermissionsComponent implements OnInit {
-  @ViewChild('permissionModal') public permissionModal: ModalDirective;
+  @ViewChild('permissionModal', {static: false}) public permissionModal: ModalDirective;
 
   @Input() admins: IPermission[]
   @Input() owners: IPermission[]

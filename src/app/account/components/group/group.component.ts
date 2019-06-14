@@ -37,8 +37,8 @@ import {
   styleUrls: ['./group.component.css']
 })
 export class GroupComponent implements OnInit {
-  @ViewChild('userModal') public userModal: ModalDirective;
-  @ViewChild('groupModal') public groupModal: ModalDirective;
+  @ViewChild('userModal', {static: false}) public userModal: ModalDirective;
+  @ViewChild('groupModal', {static: false}) public groupModal: ModalDirective;
 
   @select(['data', 'users', 'entities']) users$: Observable<IUserRecords>
   @select(['ui', 'global', 'email_enabled']) emailEnabled$: Observable<string>;

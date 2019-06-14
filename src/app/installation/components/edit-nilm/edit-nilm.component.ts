@@ -9,8 +9,7 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-/*https://github.com/yuyang041060120/ng2-validation*/
-import { CustomValidators } from 'ng2-validation';
+
 import {Router} from '@angular/router';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
@@ -32,7 +31,7 @@ import {InstallationService} from '../../installation.service';
 
 export class EditNilmComponent implements OnInit {
   @Input() nilm: INilm
-  @ViewChild('removeNilmModal') public removeNilmModal:ModalDirective;
+  @ViewChild('removeNilmModal', {static: false}) public removeNilmModal:ModalDirective;
 
   public form: FormGroup;
 

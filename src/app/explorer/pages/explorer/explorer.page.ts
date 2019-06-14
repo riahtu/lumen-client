@@ -1,6 +1,6 @@
 
 import {combineLatest, distinctUntilChanged} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import {
   trigger, animate, style, transition
 } from '@angular/animations';
@@ -56,17 +56,17 @@ import { MainPlotComponent } from '../../components/main-plot/main-plot.componen
   templateUrl: './explorer.page.html',
   styleUrls: ['./explorer.page.css']
 })
-export class ExplorerPageComponent implements OnInit, OnDestroy {
+export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public plotZValue$: Observable<number>;
   public imageData: string;
-  @ViewChild('imageModal') public imageModal: ModalDirective;
-  @ViewChild('saveDataViewModal') public saveDataViewModal: ModalDirective;
-  @ViewChild('loadDataViewModal') public loadDataViewModal: ModalDirective;
-  @ViewChild('measurementModal') public measurementModal: ModalDirective;
+  @ViewChild('imageModal', {static: false}) public imageModal: ModalDirective;
+  @ViewChild('saveDataViewModal', {static: false}) public saveDataViewModal: ModalDirective;
+  @ViewChild('loadDataViewModal', {static: false}) public loadDataViewModal: ModalDirective;
+  @ViewChild('measurementModal', {static: false}) public measurementModal: ModalDirective;
 
-  @ViewChild('plot') public plot: MainPlotComponent;
-  @ViewChild('interfaceTabs') interfaceTabs: TabsetComponent;
+  @ViewChild('plot', {static: false}) public plot: MainPlotComponent;
+  @ViewChild('interfaceTabs', {static: false}) interfaceTabs: TabsetComponent;
   public helpUrl: string;
   public newDataView: IDataView;
   private subs: Subscription[];
@@ -127,9 +127,7 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
 
     this.loadDataViewModal.show();
   }
-  ngOnInit() {
-    this.dataViewService.restoreHomeDataView();
-
+  ngAfterViewInit(){
     /* show the measurement results modal when the measurement range changes */
     this.subs.push(this.measurementSelectors.measurementRange$.pipe(
       distinctUntilChanged(),
@@ -137,13 +135,20 @@ export class ExplorerPageComponent implements OnInit, OnDestroy {
       .subscribe(_ => {
         this.measurementModal.show();
       }))
+    
+
+    
     /* sync the tab selection to the redux state */
     this.subs.push(this.interfacesSelectors.displayedIds$.pipe(
-        combineLatest(this.interfacesSelectors.selectedId$),
-        map(([ids,id])=> ids.indexOf(id)+1))
-        .subscribe(tabIndex => {
-          setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}); 
-        }));
+      combineLatest(this.interfacesSelectors.selectedId$),
+      map(([ids,id])=> ids.indexOf(id)+1))
+      .subscribe(tabIndex => {
+        setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}); 
+      }));
+  }
+  ngOnInit() {
+    this.dataViewService.restoreHomeDataView();
+
   }
 
   ngOnDestroy(){

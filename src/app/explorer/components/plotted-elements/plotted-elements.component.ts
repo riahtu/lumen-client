@@ -30,8 +30,8 @@ export class PlottedElementsComponent
   @Input() element: IDbElement;
   @Input() axis: string;
 
-  @ViewChild('elementModal') public elementModal: ModalDirective;
-  @ViewChild('colorPicker') colorPicker: ElementRef
+  @ViewChild('elementModal', {static: false}) public elementModal: ModalDirective;
+  @ViewChild('colorPicker', {static: false}) colorPicker: ElementRef
 
   public displayName: string;
   public toolTipText$: Observable<string>;

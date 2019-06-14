@@ -21,7 +21,7 @@ import {AccountSelectors} from '../../account.selectors';
   styleUrls: ['./groups.component.css']
 })
 export class GroupsComponent implements OnInit {
-  @ViewChild('newGroupModal') public newGroupModal: ModalDirective;
+  @ViewChild('newGroupModal', { static: false }) public newGroupModal: ModalDirective;
 
   constructor(
     private userGroupService: UserGroupService,

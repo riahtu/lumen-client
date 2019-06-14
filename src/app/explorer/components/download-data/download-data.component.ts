@@ -21,7 +21,7 @@ import { PlotSelectors } from '../../selectors/plot.selectors';
 export class DownloadDataComponent implements OnInit {
 
   @Input() range: IRange;
-  @ViewChild('link') link: ElementRef
+  @ViewChild('link', {static: false}) link: ElementRef
 
   public downloadInfo$: Observable<IDownloadInfo[]>
   public resolution: number;

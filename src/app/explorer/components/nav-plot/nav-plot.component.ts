@@ -8,17 +8,13 @@ import {
   OnDestroy,
   AfterViewInit,
 } from '@angular/core';
-import { Observable, Subscription, Subject, combineLatest } from 'rxjs';
+import { Subscription, Subject, combineLatest } from 'rxjs';
 import { filter, distinctUntilChanged, map, debounceTime } from 'rxjs/operators';
-import { select } from '@angular-redux/store';
 import {
   IRange
 } from '../../store';
 
-import {
-  IDataSet,
-  IDbElement
-} from '../../../store/data';
+
 import { PlotService } from '../../services/plot.service';
 import { 
   PlotSelectors,
@@ -34,7 +30,7 @@ declare var $: any;
   styleUrls: ['./nav-plot.component.css']
 })
 export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('plotArea') plotArea: ElementRef
+  @ViewChild('plotArea', {static: true}) plotArea: ElementRef
 
   private subs: Subscription[];
   private plot: any;

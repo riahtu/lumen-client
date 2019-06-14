@@ -27,7 +27,7 @@ import { AccountSelectors } from '../../account.selectors';
   styleUrls: ['./nilms.component.css']
 })
 export class NilmsComponent implements OnInit {
-  @ViewChild('nilmModal') public nilmModal: ModalDirective;
+  @ViewChild('nilmModal', {static: false}) public nilmModal: ModalDirective;
   @select(['data','nilms']) nilms$: Observable<INilm[]>;
 
   public nilmArray$: Observable<INilm[]>;
