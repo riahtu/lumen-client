@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { createLogger } from 'redux-logger'
-import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
+import { NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { createEpicMiddleware } from 'redux-observable';
 import { Observable } from 'rxjs';
 import { select } from '@angular-redux/store';
 
 import {AppEpics} from './epics';
-import { environment } from '../environments/environment';
 
 import {
   SessionService
