@@ -81,7 +81,7 @@ library.add(faExternalLinkAlt);
 @NgModule({
   imports: [
     CommonModule,
-    TreeModule,
+    TreeModule.forRoot(),
     RouterModule,
     FormsModule,
     BrowserAnimationsModule,

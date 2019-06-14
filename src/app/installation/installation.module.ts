@@ -53,7 +53,7 @@ library.add(faDatabase);
     ReactiveFormsModule,
     FormsModule,
     RouterModule,
-    TreeModule,
+    TreeModule.forRoot(),
     NgSelectModule,
     SharedModule,
     FontAwesomeModule,
