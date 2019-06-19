@@ -247,16 +247,27 @@ export function reducer(
     case PlotActions.SET_LEFT_AXIS_SETTINGS:
       return state.set('left_axis_settings', <IAxisSettings>Object.assign({},action.payload));
 
+    //show/hide left axis settings
+    case PlotActions.TOGGLE_LEFT_AXIS_SETTINGS:
+      return state.set('show_left_axis_settings', !state.show_left_axis_settings);
+
     //update right axis settings
     //
     case PlotActions.SET_RIGHT_AXIS_SETTINGS:
       return state.set('right_axis_settings', <IAxisSettings>Object.assign({},action.payload));
 
+    //show/hide left axis settings
+    case PlotActions.TOGGLE_RIGHT_AXIS_SETTINGS:
+      return state.set('show_right_axis_settings', !state.show_right_axis_settings);
+      
     //update time axis settings
     //
     case PlotActions.SET_TIME_AXIS_SETTINGS:
       return state.set('time_axis_settings', <IAxisSettings>Object.assign({},action.payload));
 
+    //show/hide left axis settings
+    case PlotActions.TOGGLE_TIME_AXIS_SETTINGS:
+      return state.set('show_time_axis_settings', !state.show_time_axis_settings);
     //restore view from a saved redux object
     //
     case PlotActions.RESTORE_VIEW:

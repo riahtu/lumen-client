@@ -28,7 +28,11 @@ import {
   faChartArea,
   faExchangeAlt,
   faImage,
-  faExternalLinkAlt
+  faExternalLinkAlt,
+  faArrowsAltH,
+  faArrowsAltV,
+  faCaretRight,
+  faCaretDown
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -77,6 +81,11 @@ library.add(faExchangeAlt);
 library.add(faImage);
 library.add(faDownload);
 library.add(faExternalLinkAlt);
+library.add(faArrowsAltH);
+library.add(faArrowsAltV);
+library.add(faCaretRight);
+library.add(faCaretDown);
+library.add(faArrowsAltV);
 
 @NgModule({
   imports: [

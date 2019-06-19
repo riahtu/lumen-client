@@ -36,6 +36,9 @@ export const PlotFactory =
     right_axis_settings: {legend_font_size: 12, axis_font_size: 12, precision: null, ticks: null, scale: 0},
     time_axis_settings: {legend_font_size: 12, axis_font_size: 12, precision: null, ticks: null, scale: 0},
     visualizer_tabs: [],
+    show_left_axis_settings: false,
+    show_right_axis_settings: false,
+    show_time_axis_settings: false,
     //
     nilms_loaded: false,
     data_views_loaded: false,

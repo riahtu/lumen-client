@@ -274,10 +274,22 @@ export class PlotService {
     })
   }
 
+  public toggleLeftAxisSettings(){
+    this.ngRedux.dispatch({
+      type: PlotActions.TOGGLE_LEFT_AXIS_SETTINGS
+    })
+  }
+
   public setRightAxisSettings(settings: IAxisSettings){
     this.ngRedux.dispatch({
       type: PlotActions.SET_RIGHT_AXIS_SETTINGS,
       payload: settings
+    })
+  }
+
+  public toggleRightAxisSettings(){
+    this.ngRedux.dispatch({
+      type: PlotActions.TOGGLE_RIGHT_AXIS_SETTINGS
     })
   }
 
@@ -287,6 +299,13 @@ export class PlotService {
       payload: settings
     })
   }
+
+  public toggleTimeAxisSettings(){
+    this.ngRedux.dispatch({
+      type: PlotActions.TOGGLE_TIME_AXIS_SETTINGS
+    })
+  }
+
   //set flag to indicate nilms have been loaded
   //
   public setNilmsLoaded(){

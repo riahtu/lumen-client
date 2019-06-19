@@ -26,13 +26,15 @@ export interface IState {
   show_public_data_views?: boolean;
   show_data_envelope?: boolean;
   left_axis_settings?: IAxisSettings;
+  show_left_axis_settings?: boolean;
   right_axis_settings?: IAxisSettings;
+  show_right_axis_settings?: boolean;
   time_axis_settings?: IAxisSettings;
+  show_time_axis_settings?: boolean;
   visualizer_tabs?: IVisualizerTab[];
   //flags to indicate whether data has been retrieved
   nilms_loaded?: boolean;
   data_views_loaded?: boolean;
-  
   
 }
 

@@ -8,7 +8,6 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-import { select } from '@angular-redux/store';
 import * as _ from 'lodash';
 import {environment } from '../../../../environments/environment'
 
@@ -29,10 +28,7 @@ import {
   SessionService
 } from '../../../services';
 import {
-  IDbElement,
   IDataView,
-  IDbElementRecords,
-  DataViewFactory
 } from '../../../store/data';
 
 import { MainPlotComponent } from '../../components/main-plot/main-plot.component';

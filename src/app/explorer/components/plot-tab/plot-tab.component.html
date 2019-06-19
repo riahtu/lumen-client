@@ -6,43 +6,98 @@
 </div>
 
 <!-- Left Axis -->
-<div *ngIf="(plotSelectors.leftElements$ | async)?.length>0" class="axis-title lead">Left Axis:
-  <span class="float-right units">{{plotSelectors.leftElementUnits$ | async}}</span>
-</div>
+<div *ngIf="(plotSelectors.leftElements$ | async)?.length>0">
+  <div class="row justify-content-between axis-title lead">
+      <div class="col">
+        <!-- Expand/Collapse Axis Settings-->
+        <fa-icon [icon]="(plotSelectors.showLeftAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
+          size="lg" class="icon-expand" 
+          (click)="plotService.toggleLeftAxisSettings()"></fa-icon>
+        Left Axis
+      </div>
+      <div class="col">
+          <!-- Autoscale Axis-->
+          <button class="btn btn-primary autoscale">
+              <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> autoscale </button>
+      </div>
+    </div>
+  </div>
+  <!-- only shown if axis settings are displayed -->
+  <div @slideUpDown *ngIf="(plotSelectors.showLeftAxisSettings$ | async)">
+    <app-axis-settings
+      [settings]="plotSelectors.leftAxisSettings$ | async" 
+      [yaxis-settings]="true"  
+      (changed)="plotService.setLeftAxisSettings($event)"></app-axis-settings>
+    <app-plotted-elements
+      class="plotted-element"
+      *ngFor="let element of plotSelectors.leftElements$ | async;"
+      [element]="element"
+      [axis]="'left'">
+    </app-plotted-elements>
+  </div>
+<div>
 
-<app-axis-settings *ngIf="(plotSelectors.leftElements$ | async)?.length>0"
-  [settings]="plotSelectors.leftAxisSettings$ | async" 
-  [yaxis-settings]="true"  
-  (changed)="plotService.setLeftAxisSettings($event)"></app-axis-settings>
 
-<app-plotted-elements
-  class="plotted-element"
-  *ngFor="let element of plotSelectors.leftElements$ | async;"
-  [element]="element"
-  [axis]="'left'">
-</app-plotted-elements>
+
 
 <!-- Right Axis -->
-<div *ngIf="(plotSelectors.rightElements$ | async)?.length>0" class="axis-title lead">Right Axis:
-  <span class="float-right units">{{plotSelectors.rightElementUnits$ | async}}</span>
+<div *ngIf="(plotSelectors.rightElements$ | async)?.length>0">
+  <div class="row justify-content-between axis-title lead">
+    <div class="col">
+      <!-- Expand/Collapse Axis Settings-->
+      <fa-icon [icon]="(plotSelectors.showRightAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
+        size="lg" class="icon-expand" 
+        (click)="plotService.toggleRightAxisSettings()"></fa-icon>
+      Right Axis
+    </div>
+    <div class="col">
+        <!-- Autoscale Axis-->
+        <button class="btn btn-primary autoscale">
+            <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> autoscale </button>
+    </div>
+  </div>
+  <!-- only shown if axis settings are displayed -->
+  <div @slideUpDown *ngIf="(plotSelectors.showRightAxisSettings$ | async)">
+    <app-axis-settings *ngIf="(plotSelectors.rightElements$ | async)?.length>0" 
+      [settings]="plotSelectors.rightAxisSettings$ | async"
+      [yaxis-settings]="true"
+      (changed)="plotService.setRightAxisSettings($event)"></app-axis-settings>
+    <app-plotted-elements 
+      class="plotted-element"
+      *ngFor="let element of plotSelectors.rightElements$ | async"
+      [element]="element"
+      [axis]="'right'">
+    </app-plotted-elements>
+  </div>
 </div>
 
-<app-axis-settings *ngIf="(plotSelectors.rightElements$ | async)?.length>0" 
-    [settings]="plotSelectors.rightAxisSettings$ | async"
-    [yaxis-settings]="true"
-    (changed)="plotService.setRightAxisSettings($event)"></app-axis-settings>
-
-<app-plotted-elements 
-  class="plotted-element"
-  *ngFor="let element of plotSelectors.rightElements$ | async"
-  [element]="element"
-  [axis]="'right'">
-</app-plotted-elements>
 
 <!-- Time Axis -->
-<div class="axis-title lead">Time Axis:</div>
+<div class="row justify-content-between axis-title lead">
+  <div class="col">
+    <!-- Expand/Collapse Axis Settings-->
+    <fa-icon [icon]="(plotSelectors.showTimeAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
+      size="lg" class="icon-expand" 
+      (click)="plotService.toggleTimeAxisSettings()"></fa-icon>
+    Time Axis
+  </div>
+  <div class="col">
+    <!-- Autoscale Axis-->
+    <button class="btn btn-primary autoscale">
+      <fa-icon [icon]="['fas', 'arrows-alt-h']"  [fixedWidth]="true"></fa-icon> autoscale 
+    </button>
+  </div>
+</div>
+<div @slideUpDown
+  *ngIf="(plotSelectors.showTimeAxisSettings$ | async)">
+  <app-axis-settings 
+      [settings]="plotSelectors.timeAxisSettings$ | async"
+      [yaxis-settings]="false"
+      (changed)="plotService.setTimeAxisSettings($event)">
+  </app-axis-settings>
+</div>
 
-<app-axis-settings 
-    [settings]="plotSelectors.timeAxisSettings$ | async"
-    [yaxis-settings]="false"
-    (changed)="plotService.setTimeAxisSettings($event)"></app-axis-settings>
+<!-- Plot Annotations -->
+<div class="annotations-title lead">
+  Annotations
+</div>

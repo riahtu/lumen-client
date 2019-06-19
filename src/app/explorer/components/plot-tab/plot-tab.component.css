@@ -1,9 +1,19 @@
  .axis-title.lead{
-  background: #c8dbea;
+  background: #ddd;
   padding-left: 10px;
   padding-bottom: 2px;
   margin-bottom: 0px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #bbb;
 }
+.annotations-title{
+    background: #c8dbea;
+    padding-left: 10px;
+    padding-bottom: 2px;
+    margin-bottom: 0px;
+    text-align: center;
+  }
 span.units{
     font-weight: 400;
     margin-right: 10px;
@@ -15,3 +25,16 @@ span.units{
     margin: 10px;
 }
 
+button.autoscale{
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.icon-expand{
+    color: #888;
+    cursor: pointer;
+}
+.icon-expand:hover{
+    color: #0069d9;
+}

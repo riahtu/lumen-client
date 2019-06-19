@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter} from '@angular/core';
-import {Subject, Subscription} from 'rxjs';
 import {IAxisSettings } from '../../store';
 
 import * as _ from 'lodash';
@@ -7,7 +6,7 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-axis-settings',
   templateUrl: './axis-settings.component.html',
-  styleUrls: ['./axis-settings.component.css']
+  styleUrls: ['./axis-settings.component.css'],
 })
 export class AxisSettingsComponent implements OnInit, OnDestroy{
   @Input() settings: IAxisSettings;
