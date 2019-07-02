@@ -1,6 +1,7 @@
 .settings-panel{
   background: #e6e6e6;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-bottom-color: #bbb;

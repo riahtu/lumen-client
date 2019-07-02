@@ -1,16 +1,17 @@
 
 import {distinctUntilChanged, filter} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Observable, Subscription, timer } from 'rxjs';
-import { select } from '@angular-redux/store';
-import { ModalDirective } from 'ngx-bootstrap/modal';
+
 import {
   PlotService,
-  MeasurementService
+  MeasurementService,
+  AnnotationUIService
 } from '../../services';
 import {
   MeasurementSelectors,
-  PlotSelectors
+  PlotSelectors,
+  AnnotationSelectors
 } from '../../selectors';
 
 export const LIVE_PLOT_UPDATE_INTERVAL = 5000; //5 seconds
@@ -38,11 +39,15 @@ export class ToolTabComponent implements OnInit, OnDestroy {
 
   private subs: Subscription[];
 
+  public annotateElementId: number;
+
   constructor(
     public plotService: PlotService,
+    public annotationUIService: AnnotationUIService,
     public measurementService: MeasurementService,
     public plotSelectors: PlotSelectors,
-    public measurementSelectors: MeasurementSelectors
+    public measurementSelectors: MeasurementSelectors,
+    public annotationSelectors: AnnotationSelectors
   ) {
     this.savePlotImage = new EventEmitter();
     this.saveDataView = new EventEmitter();

@@ -1,17 +1,16 @@
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
 import {
   MeasurementActions,
   IRange,
+  AnnotationUIActions,
 } from '../store';
 import {
   MeasurementSelectors,
   PlotSelectors
 } from '../selectors';
 import { IMeasurementSet } from '../store/measurement';
-import { IData } from '../../store/data';
 import { PlotService } from './plot.service';
 import { IAppState } from '../../app.store';
 
@@ -64,6 +63,10 @@ export class MeasurementService {
   //set zero to current measurement range
   //
   public setZero() {
+    //hide annotation if displayed
+    this.ngRedux.dispatch({
+      type: AnnotationUIActions.HIDE_ANNOTATION
+    });
     this.ngRedux.dispatch({
       type: MeasurementActions.SET_ZERO,
     })

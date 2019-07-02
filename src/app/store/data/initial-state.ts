@@ -64,7 +64,8 @@ export const DbStreamFactory =
     hidden: false,
     elements: null,
     size_on_disk: 0,
-    nilm_id: null
+    nilm_id: null,
+    refreshing_annotations: false
   });
 
 // ---- DbElement ----
@@ -86,7 +87,19 @@ export const DbElementFactory =
     display_name: ''
   });
 
-// --- Data ----
+// ---- Annotation ----
+export const AnnotationFactory = 
+  makeTypedFactory<data.IAnnotation, data.IAnnotationRecord>({
+    id:null,
+    joule_id: null,
+    db_stream_id: null,
+    title: '',
+    content: '',
+    start: null,
+    end: null
+  });
+
+// ---- Data ----
 export const DataFactory = 
   makeTypedFactory<data.IData, data.IDataRecord>({
   start_time: null,

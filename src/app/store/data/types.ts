@@ -77,6 +77,7 @@ export interface IDbStream {
   hidden: boolean;
   elements: Array<number>;
   nilm_id: number;
+  refreshing_annotations: boolean;
 }
 export interface IDbStreamRecord extends
   TypedRecord<IDbStreamRecord>, IDbStream { };
@@ -107,6 +108,23 @@ export interface IDbElementRecord extends
 export interface IDbElementRecords {
   [index: string]: IDbElementRecord;
 }
+
+// --- Stream Annotation ---
+export interface IAnnotation{
+  id: number;
+  joule_id: number;
+  db_stream_id: number;
+  title: string;
+  content: string;
+  start: number;
+  end: number
+}
+export interface IAnnotationRecord extends
+  TypedRecord<IAnnotationRecord>, IAnnotation { };
+export interface IAnnotationRecords {
+  [index: string]: IAnnotationRecord;
+}
+
 
 // ---- User ----
 export interface IUser {

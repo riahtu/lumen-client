@@ -7,7 +7,7 @@
 
 <!-- Left Axis -->
 <div *ngIf="(plotSelectors.leftElements$ | async)?.length>0">
-  <div class="row justify-content-between axis-title lead">
+  <div class="row justify-content-between section-title lead no-gutters">
       <div class="col">
         <!-- Expand/Collapse Axis Settings-->
         <fa-icon [icon]="(plotSelectors.showLeftAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
@@ -17,8 +17,9 @@
       </div>
       <div class="col">
           <!-- Autoscale Axis-->
-          <button class="btn btn-primary autoscale">
-              <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> autoscale </button>
+          <button class="btn autoscale"
+            (click)="plotService.autoScaleAxis('left')">
+            <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> auto </button>
       </div>
     </div>
   </div>
@@ -42,7 +43,7 @@
 
 <!-- Right Axis -->
 <div *ngIf="(plotSelectors.rightElements$ | async)?.length>0">
-  <div class="row justify-content-between axis-title lead">
+  <div class="row justify-content-between section-title lead no-gutters">
     <div class="col">
       <!-- Expand/Collapse Axis Settings-->
       <fa-icon [icon]="(plotSelectors.showRightAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
@@ -52,8 +53,9 @@
     </div>
     <div class="col">
         <!-- Autoscale Axis-->
-        <button class="btn btn-primary autoscale">
-            <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> autoscale </button>
+        <button class="btn btn-primary autoscale"
+          (click)="plotService.autoScaleAxis('right')">
+          <fa-icon [icon]="['fas', 'arrows-alt-v']"  [fixedWidth]="true"></fa-icon> auto </button>
     </div>
   </div>
   <!-- only shown if axis settings are displayed -->
@@ -73,7 +75,7 @@
 
 
 <!-- Time Axis -->
-<div class="row justify-content-between axis-title lead">
+<div class="row justify-content-between section-title lead no-gutters">
   <div class="col">
     <!-- Expand/Collapse Axis Settings-->
     <fa-icon [icon]="(plotSelectors.showTimeAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
@@ -83,8 +85,8 @@
   </div>
   <div class="col">
     <!-- Autoscale Axis-->
-    <button class="btn btn-primary autoscale">
-      <fa-icon [icon]="['fas', 'arrows-alt-h']"  [fixedWidth]="true"></fa-icon> autoscale 
+    <button class="btn btn-primary autoscale" (click)="plotService.autoScaleTime()">
+      <fa-icon [icon]="['fas', 'arrows-alt-h']"  [fixedWidth]="true"></fa-icon> auto
     </button>
   </div>
 </div>
@@ -98,6 +100,58 @@
 </div>
 
 <!-- Plot Annotations -->
-<div class="annotations-title lead">
-  Annotations
+<div class="row justify-content-between section-title lead no-gutters">
+  <div class="col">
+    Annotations
+  </div>
+  <div class="col">
+    <!-- Start Annotating -->
+    <button class="btn btn-primary autoscale"
+      *ngIf="!(annotationSelectors.enabled$ | async)"
+      [disabled]="measurementSelectors.enabled$ | async"
+      (click)="annotationUIService.startAnnotation()">
+      <fa-icon [icon]="['fas', 'plus']"  [fixedWidth]="true"></fa-icon> create 
+    </button>
+    <!-- Stop Annotating -->
+    <button class="btn btn-danger exit-annotation"
+      *ngIf="annotationSelectors.enabled$ | async"
+      (click)="annotationUIService.cancelAnnotation()">
+      exit
+    </button>
+    <!-- Hide Annotation -->
+    <button class="btn btn-danger hide-annotation"
+      *ngIf="(annotationSelectors.selectedAnnotationId$ | async) != null"
+      (click)="annotationUIService.hideAnnotation()">
+      hide
+    </button>
+
+  </div>
+</div>
+<!-- Annotation instructions -->
+<div *ngIf="annotationSelectors.enabled$ | async" class="annotation-instructions">
+  click or drag on plot to annotate <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon> 
+
+</div>
+
+<div *ngFor="let block of annotationMap$ | async" >
+  <div class="annotated-stream">
+      <fa-icon [icon]="['fas', 'database']"></fa-icon> {{block.stream.path}}
+      <fa-icon [icon]="['fas', 'sync-alt']" class="icon-button refresh"
+        *ngIf="!block.stream.refreshing_annotations"
+        (click)="annotationService.reloadAnnotations(block.stream.id)"></fa-icon>
+      <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" class="refreshing" 
+        *ngIf="block.stream.refreshing_annotations"></fa-icon>
+
+  </div>
+  <div *ngIf="block.annotations.length==0" class="no-annotations">none</div>
+  <div 
+    *ngFor="let annotation of block.annotations" class="annotation"
+    (click)="annotationUIService.selectAnnotation(annotation)"
+    class = "annotation"
+    [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
+    <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
+    {{annotation.title}}
+    <fa-icon [icon]="['fas', 'trash-alt']" class="float-right delete"
+        (click)="deleteAnnotation($event, annotation)"></fa-icon>
+  </div>
 </div>

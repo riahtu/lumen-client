@@ -160,6 +160,29 @@ span.interval-warning{
     transform: translateX(-50%);
     left: 50%;
 }
+span.annotation-details{
+  z-index: 9999;
+  display: block;
+  position: absolute;
+  margin-top: 35px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 10px;
+  background: #8080802b;
+  border-radius: 8px;
+  padding-right: 10px;
+}
+.annotation-details > .title{
+  display: block;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+.annotation-details > .content{
+  display: block;
+  text-align: center;
+}
+
 div.live-update{
   background: #dff0d8;
   color: #3c763d;

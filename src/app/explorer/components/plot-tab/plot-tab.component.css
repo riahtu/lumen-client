@@ -1,4 +1,4 @@
- .axis-title.lead{
+ .section-title.lead{
   background: #ddd;
   padding-left: 10px;
   padding-bottom: 2px;
@@ -7,13 +7,30 @@
   border-bottom-width: 2px;
   border-bottom-color: #bbb;
 }
-.annotations-title{
+.annotated-stream{
     background: #c8dbea;
     padding-left: 10px;
     padding-bottom: 2px;
     margin-bottom: 0px;
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #ccc;
+}
+.annotation{
+    border-bottom-style: solid;
+    border-width: 1px;
+    border-color: #ccc;
+}
+.no-annotations{
     text-align: center;
-  }
+    font-style: italic;
+    color: gray;
+    cursor: default;
+}
+.annotation:hover{
+    cursor: pointer;
+    background: #eee;
+}
 span.units{
     font-weight: 400;
     margin-right: 10px;
@@ -25,16 +42,88 @@ span.units{
     margin: 10px;
 }
 
-button.autoscale{
-    margin: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-}
-
 .icon-expand{
     color: #888;
     cursor: pointer;
 }
 .icon-expand:hover{
     color: #0069d9;
+}
+button.autoscale{
+    color: white;
+    background: #888;
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 85px;
+}
+button.autoscale:hover{
+    background: #0069d9;
+}
+button.exit-annotation{
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    width: 85px;
+}
+button.hide-annotation{
+    border: black;
+    border-style: solid;
+    border-width: 1px;
+    margin: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-left: 5px;
+}
+.annotation-date{
+    padding-right: 10px;
+}
+.annotation-instructions{
+    text-align: right;
+    padding-right: 15px;
+    background: #17a2b8;
+    color: white;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: #bbb;
+}
+.annotation.selected{
+    background: #f9ffa4;
+}
+
+.annotated-stream > .refresh{
+    visibility: hidden;
+    cursor: pointer;
+    color: gray;
+    margin-left: 10px;
+}
+.annotated-stream > .refreshing {
+    color: gray;
+    margin-left: 10px;
+    cursor: default;
+}
+.annotated-stream > .refresh:hover{
+    color: black;
+}
+.annotated-stream:hover > .refresh{
+    visibility: visible;
+}
+
+.annotation > .delete{
+    visibility: hidden;
+    cursor: pointer;
+    color: gray;
+    padding-right: 10px;
+}
+.annotation:hover > .delete{
+    visibility: visible;
+}
+.annotation > .delete:hover{
+    color: black;
 }

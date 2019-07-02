@@ -12,7 +12,10 @@ export const DbFolderActions = {
   'RECEIVE': 'DB_FOLDER_RECEIVE'
 };
 export const DbStreamActions = {
-  'RECEIVE': 'DB_STREAM_RECEIVE'
+  'RECEIVE': 'DB_STREAM_RECEIVE',
+  'REFRESHING_ANNOTATIONS': 'DB_STREAM_REFRESHING_ANNOTATIONS',
+  'REFRESHED_ANNOTATIONS': 'DB_STREAM_REFRESHED_ANNOTATIONS'
+
 };
 export const DbElementActions = {
   'RECEIVE': 'DB_ELEMENT_RECEIVE',
@@ -20,6 +23,10 @@ export const DbElementActions = {
   'SET_DISPLAY_NAME': 'DB_ELEMENT_SET_DISPLAY_NAME',
   'RESTORE': 'DB_ELEMENT_RESTORE',
   'RESET': 'DB_ELEMENT_RESET'
+};
+export const AnnotationActions = {
+  'RECEIVE': 'ANNOTATION_RECEIVE',
+  'REMOVE': 'ANNOTATION_REMOVE'
 };
 export const UserActions = {
   'SET_CURRENT': 'USER_SET_CURRENT',

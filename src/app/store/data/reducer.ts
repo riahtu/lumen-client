@@ -77,10 +77,33 @@ export function dbStreamReducer(
         state,
         recordify(action.payload, factories.DbStreamFactory));
 
+    case actions.DbStreamActions.REFRESHING_ANNOTATIONS:
+        return Object.assign({}, state,
+          { [action.payload]: state[action.payload].set('refreshing_annotations', true) })
+    
+    case actions.DbStreamActions.REFRESHED_ANNOTATIONS:
+        return Object.assign({}, state,
+          { [action.payload]: state[action.payload].set('refreshing_annotations', false) })
+
     default:
       return state;
   }
 }
+
+export function annotationReducer(
+  state: records.IAnnotationRecords = {},
+  action: IPayloadAction): records.IAnnotationRecords {
+    switch(action.type) {
+      case actions.AnnotationActions.RECEIVE:
+        return Object.assign({},
+          state,
+          recordify(action.payload, factories.AnnotationFactory));
+      case actions.AnnotationActions.REMOVE:
+          return removeByKey(state, action.payload)
+      default:
+        return state;
+    }
+  }
 
 export function dbElementReducer(
   state: records.IDbElementRecords = {},

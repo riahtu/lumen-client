@@ -1,0 +1,43 @@
+<form [formGroup]="form">
+    <div class="form-group">
+      <label class="control-label" for="name">Stream</label>
+      <ng-select [items]="streamList$ | async"
+        bindLabel="stream.path"
+        bindValue="stream.id"
+        groupBy="installation_name"
+        placeholder="Select a stream"
+        [multiple]="false"
+        formControlName="db_stream_id"
+        >
+        <ng-template ng-optgroup-tmp let-item="item">
+          {{item.installation_name}}
+        </ng-template>
+        <ng-template ng-option-tmp let-item="item" let-index="index" let-search="searchTerm">
+            <fa-icon [icon]="['fas', 'database']"></fa-icon> <span [ngOptionHighlight]="search">{{item.stream.path}}</span>
+        </ng-template>
+        <ng-template ng-label-tmp let-item="item">
+            <fa-icon [icon]="['fas', 'database']"></fa-icon> {{item.stream.path}} @ {{item.installation_name}}
+        </ng-template>
+      </ng-select>
+    </div>
+    <div class="form-group" [class.has-error]="!form.get('title').valid && !form.get('title').pristine">
+      <label class="control-label" for="name">Title</label>
+      <input class="form-control"
+             [formControl]="form.get('title')">
+    </div>
+    <div class="form-group">
+      <label class="control-label" for="description">Content</label>
+      <input class="form-control" type="text" placeholder="optional" [formControl]="form.get('content')">
+    </div>
+    <!-- Save and Cancel buttons -->
+    <div class="clearfix">
+      <!-- save -->
+      <button class="btn btn-primary float-left popup" 
+              [disabled]="form.valid==false"
+              (click)="onSave()">Save</button>
+      <!-- cancel -->
+      <button class="btn btn-secondary float-right popup"
+              (click)="onCancel()">
+              Cancel</button>
+    </div>
+  </form>

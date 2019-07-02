@@ -31,8 +31,11 @@ import {
   faExternalLinkAlt,
   faArrowsAltH,
   faArrowsAltV,
+  faArrowRight,
   faCaretRight,
-  faCaretDown
+  faCaretDown,
+  faCommentAlt,
+  faTrashAlt
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -57,6 +60,7 @@ import { SERVICES } from './services';
 import { SELECTORS } from './selectors';
 import { TreeModule } from 'angular-tree-component';
 import { DurationPipe } from './duration.pipe';
+import { NewAnnotationComponent } from './components/new-annotation/new-annotation.component';
 
 library.add(faLifeRing);
 library.add(faSpinner);
@@ -86,6 +90,9 @@ library.add(faArrowsAltV);
 library.add(faCaretRight);
 library.add(faCaretDown);
 library.add(faArrowsAltV);
+library.add(faCommentAlt);
+library.add(faArrowRight);
+library.add(faTrashAlt);
 
 @NgModule({
   imports: [
@@ -109,6 +116,7 @@ library.add(faArrowsAltV);
     COMPONENTS,
     ExplorerPageComponent,
     DurationPipe,
+    NewAnnotationComponent,
   ],
   providers: [
     SERVICES,

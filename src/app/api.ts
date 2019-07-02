@@ -45,6 +45,24 @@ dbFolder.define({
   streams: [dbStream]
 });
 
+export const annotation = new schema.Entity('annotations', {}, {
+  processStrategy: (entity) => {
+  
+    //convert unix microseconds to milliseconds
+    entity.start = Math.round(entity.start / 1e3);
+  
+    if (entity.end != null) {
+      entity.end = Math.round(entity.end / 1e3);
+    }
+
+    //make a unique id but keep the API id for edit/delete calls
+    entity.joule_id = entity.id
+    entity.id = entity.db_stream_id+"_"+entity.id
+    return entity;
+  }
+})
+export const annotations = new schema.Array(annotation);
+
 //convert all unix microsecond times to ms times
 export const data = new schema.Entity('data', {},
   {

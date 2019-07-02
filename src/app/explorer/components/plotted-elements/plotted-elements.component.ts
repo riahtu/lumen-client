@@ -69,7 +69,7 @@ export class PlottedElementsComponent
         if (nilms[myStream.nilm_id] === undefined)
           return null;
         let myNilm = nilms[myStream.nilm_id]
-        return `${myStream.name} @ ${myNilm.name}`
+        return `${myStream.path} @ ${myNilm.name}`
       }))
 
     //element info 

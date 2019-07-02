@@ -91,7 +91,13 @@
           <fa-icon [icon]="['fas', 'exclamation-triangle']"></fa-icon>
           some data cannot be displayed at this resolution
         </span>
-        
+        <!-- annotation title and content -->
+        <span class="annotation-details"
+          *ngIf="(annotationSelectors.selectedAnnotation$ | async) != null">
+          <span class="title">{{(annotationSelectors.selectedAnnotation$ | async).title}}</span>
+          <span class="content">{{(annotationSelectors.selectedAnnotation$ | async).content}}</span>
+
+        </span>
         <!-- main plot (70% of view) -->
         <app-main-plot class="main-plot" #plot></app-main-plot>
 
@@ -249,4 +255,26 @@
   </div>
 </div>
 
-
+<!-- ====== annotation modal ====== -->
+<div class="modal fade" bsModal #annotationModal="bs-modal" 
+     [config]="{backdrop: false}"
+     (onHide)="annotationUIService.clearRange()"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title float-left">
+          Annotate {{annotationSelectors.annotationType$ | async}}</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="annotationModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <app-new-annotation (cancel)="annotationModal.hide()" (save)="createAnnotation($event)"
+          [range] = "annotationSelectors.selectionRange$ | async"></app-new-annotation>
+      </div>
+    </div>
+  </div>
+</div>

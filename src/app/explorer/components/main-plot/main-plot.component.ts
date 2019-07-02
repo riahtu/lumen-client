@@ -1,5 +1,5 @@
 
-import {} from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 import {
   Component,
   ViewChild,
@@ -18,11 +18,13 @@ import { IRange } from '../../store';
 
 import { 
   PlotService,
-  MeasurementService 
+  MeasurementService,
+  AnnotationUIService
 } from '../../services';
 import { 
   PlotSelectors,
-  MeasurementSelectors 
+  MeasurementSelectors, 
+  AnnotationSelectors
 } from '../../selectors';
 
 import { FLOT_OPTIONS } from './flot.options';
@@ -45,8 +47,8 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
   private plot: any;
 
   private xBounds: Subject<IRange>
-  private measurementBounds: Subject<IRange>
-
+  private plotIntervalSelection: Subject<IRange>
+  private plotPointSelection: Subject<number>
   //make a local copy of FLOT_OPTIONS so the plot
   //can be customized before it is displayed
   private flot_options: any;  
@@ -59,12 +61,15 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     private renderer: Renderer,
     private plotSelectors: PlotSelectors,
     private measurementSelectors: MeasurementSelectors,
+    private annotationSelectors: AnnotationSelectors,
     private plotService: PlotService,
-    private measurementService: MeasurementService
+    private measurementService: MeasurementService,
+    private annotationUIService: AnnotationUIService
   ) {
     this.plot = null;
     this.xBounds = new Subject();
-    this.measurementBounds = new Subject();
+    this.plotIntervalSelection = new Subject();
+    this.plotPointSelection = new Subject();
     this.flot_options = _.cloneDeep(FLOT_OPTIONS);
     this.subs = [];
     this.storedPlotTimeRange = { min: null, max: null }
@@ -78,10 +83,10 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     let newPlottedElements = this.plotSelectors.plottedElements$.pipe(
       distinctUntilChanged((x,y) => _.isEqual(x,y)));
     this.subs.push(combineLatest(
-      newTimeRange, newPlottedElements,this.plotSelectors.addingPlotData$)
-      .pipe(
-        filter(([timeRange, elements, busy]) => !busy && elements.length!=0))
-      .subscribe(([timeRange, elements, busy]) => {
+      newTimeRange, newPlottedElements).pipe(
+        withLatestFrom(this.plotSelectors.addingPlotData$),
+        filter(([[timeRange, elements], busy]) => !busy && elements.length!=0))
+      .subscribe(([[timeRange, elements], busy]) => {
         //retrieve current width of plot to determine the appropriate resolution
         let resolution = $(this.plotArea.nativeElement).width();
         this.plotService.loadPlotData(elements, timeRange, resolution*2)
@@ -115,8 +120,12 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
     /* enable selection mode when the plot is in measurement state*/
-    this.subs.push(this.measurementSelectors.enabled$.pipe(
-      distinctUntilChanged())
+    this.subs.push(
+      
+      combineLatest(
+        this.measurementSelectors.enabled$, this.annotationSelectors.enabled$).pipe(
+        map(([measure, annotate]) => measure || annotate),
+        distinctUntilChanged())
       .subscribe(val => {
         if (this.plot != null){
           if(val){ //enter measurement mode
@@ -216,7 +225,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }))
 
-    // ---------
+    // ---- MEASUREMENT SELECTORS ----
     //auto scale the axes to match the data when elements
     //are added to an empty axis
     //autoscale y1 (left)
@@ -240,12 +249,13 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
       }));
     //
 
-    /* listen for plot measurements */
-    this.subs.push(this.measurementBounds.pipe(
-      distinctUntilChanged((x, y) => _.isEqual(x, y)))
-      .subscribe( range => {
-        this.measurementService.setRange(range);
-        //this.measurementModal.show();
+    /* listen for plot measurement selections (range) */
+    this.subs.push(
+      this.plotIntervalSelection.pipe(
+        withLatestFrom(this.measurementSelectors.enabled$))
+      .subscribe( ([range, enabled]) => {
+        if(enabled)
+          this.measurementService.setRange(range);
       })
     );
 
@@ -262,7 +272,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       }));
     
-    /* remove the measurement selector when range is cleared */
+    /* remove the selector when range is cleared */
     this.subs.push(this.measurementSelectors.measurementRange$
       .subscribe(range => {
         if(this.plot==null)
@@ -271,6 +281,85 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           this.plot.clearSelection(true);
         }
       }))
+    // ---- END MEASUREMENT SELECTORS ----
+
+    // --- ANNOTATION SELECTORS ----
+    /* listen for plot annotation selections (range) */
+    this.subs.push(this.plotIntervalSelection.pipe(
+        withLatestFrom(this.annotationSelectors.enabled$))
+        .subscribe( ([range, enabled]) => {
+        if(enabled){
+          this.annotationUIService.setRange(range);
+        }
+      })
+    );
+
+    /* listen for plot annotation selections (point) */
+    this.subs.push(this.plotPointSelection.pipe(
+      withLatestFrom(this.annotationSelectors.enabled$))
+        .subscribe(([timestamp, enabled])=>{
+          if(enabled){
+            this.annotationUIService.setRange({
+              min: timestamp, 
+              max: null})
+          }
+        })
+    );
+
+    /* remove the selector when range is cleared */
+    this.subs.push(this.annotationSelectors.selectionRange$
+      .subscribe(range => {
+        if(this.plot==null)
+          return; //no plot so nothing to do
+        if(range==null){
+          this.plot.clearSelection(true);
+        }
+      }))
+
+    /* show the annotated range */
+    this.subs.push(
+      this.annotationSelectors.annotatedRange$.pipe(
+        withLatestFrom(this.plotSelectors.plotTimeRange$))
+      
+      .subscribe(([annotation_range, plot_range]) => {
+        if(this.plot==null)
+          return; //no plot so nothing to highlight
+
+        // highlight the annotation
+        if(annotation_range===undefined || annotation_range==null){
+          this.plot.showHighlight(false);
+          return; 
+        } else {
+          this.plot.setHighlight(annotation_range.min, annotation_range.max);
+        }
+        //move the plot to show the annotation
+        let new_plot_range = _.clone(plot_range)
+        if(plot_range.min == null || plot_range.max==null)
+          return; //autoscale time axis
+        //find the mid point of the selected annotation
+        let midpoint = (annotation_range.min + annotation_range.max)/2
+        //if the midpoint is off the plot, move until it is visible
+        let plot_width = plot_range.max - plot_range.min;
+        let annotation_width = annotation_range.max - annotation_range.min;
+        if(midpoint < plot_range.min || midpoint > plot_range.max){
+          //keep the current plot width but move the center point
+          new_plot_range.min = midpoint - plot_width/2;
+          new_plot_range.max = midpoint + plot_width/2;
+        }
+        //if the plot width is too small to display the whole annotation
+        //then expand it with some padding
+        if(annotation_width != 0){
+          if(new_plot_range.min >= annotation_range.min)
+            new_plot_range.min = annotation_range.min - (annotation_width*0.1);
+          if(new_plot_range.max <= annotation_range.max)
+            new_plot_range.max = annotation_range.max + (annotation_width*0.1);
+        }
+        //change the plot time bounds
+        if(!_.isEqual(plot_range, new_plot_range)){
+          this.plotService.setPlotTimeRange(new_plot_range);
+        }
+      }));
+    // ---- END ANNOTATION SELECTORS ----
   }
   
   ngOnDestroy() {
@@ -306,6 +395,7 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
           $(this.plotArea.nativeElement).bind('plotpan', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotzoom', this.updateAxes.bind(this))
           $(this.plotArea.nativeElement).bind('plotselected', this.updateMeasurement.bind(this))
+          $(this.plotArea.nativeElement).bind('plotclicked', this.updatePlotSelection.bind(this))
           setTimeout(()=>this.plotService.disableDataCursor(),0);
         
         } else {
@@ -341,13 +431,18 @@ export class MainPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
-  //flot hook to listen for plot selection events (measurements)
+  //flot hook to listen for plot selection events (measurements or annotations)
   updateMeasurement() {
     let selection = this.plot.getSelection();
-    this.measurementBounds.next({
+    this.plotIntervalSelection.next({
       min: Math.round(selection['xaxis']['from']),
       max: Math.round(selection['xaxis']['to'])
     })
+  }
+  //flot hook to listen for plot click events (annotation only)
+  updatePlotSelection(event) {
+    let selection = this.plot.getSelection(true);
+    this.plotPointSelection.next(selection['xaxis']['to'])
   }
 
   getCanvas(): Html2CanvasPromise<HTMLCanvasElement> {

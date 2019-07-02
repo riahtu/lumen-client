@@ -12,6 +12,7 @@ export interface IState {
   userGroups: types.IUserGroupStoreRecord;
   permissions: types.IPermissionRecords;
   dataViews: types.IDataViewRecords;
+  annotations: types.IAnnotationRecords
 }
 
 export const reducer = combineReducers<IState>({
@@ -24,6 +25,7 @@ export const reducer = combineReducers<IState>({
   users: reducers.userReducer,
   userGroups: reducers.userGroupReducer,
   dataViews: reducers.dataViewReducer,
+  annotations: reducers.annotationReducer
 });
 export {DataFactory, DataViewFactory } from './initial-state';
 export * from './actions';

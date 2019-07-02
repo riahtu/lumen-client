@@ -9,7 +9,7 @@ import {
   AfterViewInit,
 } from '@angular/core';
 import { Subscription, Subject, combineLatest } from 'rxjs';
-import { filter, distinctUntilChanged, map, debounceTime } from 'rxjs/operators';
+import { filter, distinctUntilChanged, map, debounceTime, withLatestFrom } from 'rxjs/operators';
 import {
   IRange
 } from '../../store';
@@ -60,9 +60,10 @@ export class NavPlotComponent implements OnInit, AfterViewInit, OnDestroy {
     let elements = this.plotSelectors.plottedElements$.pipe(
       distinctUntilChanged((x,y) => _.isEqual(x,y)));
     this.subs.push(combineLatest(
-      timeRange, elements,this.plotSelectors.addingNavData$).pipe(
-      filter(([timeRange, elements, busy]) => !busy && elements.length!=0))
-      .subscribe(([timeRange, elements, busy]) => {
+      timeRange, elements).pipe(
+        withLatestFrom(this.plotSelectors.addingNavData$),
+        filter(([[timeRange, elements], busy]) => !busy && elements.length!=0))
+      .subscribe(([[timeRange, elements], busy]) => {
         let resolution = $(this.plotArea.nativeElement).width()
         this.plotService.loadNavData(elements, timeRange, resolution);
         if (this.plot != null)

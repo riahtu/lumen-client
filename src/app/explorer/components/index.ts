@@ -8,11 +8,12 @@ import { DatePickerComponent } from './date-picker/date-picker.component';
 import { LoadDataViewComponent } from './load-data-view/load-data-view.component';
 import { DownloadDataComponent } from './download-data/download-data.component';
 import { MeasurementResultsComponent } from './measurement-results/measurement-results.component';
+import { NewAnnotationComponent } from './new-annotation/new-annotation.component';
 import { AxisSettingsComponent } from './axis-settings/axis-settings.component';
 
 export const COMPONENTS = [
   MainPlotComponent, FileTreeComponent, LoadDataViewComponent,
   PlottedElementsComponent, PlotTabComponent, DownloadDataComponent,
   NavPlotComponent, ToolTabComponent, DatePickerComponent, MeasurementResultsComponent,
-  AxisSettingsComponent
+  AxisSettingsComponent, NewAnnotationComponent
 ];

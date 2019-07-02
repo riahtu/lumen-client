@@ -14,21 +14,24 @@ import {environment } from '../../../../environments/environment'
 import { 
   PlotSelectors,
   MeasurementSelectors,
-  InterfacesSelectors 
+  InterfacesSelectors, 
+  AnnotationSelectors
 } from '../../selectors';
 
 import { 
   PlotService,
   MeasurementService,
   InterfacesService,
+  AnnotationUIService,
 } from '../../services';
 import { 
   DataViewService, 
   DbStreamService, 
-  SessionService
+  SessionService,
+  AnnotationService
 } from '../../../services';
 import {
-  IDataView,
+  IDataView, IAnnotation,
 } from '../../../store/data';
 
 import { MainPlotComponent } from '../../components/main-plot/main-plot.component';
@@ -60,6 +63,7 @@ export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('saveDataViewModal', {static: false}) public saveDataViewModal: ModalDirective;
   @ViewChild('loadDataViewModal', {static: false}) public loadDataViewModal: ModalDirective;
   @ViewChild('measurementModal', {static: false}) public measurementModal: ModalDirective;
+  @ViewChild('annotationModal', {static: false}) public annotationModal: ModalDirective;
 
   @ViewChild('plot', {static: false}) public plot: MainPlotComponent;
   @ViewChild('interfaceTabs', {static: false}) interfaceTabs: TabsetComponent;
@@ -70,8 +74,11 @@ export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     public plotSelectors: PlotSelectors,
     public measurementSelectors: MeasurementSelectors,
+    public annotationSelectors: AnnotationSelectors,
     public plotService: PlotService,
     public measurementService: MeasurementService,
+    public annotationService: AnnotationService,
+    public annotationUIService: AnnotationUIService,
     public dataViewService: DataViewService,
     public dbStreamService: DbStreamService,
     public interfacesSelectors: InterfacesSelectors,
@@ -107,6 +114,11 @@ export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
       view.image);
     this.saveDataViewModal.hide();
   }
+
+  createAnnotation(annotation: IAnnotation){
+    this.annotationService.createAnnotation(annotation)
+    this.annotationModal.hide();
+  }
   showSavePlotImage() {
     this.plot.getCanvas().then(canvas => {
       this.imageData = canvas.toDataURL("image/png");
@@ -132,6 +144,13 @@ export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.measurementModal.show();
       }))
     
+    /* show the annotation modal when the annotation range changes */
+    this.subs.push(this.annotationSelectors.selectionRange$.pipe(
+      distinctUntilChanged(),
+      filter(range => range!=null))
+      .subscribe(_ => {
+        this.annotationModal.show();
+      }))
 
     
     /* sync the tab selection to the redux state */

@@ -25,6 +25,7 @@ export interface IState {
   data_view_filter_text?: string;
   show_public_data_views?: boolean;
   show_data_envelope?: boolean;
+  show_annotations?: boolean;
   left_axis_settings?: IAxisSettings;
   show_left_axis_settings?: boolean;
   right_axis_settings?: IAxisSettings;

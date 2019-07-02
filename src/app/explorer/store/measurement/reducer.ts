@@ -1,7 +1,6 @@
 import { IPayloadAction } from '../../../store/helpers';
 import { MeasurementActions } from './actions';
 import {
-  IState,
   IStateRecord
 } from './types';
 

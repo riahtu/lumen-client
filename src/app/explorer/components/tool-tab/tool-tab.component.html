@@ -1,32 +1,34 @@
 
 <div class="tt-container">
 
-  <button class="btn btn-secondary btn-block"
-    (click)="loadDataView.emit('load')">Open View</button>
-  
-  <button class="btn btn-secondary btn-block"
-    (click)="saveDataView.emit('save')">Save View</button>
-
-  <hr/>
-
   <button class="btn btn-primary btn-block"
     (click)="plotService.setNavRangeToPlotRange()">
     Sync Plot Time Scales <fa-icon [icon]="['fas', 'exchange-alt']" rotate="90"></fa-icon></button>
 
-  <div class="btn-group btn-block" role="group">
-    <button class="btn btn-primary autoscale"
-      (click)="plotService.autoScaleAxis('left')">Left</button>
-    <button class="btn btn-primary autoscale"
-      (click)="plotService.autoScaleTime()">Time</button>
-    <button class="btn btn-primary autoscale"
-      (click)="plotService.autoScaleAxis('right')">Right</button>
-  </div>
-  <hr/>
+  <!-- Annotation Buttons -->
+
+  <!-- start a new annotation-->
+  <button class="btn btn-primary btn-block"
+    *ngIf="!(annotationSelectors.enabled$ | async)"
+    [disabled]="measurementSelectors.enabled$ | async"
+
+    (click)="annotationUIService.startAnnotation()">
+    Annotation Mode
+  </button>
+    
+  <!-- exit Annotation mode -->
+  <button class="btn btn-danger btn-block"
+  *ngIf="(annotationSelectors.enabled$ | async)"
+  [disabled]="measurementSelectors.enabled$ | async"
+  (click)="annotationUIService.cancelAnnotation()">
+  Exit Annotation Mode </button>
+
 
   <!-- Measurement Buttons -->
   <!--   start a new measurement -->
   <button class="btn btn-primary btn-block"
     *ngIf="!(measurementSelectors.enabled$ | async)"
+    [disabled]="annotationSelectors.enabled$ | async"
     (click)="measurementService.startMeasurement()">
     Measurement Mode </button>
   <!-- cancel the current measurement -->
@@ -34,14 +36,10 @@
     *ngIf="(measurementSelectors.enabled$ | async)"
     (click)="measurementService.cancelMeasurement()">
     Exit Measurement Mode </button>
-    
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" [checked]="plotSelectors.dataCursor$ | async" 
-        (change)="plotService.toggleDataCursor()">
-        <fa-icon [icon]="['fas', 'crosshairs']"  [fixedWidth]="true"></fa-icon> Show Data Cursor
-    </label>
-  </div>
+  
+  <hr/>
+
+  
   <div class="checkbox">
     <label>
       <input type="checkbox" [checked]="plotSelectors.liveUpdate$ | async"
@@ -60,21 +58,33 @@
     <label>
       <input type="checkbox" [checked]="plotSelectors.showDataEnvelope$ | async" 
         (change)="plotService.toggleShowDataEnvelope()">
-        <fa-icon [icon]="['fas', 'chart-area']"  [fixedWidth]="true"></fa-icon>Data Envelope
+        <fa-icon [icon]="['fas', 'chart-area']"  [fixedWidth]="true"></fa-icon> Data Envelope
+    </label>
+  </div>
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" [checked]="plotSelectors.dataCursor$ | async" 
+        (change)="plotService.toggleDataCursor()">
+        <fa-icon [icon]="['fas', 'crosshairs']"  [fixedWidth]="true"></fa-icon> Data Cursor
     </label>
   </div>
   <hr/>
 
   
+  <button class="btn btn-secondary btn-block"
+  (click)="loadDataView.emit('load')">Open Plot</button>
+
+<button class="btn btn-secondary btn-block"
+  (click)="saveDataView.emit('save')">Save Plot</button>
 
   
   <button class="btn btn-secondary btn-block"
     (click)="downloadDataModal.show()">
-    <fa-icon [icon]="['fas', 'download']"></fa-icon> Plot Data
+    <fa-icon [icon]="['fas', 'download']"></fa-icon> Download Data
   </button>
   <button class="btn btn-secondary btn-block"
     (click)="savePlotImage.emit('save')">
-    <fa-icon [icon]="['fas', 'image']"></fa-icon> Plot Image</button>
+    <fa-icon [icon]="['fas', 'image']"></fa-icon> Download Image</button>
 </div>
 
 <!-- ====== download data modal ====== -->

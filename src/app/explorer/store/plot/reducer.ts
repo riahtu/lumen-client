@@ -216,6 +216,12 @@ export function reducer(
       return state
         .set('show_data_envelope', !state.show_data_envelope)
 
+    //toggle whether the data envelope is plotted
+    //
+    case PlotActions.TOGGLE_SHOW_ANNOTATIONS:
+      return state
+        .set('show_annotations', !state.show_annotations)
+
     //toggle whether public data views are displayed
     //
     case PlotActions.SET_SHOW_PUBLIC_DATA_VIEWS:

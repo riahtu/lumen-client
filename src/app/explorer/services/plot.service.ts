@@ -110,6 +110,7 @@ export class PlotService {
     timeRange: IRange,
     resolution: number
   ) {
+
     let existingData = this.ngRedux.getState().ui.explorer.plot.plot_data;
     let neededElements = this.findNeededElements(elements, existingData, timeRange);
     if (neededElements.length == 0)

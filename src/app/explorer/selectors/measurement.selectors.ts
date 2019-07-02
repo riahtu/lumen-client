@@ -11,18 +11,6 @@ import {
 } from '../store';
 import {IMeasurementSet} from '../store/measurement';
 
-import {
-  IState,
-  INilmRecords,
-  IDbElement,
-  IDbElementRecords,
-  IDbStream,
-  IDbStreamRecords,
-  IDataSet,
-  IDataViewRecords,
-  IDataView
-} from '../../store/data';
-
 export const MEASUREMENT_REDUX= ['ui','explorer','measurement'];
 
 @Injectable()

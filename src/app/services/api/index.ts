@@ -9,6 +9,8 @@ import { PermissionService } from './permission.service';
 import { UserGroupService } from './user-group.service';
 import { UserService } from './user.service';
 import { ColorService } from './color.service';
+import { AnnotationService } from './annotation.service';
+
 export {
   NilmService,
   DbFolderService,
@@ -20,5 +22,6 @@ export {
   PermissionService,
   UserGroupService,
   UserService,
-  ColorService
+  ColorService,
+  AnnotationService
 }

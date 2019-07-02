@@ -63,6 +63,7 @@ export class PlotSelectors {
   @select(_.concat(PLOT_REDUX,'nilms_loaded')) nilmsLoaded$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'data_views_loaded')) dataViewsLoaded$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'show_data_envelope')) showDataEnvelope$: Observable<boolean>;
+  @select(_.concat(PLOT_REDUX,'show_annotations')) showAnnotations$: Observable<boolean>;
 
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>

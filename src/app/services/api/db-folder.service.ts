@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { normalize } from 'normalizr';
 import * as schema from '../../api';
@@ -9,8 +8,6 @@ import { IAppState } from '../../app.store';
 
 import {
   IDbFolder,
-  IDbStream,
-  IDbElement,
   DbFolderActions,
   DbStreamActions,
   DbElementActions,
@@ -27,8 +24,7 @@ export class DbFolderService {
   ) { }
 
 
-  public loadFolder(dbFolderId): void {
-    
+  public loadFolder(dbFolderId: number): void {
     this.http
       .get(`db_folders/${dbFolderId}.json`, {})
       .subscribe(
