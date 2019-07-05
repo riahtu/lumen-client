@@ -44,7 +44,7 @@ export class AnnotationService {
       .post(`/db_streams/${annotation.db_stream_id}/annotations.json`, params)
       .subscribe(
       json => {
-        let normalized = normalize(json['data'], schema.annotation)
+        let normalized = normalize(json['data'], schema.annotations)
         this.ngRedux.dispatch({
           type: AnnotationActions.RECEIVE,
           payload: normalized.entities['annotations']
@@ -53,7 +53,9 @@ export class AnnotationService {
           type: AnnotationUIActions.SHOW_ANNOTATION,
           payload: normalized.result
         })
-    })
+    },
+    error => this.messageService.setErrorsFromAPICall(error)
+    )
   }
 
 
@@ -67,7 +69,7 @@ export class AnnotationService {
 
     o.subscribe(
       json => {
-        let annotations = normalize(json, schema.annotations).entities['annotations'];
+        let annotations = normalize(json['data'], schema.annotations).entities['annotations'];
         this.ngRedux.dispatch({
             type: AnnotationActions.RECEIVE,
             payload: annotations
