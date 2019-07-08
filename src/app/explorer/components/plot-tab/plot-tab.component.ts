@@ -26,8 +26,8 @@ import { IDbStream, IAnnotation } from 'app/store/data';
     trigger('slideUpDown', [
       state('in', style({ transform: 'translateY(0)' })),
       transition(':enter', [
-        style({'overflow': 'hidden', 'height': 0}),
-        animate(300, style({ 'height': 80}))
+        style({'opacity': 0}),
+        animate(300, style({ 'opacity': 1.0}))
       ]),
       transition(':leave', [
         style({'overflow': 'hidden'}),

@@ -7,7 +7,7 @@
 
 <!-- Left Axis -->
 <div *ngIf="(plotSelectors.leftElements$ | async)?.length>0">
-  <div class="row justify-content-between section-title lead no-gutters">
+  <div class="row justify-content-between section-title top lead no-gutters">
       <div class="col">
         <!-- Expand/Collapse Axis Settings-->
         <fa-icon [icon]="(plotSelectors.showLeftAxisSettings$|async)?['fas','caret-down']:['fas','caret-right']" 
@@ -29,13 +29,14 @@
       [settings]="plotSelectors.leftAxisSettings$ | async" 
       [yaxis-settings]="true"  
       (changed)="plotService.setLeftAxisSettings($event)"></app-axis-settings>
-    <app-plotted-elements
-      class="plotted-element"
-      *ngFor="let element of plotSelectors.leftElements$ | async;"
-      [element]="element"
-      [axis]="'left'">
-    </app-plotted-elements>
+    
   </div>
+  <app-plotted-elements
+    class="plotted-element"
+    *ngFor="let element of plotSelectors.leftElements$ | async;"
+    [element]="element"
+    [axis]="'left'">
+  </app-plotted-elements>
 <div>
 
 
@@ -64,14 +65,16 @@
       [settings]="plotSelectors.rightAxisSettings$ | async"
       [yaxis-settings]="true"
       (changed)="plotService.setRightAxisSettings($event)"></app-axis-settings>
-    <app-plotted-elements 
-      class="plotted-element"
-      *ngFor="let element of plotSelectors.rightElements$ | async"
-      [element]="element"
-      [axis]="'right'">
-    </app-plotted-elements>
+    
   </div>
+  <app-plotted-elements 
+    class="plotted-element"
+    *ngFor="let element of plotSelectors.rightElements$ | async"
+    [element]="element"
+    [axis]="'right'">
+  </app-plotted-elements>
 </div>
+
 
 
 <!-- Time Axis -->
