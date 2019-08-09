@@ -137,7 +137,7 @@
 </div>
 <div class="filter-annotations">
   <span class="ml-4">Search: </span>
-  <input [(ngModel)]="filterText" (ngModelChange)="filterChanged($event)"
+  <input [(ngModel)]="filterText"
     type="text" class="ml-1" placeholder="filter">
 </div>
 
@@ -145,10 +145,10 @@
   <div class="annotated-stream">
       <fa-icon [icon]="['fas', 'database']"></fa-icon> {{block.stream.path}}
       <fa-icon [icon]="['fas', 'sync-alt']" class="icon-button refresh"
-        *ngIf="!block.stream.refreshing_annotations"
+        *ngIf="!block.stream.reloading_annotations"
         (click)="annotationService.reloadAnnotations(block.stream.id)"></fa-icon>
       <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" class="refreshing" 
-        *ngIf="block.stream.refreshing_annotations"></fa-icon>
+        *ngIf="block.stream.reloading_annotations"></fa-icon>
 
   </div>
   <div *ngIf="block.annotations.length==0" class="no-annotations">none</div>

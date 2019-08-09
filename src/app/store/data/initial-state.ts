@@ -65,7 +65,7 @@ export const DbStreamFactory =
     elements: null,
     size_on_disk: 0,
     nilm_id: null,
-    refreshing_annotations: false
+    reloading_annotations: false
   });
 
 // ---- DbElement ----

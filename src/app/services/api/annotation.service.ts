@@ -82,13 +82,12 @@ export class AnnotationService {
   }
   public reloadAnnotations(dbStreamId: number): void{
     let index = this.annotatedStreams.indexOf(dbStreamId);
-    if(index==-1){
-      return; //annotations were never loaded, nothing to do
+    if(index > -1){
+      this.annotatedStreams.splice(index,1);
     }
 
-    this.annotatedStreams.splice(index,1);
     this.ngRedux.dispatch({
-      type: DbStreamActions.REFRESHING_ANNOTATIONS,
+      type: DbStreamActions.RELOAD_ANNOTATIONS,
       payload: dbStreamId
     })
 

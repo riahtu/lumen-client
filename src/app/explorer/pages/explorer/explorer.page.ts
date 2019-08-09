@@ -158,7 +158,7 @@ export class ExplorerPageComponent implements OnInit, AfterViewInit, OnDestroy {
       combineLatest(this.interfacesSelectors.selectedId$),
       map(([ids,id])=> ids.indexOf(id)+1))
       .subscribe(tabIndex => {
-        setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}); 
+        setTimeout( _ => {this.interfaceTabs.tabs[tabIndex].active=true;}, 100); 
       }));
   }
   ngOnInit() {

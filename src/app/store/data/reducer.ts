@@ -7,7 +7,6 @@ import {
   recordify,
   removeByKey,
   removeByValue,
-  toArray,
   IPayloadAction
 } from '../helpers';
 
@@ -77,13 +76,13 @@ export function dbStreamReducer(
         state,
         recordify(action.payload, factories.DbStreamFactory));
 
-    case actions.DbStreamActions.REFRESHING_ANNOTATIONS:
+    case actions.DbStreamActions.RELOAD_ANNOTATIONS:
         return Object.assign({}, state,
-          { [action.payload]: state[action.payload].set('refreshing_annotations', true) })
+          { [action.payload]: state[action.payload].set('reloading_annotations', true) })
     
     case actions.DbStreamActions.REFRESHED_ANNOTATIONS:
         return Object.assign({}, state,
-          { [action.payload]: state[action.payload].set('refreshing_annotations', false) })
+          { [action.payload]: state[action.payload].set('reloading_annotations', false) })
 
     default:
       return state;
@@ -94,6 +93,9 @@ export function annotationReducer(
   state: records.IAnnotationRecords = {},
   action: IPayloadAction): records.IAnnotationRecords {
     switch(action.type) {
+      case actions.DbStreamActions.RELOAD_ANNOTATIONS:
+        return _.filter(state, item=>item.db_stream_id!= action.payload)
+          .reduce((obj, item) =>{ obj[item.id]=item; return obj;}, {});
       case actions.AnnotationActions.RECEIVE:
         return Object.assign({},
           state,

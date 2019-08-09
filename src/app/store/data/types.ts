@@ -77,7 +77,7 @@ export interface IDbStream {
   hidden: boolean;
   elements: Array<number>;
   nilm_id: number;
-  refreshing_annotations: boolean;
+  reloading_annotations: boolean;
 }
 export interface IDbStreamRecord extends
   TypedRecord<IDbStreamRecord>, IDbStream { };

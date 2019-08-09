@@ -58,7 +58,6 @@ export class PlotTabComponent implements OnInit, OnDestroy {
       map(streams => streams.map(stream=>stream.id)),
       distinctUntilChanged((x,y)=>_.isEqual(x,y)))
       .subscribe( stream_ids => {
-        console.log(stream_ids);
         stream_ids.map(id => {
           this.annotationService.loadAnnotations(id)
         })
@@ -86,10 +85,6 @@ export class PlotTabComponent implements OnInit, OnDestroy {
   public deleteAnnotation($event, annotation:IAnnotation){
     $event.stopPropagation();
     this.annotationService.deleteAnnotation(annotation)
-  }
-
-  public filterChanged($event){
-    console.log($event);
   }
 }
 
