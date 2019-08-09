@@ -135,6 +135,11 @@
   click or drag on plot to annotate <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon> 
 
 </div>
+<div class="filter-annotations">
+  <span class="ml-4">Search: </span>
+  <input [(ngModel)]="filterText" (ngModelChange)="filterChanged($event)"
+    type="text" class="ml-1" placeholder="filter">
+</div>
 
 <div *ngFor="let block of annotationMap$ | async" >
   <div class="annotated-stream">
@@ -148,12 +153,12 @@
   </div>
   <div *ngIf="block.annotations.length==0" class="no-annotations">none</div>
   <div 
-    *ngFor="let annotation of block.annotations" class="annotation"
+    *ngFor="let annotation of block.annotations | annotationFilter: filterText" class="annotation"
     (click)="annotationUIService.selectAnnotation(annotation)"
     class = "annotation"
     [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
     <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
-    {{annotation.title}}
+    <span [innerHTML]="annotation.title | highlightFilter : filterText"></span>
     <fa-icon [icon]="['fas', 'trash-alt']" class="float-right delete"
         (click)="deleteAnnotation($event, annotation)"></fa-icon>
   </div>

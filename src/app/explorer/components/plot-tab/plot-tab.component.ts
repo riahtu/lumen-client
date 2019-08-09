@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { Observable, Subscription, combineLatest } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -87,9 +87,14 @@ export class PlotTabComponent implements OnInit, OnDestroy {
     $event.stopPropagation();
     this.annotationService.deleteAnnotation(annotation)
   }
+
+  public filterChanged($event){
+    console.log($event);
+  }
 }
 
 export interface IAnnotatedStream{
   stream: IDbStream,
   annotations: IAnnotation[]
 }
+

@@ -3,7 +3,7 @@ import { DatePipe } from '@angular/common';
 
 import {
   IRange
-} from './store';
+} from '../store';
 @Pipe({
   name: 'duration'
 })

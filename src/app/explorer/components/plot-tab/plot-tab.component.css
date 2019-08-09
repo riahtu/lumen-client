@@ -132,3 +132,10 @@ button.hide-annotation{
 .annotation > .delete:hover{
     color: black;
 }
+.filter-annotations{
+    background: #eee;
+}
+:host >>> .highlight { 
+    background: yellow; 
+}
+
