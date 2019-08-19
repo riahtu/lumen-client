@@ -14,7 +14,7 @@ import {
   IDbFolder,
   IDbStream,
   IDbElement,
-  IJouleModuleRecords,
+  IDataAppRecords,
   IDbFolderRecords,
   IDbStreamRecords,
   IDbElementRecords
@@ -58,7 +58,7 @@ export class FileTreeComponent implements OnInit {
         let nilms = _.toArray(data.nilms);
         return nilms.map(nilm => {
           return this.mapNilm(nilm, data.dbFolders[nilm.root_folder],
-            data.jouleModules,
+            data.dataApps,
             data.dbFolders, data.dbStreams, data.dbElements);
         })
       }));
@@ -87,7 +87,7 @@ export class FileTreeComponent implements OnInit {
   mapNilm(
     nilm: INilm,
     rootDbFolder: IDbFolder,
-    jouleModules: IJouleModuleRecords,
+    dataApps: IDataAppRecords,
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
     elements: IDbElementRecords,
@@ -99,7 +99,7 @@ export class FileTreeComponent implements OnInit {
         folders, streams, elements);
       //add the Joule Modules to the top of the folder listing
       root.children.unshift(...this.mapJouleModules(
-        nilm.jouleModules, jouleModules));
+        nilm.data_apps, dataApps));
       return Object.assign({}, root, {
         id: 'n' + nilm.id,
         type: 'nilm',
@@ -122,17 +122,16 @@ export class FileTreeComponent implements OnInit {
   }
 
   mapJouleModules(
-    moduleIds: Array<number>,
-    jouleModules: IJouleModuleRecords
+    appIds: Array<number>,
+    dataApps: IDataAppRecords
   ): DbTreeNode[]{
-    return moduleIds.map(id => jouleModules[id])
-    .filter(module => module !== undefined)
-    .filter(module => module.web_interface)
-    .map(module => {
+    return appIds.map(id => dataApps[id])
+    .filter(app => app !== undefined)
+    .map(app => {
       return {
-      id: 'j'+module.id,
-      type: 'jouleModule',
-      name: module.name,
+      id: 'a'+app.id,
+      type: 'dataApp',
+      name: app.name,
       children: [],
       hasChildren: false
       }

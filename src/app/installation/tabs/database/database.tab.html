@@ -10,7 +10,7 @@
           (activate)="selectNode($event)">
           <ng-template #treeNodeTemplate let-node="node">
             <span [ngSwitch]="node.data.type">
-              <span *ngSwitchCase="'jouleModule'">
+              <span *ngSwitchCase="'dataApp'">
                   <fa-icon [icon]="['fas', 'cubes']"></fa-icon>
               </span>
               <span *ngSwitchCase="'dbFolder'">
@@ -33,7 +33,7 @@
         Refresh<span *ngIf="installationSelectors.refreshing$ | async">ing</span></button>
     </div>
   </div>
-  <!-- folder/stream edits -->
+  <!-- folder/stream/app edits -->
   <div [ngSwitch]='installationSelectors.selectedType$ | async' 
     class='app-content scrollable col-sm-9 pl-3 pr-2'>
     <app-edit-stream *ngSwitchCase="'dbStream'" 
@@ -41,8 +41,8 @@
       [dbElements]="installationSelectors.selectedDbStreamElements$ | async"></app-edit-stream>
     <app-edit-folder *ngSwitchCase="'dbFolder'" 
       [dbFolder]="installationSelectors.selectedDbFolder$ | async "></app-edit-folder>
-    <app-edit-module *ngSwitchCase="'jouleModule'"
-      [jouleModule]="installationSelectors.selectedJouleModule$ | async"></app-edit-module>
+    <app-edit-module *ngSwitchCase="'dataApp'"
+      [dataApp]="installationSelectors.selectedDataApp$ | async"></app-edit-module>
     <div *ngSwitchDefault class="default-overlay">
       <fa-icon [icon]="['fas', 'cogs']" size="5x"></fa-icon>
       <br>

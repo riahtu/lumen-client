@@ -10,23 +10,18 @@ export const NilmFactory = makeTypedFactory<data.INilm, data.INilmRecord>({
   url: '',
   role: '',
   available: false,
-  jouleModules: [],
+  data_apps: [],
   refreshing: false,
   root_folder: null,
   max_points_per_plot: 0
 });
 
-// ---- JouleModule ----
-export const JouleModuleFactory = makeTypedFactory<data.IJouleModule, data.IJouleModuleRecord>({
+// ---- DataApp ----
+export const DataAppFactory = 
+  makeTypedFactory<data.IDataApp, data.IDataAppRecord>({
   id: null,
   url: '',
   name: '',
-  description: '',
-  exec_cmd: '',
-  status: 'unknown',
-  pid: null,
-  web_interface: false,
-  joule_id: null,
   nilm_id: null
 });
 

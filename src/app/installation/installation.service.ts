@@ -59,9 +59,9 @@ export class InstallationService {
   }
 
   // ---selectJouleModule: pick an interface from tree---
-  public selectJouleModule(id: number){
+  public selectDataApp(id: number){
     this.ngRedux.dispatch({
-      type: InstallationActions.SELECT_JOULE_MODULE,
+      type: InstallationActions.SELECT_DATA_APP,
       payload: {
         id: id,
       }

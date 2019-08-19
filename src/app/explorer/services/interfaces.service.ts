@@ -9,7 +9,7 @@ import {
 import { IAppState } from '../../app.store';
 import * as schema from '../../api';
 import { normalize } from 'normalizr';
-import { JouleModuleActions } from '../../store/data';
+import { DataAppActions } from '../../store/data';
 
 
 @Injectable()
@@ -30,13 +30,13 @@ export class InterfacesService {
     let displayed = state.ui.explorer.interfaces.displayed;
     if (displayed.indexOf(id) == -1){
       this.http
-      .get(`joule_modules/${id}.json`)
+      .get(`app/${id}.json`)
       .subscribe(
       json => {
-        let entities = normalize(json, schema.jouleModule).entities;
+        let entities = normalize(json, schema.dataApps).entities;
         this.ngRedux.dispatch({
-          type: JouleModuleActions.RECEIVE,
-          payload: entities.jouleModules
+          type: DataAppActions.RECEIVE,
+          payload: entities.dataApps
         })
     })}
     this.ngRedux.dispatch({

@@ -5,7 +5,7 @@ import {
   Validators
 } from '@angular/forms';
 
-import { IJouleModule } from '../../../store/data';
+import { IDataApp } from '../../../store/data';
 
 
 @Component({
@@ -16,13 +16,13 @@ import { IJouleModule } from '../../../store/data';
 export class EditModuleComponent implements OnInit {
 
   @Input()
-  public set jouleModule(val: IJouleModule) {
-    this.module = val;
-    this.buildForm(this.module);
+  public set dataApp(val: IDataApp) {
+    this.app = val;
+    this.buildForm(this.app);
   }
 
   public form: FormGroup;
-  public module: IJouleModule;
+  public app: IDataApp;
   public errors: string[];
   public warnings: string[];
   public notices: string[];
@@ -34,7 +34,7 @@ export class EditModuleComponent implements OnInit {
   ngOnInit() {
   }
 
-  buildForm(module: IJouleModule) {
+  buildForm(module: IDataApp) {
     this.form = this.fb.group({
       name: ['test'],
       description: ['description'],

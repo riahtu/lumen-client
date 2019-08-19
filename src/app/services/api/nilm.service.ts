@@ -11,7 +11,7 @@ import {
   NilmActions,
   DbFolderActions,
   INilm,
-  JouleModuleActions
+  DataAppActions
 } from '../../store/data';
 import {
   MessageService
@@ -134,7 +134,7 @@ export class NilmService {
   // -------- private helper functions --------
   private _dispatch(entities) {
     this._receive(NilmActions, entities['nilms']);
-    this._receive(JouleModuleActions, entities['jouleModules']);
+    this._receive(DataAppActions, entities['dataApps']);
     this._receive(DbFolderActions, entities['dbFolders']);
   }
   private _receive(target: any, data: any) {

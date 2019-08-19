@@ -12,7 +12,7 @@ export interface INilm {
   refreshing: boolean;
   max_points_per_plot: number;
   root_folder: number; //id of database root
-  jouleModules: Array<number>;
+  data_apps: Array<number>;
 }
 export interface INilmRecord extends
   TypedRecord<INilmRecord>, INilm { };
@@ -20,23 +20,17 @@ export interface INilmRecords {
   [index: string]: INilmRecord;
 }
 
-// ---- JouleModule ----
-export interface IJouleModule{
+// ---- DataApp ----
+export interface IDataApp{
   id: number;
   name: string;
   url: string;
-  description: string;
-  web_interface: boolean;
-  exec_cmd: string;
-  status: string;
-  pid: string;
-  joule_id: string; //id used on the Joule node
   nilm_id: number;  //id of the NILM owner
 }
-export interface IJouleModuleRecord extends
-  TypedRecord<IJouleModuleRecord>, IJouleModule { };
-export interface IJouleModuleRecords {
-  [index: string]: IJouleModuleRecord;
+export interface IDataAppRecord extends
+  TypedRecord<IDataAppRecord>, IDataApp { };
+export interface IDataAppRecords {
+  [index: string]: IDataAppRecord;
 }
 
 // ---- DbFolder ----

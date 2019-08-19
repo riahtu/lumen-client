@@ -12,7 +12,7 @@ import {
   INilm,
   IDbFolder,
   IDbFolderRecords,
-  IJouleModuleRecords,
+  IDataAppRecords,
   IDbStreamRecords,
   IDbStream
 } from '../../../store/data';
@@ -43,7 +43,7 @@ export class DatabaseTabComponent {
       this.installationSelectors.nilm$,
       this.installationSelectors.data$).pipe(
         map(([nilm, data]) => this.mapNilm(nilm, 
-          data.jouleModules,
+          data.dataApps,
           data.dbFolders, data.dbStreams)));
     
   };
@@ -66,8 +66,8 @@ export class DatabaseTabComponent {
       case 'dbStream':
         this.installationService.selectDbStream(node.data.dbId);
         return;
-      case 'jouleModule':
-        this.installationService.selectJouleModule(node.data.dbId);
+      case 'dataApp':
+        this.installationService.selectDataApp(node.data.dbId);
         return;
       default:
         console.log(`unknown type ${node.data.type}`);
@@ -81,7 +81,7 @@ export class DatabaseTabComponent {
 
   mapNilm(
     nilm: INilm,
-    jouleModules: IJouleModuleRecords,
+    data_apps: IDataAppRecords,
     folders: IDbFolderRecords,
     streams: IDbStreamRecords,
   ): DbTreeNode[] {
@@ -93,7 +93,7 @@ export class DatabaseTabComponent {
       .filter(id => folders[id] !== undefined)
       .map(id => this.mapFolder(
         folders[id], folders, streams))
-    let module_nodes = this.mapJouleModules(nilm.jouleModules, jouleModules)
+    let module_nodes = this.mapDataApps(nilm.data_apps, data_apps)
     return module_nodes.concat(folder_nodes);
 /*
     return {
@@ -108,19 +108,18 @@ export class DatabaseTabComponent {
     }
   
 
-  mapJouleModules(
+  mapDataApps(
     moduleIds: Array<number>,
-    jouleModules: IJouleModuleRecords
+    dataApps: IDataAppRecords
   ): DbTreeNode[]{
-    return moduleIds.map(id => jouleModules[id])
-    .filter(module => module !== undefined)
-    .filter(module => module.web_interface)
-    .map(module => {
+    return moduleIds.map(id => dataApps[id])
+    .filter(app => app !== undefined)
+    .map(app => {
       return {
-      id: 'j'+module.id,
-      dbId: module.id,
-      type: 'jouleModule',
-      name: module.name,
+      id: 'a'+app.id,
+      dbId: app.id,
+      type: 'dataApp',
+      name: app.name,
       children: [],
       hasChildren: false
       }

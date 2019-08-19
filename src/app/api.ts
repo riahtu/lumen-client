@@ -11,8 +11,8 @@ export interface IApiResponse {
   data?: any
 }
 
-export const jouleModule = new schema.Entity('jouleModules');
-export const jouleModules = new schema.Array(jouleModule);
+export const dataApp = new schema.Entity('dataApps');
+export const dataApps = new schema.Array(dataApp);
 
 export const dbElement = new schema.Entity('dbElements',
   {},
@@ -89,7 +89,7 @@ export const datas = new schema.Array(data);
 
 export const nilm = new schema.Entity('nilms',
   { root_folder: dbFolder,
-  jouleModules: [jouleModule] });
+  data_apps: [dataApp] });
 export const nilms = new schema.Array(nilm);
 
 export const user = new schema.Entity('users')

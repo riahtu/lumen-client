@@ -5,7 +5,7 @@ export interface IInstallation {
   selectedType?: string;
   selectedDbFolder?: number;
   selectedDbStream?: number;
-  selectedJouleModule?: number;
+  selectedDataApp?: number;
   nilm?: number;
   //rootFolderId?: number;
   refreshing?: boolean;

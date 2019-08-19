@@ -21,10 +21,10 @@ export function reducer(
         selectedDbStream: action.payload.id,
         selectedType: 'dbStream'
       });
-    case InstallationActions.SELECT_JOULE_MODULE:
+    case InstallationActions.SELECT_DATA_APP:
       return state.merge({
-        selectedJouleModule: action.payload.id,
-        selectedType: 'jouleModule'
+        selectedDataApp: action.payload.id,
+        selectedType: 'dataApp'
       })
     case InstallationActions.SET_NILM:
       return state

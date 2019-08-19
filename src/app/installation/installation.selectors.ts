@@ -11,8 +11,8 @@ import {
   IState,
   IDbFolder,
   IDbStream,
-  IJouleModule,
-  IJouleModuleRecords,
+  IDataApp,
+  IDataAppRecords,
   INilm,
   INilmRecords
 } from '../store/data';
@@ -42,7 +42,7 @@ export class InstallationSelectors {
   @select(['data', 'dbFolders']) dbFolders$: Observable<IDbFolderRecords>;
   @select(['data', 'dbStreams']) dbStreams$: Observable<IDbStreamRecords>;
   @select(['data', 'dbElements']) dbElements$: Observable<IDbElementRecords>;
-  @select(['data', 'jouleModules']) jouleModules$: Observable<IJouleModuleRecords>;
+  @select(['data', 'dataApps']) dataApps$: Observable<IDataAppRecords>;
   @select(['ui','installation']) dbAdmin$: Observable<IInstallation>;
   @select(['ui','installation', 'nilm']) nilm_id$: Observable<number>;
   @select(['ui','installation', 'refreshing']) refreshing$: Observable<boolean>;
@@ -50,14 +50,14 @@ export class InstallationSelectors {
   @select(['ui','installation', 'rootFolderId']) root_folder_id$: Observable<number>;
   @select(['ui','installation', 'selectedDbFolder']) dbFolder_id$: Observable<number>;
   @select(['ui','installation', 'selectedDbStream']) dbStream_id$: Observable<number>;
-  @select(['ui','installation', 'selectedJouleModule']) jouleModule_id$: Observable<number>;
+  @select(['ui','installation', 'selectedDataApp']) dataApp_id$: Observable<number>;
 
   public nilm$: Observable<INilm>;
   public dbNodes$: Observable<DbTreeNode[]>;
   public rootDbFolder$: Observable<IDbFolderRecord>;
   public selectedDbFolder$: Observable<IDbFolderRecord>;
   public selectedDbStream$: Observable<IDbStreamRecord>;
-  public selectedJouleModule$: Observable<IJouleModule>;
+  public selectedDataApp$: Observable<IDataApp>;
   public selectedDbStreamElements$: Observable<IDbElementRecord[]>;
 
 
@@ -84,12 +84,13 @@ export class InstallationSelectors {
       filter(dbFolder => !(dbFolder === undefined)),
       distinctUntilChanged());
 
-    // ---- selectedJouleModule: IJouleModuleRecord ------
-    this.selectedJouleModule$ = combineLatest(
-      this.jouleModules$,this.jouleModule_id$).pipe(
-      map(([jouleModules, id]) => jouleModules[id]),
-      filter(jouleModule => !(jouleModule === undefined)),
-      distinctUntilChanged());
+    // ---- selectedDataApp: IDataAppRecord ------
+    this.selectedDataApp$ = combineLatest(
+      this.dataApps$,this.dataApp_id$).pipe(
+      map(([dataApps, id]) => dataApps[id]),
+      filter(app => !(app === undefined)),
+      distinctUntilChanged(),
+      );
 
     // ---- selectedDbStream: IDbStreamRecord ------
     this.selectedDbStream$ = combineLatest(
@@ -170,12 +171,12 @@ export class InstallationSelectors {
     };
   }
 
-  private _mapInterfaces(modules: IJouleModule[]): DbTreeNode {
-    let nodes = modules.map( m => { return {
-      id: 'm'+m.joule_id,
-      dbId: m.id,
-      name: m.name,
-      type: 'jouleModule',
+  private _mapInterfaces(modules: IDataApp[]): DbTreeNode {
+    let nodes = modules.map( a => { return {
+      id: 'a'+a.id,
+      dbId: a.id,
+      name: a.name,
+      type: 'dataApp',
       hasChildren: false,
       children: []
     }})

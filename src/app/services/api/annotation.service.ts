@@ -58,6 +58,28 @@ export class AnnotationService {
     )
   }
 
+  //save an annotation
+  public saveAnnotation(annotation: IAnnotation){
+    let params = {
+      title: annotation.title,
+      content: annotation.content,
+    }
+    this.http
+      .put(`/db_streams/${annotation.db_stream_id}/annotations/${annotation.joule_id}.json`, params)
+      .subscribe(
+        json => {
+          let normalized = normalize(json['data'], schema.annotations)
+          console.log(normalized)
+          this.ngRedux.dispatch({
+            type: AnnotationActions.RECEIVE,
+            payload: normalized.entities['annotations']
+          });
+        },
+        error => this.messageService.setErrorsFromAPICall(error)
+      );
+    
+  }
+
 
   public loadAnnotations(dbStreamId: number): Observable<any> {
     if(this.annotatedStreams.indexOf(dbStreamId)>-1){

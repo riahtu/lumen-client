@@ -13,7 +13,7 @@ export const InstallationFactory =
     selectedType: 'unknown',
     selectedDbFolder: null,
     selectedDbStream: null,
-    selectedJouleModule: null,
+    selectedDataApp: null,
     //rootFolderId: null,
     nilm: null,
     refreshing: false,

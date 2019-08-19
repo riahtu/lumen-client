@@ -12,16 +12,16 @@ import { IAppState } from '../../app.store';
 export const INTERFACES_REDUX= ['ui','explorer','interfaces'];
 
 import {
-  IJouleModule, IJouleModuleRecords
+  IDataApp, IDataAppRecords
 } from '../../store/data';
 
 @Injectable()
 export class InterfacesSelectors {
   @select(_.concat(INTERFACES_REDUX, 'displayed')) displayedIds$: Observable<number[]>
   @select(_.concat(INTERFACES_REDUX, 'selected')) selectedId$: Observable<number>
-  @select(['data', 'jouleModules']) modules$: Observable<IJouleModuleRecords>;
+  @select(['data', 'dataApps']) modules$: Observable<IDataAppRecords>;
 
-  public displayed$: Observable<IJouleModule[]>
+  public displayed$: Observable<IDataApp[]>
   public noneDisplayed$: Observable<boolean>
 
   constructor(

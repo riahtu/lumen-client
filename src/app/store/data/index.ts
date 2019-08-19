@@ -4,7 +4,7 @@ import * as reducers from './reducer';
 
 export interface IState {
   nilms: types.INilmRecords;
-  jouleModules: types.IJouleModuleRecords;
+  dataApps: types.IDataAppRecords;
   dbFolders: types.IDbFolderRecords;
   dbStreams: types.IDbStreamRecords;
   dbElements: types.IDbElementRecords;
@@ -17,7 +17,7 @@ export interface IState {
 
 export const reducer = combineReducers<IState>({
   nilms: reducers.nilmReducer,
-  jouleModules: reducers.jouleModuleReducer,
+  dataApps: reducers.dataAppReducer,
   dbFolders: reducers.dbFolderReducer,
   dbStreams: reducers.dbStreamReducer,
   dbElements: reducers.dbElementReducer,

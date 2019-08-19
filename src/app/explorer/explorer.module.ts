@@ -36,7 +36,8 @@ import {
   faCaretDown,
   faCommentAlt,
   faTrashAlt,
-  faFilter
+  faFilter,
+  faEdit,
 } from '@fortawesome/free-solid-svg-icons'
 
 import {
@@ -95,6 +96,7 @@ library.add(faCommentAlt);
 library.add(faArrowRight);
 library.add(faTrashAlt);
 library.add(faFilter);
+library.add(faEdit);
 
 @NgModule({
   imports: [

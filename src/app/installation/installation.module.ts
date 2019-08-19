@@ -25,6 +25,7 @@ import {
    faUsers,
    faFolder,
    faFolderOpen,
+   faExternalLinkAlt,
    faDatabase
  } from '@fortawesome/free-solid-svg-icons'
 
@@ -46,6 +47,7 @@ library.add(faUser);
 library.add(faUsers);
 library.add(faFolder);
 library.add(faDatabase);
+library.add(faExternalLinkAlt);
 
 @NgModule({
   imports: [

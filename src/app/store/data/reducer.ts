@@ -41,14 +41,14 @@ export function nilmReducer(
   }
 }
 
-export function jouleModuleReducer(
-  state: records.IJouleModuleRecords = {},
-  action: IPayloadAction): records.IJouleModuleRecords {
+export function dataAppReducer(
+  state: records.IDataAppRecords = {},
+  action: IPayloadAction): records.IDataAppRecords {
   switch (action.type) {
-    case actions.JouleModuleActions.RECEIVE:
+    case actions.DataAppActions.RECEIVE:
       return Object.assign({},
         state,
-        recordify(action.payload, factories.JouleModuleFactory));
+        recordify(action.payload, factories.DataAppFactory));
     default:
       return state;
   }

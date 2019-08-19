@@ -1,5 +1,6 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild} from '@angular/core';
 import { Observable, Subscription, combineLatest } from 'rxjs';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 import * as _ from 'lodash';
 
 import { PlotSelectors } from '../../selectors/plot.selectors';
@@ -15,7 +16,8 @@ import {
 import { distinctUntilChanged, map, filter } from 'rxjs/operators';
 import { AnnotationService } from 'app/services';
 import { AnnotationSelectors, MeasurementSelectors } from 'app/explorer/selectors';
-import { IDbStream, IAnnotation } from 'app/store/data';
+import { IDbStream, IAnnotation, IAnnotationRecord } from 'app/store/data';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-plot-tab',
@@ -41,6 +43,10 @@ export class PlotTabComponent implements OnInit, OnDestroy {
   
   private subs: Subscription[];
   public annotationMap$: Observable<IAnnotatedStream[]>
+  public editForm: FormGroup;
+  public selectedAnnotation: IAnnotation;
+  public filterText: string;
+  @ViewChild('annotationEditModal', {static: false}) public annotationModal: ModalDirective;
 
   constructor(
     public plotSelectors: PlotSelectors,
@@ -48,12 +54,21 @@ export class PlotTabComponent implements OnInit, OnDestroy {
     public annotationService: AnnotationService,
     public annotationUIService: AnnotationUIService,
     public annotationSelectors: AnnotationSelectors,
-    public measurementSelectors: MeasurementSelectors
+    public measurementSelectors: MeasurementSelectors,
+    private fb: FormBuilder
   ) {
     this.subs = [];
+    this.filterText = "";
+    this.selectedAnnotation = {'title': 'none', 'content': 'none', 
+    'id': null, 'joule_id': null, 'start':0, 'end':0, 'db_stream_id': null};
    }
 
   ngOnInit() {
+    this.editForm = this.fb.group({
+      title: ['', Validators.required],
+      content: [''],
+      db_stream_id: [null, Validators.required]
+    })
     this.subs.push(this.plotSelectors.plottedStreams$.pipe(
       map(streams => streams.map(stream=>stream.id)),
       distinctUntilChanged((x,y)=>_.isEqual(x,y)))
@@ -82,9 +97,19 @@ export class PlotTabComponent implements OnInit, OnDestroy {
     while (this.subs.length > 0)
       this.subs.pop().unsubscribe()
   }
-  public deleteAnnotation($event, annotation:IAnnotation){
+  public editAnnotation($event, annotation:IAnnotationRecord){
     $event.stopPropagation();
-    this.annotationService.deleteAnnotation(annotation)
+    this.selectedAnnotation = annotation.asMutable();
+    this.annotationModal.show();
+    //this.annotationService.deleteAnnotation(annotation)
+  }
+  public saveAnnotation(){
+    this.annotationService.saveAnnotation(this.selectedAnnotation);
+    this.annotationModal.hide();
+  }
+  public deleteAnnotation(){
+    this.annotationService.deleteAnnotation(this.selectedAnnotation);
+    this.annotationModal.hide();
   }
 }
 

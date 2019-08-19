@@ -159,7 +159,53 @@
     [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
     <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
     <span [innerHTML]="annotation.title | highlightFilter : filterText"></span>
-    <fa-icon [icon]="['fas', 'trash-alt']" class="float-right delete"
-        (click)="deleteAnnotation($event, annotation)"></fa-icon>
+    <fa-icon [icon]="['fas', 'edit']" class="float-right delete"
+        (click)="editAnnotation($event, annotation)"></fa-icon>
+  </div>
+</div>
+
+
+<!-- ====== edit annotation modal ====== -->
+<div class="modal fade" bsModal #annotationEditModal="bs-modal" 
+     [config]="{backdrop: false}"
+     tabindex="-1" role="dialog"
+     aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- modal title bar -->
+        <h4 class="modal-title float-left">
+          Edit Annotation</h4>
+        <button type="button" class="close float-right" aria-label="Close" (click)="annotationModal.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label class="control-label" for="name">Title</label>
+            <input class="form-control" name="title"
+                  [(ngModel)]="selectedAnnotation.title">
+          </div>
+          <div class="form-group">
+            <label class="control-label" for="description">Content</label>
+            <input class="form-control" name="content" placeholder="optional"
+                  [(ngModel)]="selectedAnnotation.content">
+          </div>
+          <!-- Save and Cancel buttons -->
+          <div class="clearfix">
+            
+            <!-- save -->
+            <button class="btn btn-primary float-left popup" 
+                    [disabled]="selectedAnnotation.title==''"
+                    (click)="saveAnnotation()">Save</button>
+            <!-- delete -->
+            <button class="btn btn-danger float-right popup"
+                    (click)="deleteAnnotation()">
+                    <fa-icon [icon]="['fas', 'trash-alt']"></fa-icon> Delete</button>
+          </div>
+          </form>
+      </div>
+    </div>
   </div>
 </div>

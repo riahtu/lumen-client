@@ -18,7 +18,7 @@
         <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="node.data.refreshing"></fa-icon>
       </span>
       <!-- jouleModule -->
-      <span *ngSwitchCase="'jouleModule'" class="visualizer-node" 
+      <span *ngSwitchCase="'dataApp'" class="visualizer-node" 
         (click)="interfacesService.add(+node.data.id.substring(1))">
         <fa-icon [icon]="['fas', 'cubes']"></fa-icon>
           {{ node.data.name }}

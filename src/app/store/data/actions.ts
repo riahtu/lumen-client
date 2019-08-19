@@ -5,8 +5,8 @@ export const NilmActions = {
   'REFRESHED': 'NILM_REFRESHED',
   'REMOVE': 'NILM_REMOVE',
 };
-export const JouleModuleActions = {
-  'RECEIVE': 'JOULE_MODULE_RECEIVE'
+export const DataAppActions = {
+  'RECEIVE': 'DATA_APP_RECEIVE'
 };
 export const DbFolderActions = {
   'RECEIVE': 'DB_FOLDER_RECEIVE'
