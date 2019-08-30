@@ -33,16 +33,22 @@ export class InterfacesService {
       .get(`app/${id}.json`)
       .subscribe(
       json => {
-        let entities = normalize(json, schema.dataApps).entities;
+        let entities = normalize(json, schema.dataApp).entities;
         this.ngRedux.dispatch({
           type: DataAppActions.RECEIVE,
           payload: entities.dataApps
         })
+        this.ngRedux.dispatch({
+          type: InterfaceActions.ADD,
+          payload: +id
+        })
     })}
-    this.ngRedux.dispatch({
-      type: InterfaceActions.ADD,
-      payload: +id
-    })
+    else {
+      this.ngRedux.dispatch({
+        type: InterfaceActions.ADD,
+        payload: +id
+      })
+    }
   }
 
   //hide a joule module interface

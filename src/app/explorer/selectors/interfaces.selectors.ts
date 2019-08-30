@@ -1,5 +1,5 @@
 
-import {combineLatest} from 'rxjs/operators';
+import {withLatestFrom} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ import {
 export class InterfacesSelectors {
   @select(_.concat(INTERFACES_REDUX, 'displayed')) displayedIds$: Observable<number[]>
   @select(_.concat(INTERFACES_REDUX, 'selected')) selectedId$: Observable<number>
-  @select(['data', 'dataApps']) modules$: Observable<IDataAppRecords>;
+  @select(['data', 'dataApps']) apps$: Observable<IDataAppRecords>;
 
   public displayed$: Observable<IDataApp[]>
   public noneDisplayed$: Observable<boolean>
@@ -29,8 +29,8 @@ export class InterfacesSelectors {
   ){
 
     this.displayed$ = this.displayedIds$.pipe(
-      combineLatest(this.modules$),
-      map(([ids, modules]) => ids.map(id => modules[id])),
+      withLatestFrom(this.apps$),
+      map(([ids, apps]) => ids.map(id => apps[id])),
       filter(module => module !== undefined));
 
     this.noneDisplayed$ = this.displayedIds$
