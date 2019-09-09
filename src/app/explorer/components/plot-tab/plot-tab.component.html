@@ -159,7 +159,7 @@
     [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
     <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
     <span [innerHTML]="annotation.title | highlightFilter : filterText"></span>
-    <fa-icon [icon]="['fas', 'edit']" class="float-right delete"
+    <fa-icon *ngIf="block.editable" [icon]="['fas', 'edit']" class="float-right delete"
         (click)="editAnnotation($event, annotation)"></fa-icon>
   </div>
 </div>

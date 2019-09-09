@@ -81,11 +81,19 @@ export class PlotTabComponent implements OnInit, OnDestroy {
 
     this.annotationMap$ = combineLatest(
         this.annotationSelectors.annotations$,
+        this.plotSelectors.nilms$,
         this.plotSelectors.plottedStreams$).pipe(
-        map(([annotations, streams]) => {
+        map(([annotations, nilms, streams]) => {
           return streams.map(stream => {
+            let editable = false;
+            if (nilms[stream.nilm_id] !== undefined){
+              if(nilms[stream.nilm_id].role=='admin' ||
+                 nilms[stream.nilm_id].role=='owner')
+                editable = true;
+            }
             return{
               stream: stream,
+              editable: editable,
               annotations: _.filter(annotations, 
                 annotation => annotation.db_stream_id == stream.id)
             }
@@ -115,6 +123,7 @@ export class PlotTabComponent implements OnInit, OnDestroy {
 
 export interface IAnnotatedStream{
   stream: IDbStream,
+  editable: boolean,
   annotations: IAnnotation[]
 }
 

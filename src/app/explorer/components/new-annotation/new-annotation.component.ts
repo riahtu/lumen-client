@@ -82,14 +82,18 @@ export class NewAnnotationComponent implements OnInit {
           return {
             stream: stream,
             installation_name: nilms[stream.nilm_id].name,
-            installation_id: nilms[stream.nilm_id].id
+            installation_id: nilms[stream.nilm_id].id,
+            installation_role: nilms[stream.nilm_id].role
           }
         })
+        //only allow annotations for streams on nodes with 'admin' or 'owner' roles
+        .filter(info => info.installation_role=='admin' || info.installation_role=='owner')
       }));
   }
 }
 interface IStreamInfo{
   stream: IDbStream,
   installation_name: string,
-  installation_id: number
+  installation_id: number,
+  installation_role: string
 }

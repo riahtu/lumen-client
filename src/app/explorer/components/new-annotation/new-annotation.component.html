@@ -1,6 +1,6 @@
 <form [formGroup]="form">
     <div class="form-group">
-      <label class="control-label" for="name">Stream</label>
+      <label class="control-label" for="name">Stream <span class="small text-info">(must be an admin or owner to annotate)</span></label>
       <ng-select [items]="streamList$ | async"
         bindLabel="stream.path"
         bindValue="stream.id"
