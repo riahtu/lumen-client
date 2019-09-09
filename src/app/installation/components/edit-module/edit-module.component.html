@@ -1,6 +1,7 @@
-<p>
-  Data App {{app.name}}
-</p>
+<div class="jumbotron">
+  <h1 class="display-4">{{app.name}}</h1>
+  <hr class="my-4">
+  <a href="{{app.url}}" target="_blank" class="btn btn-primary">Open App  
+    <fa-icon [icon]="['fas', 'external-link-alt']" class="ml-2"></fa-icon></a>
+</div>
 
-<a href="{{app.url}}" target="_blank" >{{app.url}}</a>  
-<fa-icon [icon]="['fas', 'external-link-alt']" class="ml-2"></fa-icon>

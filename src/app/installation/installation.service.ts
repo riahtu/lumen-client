@@ -1,11 +1,16 @@
 import { Injectable } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { TreeNode } from 'angular-tree-component';
+
+import { normalize } from 'normalizr';
 import {
   IAppState,
 } from '../app.store';
 
+import * as schema from '../api';
+
 import { InstallationActions } from './store';
+import { DataAppActions } from '../store/data';
 
 import {
   INilm,
@@ -17,6 +22,7 @@ import {
   NilmService,
   MessageService 
 } from '../services/';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class InstallationService {
@@ -24,7 +30,8 @@ export class InstallationService {
   constructor(
     private ngRedux: NgRedux<IAppState>,
     private messageService: MessageService,
-    private nilmService: NilmService
+    private nilmService: NilmService,
+    private http: HttpClient
   ) { }
 
   // ---selectDbRoot: pick the root from tree -----
@@ -60,12 +67,23 @@ export class InstallationService {
 
   // ---selectJouleModule: pick an interface from tree---
   public selectDataApp(id: number){
-    this.ngRedux.dispatch({
-      type: InstallationActions.SELECT_DATA_APP,
-      payload: {
-        id: id,
-      }
-    });
+    console.log("selected app!")
+    this.http
+      .get(`app/${id}.json`)
+      .subscribe(
+      json => {
+        let entities = normalize(json, schema.dataApp).entities;
+        this.ngRedux.dispatch({
+          type: DataAppActions.RECEIVE,
+          payload: entities.dataApps
+        })
+      })
+      this.ngRedux.dispatch({
+        type: InstallationActions.SELECT_DATA_APP,
+        payload: {
+          id: id,
+        }
+      });
     this.messageService.clearMessages();
   }
 
