@@ -21,9 +21,9 @@ export class InterfacesService {
     private ngRedux: NgRedux<IAppState>,
   ) {}
 
-  //display a joule module interface
+  //display data app in a tab
   //
-  public add(id: number) {
+  public add_internal(id: number) {
     //if the id is already displayed just select it
     //otherwise display it and request the index page
     let state = this.ngRedux.getState()
@@ -49,6 +49,26 @@ export class InterfacesService {
         payload: +id
       })
     }
+  }
+
+  //open data app in new window
+  //
+  public add_external(id: number) {
+    //if the id is already displayed just select it
+    //otherwise display it and request the index page
+    
+    this.http
+    .get(`app/${id}.json`)
+    .subscribe(
+    json => {
+      let entities = normalize(json, schema.dataApp).entities;
+      this.ngRedux.dispatch({
+        type: DataAppActions.RECEIVE,
+        payload: entities.dataApps
+      })
+      let state = this.ngRedux.getState()
+      window.open(state.data.dataApps[id].url, '_blank')
+    });
   }
 
   //hide a joule module interface

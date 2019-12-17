@@ -18,10 +18,13 @@
         <fa-icon [icon]="['fas', 'sync-alt']" [spin]="true" *ngIf="node.data.refreshing"></fa-icon>
       </span>
       <!-- jouleModule -->
-      <span *ngSwitchCase="'dataApp'" class="visualizer-node" 
-        (click)="interfacesService.add(+node.data.id.substring(1))">
+      <span *ngSwitchCase="'dataApp'" class="visualizer-node">
+        <span (click)="interfacesService.add_internal(+node.data.id.substring(1))">
         <fa-icon [icon]="['fas', 'cubes']"></fa-icon>
           {{ node.data.name }}
+        </span>
+        <fa-icon [icon]="['fas', 'external-link-alt']" class="icon-button new-tab"
+          (click)="interfacesService.add_external(+node.data.id.substring(1))"></fa-icon>
         </span>
       <!-- dbFolder -->
       <span *ngSwitchCase="'dbFolder'">

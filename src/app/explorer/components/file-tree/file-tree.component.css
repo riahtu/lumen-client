@@ -106,7 +106,12 @@ div.nilms-loading{
   border-style: none !important;
   box-shadow: unset !important;
 }
-
+.visualizer-node > .new-tab{
+  visibility: hidden;
+}
+.visualizer-node:hover > .new-tab{
+  visibility: visible;
+}
 .nilm-entry > .refresh{
   visibility: hidden;
 }

@@ -132,6 +132,7 @@ export class FileTreeComponent implements OnInit {
       id: 'a'+app.id,
       type: 'dataApp',
       name: app.name,
+      link: app.url,
       children: [],
       hasChildren: false
       }
