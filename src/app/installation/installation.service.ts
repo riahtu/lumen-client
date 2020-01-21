@@ -67,7 +67,6 @@ export class InstallationService {
 
   // ---selectJouleModule: pick an interface from tree---
   public selectDataApp(id: number){
-    console.log("selected app!")
     this.http
       .get(`app/${id}.json`)
       .subscribe(
