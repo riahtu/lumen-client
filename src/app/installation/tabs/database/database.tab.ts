@@ -139,12 +139,14 @@ export class DatabaseTabComponent {
         folder.subfolders
           .filter(id => folders[id] !== undefined)
           .map(id => this.mapFolder(
-            folders[id], folders, streams)),
+            folders[id], folders, streams))
+            .sort((a,b) => a.name > b.name ? 1:-1),
         //now map streams
         folder.streams
           .filter(id => streams[id] !== undefined)
           .map(id => this.mapStream(
-            streams[id])))
+            streams[id]))
+          .sort((a,b) => a.name > b.name ? 1:-1))
     }
     //create the DbNode and return it
     return {

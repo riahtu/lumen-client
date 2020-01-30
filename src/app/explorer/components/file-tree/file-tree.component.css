@@ -93,6 +93,7 @@ div.nilms-loading{
 
 :host>>>.tree-node{
   cursor: default;
+  /*white-space: nowrap;*/
 }
 :host>>>.toggle-children-wrapper{
   cursor: pointer;

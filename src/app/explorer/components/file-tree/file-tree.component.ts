@@ -153,12 +153,15 @@ export class FileTreeComponent implements OnInit {
         folder.subfolders
           .filter(id => folders[id] !== undefined)
           .map(id => this.mapFolder(
-            folders[id], folders, streams, elements)),
+            folders[id], folders, streams, elements))
+          .sort((a,b) => a.name > b.name ? 1:-1),
         //now map streams
         folder.streams
           .filter(id => streams[id] !== undefined)
           .map(id => this.mapStream(
             streams[id], elements)))
+          .sort((a,b) => a.name > b.name ? 1:-1)
+
     }
     //create the DbNode and return it
     return {
