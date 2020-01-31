@@ -21,10 +21,16 @@
     border-width: 1px;
     border-color: #ccc;
 }
+.annotation-list {
+    overflow-x: scroll;
+}
 .annotation{
     border-bottom-style: solid;
     border-width: 1px;
     border-color: #ccc;
+}
+.annotation{
+    white-space: nowrap;
 }
 .no-annotations{
     text-align: center;
@@ -119,17 +125,16 @@ button.hide-annotation{
 .annotated-stream:hover > .refresh{
     visibility: visible;
 }
-
-.annotation > .delete{
+.annotation-title > .delete{
     visibility: hidden;
     cursor: pointer;
     color: gray;
-    padding-right: 10px;
+    padding-left: 10px;
 }
-.annotation:hover > .delete{
+.annotation-title:hover > .delete{
     visibility: visible;
 }
-.annotation > .delete:hover{
+.annotation-title > .delete:hover{
     color: black;
 }
 .filter-annotations{

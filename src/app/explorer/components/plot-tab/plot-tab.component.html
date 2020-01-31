@@ -152,15 +152,21 @@
 
   </div>
   <div *ngIf="block.annotations.length==0" class="no-annotations">none</div>
-  <div 
-    *ngFor="let annotation of block.annotations | annotationFilter: filterText" class="annotation"
-    (click)="annotationUIService.selectAnnotation(annotation)"
-    class = "annotation"
-    [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
-    <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
-    <span [innerHTML]="annotation.title | highlightFilter : filterText"></span>
-    <fa-icon *ngIf="block.editable" [icon]="['fas', 'edit']" class="float-right delete"
-        (click)="editAnnotation($event, annotation)"></fa-icon>
+  <div class="annotation-list">
+    <div 
+      *ngFor="let annotation of block.annotations | annotationFilter: filterText" class="annotation"
+      (click)="annotationUIService.selectAnnotation(annotation)"
+      class = "annotation"
+      [ngClass]="{selected: (annotationSelectors.selectedAnnotationId$ | async) == annotation.id}">
+      <div class="annotation-title clear-float">
+        <span class="annotation-date">{{annotation.start | date:'HH:mm MMM d, y'}}</span>
+        <span class="font-weight-bold" [innerHTML]="annotation.title | highlightFilter : filterText"></span>
+        <fa-icon *ngIf="block.editable" [icon]="['fas', 'edit']" class="delete"
+          (click)="editAnnotation($event, annotation)"></fa-icon>
+      </div>
+      
+      <div class='text-muted'> {{annotation.content}} </div>
+    </div>
   </div>
 </div>
 
