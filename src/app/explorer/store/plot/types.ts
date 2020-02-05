@@ -22,6 +22,7 @@ export interface IState {
   adding_plot_data?: boolean;
   data_cursor?: boolean;
   live_update?: boolean;
+  live_update_interval?: number,
   data_view_filter_text?: string;
   show_public_data_views?: boolean;
   show_data_envelope?: boolean;

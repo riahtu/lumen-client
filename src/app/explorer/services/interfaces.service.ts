@@ -10,6 +10,7 @@ import { IAppState } from '../../app.store';
 import * as schema from '../../api';
 import { normalize } from 'normalizr';
 import { DataAppActions } from '../../store/data';
+import { MessageService } from 'app/services';
 
 
 @Injectable()
@@ -19,6 +20,7 @@ export class InterfacesService {
   constructor(
     private http: HttpClient,
     private ngRedux: NgRedux<IAppState>,
+    private messageService: MessageService
   ) {}
 
   //display data app in a tab
@@ -42,7 +44,8 @@ export class InterfacesService {
           type: InterfaceActions.ADD,
           payload: +id
         })
-    })}
+    },
+    error => this.messageService.setError("App not available"))}
     else {
       this.ngRedux.dispatch({
         type: InterfaceActions.ADD,
@@ -68,7 +71,8 @@ export class InterfacesService {
       })
       let state = this.ngRedux.getState()
       window.open(state.data.dataApps[id].url, '_blank')
-    });
+    },
+    error => this.messageService.setError("App not available"))
   }
 
   //hide a joule module interface

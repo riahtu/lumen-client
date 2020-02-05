@@ -29,6 +29,7 @@ export const PlotFactory =
     adding_plot_data: false,
     data_cursor: false,
     live_update: false,
+    live_update_interval: 5,
     show_public_data_views: true,
     data_view_filter_text: '',
     show_data_envelope: true,

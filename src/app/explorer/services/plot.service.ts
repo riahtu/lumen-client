@@ -202,6 +202,12 @@ export class PlotService {
       type: PlotActions.DISABLE_DATA_CURSOR
     });
   }
+  public setLiveUpdateInterval(rate: number){
+    this.ngRedux.dispatch({
+      type: PlotActions.SET_LIVE_UPDATE_INTERVAL,
+      payload: rate
+    });
+  }
   public toggleLiveUpdate() {
     this.ngRedux.dispatch({
       type: PlotActions.TOGGLE_LIVE_UPDATE

@@ -1,7 +1,10 @@
 <div class="jumbotron">
   <h1 class="display-4">{{app.name}}</h1>
   <hr class="my-4">
-  <a href="{{app.url}}" target="_blank" class="btn btn-primary">Open App  
+  <div *ngIf="app.url==''" class="alert alert-warning">Apps are not available on this node. Apps reqiure a proxy server.</div>
+  <div *ngIf="app.url!=''">
+  <a href="{{app.url}}" target="_blank" class="btn btn-primary">Open App {{app.url}}
     <fa-icon [icon]="['fas', 'external-link-alt']" class="ml-2"></fa-icon></a>
+  </div>
 </div>
 

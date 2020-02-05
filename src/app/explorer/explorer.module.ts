@@ -19,6 +19,7 @@ import {
   faSquare,
   faTimes,
   faCog,
+  faClock,
   faCogs,
   faSearch,
   faSyncAlt,
@@ -74,6 +75,7 @@ library.add(faSquare);
 library.add(faTimes);
 library.add(faDatabase);
 library.add(faCog);
+library.add(faClock);
 library.add(faCogs);
 library.add(faSyncAlt);
 library.add(faSearch);

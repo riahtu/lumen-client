@@ -1,7 +1,9 @@
 
 import {distinctUntilChanged, filter} from 'rxjs/operators';
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Observable, Subscription, timer } from 'rxjs';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { switchMap } from 'rxjs/operators';
 
 import {
   PlotService,
@@ -14,6 +16,7 @@ import {
   AnnotationSelectors
 } from '../../selectors';
 
+/*NOTE: These are set by the state now */
 export const LIVE_PLOT_UPDATE_INTERVAL = 5000; //5 seconds
 export const LIVE_NAV_UPDATE_INTERVAL = 60 * 1000; //1 minute
 
@@ -40,6 +43,7 @@ export class ToolTabComponent implements OnInit, OnDestroy {
   private subs: Subscription[];
 
   public annotateElementId: number;
+  @ViewChild('liveUpdateModal', {static: false}) public liveUpdateModal: ModalDirective;
 
   constructor(
     public plotService: PlotService,
@@ -75,7 +79,13 @@ export class ToolTabComponent implements OnInit, OnDestroy {
       .subscribe(_ => {
         this.plotService.disableLiveUpdate();
       }));
+    /* set the live update interval based on user setting*/
+    this.livePlotUpdateTimer = this.plotSelectors.liveUpdateInterval$.pipe(
+      switchMap(rate => timer(0, rate*1000)));
     
+    this.liveNavUpdateTimer = this.plotSelectors.liveUpdateInterval$.pipe(
+      switchMap(rate => timer(0, rate*1000*12)));
+      
   }
   ngOnDestroy() {
     this.deactivateLiveUpdate();
@@ -102,6 +112,10 @@ export class ToolTabComponent implements OnInit, OnDestroy {
       })
   }
 
+  setLiveUpdateInterval(rate: number){
+    this.plotService.setLiveUpdateInterval(rate);
+    this.liveUpdateModal.hide();
+  }
   deactivateLiveUpdate() {
     if (this.livePlotTimerSubscription != null) {
       this.livePlotTimerSubscription.unsubscribe();

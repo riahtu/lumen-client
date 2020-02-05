@@ -34,7 +34,9 @@ export class MessageService {
     })
   }
   public setErrorsFromAPICall(error): void {
-    this.setErrors(this.parseAPIErrors(error))
+    let errors = this.parseAPIErrors(error)
+    if(errors.length > 0)
+      this.setErrors(errors)
   }
   public setWarning(warning: string): void {
     this.setWarnings([warning]);
@@ -67,6 +69,13 @@ export class MessageService {
     if (response.status == 0) {
       return ['cannot contact server'];
     }
+    if (response.status == 401) {
+      //user is not authorized, sign them out and return to login page
+      localStorage.clear();
+      this.router.navigate(['/session/sign_in']);
+      this.setNotice('Log in before continuing');
+      return [];
+    }
     try {
       let msgs = response.error["messages"];
       if (msgs === undefined) {
@@ -74,12 +83,7 @@ export class MessageService {
       }
       return msgs.errors
     } catch (e) {
-      if (response.status == 401) {
-        //user is not authorized, sign them out and return to login page
-        localStorage.clear();
-        this.router.navigate(['/']);
-        this.setNotice('Log in before continuing');
-      }
+      
       return [`server error: ${response.status}`]
 
     }

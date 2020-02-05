@@ -64,7 +64,7 @@ export class PlotSelectors {
   @select(_.concat(PLOT_REDUX,'data_views_loaded')) dataViewsLoaded$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'show_data_envelope')) showDataEnvelope$: Observable<boolean>;
   @select(_.concat(PLOT_REDUX,'show_annotations')) showAnnotations$: Observable<boolean>;
-
+  @select(_.concat(PLOT_REDUX,'live_update_interval')) liveUpdateInterval$: Observable<number>;
   public leftElements$: Observable<IDbElement[]>
   public rightElements$: Observable<IDbElement[]>
 

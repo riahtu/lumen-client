@@ -198,6 +198,13 @@ export function reducer(
       return state
         .set('data_cursor', false)
 
+    //set the frequency of live updates
+    case PlotActions.SET_LIVE_UPDATE_INTERVAL:
+      let rate = action.payload
+      if(rate < 1) //update rate is invalid
+          return state;
+      return state
+          .set('live_update_interval', action.payload)
     //toggle whether the view is live updating
     //
     case PlotActions.TOGGLE_LIVE_UPDATE:
